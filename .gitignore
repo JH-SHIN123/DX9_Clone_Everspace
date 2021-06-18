@@ -1,9 +1,3 @@
-# Custom Ignore
-*.gif
-*.png
-*.bmp
-*.mp3
-
 # Compiled Object files
 *.slo
 *.lo
