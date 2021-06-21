@@ -27,10 +27,8 @@ public:
 	virtual void Free() override;
 
 private:
-	CVIBuffer*  m_pVIBuffer = nullptr;
+	CMesh*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
-	CTexture*	m_pTexture = nullptr;
-	CVIBuffer_TerrainTexture* m_pTerrainBuffer = nullptr;
 };
 
 #define __PLAYER_H__

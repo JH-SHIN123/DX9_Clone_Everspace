@@ -79,6 +79,9 @@
     <Filter Include="01.Utilities\06.Pipeline">
       <UniqueIdentifier>{e4d5a3d5-1ebb-43bd-8db7-c42e8af34df0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utilities\04.Component\03.Mesh">
+      <UniqueIdentifier>{48b061e9-8405-4044-88c6-4d771923c26e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Management.h">
@@ -168,6 +171,9 @@
     <ClInclude Include="..\Headers\Pipeline.h">
       <Filter>01.Utilities\06.Pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Mesh.h">
+      <Filter>01.Utilities\04.Component\03.Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Management.cpp">
@@ -238,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Pipeline.cpp">
       <Filter>01.Utilities\06.Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Mesh.cpp">
+      <Filter>01.Utilities\04.Component\03.Mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

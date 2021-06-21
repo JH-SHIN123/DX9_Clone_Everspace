@@ -137,6 +137,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Player");
 		return E_FAIL;
 	}
+
+	/* For.Component_Mesh */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_BigShip",
+		CMesh::Create(m_pDevice,L"../../Resources/ship.X", L"../../Resources/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
 #pragma endregion
 
 	return S_OK;

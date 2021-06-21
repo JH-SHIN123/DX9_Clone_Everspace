@@ -44,6 +44,26 @@ void CPipeline::Setup_WorldMatrix(
 	Setup_StateMatrix(pOut, &vRight, &vUp, &vLook, pPosition);
 }
 
+void CPipeline::Setup_ViewMatrix(_float4x4* pOut, const _float4x4* matCameraWorld)
+{
+	D3DXMatrixIdentity(pOut);
+
+	_float3 vRight = _float3(matCameraWorld->_11, matCameraWorld->_12, matCameraWorld->_13);
+	_float3 vUp = _float3(matCameraWorld->_21, matCameraWorld->_22, matCameraWorld->_23);
+	_float3 vLook = _float3(matCameraWorld->_31, matCameraWorld->_32, matCameraWorld->_33);
+	_float3 vPos = _float3(matCameraWorld->_41, matCameraWorld->_42, matCameraWorld->_43);
+
+	// Build the view matrix:
+	float x = -D3DXVec3Dot(&vRight, &vPos);
+	float y = -D3DXVec3Dot(&vUp, &vPos);
+	float z = -D3DXVec3Dot(&vLook, &vPos);
+
+	(*pOut)(0, 0) = vRight.x; (*pOut)(0, 1) = vUp.x; (*pOut)(0, 2) = vLook.x; (*pOut)(0, 3) = 0.0f;
+	(*pOut)(1, 0) = vRight.y; (*pOut)(1, 1) = vUp.y; (*pOut)(1, 2) = vLook.y; (*pOut)(1, 3) = 0.0f;
+	(*pOut)(2, 0) = vRight.z; (*pOut)(2, 1) = vUp.z; (*pOut)(2, 2) = vLook.z; (*pOut)(2, 3) = 0.0f;
+	(*pOut)(3, 0) = x;        (*pOut)(3, 1) = y;     (*pOut)(3, 2) = z;       (*pOut)(3, 3) = 1.0f;
+}
+
 void CPipeline::Setup_ViewMatrix(
 	_float4x4 * pOut, 
 	const _float3 * pEye, 

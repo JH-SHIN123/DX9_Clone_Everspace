@@ -25,22 +25,11 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_VIBuffer_RectTexture",
-		L"Com_VIBuffer",
-		(CComponent**)&m_pVIBuffer)))
+		L"Component_Mesh_BigShip",
+		L"Com_Mesh",
+		(CComponent**)&m_pMesh)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_VIBuffer");
-		return E_FAIL;
-	}
-
-	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_Texture_Player",
-		L"Com_Texture",
-		(CComponent**)&m_pTexture)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Mesh");
 		return E_FAIL;
 	}
 
@@ -48,6 +37,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
+	TransformDesc.vScale = { 0.01f,0.01f,0.01f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -60,13 +50,6 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	m_pTerrainBuffer = (CVIBuffer_TerrainTexture*)m_pManagement->Get_Component(L"Layer_Terrain", L"Com_VIBuffer");
-	Safe_AddRef(m_pTerrainBuffer);
-	if (nullptr == m_pTerrainBuffer)
-	{
-		PRINT_LOG(L"Error", L"m_pTerrainBuffer is nullptr");
-		return E_FAIL;
-	}
 
 	return S_OK;
 }
@@ -94,8 +77,7 @@ _uint CPlayer::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(0);
-	m_pVIBuffer->Render_VIBuffer();
+	m_pMesh->Render_Mesh();
 
 	return _uint();
 }
@@ -103,11 +85,6 @@ _uint CPlayer::Render_GameObject()
 _uint CPlayer::Movement(_float fDeltaTime)
 {
 	_float3 vOutPos = m_pTransform->Get_State(EState::Position);
-	if (true == m_pTerrainBuffer->Is_OnTerrain(&vOutPos))
-	{
-		vOutPos.y += 0.5f;
-		m_pTransform->Set_Position(vOutPos);
-	}
 
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
@@ -168,10 +145,8 @@ CGameObject * CPlayer::Clone(void * pArg/* = nullptr*/)
 
 void CPlayer::Free()
 {
-	Safe_Release(m_pTerrainBuffer);
-	Safe_Release(m_pVIBuffer);
+	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
-	Safe_Release(m_pTexture);
 
 	CGameObject::Free();
 }

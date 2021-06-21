@@ -1,0 +1,10 @@
+#pragma once
+
+#ifndef __TOOL_DEFINE_H__
+
+//extern HWND g_hWnd;
+//#define WINCX 800
+//#define WINCY 600
+
+#define __TOOL_DEFINE_H__
+#endif
