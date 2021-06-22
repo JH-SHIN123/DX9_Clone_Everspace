@@ -142,6 +142,17 @@ CComponent * CManagement::Clone_Component(
 	return m_pComponent_Manager->Clone_Component(eType, PrototypeTag, pArg);
 }
 
+const CGameObject* CManagement::Get_GameObject(const wstring& LayerTag, _uint iIndex) const
+{
+	if (nullptr == m_pGameObject_Manager)
+	{
+		PRINT_LOG(L"Error", L"GameObject_Manager Manager is nullptr");
+		return nullptr;
+	}
+
+	return m_pGameObject_Manager->Get_GameObject(LayerTag, iIndex);
+}
+
 const CComponent * CManagement::Get_Component(const wstring & LayerTag, const wstring & ComponentTag, _uint iIndex) const
 {
 	if (nullptr == m_pGameObject_Manager)

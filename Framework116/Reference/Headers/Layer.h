@@ -11,6 +11,7 @@ protected:
 	virtual ~CLayer() = default;
 
 public:
+	const class CGameObject* Get_GameObject(_uint iIndex = 0) const;
 	const class CComponent* Get_Component(const wstring& ComponentTag, _uint iIndex = 0) const;
 
 public:

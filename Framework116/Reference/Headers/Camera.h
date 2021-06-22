@@ -26,6 +26,9 @@ protected:
 	virtual ~CCamera() = default;
 
 public:
+	const CAMERA_DESC& Get_CameraDesc() const;
+
+public:
 	virtual HRESULT Ready_GameObject_Prototype() = 0;
 	virtual HRESULT Ready_GameObject(void * pArg = nullptr) = 0;
 	virtual _uint Update_GameObject(_float fDeltaTime) = 0;

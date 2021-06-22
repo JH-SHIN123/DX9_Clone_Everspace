@@ -163,6 +163,7 @@
     <ClInclude Include="..\Headers\MainCam.h" />
     <ClInclude Include="..\Headers\Monster.h" />
     <ClInclude Include="..\Headers\Player.h" />
+    <ClInclude Include="..\Headers\Skybox.h" />
     <ClInclude Include="..\Headers\Stage.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="Client.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="..\Codes\MainCam.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
+    <ClCompile Include="..\Codes\Skybox.cpp" />
     <ClCompile Include="..\Codes\Stage.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="Client.cpp" />

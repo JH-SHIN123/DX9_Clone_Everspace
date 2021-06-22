@@ -13,6 +13,11 @@ CCamera::CCamera(const CCamera & other)
 {
 }
 
+const CAMERA_DESC& CCamera::Get_CameraDesc() const
+{
+	return m_CameraDesc;
+}
+
 HRESULT CCamera::Ready_GameObject_Prototype()
 {
 	CGameObject::Ready_GameObject_Prototype();

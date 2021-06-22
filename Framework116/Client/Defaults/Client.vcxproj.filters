@@ -43,6 +43,9 @@
     <Filter Include="02.GameObject\04.Grass">
       <UniqueIdentifier>{6b35cd44-6c72-49b7-bd53-54a22dbbf8af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\05.Skybox">
+      <UniqueIdentifier>{3ca2e3df-4489-45bc-9137-32396005b4bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -90,6 +93,9 @@
     <ClInclude Include="..\Headers\Grass.h">
       <Filter>02.GameObject\04.Grass</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Skybox.h">
+      <Filter>02.GameObject\05.Skybox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -124,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Grass.cpp">
       <Filter>02.GameObject\04.Grass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Skybox.cpp">
+      <Filter>02.GameObject\05.Skybox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

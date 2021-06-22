@@ -7,6 +7,20 @@ CLayer::CLayer()
 {
 }
 
+const CGameObject* CLayer::Get_GameObject(_uint iIndex) const
+{
+	if (m_GameObjects.size() <= iIndex)
+		return nullptr;
+
+	auto iter = m_GameObjects.begin();
+	if (m_GameObjects.end() == iter)
+		return nullptr;
+
+	for (_uint i = 0; i < iIndex; ++i, ++iter);
+
+	return (*iter);
+}
+
 const CComponent * CLayer::Get_Component(const wstring & ComponentTag, _uint iIndex/* = 0*/) const
 {
 	if (m_GameObjects.size() <= iIndex)

@@ -25,7 +25,10 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Grass(L"Layer_Grass")))
+	//if (FAILED(Add_Layer_Grass(L"Layer_Grass")))
+	//	return E_FAIL;
+
+	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
 	return S_OK;
@@ -133,6 +136,20 @@ HRESULT CStage::Add_Layer_Grass(const wstring & LayerTag)
 			return E_FAIL;
 		}
 	}	
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Skybox(const wstring& LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Skybox",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Skybox In Layer");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }

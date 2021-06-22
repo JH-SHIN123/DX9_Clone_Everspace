@@ -21,6 +21,7 @@ private:
 	HRESULT Add_Layer_Cam(const wstring& LayerTag);
 	HRESULT Add_Layer_Monster(const wstring& LayerTag);
 	HRESULT Add_Layer_Grass(const wstring& LayerTag);
+	HRESULT Add_Layer_Skybox(const wstring& LayerTag);
 
 public:
 	static CStage* Create(LPDIRECT3DDEVICE9 pDevice);

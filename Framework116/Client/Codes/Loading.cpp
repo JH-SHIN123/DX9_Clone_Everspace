@@ -9,6 +9,7 @@
 #include "Terrain.h"
 #include "Monster.h"
 #include "Grass.h"
+#include "Skybox.h"
 #pragma endregion
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
@@ -159,6 +160,16 @@ HRESULT CLoading::Ready_StageResources()
 		CGrass::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Grass");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Skybox */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Skybox",
+		CSkybox::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
 		return E_FAIL;
 	}
 #pragma endregion
