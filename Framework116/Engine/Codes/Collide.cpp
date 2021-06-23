@@ -24,7 +24,7 @@ HRESULT CCollide::Ready_Component_Prototype()
 {
 	CComponent::Ready_Component_Prototype();
 
-	D3DXComputeBoundingSphere();
+	//D3DXComputeBoundingSphere();
 
 
 	// 바운딩 박스 확인용 메시 생성
