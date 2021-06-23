@@ -15,6 +15,7 @@ CMapTool::CMapTool(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_MAPTOOL, pParent)
 	, m_bPickMode(true) // PickMode == true ¸é Object, PickMode == false ¸é Navigation
 	, m_pManagement(CManagement::Get_Instance())
+	, m_iNaviPosX(0)
 {
 
 }

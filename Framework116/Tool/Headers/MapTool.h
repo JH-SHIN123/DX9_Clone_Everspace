@@ -59,4 +59,5 @@ private: // º¯¼ö
 
 public:
 	afx_msg void OnBnClickedLoadPrototype();
+	int m_iNaviPosX;
 };
