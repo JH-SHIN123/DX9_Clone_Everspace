@@ -65,7 +65,17 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
 	}
-	//
+
+	// For.Com_Controller
+	if (FAILED(CGameObject::Add_Component(
+		EResourceType::Static,
+		L"Component_Controller",
+		L"Com_Controller",
+		(CComponent**)&m_pController)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Controller");
+		return E_FAIL;
+	}
 
 	// Setting Prev Cursor 
 	GetCursorPos(&m_tPrevCursorPos);
@@ -76,7 +86,9 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 _uint CPlayer::Update_GameObject(_float fDeltaTime)
 {
-	CGameObject::Update_GameObject(fDeltaTime);	
+	CGameObject::Update_GameObject(fDeltaTime);
+
+	m_pController->Update_Controller();
 	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
@@ -162,7 +174,8 @@ _uint CPlayer::Movement(_float fDeltaTime)
 		m_pTransform->RotateY(fDeltaTime);
 	}	
 
-	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	
+	if (m_pController->Key_Down(KEY_LBUTTON))
 	{
 		RAY ray;
 		CCollision::CreatePickingRay(ray, g_hWnd, WINCX, WINCY, m_pDevice);
@@ -209,6 +222,7 @@ void CPlayer::Free()
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pCollide);
+	Safe_Release(m_pController);
 
 	CGameObject::Free();
 }
