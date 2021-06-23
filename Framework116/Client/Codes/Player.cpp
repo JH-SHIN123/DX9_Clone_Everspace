@@ -50,9 +50,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	// Setting Prev Cursor 
-	GetCursorPos(&m_tPrevCursorPos);
-	ScreenToClient(g_hWnd, &m_tPrevCursorPos);
+
 
 	return S_OK;
 }
@@ -92,20 +90,44 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	//ScreenToClient(g_hWnd, &m_tCurCursorPos);
 
 	//// 이전 프레임과 현재프레임의 마우스 이동거리 구하기
-	//_float2 vGap = { float(m_tCurCursorPos.x - m_tPrevCursorPos.x) ,
-	//	float(m_tCurCursorPos.y - m_tPrevCursorPos.y) };
+	//_float2 tCenter = { WINCX / 2.f,WINCY / 2.f};
+	//_float2 vGap = { float(m_tCurCursorPos.x - tCenter.x) ,
+	//	float(m_tCurCursorPos.y - tCenter.y) };
 
 	//m_tPrevCursorPos = m_tCurCursorPos;
 
 	//float dps = 100.f;
-	//m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * dps);
-	//m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * dps);
+
+	/*m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * dps);
+	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * dps);*/
 
 	//// 마우스 중앙 고정
 	//POINT ptMouse = { WINCX >> 1, WINCY >> 1 };
 	//ClientToScreen(g_hWnd, &ptMouse);
 	//SetCursorPos(ptMouse.x, ptMouse.y);
 
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+	_float3 vMouse = { (_float)pt.x,(_float)pt.y,0.f };
+	_float3 vScreenCenter = { WINCX / 2.f,WINCY / 2.f,0.f };
+	_float3 vGap = vMouse - vScreenCenter;
+	_float fSpeed = D3DXVec3Length(&vGap);
+	D3DXVec3Normalize(&vGap, &vGap);
+	_float fNewRotX = vGap.y;
+	_bool bRotYDir = false; // true면 위쪽 회전, false면 밑에 회전
+	if (fNewRotX < 0.f)
+		bRotYDir = false;
+	else if(fNewRotX > 0.f)
+		bRotYDir = true;
+
+	_float fRotX = m_pTransform->Get_TransformDesc().vRotate.x;
+	if(fRotX >= -D3DXToRadian(90.f) && !bRotYDir)
+		m_pTransform->RotateX(D3DXToRadian(vGap.y)*fDeltaTime*fSpeed);
+	else if(fRotX <D3DXToRadian(44.f) && bRotYDir)
+		m_pTransform->RotateX(D3DXToRadian(vGap.y)*fDeltaTime*fSpeed);
+
+	m_pTransform->RotateY(D3DXToRadian(vGap.x)*fDeltaTime*fSpeed);
 	// Move
 	_float3 vOutPos = m_pTransform->Get_State(EState::Position);
 	if (GetAsyncKeyState('W') & 0x8000)

@@ -30,10 +30,6 @@ private:
 	CMesh*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
 
-private:
-	POINT m_tCurCursorPos = { 0,0 };
-	POINT m_tPrevCursorPos = { 0,0 };
-
 };
 
 #define __PLAYER_H__
