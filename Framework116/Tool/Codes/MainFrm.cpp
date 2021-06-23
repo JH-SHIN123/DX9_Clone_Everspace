@@ -49,6 +49,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// Test
+	// Test 2
 
 
 	return 0;
