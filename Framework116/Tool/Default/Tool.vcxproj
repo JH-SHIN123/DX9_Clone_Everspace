@@ -206,6 +206,7 @@
     <ClInclude Include="..\Headers\MainScene.h" />
     <ClInclude Include="..\Headers\MainView.h" />
     <ClInclude Include="..\Headers\MiniView.h" />
+    <ClInclude Include="..\Headers\MyAddComponent.h" />
     <ClInclude Include="..\Headers\ObjectTool.h" />
     <ClInclude Include="..\Headers\Player.h" />
     <ClInclude Include="..\Headers\Skybox.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="..\Codes\MainForm.cpp" />
     <ClCompile Include="..\Codes\MainFrm.cpp" />
     <ClCompile Include="..\Codes\MainView.cpp" />
+    <ClCompile Include="..\Codes\MyAddComponent.cpp" />
     <ClCompile Include="..\Codes\ObjectTool.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
     <ClCompile Include="..\Codes\Skybox.cpp" />
