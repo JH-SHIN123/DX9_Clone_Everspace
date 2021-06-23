@@ -27,8 +27,8 @@ HRESULT CCollideSphere::Ready_Component_Prototype()
 
 	// 바운딩 박스 확인용 메시 생성
 	// Radius 미터 단위로 변경(*100)
-	UINT iMeshDetail = 10;
-	if (FAILED(D3DXCreateSphere(m_pDevice, m_tBoundingSphere.vRadius.x *100,
+	UINT iMeshDetail = 20;
+	if (FAILED(D3DXCreateSphere(m_pDevice, m_tBoundingSphere.fRadius,
 		iMeshDetail, iMeshDetail, &m_pSphere, NULL))) 
 	{
 		PRINT_LOG(L"Error", L"Failed to D3DXCreateSphere");
@@ -57,16 +57,16 @@ HRESULT CCollideSphere::Ready_Component(void* pArg)
 		}
 	}
 
+	// Scale
+	m_tBoundingSphere.matWorld._11 = m_tBoundingSphere.fRadius;
+	m_tBoundingSphere.matWorld._22 = m_tBoundingSphere.fRadius;
+	m_tBoundingSphere.matWorld._33 = m_tBoundingSphere.fRadius;
+
 	return S_OK;
 }
 
-_uint CCollideSphere::Update_Collide(const _float3& vScale, const _float3& vPos)
+_uint CCollideSphere::Update_Collide(const _float3& vPos)
 {
-	// Scale
-	m_tBoundingSphere.matWorld._11 = vScale.x * m_tBoundingSphere.vRadius.x;
-	m_tBoundingSphere.matWorld._22 = vScale.y * m_tBoundingSphere.vRadius.y;
-	m_tBoundingSphere.matWorld._33 = vScale.z * m_tBoundingSphere.vRadius.z;
-	
 	// Pos
 	m_tBoundingSphere.matWorld._41 = vPos.x + m_tBoundingSphere.vCenter.x;
 	m_tBoundingSphere.matWorld._42 = vPos.y + m_tBoundingSphere.vCenter.y;

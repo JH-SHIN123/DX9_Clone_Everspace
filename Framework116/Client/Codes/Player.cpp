@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\Player.h"
+#include "Collision.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -52,7 +53,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
-	BoundingSphere.vRadius = { 5.f,5.f,5.f };
+	BoundingSphere.fRadius = 5.f;
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -79,7 +80,7 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
-	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().vScale, m_pTransform->Get_TransformDesc().vPosition);
+	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().vPosition);
 	return NO_EVENT;
 }
 
@@ -160,6 +161,21 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	{
 		m_pTransform->RotateY(fDeltaTime);
 	}	
+
+	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	{
+		RAY ray;
+		CCollision::CreatePickingRay(ray, g_hWnd, WINCX, WINCY, m_pDevice);
+
+		D3DXMATRIX view;
+		m_pDevice->GetTransform(D3DTS_VIEW, &view);
+		CCollision::TransformRay(ray, view);
+
+		// Layer에 모든 오브젝트들의 바운딩박스 검사
+		if (CCollision::IntersectRayToSphere(ray, m_pCollide->Get_BoundingSphere())) {
+			PRINT_LOG(L"Hit!", L"Hit!");
+		}
+	}
 
 	return _uint();
 }

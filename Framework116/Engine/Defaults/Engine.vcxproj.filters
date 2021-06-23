@@ -85,6 +85,9 @@
     <Filter Include="01.Utilities\04.Component\04.Collide">
       <UniqueIdentifier>{eb272956-0c6d-435a-a14a-0bf9ea4f31a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utilities\07.Collision">
+      <UniqueIdentifier>{ffe58d15-b561-44b7-a05c-56c084e954c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Management.h">
@@ -183,6 +186,9 @@
     <ClInclude Include="..\Headers\Protocol.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Collision.h">
+      <Filter>01.Utilities\07.Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Management.cpp">
@@ -259,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\CollideSphere.cpp">
       <Filter>01.Utilities\04.Component\04.Collide</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Collision.cpp">
+      <Filter>01.Utilities\07.Collision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
