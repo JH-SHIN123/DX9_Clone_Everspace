@@ -25,7 +25,15 @@ void CMainForm::DoDataExchange(CDataExchange* pDX)
 	CFormView::DoDataExchange(pDX);
 }
 
+void CMainForm::OnBnClickedMapTool()
+{
+	if (nullptr == m_tMapTool.GetSafeHwnd())
+		m_tMapTool.Create(IDD_MAPTOOL);
+	m_tMapTool.ShowWindow(SW_SHOW);
+}
+
 BEGIN_MESSAGE_MAP(CMainForm, CFormView)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMainForm::OnBnClickedMapTool)
 END_MESSAGE_MAP()
 
 
