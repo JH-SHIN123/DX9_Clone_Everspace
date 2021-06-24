@@ -122,6 +122,7 @@ void CMapTool::OnBnClickedStagesave()
 				//WriteFile(hFile, &dwstrByte, sizeof(DWORD), &dwByte, nullptr);
 				WriteFile(hFile, &Clone->eObjectType, sizeof(_uint), &dwByte, nullptr);
 				WriteFile(hFile, &Clone->matWorld, sizeof(_float4x4), &dwByte, nullptr);
+				WriteFile(hFile, &Clone->wstrCloneName, sizeof(wstring), &dwByte, nullptr);
 			}
 
 			//for (auto& Navi : m_listNaviPos)
@@ -157,6 +158,7 @@ void CMapTool::OnBnClickedStagesave()
 			for (auto& Navi : m_listNaviPos)
 			{
 				WriteFile(hFile, &Navi->vNodePos, sizeof(_float3), &dwByte, nullptr);
+				WriteFile(hFile, &Navi->iNodeOrder, sizeof(_int), &dwByte, nullptr);
 			}
 
 			CloseHandle(hFile);
@@ -206,6 +208,7 @@ void CMapTool::OnBnClickedStageload()
 
 				ReadFile(hFile, &pMap->eObjectType, sizeof(_uint), &dwByte, nullptr);
 				ReadFile(hFile, &pMap->matWorld, sizeof(D3DXMATRIX), &dwByte, nullptr);
+				ReadFile(hFile, &pMap->wstrCloneName, sizeof(wstring), &dwByte, nullptr);
 
 				if (0 == dwByte)
 				{
@@ -213,7 +216,7 @@ void CMapTool::OnBnClickedStageload()
 					break;
 				}
 				m_listCloneData.emplace_back(pMap);
-				CCloneListBox.AddString(L"asd");
+				CCloneListBox.AddString(pMap->wstrCloneName.c_str());
 
 				//for (auto& Navi : m_listNaviPos)
 				//{
@@ -262,6 +265,7 @@ void CMapTool::OnBnClickedStageload()
 				//ReadFile(hFile, pFilePath, dwStrByte, &dwByte, nullptr);
 
 				ReadFile(hFile, &pNavi->vNodePos, sizeof(_float3), &dwByte, nullptr);
+				ReadFile(hFile, &pNavi->iNodeOrder, sizeof(_int), &dwByte, nullptr);
 
 
 				if (0 == dwByte)
