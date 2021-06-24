@@ -22,6 +22,13 @@ public:
 
 protected:
 	DECLARE_MESSAGE_MAP()
+
+public:
+	CManagement* m_pManagement = nullptr;
+	LPDIRECT3DDEVICE9 m_pDevice = nullptr;
+	virtual void OnInitialUpdate();
+
+	_bool m_bOnce;
 };
 
 

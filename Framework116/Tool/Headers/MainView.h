@@ -26,7 +26,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-private:
+public:
 	HRESULT Ready_StaticResources();
 	HRESULT Setup_DefaultSetting();
 
