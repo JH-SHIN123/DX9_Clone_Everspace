@@ -118,7 +118,7 @@ void CMapTool::OnBnClickedStagesave()
 			HANDLE hFile = CreateFile(strPath.GetString(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 			if (INVALID_HANDLE_VALUE == hFile)
 				return;
-			// 이제 저장. 
+			
 			DWORD dwByte = 0;
 			DWORD dwstrByte = 0;
 			for (auto& Clone : m_listCloneData)
@@ -155,7 +155,7 @@ void CMapTool::OnBnClickedStagesave()
 			HANDLE hFile = CreateFile(strPath.GetString(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 			if (INVALID_HANDLE_VALUE == hFile)
 				return;
-			// 이제 저장. 
+			
 			DWORD dwByte = 0;
 			DWORD dwstrByte = 0;
 
@@ -309,6 +309,14 @@ void CMapTool::OnBnClickedAddclone()
 
 	m_pManagement->Get_Device()->SetTransform(D3DTS_WORLD, &pClone->matWorld);
 
+	
+	//int iOrder = CNavigationListBox.GetCount();
+	//pClone->iNodeOrder = iOrder + 1; // 보류.
+	// 구조체안에 wstring 하나 넣어서 구별하도록 할까?
+	pClone->스트링 = m_strCloneName;
+
+	//m_pManagement->Add_GameObject_InLayer_Tool(EResourceType::Static, //프로토타입태그/레이어태그/리스트박스인덱스/아규먼트);
+
 	m_listCloneData.emplace_back(pClone);
 	CCloneListBox.AddString(m_strCloneName);
 
@@ -324,7 +332,7 @@ void CMapTool::OnBnClickedDeleteclone()
 {
 	UpdateData(TRUE);
 	int iSelect = CCloneListBox.GetCurSel();
-	CString strFindName = L"";
+	
 
 	// map이 아니라서 String 으로 list안에있는걸 찾아서 지우는게 안대넹. 저장할때 구분할 수 있는 무언가를 또 저장합시다.
 	
@@ -367,10 +375,8 @@ void CMapTool::OnBnClickedDeletenavi()
 			CNavigationListBox.DeleteString(iIndex);
 			break;
 		}
-		else
-		{
-			++iter;
-		}
+		else	
+			++iter;	
 	}
 
 	// 문제점 : 마지막으로 찍은 애만 Delete 해야 순서가 안꼬임.
@@ -436,15 +442,6 @@ void CMapTool::OnBnClickedLoadPrototype()
 			}
 			m_mapPrototype.emplace(pObject->wstrPrototypeTag, pObject);
 
-			if (FAILED(m_pManagement->Add_GameObject_InLayer(
-				EResourceType::Static,
-				(wstring)pObject->wstrPrototypeTag,
-				L"Layer_Monster")))
-			{
-				PRINT_LOG(L"Error", L"Failed To Add Monster In Layer");
-				return;
-			}
-
 			CPrototypeListBox.AddString(pObject->wstrPrototypeTag);
 		}
 		CloseHandle(hFile);
@@ -456,8 +453,7 @@ void CMapTool::OnLbnSelchangeClonelist3()
 	UpdateData(TRUE);
 
 	int iIndex = CCloneListBox.GetCurSel();
-	CString strFindName = L"";
-	CCloneListBox.GetText(iIndex, strFindName);
+	
 	// 구조체에 인덱스도 같이 저장하면 좋을 듯?
 
 	// map에서 strFindName 키값을주고 map안에서 얘랑 똑같은 애들 찾아서 second를 반환해야하는데. list라서 find 함수가 없음.

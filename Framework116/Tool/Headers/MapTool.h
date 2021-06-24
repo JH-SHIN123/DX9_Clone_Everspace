@@ -71,7 +71,8 @@ public:
 	float m_fPositionY;
 	float m_fPositionZ;
 
-	CString m_strCloneName;
+	/*CString m_strCloneName;*/
+	wstring m_wstrCloneName;
 
 	float m_fNaviPosX;
 	float m_fNaviPosY;
