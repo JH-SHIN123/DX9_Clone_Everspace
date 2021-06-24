@@ -25,7 +25,15 @@ void CMainForm::DoDataExchange(CDataExchange* pDX)
 	CFormView::DoDataExchange(pDX);
 }
 
+void CMainForm::OnBnClickedResourceToolButton()
+{
+	if (nullptr == m_tResourceTool.GetSafeHwnd())
+		m_tResourceTool.Create(IDD_RESOURCETOOL);
+	m_tResourceTool.ShowWindow(SW_SHOW);
+}
+
 BEGIN_MESSAGE_MAP(CMainForm, CFormView)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMainForm::OnBnClickedResourceToolButton)
 END_MESSAGE_MAP()
 
 

@@ -3,7 +3,7 @@
 
 
 // CMainForm 폼 보기
-
+#include"ResourceTool.h"
 class CMainForm : public CFormView
 {
 	DECLARE_DYNCREATE(CMainForm)
@@ -22,11 +22,14 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 #endif
-
+public:
+	CResourceTool m_tResourceTool;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
-
 	DECLARE_MESSAGE_MAP()
+
+public:
+	afx_msg void OnBnClickedResourceToolButton();
 };
 
 
