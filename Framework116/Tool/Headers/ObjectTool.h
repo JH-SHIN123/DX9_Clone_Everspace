@@ -30,6 +30,7 @@ protected:
 
 public: // 그냥 함수
 	void Setting_List_Box();
+	void Setting_ObjectData();
 
 public:
 	CListBox m_ListBoxObject;	// 오브젝트 프로토 타입 리스트박스
@@ -37,13 +38,35 @@ public:
 	CListBox m_ListComponent;	// 추가 가능한 컴포넌트 목록
 
 	_bool m_bListCheck = false;
-	wstring m_ObjectPrototypeTag = L"";
-	wstring m_PickedComponentTag = L"";
-	//vector
+	CString m_wstrPickedObject = L"";		// 프로토타입 선택
+	CString m_wstrPickedComponentTag = L"";	// 매쉬 선택
+
+	CString m_wstrObjectPrototype_Tag = L"";	// L"Prototype" + m_wstrPickedObject
+	CString m_wstrComponentProtoType_Tag = L""; // L"Prototype" + m_wstrPickedComponentTag
+	CString d;
+	
+	map<CString, PASSDATA_OBJECT*> m_mapObjectData;
+	D3DMATERIAL9 m_tMaterial;
+	/*
+	
+	CString wstrPrototypeTag; = m_wstrObjectPrototypeTag
+	CString wstrPrototypeTag_Mesh; = m_wstrComponentProtoType_Tag
+
+	*/
+
+	// key tool에서 구별
+	// value 순서 : ObjectPrototype > 매쉬 > 머테리얼
+
+
 
 public:
 	afx_msg void OnBnClickedButton2(); // Add Component
 
+	afx_msg void OnLbnSelchangeList1();
+	afx_msg void OnLbnSelchangeList2();
+	afx_msg void OnLbnSelchangeList3();
+	afx_msg void OnBnClickedButton1();
+	float q1;
 };
 
 #endif // !__OBJECT_PROTOTYPE_TOOL_H__

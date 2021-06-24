@@ -11,5 +11,7 @@
 #include "framework.h"
 
 
+// 정호 추가
+#include <map>
 
 #endif //PCH_H

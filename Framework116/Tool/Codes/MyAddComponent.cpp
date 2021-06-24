@@ -66,7 +66,7 @@ END_MESSAGE_MAP()
 void CMyAddComponent::OnLbnSelchangeList1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	UpdateData(TRUE);
+	//UpdateData(TRUE);
 
 	CMainFrame* pMain = (CMainFrame*)(AfxGetApp()->GetMainWnd());
 	CMainView* pView = dynamic_cast<CMainView*>(pMain->m_tMainSplitterWnd.GetPane(0, 1));
@@ -79,7 +79,7 @@ void CMyAddComponent::OnLbnSelchangeList1()
 
 
 
-	UpdateData(FALSE);
+	//UpdateData(FALSE);
 }
 
 
@@ -92,3 +92,6 @@ void CMyAddComponent::OnBnClickedButton1()
 
 	//pForm.m_
 }
+
+
+

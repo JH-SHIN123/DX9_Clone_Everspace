@@ -12,12 +12,20 @@ typedef struct tagPassingData_Object {
 #else 
 	wstring wstrPrototypeTag_Object;
 	wstring wstrPrototypeTag_Mesh;
+#endif // _AFX
 	
 	// Material Info
-	D3DMATERIAL9 tMaterial;
-#endif // _AFX
+	D3DMATERIAL9 tMaterial;		
 
+	// 파싱 데이터가
+	// 오브젝트의 프로토타입 태그
+	// 오브젝트가 쓸 매쉬
+	// 재질 정보 이게 끝이라면다른 컴포넌트는 안넣는건가?
+
+	// 아마 이거랑, 다른 컴포넌트들 넣을 수 있도록 짜야하나?
+	// 아니면 이걸로 전부?
 }PASSDATA_OBJECT;
+
 
 typedef struct tagPassingData_Map {
 	UINT eObjectType;
