@@ -1,6 +1,8 @@
 #include "Collision.h"
 #include "Layer.h"
 #include "GameObject.h"
+#include "Collide.h"
+#include "CollideSphere.h"
 
 USING(Engine)
 
@@ -14,8 +16,12 @@ void CCollision::PickingObject(const HWND hWnd, const int iWinCX, const int iWin
 	//pDevice->GetTransform(D3DTS_VIEW, &view);
 	//CCollision::TransformRay(ray, view);
 
-	//for (auto& p : (*listObject)) {
-	//	p.Get_Component(L"wstrComponentTag");
+	//for (auto& Obj : (*listObject)) {
+	//	for (auto& Collide : (*Obj.Get_Collides())) {
+	//		if (ECollideType::Sphere == Collide->Get_CollideType()) {
+
+	//		}
+	//	}
 	//}
 
 	//// Layer에 모든 오브젝트들의 바운딩박스 검사
