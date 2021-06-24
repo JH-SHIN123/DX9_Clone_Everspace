@@ -3,9 +3,13 @@
 
 
 // CResourceTool 대화 상자입니다.
-
+enum class EType
+{
+	CUBE, TEXTURE
+};
 class CResourceTool : public CDialog
 {
+	
 	DECLARE_DYNAMIC(CResourceTool)
 
 public:
@@ -27,4 +31,14 @@ public:
 
 	CListBox CDropFileList;
 	CListBox CTextureIndexList;
+	list<PASSDATA_RESOURCE*> m_ListResource;
+
+private:
+	void MultiTextureInfo_Extraction(const wstring wstrFilePath, list<PASSDATA_RESOURCE*>& listPathInfo);
+	DWORD MultiTextureCount(const wstring wstrFilePath);
+	CString ConvertRelativePath(const CString & wstrabsPath);
+
+
+public:
+	afx_msg void OnLbnSelchangeDropfilelist();
 };

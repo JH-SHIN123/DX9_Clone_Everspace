@@ -235,6 +235,7 @@
     <ClCompile Include="..\Codes\Player.cpp" />
     <ClCompile Include="..\Codes\ResourceTool.cpp" />
     <ClCompile Include="..\Codes\Skybox.cpp" />
+    <ClCompile Include="..\HEADERS\RESOURCETOOL.CPP" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
