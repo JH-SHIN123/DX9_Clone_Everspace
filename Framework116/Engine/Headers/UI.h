@@ -19,12 +19,16 @@ public:
 	virtual _uint LateUpdate_GameObject(_float fDeltaTime) = 0;
 	virtual _uint Render_GameObject() = 0;
 
+protected:
+	_uint IsBillboarding();
+
 public:
 	virtual CGameObject* Clone(void* pArg = nullptr) = 0;
 	virtual void Free() = 0;
 
 protected:
 	// 항상 플레이어를 바라보도록 -> 빌보드
+	// 항상 플레이어를 따라다녀야함
 	// 맨 앞에 배치 -> Z (1.f 고정)
 	// 스케일 변환 X -> (직교투영행렬 곱)
 	class CVIBuffer* m_pVIBuffer = nullptr;
