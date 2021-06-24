@@ -138,7 +138,6 @@
     <ClCompile Include="..\Codes\ResourceTool.cpp">
       <Filter>00.View\03.ResourceTool</Filter>
     </ClCompile>
-    <ClCompile Include="..\HEADERS\MAINFORM.CPP" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Toolbar.bmp">
