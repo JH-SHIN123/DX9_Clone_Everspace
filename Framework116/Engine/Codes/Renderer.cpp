@@ -159,6 +159,13 @@ _uint CRenderer::Render_UI()
 	_uint iRenderIndex = (_uint)ERenderType::UI;
 	_uint iEvent = NO_EVENT;
 
+	// UI 조명 off
+	if (FAILED(pDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Set Lighting false");
+		return E_FAIL;
+	}
+
 	///////////////// 알파 테스팅 ///////////////////////////////////////////////
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 1); /* 알파 기준 값 설정 */
@@ -197,6 +204,12 @@ _uint CRenderer::Render_UI()
 
 	pDevice->SetTransform(D3DTS_VIEW, &matPrevView);
 	pDevice->SetTransform(D3DTS_PROJECTION, &matPrevProj);
+
+	if (FAILED(pDevice->SetRenderState(D3DRS_LIGHTING, TRUE)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Set Lighting false");
+		return E_FAIL;
+	}
 
 	return iEvent;
 }

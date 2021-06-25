@@ -196,10 +196,6 @@ HRESULT CMainApp::Ready_StaticResources()
 
 HRESULT CMainApp::Setup_DefaultSetting()
 {
-	// Α¶Έν off
-	//D3DXVECTOR3 dir(1.0f, -0.0f, 0.25f);
-	//D3DXCOLOR   c = D3DCOLOR_XRGB(255, 255, 255);
-
 	//
 	// Set lighting related render states.
 	//
