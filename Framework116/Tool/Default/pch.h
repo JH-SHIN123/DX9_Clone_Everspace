@@ -13,5 +13,5 @@
 
 // 정호 추가
 #include <map>
-
+#include <fstream>
 #endif //PCH_H

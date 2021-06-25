@@ -19,7 +19,6 @@ CObjectTool::CObjectTool(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_OBJECTTOOL, pParent)
 	, m_wstrPickedObject(_T(""))
 	, m_wstrComponentProtoType_Tag(_T(""))
-	, q1(0)
 {
 	ZeroMemory(&m_tMaterial, sizeof(D3DMATERIAL9));
 }
@@ -85,7 +84,7 @@ void CObjectTool::Setting_List_Box()
 	m_ListBoxObject.InsertString(0, L"Player");
 	m_ListBoxObject.InsertString(1, L"Monster_Normal");
 	m_ListBoxObject.InsertString(2, L"Monster_Sniper");
-	m_ListBoxObject.InsertString(3, L"Monster_stealth");
+	m_ListBoxObject.InsertString(3, L"Monster_Stealth");
 	m_ListBoxObject.InsertString(4, L"Monster_Buff");
 	m_ListBoxObject.InsertString(5, L"Monster_Boss");
 
@@ -149,7 +148,7 @@ void CObjectTool::Setting_ObjectData()
 		pData->wstrPrototypeTag = L"";
 		pData->wstrPrototypeTag_Mesh = L"";
 
-		m_mapObjectData.insert(make_pair(L"Monster_stealth", pData));
+		m_mapObjectData.insert(make_pair(L"Monster_Stealth", pData));
 	}
 
 	Pair = m_mapObjectData.find(L"Monster_Buff");
@@ -188,6 +187,7 @@ BEGIN_MESSAGE_MAP(CObjectTool, CDialog)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CObjectTool::OnLbnSelchangeList3)
 	ON_BN_CLICKED(IDC_BUTTON1, &CObjectTool::OnBnClickedButton1)	// Insert 
 	ON_BN_CLICKED(IDC_BUTTON2, &CObjectTool::OnBnClickedButton2)	// Add Component
+	ON_BN_CLICKED(IDC_BUTTON5, &CObjectTool::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -288,6 +288,41 @@ void CObjectTool::OnBnClickedButton1() // Object ProtoType Tag / Insert Button
 
 	
 	m_wstrComponentProtoType_Tag;
+
+	UpdateData(FALSE);
+}
+
+void CObjectTool::OnBnClickedButton5() // Save
+{
+	UpdateData(TRUE);
+	auto Pair = m_mapObjectData.find(m_wstrPickedObject);
+
+	if (Pair == m_mapObjectData.end())
+		return;
+
+	CString wstrObjectKey = Pair->first;
+	wstring wstrObjectTag = Pair->second->wstrPrototypeTag;
+	wstring wstrMeshTag = Pair->second->wstrPrototypeTag_Mesh;
+	D3DMATERIAL9 tMaterial = Pair->second->tMaterial;
+
+
+
+	CString wstrPath = m_wstrFilePath + wstrObjectKey + m_wstrFileExtension;
+	CStringA wstrPath_A = (CStringA)wstrPath;
+	CHAR szRealPath[MAX_PATH] = "";
+	memcpy(szRealPath, wstrPath_A.GetBuffer(), wstrPath_A.GetLength());
+
+
+	wofstream fout;
+	fout.open(szRealPath);
+
+	if (!fout.fail())
+	{
+		fout << wstrObjectTag << "?" << wstrMeshTag << "?" /*<< szTemp*/;
+	}
+
+	fout.close();
+
 
 	UpdateData(FALSE);
 }

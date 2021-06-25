@@ -40,10 +40,12 @@ public:
 	_bool m_bListCheck = false;
 	CString m_wstrPickedObject = L"";		// 프로토타입 선택
 	CString m_wstrPickedComponentTag = L"";	// 매쉬 선택
-
+	
 	CString m_wstrObjectPrototype_Tag = L"";	// L"Prototype" + m_wstrPickedObject
 	CString m_wstrComponentProtoType_Tag = L""; // L"Prototype" + m_wstrPickedComponentTag
-	CString d;
+
+	CString m_wstrFileExtension = L".txt";					// 파일 확장자
+	CString m_wstrFilePath = L"../../Data/PrototypeData/";	// 저장될 경로
 	
 	map<CString, PASSDATA_OBJECT*> m_mapObjectData;
 	D3DMATERIAL9 m_tMaterial;
@@ -66,7 +68,7 @@ public:
 	afx_msg void OnLbnSelchangeList2();
 	afx_msg void OnLbnSelchangeList3();
 	afx_msg void OnBnClickedButton1();
-	float q1;
+	afx_msg void OnBnClickedButton5();
 };
 
 #endif // !__OBJECT_PROTOTYPE_TOOL_H__
