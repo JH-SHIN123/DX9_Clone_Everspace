@@ -3,6 +3,7 @@
 
 #include "Base.h"
 #include "UI.h"
+#include "Light.h"
 
 BEGIN(Engine)
 class CGameObject_Manager final : public CBase

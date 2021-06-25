@@ -3,6 +3,7 @@
 #ifndef __LIGHT_H__
 
 #include "GameObject.h"
+#include "Transform.h"
 
 BEGIN(Engine)
 
@@ -13,12 +14,25 @@ enum class ELightType {
 	End
 };
 
+typedef struct tagLightDesc : public BASE_DESC
+{
+	TRANSFORM_DESC tTransformDesc;
+	ELightType eLightType = ELightType::End;
+	_float3 vLightDir = { 1.0f, -0.0f, 0.25f }; // Default : 의미없음.
+	D3DXCOLOR tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+}LIGHT_DESC;
+
 class ENGINE_DLL CLight final : public CGameObject
 {
 private:
 	explicit CLight(LPDIRECT3DDEVICE9 pDevice);
 	explicit CLight(const CLight& other);
 	virtual ~CLight() = default;
+
+private:
+	void InitDirectionalLight(_float3* direction, D3DXCOLOR* color);
+	void InitPointLight(_float3* position, D3DXCOLOR* color);
+	void InitSpotLight(_float3* position, _float3* direction, D3DXCOLOR* color);
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;

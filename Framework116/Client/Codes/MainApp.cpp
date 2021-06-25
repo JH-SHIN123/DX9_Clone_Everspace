@@ -86,6 +86,17 @@ HRESULT CMainApp::Ready_StaticResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
 		return E_FAIL;
 	}
+
+	/* For.GameObject_DirectionalLight */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_DirectionalLight",
+		CLight::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_DirectionalLight");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 #pragma region Components
@@ -186,23 +197,8 @@ HRESULT CMainApp::Ready_StaticResources()
 HRESULT CMainApp::Setup_DefaultSetting()
 {
 	// Α¶Έν off
-	D3DXVECTOR3 dir(1.0f, -0.0f, 0.25f);
-	D3DXCOLOR   c = D3DCOLOR_XRGB(255, 255, 255);
-
-	D3DLIGHT9 light;
-	::ZeroMemory(&light, sizeof(light));
-
-	light.Type = D3DLIGHT_DIRECTIONAL;
-	light.Ambient = c * 0.6f;
-	light.Diffuse = c;
-	light.Specular = c * 0.6f;
-	light.Direction = dir;
-
-	//
-	// Set lighting related render states.
-	//
-	m_pDevice->SetLight(0, &light);
-	m_pDevice->LightEnable(0, true);
+	//D3DXVECTOR3 dir(1.0f, -0.0f, 0.25f);
+	//D3DXCOLOR   c = D3DCOLOR_XRGB(255, 255, 255);
 
 	//
 	// Set lighting related render states.
