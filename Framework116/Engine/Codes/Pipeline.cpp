@@ -28,19 +28,6 @@ void CPipeline::Setup_WorldMatrix(
 	vUp.y *= pScale->y;
 	vLook.z *= pScale->z;
 
-	/* ÀÚÀü */
-	//RotateX(&vRight, vRight, pRotate->x);
-	//RotateY(&vRight, vRight, pRotate->y);
-	//RotateZ(&vRight, vRight, pRotate->z);
-
-	//RotateX(&vUp, vUp, pRotate->x);
-	//RotateY(&vUp, vUp, pRotate->y);
-	//RotateZ(&vUp, vUp, pRotate->z);
-
-	//RotateX(&vLook, vLook, pRotate->x);
-	//RotateY(&vLook, vLook, pRotate->y);
-	//RotateZ(&vLook, vLook, pRotate->z);
-
 	D3DXQUATERNION Quaternion;
 	D3DXQuaternionNormalize(&Quaternion, &Quaternion);
 	_float4x4 matRot,matScale;
@@ -54,7 +41,8 @@ void CPipeline::Setup_WorldMatrix(
 	matScale *= matRot;
 	*pOut = matScale;
 	memcpy(&pOut->_41, pPosition, sizeof(_float3));
-	//Setup_StateMatrix(pOut, &vRight, &vUp, &vLook, pPosition);
+
+	
 
 }
 
