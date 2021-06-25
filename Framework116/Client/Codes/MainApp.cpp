@@ -3,6 +3,7 @@
 #include "Logo.h"
 #include "Player.h"
 #include "MainCam.h"
+#include "UI.h"
 
 CMainApp::CMainApp()
 	: m_pManagement(CManagement::Get_Instance())
@@ -73,6 +74,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		CMainCam::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_MainCam");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_UI */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_UI",
+		CUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
 		return E_FAIL;
 	}
 #pragma endregion

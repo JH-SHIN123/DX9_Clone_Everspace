@@ -1,6 +1,7 @@
 #include "..\Headers\Renderer.h"
 #include "GameObject.h"
 #include "Management.h"
+#include <Camera.h>
 
 USING(Engine)
 IMPLEMENT_SINGLETON(CRenderer)
@@ -156,8 +157,7 @@ _uint CRenderer::Render_UI()
 	_uint iRenderIndex = (_uint)ERenderType::UI;
 	_uint iEvent = NO_EVENT;
 
-	// 직교투영행렬 세팅
-
+	// Camera 가져와서 Ortho로 변경해주자.
 
 	for (auto& pObject : m_GameObjects[iRenderIndex])
 	{
