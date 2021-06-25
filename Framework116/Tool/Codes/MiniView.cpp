@@ -22,7 +22,7 @@ CMiniView::CMiniView()
 
 CMiniView::~CMiniView()
 {
-	Safe_Release(m_pDevice);
+	/*Safe_Release(m_pDevice);*/
 }
 
 BEGIN_MESSAGE_MAP(CMiniView, CView)
@@ -43,24 +43,24 @@ void CMiniView::OnDraw(CDC* pDC)
 {
 	CDocument* pDoc = GetDocument();
 	// TODO: 여기에 그리기 코드를 추가합니다.
-	if (!m_bOnce)
-	{
-		CMainFrame* pMain = (CMainFrame*)(AfxGetApp()->GetMainWnd());
-		CMainView* pView = dynamic_cast<CMainView*>(pMain->m_tMainSplitterWnd.GetPane(0, 1));
-		pView->Ready_StaticResources();
-		pView->Setup_DefaultSetting();
+	//if (!m_bOnce)
+	//{
+	//	CMainFrame* pMain = (CMainFrame*)(AfxGetApp()->GetMainWnd());
+	//	CMainView* pView = dynamic_cast<CMainView*>(pMain->m_tMainSplitterWnd.GetPane(0, 1));
+	//	pView->Ready_StaticResources();
+	//	pView->Setup_DefaultSetting();
 
-		m_pDevice = m_pManagement->Get_Device();
-		Safe_AddRef(m_pDevice);
+	//	m_pDevice = m_pManagement->Get_Device();
+	//	Safe_AddRef(m_pDevice);
 
-		if (nullptr == m_pDevice)
-		{
-			PRINT_LOG(L"Error", L"m_pDevice is nullptr");
-			return;
-		}
-		
-	}
-	m_pManagement->Update_Game();
+	//	if (nullptr == m_pDevice)
+	//	{
+	//		PRINT_LOG(L"Error", L"m_pDevice is nullptr");
+	//		return;
+	//	}
+	//	
+	//}
+	//m_pManagement->Update_Game();
 
 	// TODO: 여기에 그리기 코드를 추가합니다.
 
