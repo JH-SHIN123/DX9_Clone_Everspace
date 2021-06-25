@@ -1,5 +1,6 @@
-#include "stdafx.h"
 #include "UI.h"
+#include "Transform.h"
+#include "Management.h"
 
 USING(Engine)
 

@@ -204,6 +204,9 @@
     <ClInclude Include="..\Headers\CollideSphere.h">
       <Filter>01.Utilities\04.Component\04.Collide\CollideSphere</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI.h">
+      <Filter>01.Utilities\03.GameObject\01.UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Management.cpp">
@@ -289,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\CollideSphere.cpp">
       <Filter>01.Utilities\04.Component\04.Collide\CollideSphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI.cpp">
+      <Filter>01.Utilities\03.GameObject\01.UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

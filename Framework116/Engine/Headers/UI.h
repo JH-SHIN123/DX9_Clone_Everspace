@@ -5,7 +5,7 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
-class CUI : public CGameObject
+class ENGINE_DLL CUI : public CGameObject
 {
 protected:
 	explicit CUI(LPDIRECT3DDEVICE9 pDevice);
