@@ -174,7 +174,6 @@ _uint CRenderer::Render_UI()
 	// UI Render 후 기존으로 세팅하기 위한 변수들
 	_float4x4 matPrevView;
 	pDevice->GetTransform(D3DTS_VIEW, &matPrevView);
-
 	_float4x4 matPrevProj;
 	pDevice->GetTransform(D3DTS_PROJECTION, &matPrevProj);
 
@@ -183,6 +182,7 @@ _uint CRenderer::Render_UI()
 	D3DXMatrixIdentity(&matWorld);
 	pDevice->SetTransform(D3DTS_WORLD, &matWorld);
 
+	// 직교투영행렬 세팅
 	_float2 winSize = CManagement::Get_Instance()->Get_WindowSize();
 	_float4x4 matOrtho;
 	D3DXMatrixOrthoLH(&matOrtho, winSize.x, winSize.y, 0.f, 1.f);
