@@ -5,7 +5,7 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
-class ENGINE_DLL CUI : public CGameObject
+class CUI : public CGameObject
 {
 protected:
 	explicit CUI(LPDIRECT3DDEVICE9 pDevice);
@@ -13,28 +13,26 @@ protected:
 	virtual ~CUI() = default;
 
 public:
-	virtual HRESULT Ready_GameObject_Prototype() = 0;
-	virtual HRESULT Ready_GameObject(void* pArg = nullptr) = 0;
-	virtual _uint Update_GameObject(_float fDeltaTime) = 0;
-	virtual _uint LateUpdate_GameObject(_float fDeltaTime) = 0;
-	virtual _uint Render_GameObject() = 0;
+	virtual HRESULT Ready_GameObject_Prototype() override;
+	virtual HRESULT Ready_GameObject(void* pArg = nullptr) override;
+	virtual _uint Update_GameObject(_float fDeltaTime) override;
+	virtual _uint LateUpdate_GameObject(_float fDeltaTime) override;
+	virtual _uint Render_GameObject() override;
 
 protected:
 	_uint IsBillboarding();
 
 public:
-	virtual CGameObject* Clone(void* pArg = nullptr) = 0;
-	virtual void Free() = 0;
+	static CUI* Create(LPDIRECT3DDEVICE9 pDevice);
+	virtual CGameObject* Clone(void* pArg = nullptr) override;
+	virtual void Free() override;
 
 protected:
 	// 항상 플레이어를 바라보도록 -> 빌보드
 	// 항상 플레이어를 따라다녀야함
-	// 맨 앞에 배치 -> Z (1.f 고정)
-	// 스케일 변환 X -> (직교투영행렬 곱)
 	class CVIBuffer* m_pVIBuffer = nullptr;
 	class CTransform* m_pTransform = nullptr;
 	class CTexture* m_pTexture = nullptr;
-
 };
 END
 
