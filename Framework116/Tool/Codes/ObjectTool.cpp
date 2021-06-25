@@ -188,6 +188,7 @@ BEGIN_MESSAGE_MAP(CObjectTool, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CObjectTool::OnBnClickedButton1)	// Insert 
 	ON_BN_CLICKED(IDC_BUTTON2, &CObjectTool::OnBnClickedButton2)	// Add Component
 	ON_BN_CLICKED(IDC_BUTTON5, &CObjectTool::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &CObjectTool::OnBnClickedButton6)
 END_MESSAGE_MAP()
 
 
@@ -304,10 +305,33 @@ void CObjectTool::OnBnClickedButton5() // Save
 	wstring wstrObjectTag = Pair->second->wstrPrototypeTag;
 	wstring wstrMeshTag = Pair->second->wstrPrototypeTag_Mesh;
 	D3DMATERIAL9 tMaterial = Pair->second->tMaterial;
+	
+	wstring wstrDiffuse = to_wstring(_float (tMaterial.Diffuse.r)) + L"?" +
+		to_wstring(_float(tMaterial.Diffuse.g)) + L"?" +
+		to_wstring(_float(tMaterial.Diffuse.b)) + L"?" +
+		to_wstring(_float(tMaterial.Diffuse.a));
+
+	wstring wstrAmbient = to_wstring(_float(tMaterial.Ambient.r)) + L"?" +
+		to_wstring(_float(tMaterial.Ambient.g)) + L"?" +
+		to_wstring(_float(tMaterial.Ambient.b)) + L"?" +
+		to_wstring(_float(tMaterial.Ambient.a));
+
+	wstring wstrSpecular = to_wstring(_float(tMaterial.Specular.r)) + L"?" +
+		to_wstring(_float(tMaterial.Specular.g)) + L"?" +
+		to_wstring(_float(tMaterial.Specular.b)) + L"?" +
+		to_wstring(_float(tMaterial.Specular.a));
+
+	wstring wstrEmissive = to_wstring(_float(tMaterial.Emissive.r)) + L"?" +
+		to_wstring(_float(tMaterial.Emissive.g)) + L"?" +
+		to_wstring(_float(tMaterial.Emissive.b)) + L"?" +
+		to_wstring(_float(tMaterial.Emissive.a));
+
+	wstring wstrPower = to_wstring(_float(tMaterial.Power));
 
 
 
-	CString wstrPath = m_wstrFilePath + wstrObjectKey + m_wstrFileExtension;
+
+	CString wstrPath = L"../../Data/PrototypeData/" + wstrObjectKey + L".object";
 	CStringA wstrPath_A = (CStringA)wstrPath;
 	CHAR szRealPath[MAX_PATH] = "";
 	memcpy(szRealPath, wstrPath_A.GetBuffer(), wstrPath_A.GetLength());
@@ -318,11 +342,101 @@ void CObjectTool::OnBnClickedButton5() // Save
 
 	if (!fout.fail())
 	{
-		fout << wstrObjectTag << "?" << wstrMeshTag << "?" /*<< szTemp*/;
+		fout << wstrObjectTag << "?" << wstrMeshTag << "?" << wstrDiffuse << "?" 
+			<< wstrAmbient << "?" << wstrSpecular << "?" << wstrEmissive << "?" << wstrPower;
 	}
 
 	fout.close();
 
 
 	UpdateData(FALSE);
+}
+
+void CObjectTool::OnBnClickedButton6()
+{
+	CFileDialog Dlg(TRUE
+		, L".object", L"*.object"
+		, OFN_OVERWRITEPROMPT, L"Data File(*.object) | *.object||"
+		,0,0,0);
+
+	TCHAR szBuf[MAX_PATH] = L"";
+	GetCurrentDirectory(MAX_PATH, szBuf);
+	PathRemoveFileSpec(szBuf);
+	PathRemoveFileSpec(szBuf);
+	lstrcat(szBuf, L"\\Data\\PrototypeData");
+
+	Dlg.m_ofn.lpstrInitialDir = szBuf;
+
+	if (Dlg.DoModal())
+	{
+		CString strPath = Dlg.GetPathName();
+		CString strFileName = Dlg.GetFileName();
+		AfxExtractSubString(strFileName, strFileName, 0, '.');
+
+		wifstream fin;
+		fin.open(strPath.GetString());
+
+		if (!fin.fail())
+		{
+			TCHAR szObjectProtoTypeTag[MAX_PATH]	= L"";
+			TCHAR szMeshProtoTypeTag[MAX_PATH]		= L"";
+			TCHAR szMaterial_Diffuse[MAX_PATH][4]	= { L"" };
+			TCHAR szMaterial_Ambient[MAX_PATH][4]	= { L"" };
+			TCHAR szMaterial_Specular[MAX_PATH][4]	= { L"" };
+			TCHAR szMaterial_Emissive[MAX_PATH][4]	= { L"" };
+			TCHAR szMaterial_Power[MAX_PATH]		= L"";
+
+			while (true)
+			{
+				fin.getline(szObjectProtoTypeTag, MAX_PATH, L'?');
+				fin.getline(szMeshProtoTypeTag, MAX_PATH, L'?');
+
+				for (_int i = 0; i < 4; ++i)
+					fin.getline(szMaterial_Diffuse[i], MAX_PATH, L'?');
+				for (_int i = 0; i < 4; ++i)
+					fin.getline(szMaterial_Ambient[i], MAX_PATH, L'?');
+				for (_int i = 0; i < 4; ++i)
+					fin.getline(szMaterial_Specular[i], MAX_PATH, L'?');
+				for (_int i = 0; i < 4; ++i)
+					fin.getline(szMaterial_Emissive[i], MAX_PATH, L'?');
+
+				fin.getline(szMaterial_Power, MAX_PATH);
+
+				auto Pair = m_mapObjectData.find(strFileName);
+				if (Pair != m_mapObjectData.end())
+				{
+					//Pair->first = strPath.GetString;
+					Pair->second->wstrPrototypeTag = szObjectProtoTypeTag;
+					Pair->second->wstrPrototypeTag_Mesh = szMeshProtoTypeTag;
+
+					Pair->second->tMaterial.Diffuse.r = (_float)_tstof(szMaterial_Diffuse[0]);
+					Pair->second->tMaterial.Diffuse.g = (_float)_tstof(szMaterial_Diffuse[1]);
+					Pair->second->tMaterial.Diffuse.b = (_float)_tstof(szMaterial_Diffuse[2]);
+					Pair->second->tMaterial.Diffuse.a = (_float)_tstof(szMaterial_Diffuse[3]);
+
+					Pair->second->tMaterial.Ambient.r = (_float)_tstof(szMaterial_Ambient[0]);
+					Pair->second->tMaterial.Ambient.g = (_float)_tstof(szMaterial_Ambient[1]);
+					Pair->second->tMaterial.Ambient.b = (_float)_tstof(szMaterial_Ambient[2]);
+					Pair->second->tMaterial.Ambient.a = (_float)_tstof(szMaterial_Ambient[3]);
+
+					Pair->second->tMaterial.Specular.r = (_float)_tstof(szMaterial_Specular[0]);
+					Pair->second->tMaterial.Specular.g = (_float)_tstof(szMaterial_Specular[1]);
+					Pair->second->tMaterial.Specular.b = (_float)_tstof(szMaterial_Specular[2]);
+					Pair->second->tMaterial.Specular.a = (_float)_tstof(szMaterial_Specular[3]);
+
+					Pair->second->tMaterial.Emissive.r = (_float)_tstof(szMaterial_Emissive[0]);
+					Pair->second->tMaterial.Emissive.g = (_float)_tstof(szMaterial_Emissive[1]);
+					Pair->second->tMaterial.Emissive.b = (_float)_tstof(szMaterial_Emissive[2]);
+					Pair->second->tMaterial.Emissive.a = (_float)_tstof(szMaterial_Emissive[3]);
+
+					Pair->second->tMaterial.Power = (_float)_tstof(szMaterial_Power);
+				}
+
+				if (fin.eof())
+					break;
+			}
+			fin.close();
+			UpdateData(FALSE);
+		}
+	}
 }
