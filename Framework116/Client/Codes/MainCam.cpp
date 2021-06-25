@@ -120,52 +120,6 @@ _uint CMainCam::Movement(_float fDeltaTime)
 	m_fCamAngle = -D3DXVec3Dot(&vCurAim, &vPlayerUp);
 	
 
-
-	//static _bool Ready_Cam = false;
-	//if (!Ready_Cam)
-	//{
-	//	CPipeline::Setup_ViewMatrix(
-	//		&m_CameraDesc.matView, /* 뷰행렬 반환 */
-	//		&m_CameraDesc.vEye, /* 월드에서의 카메라 위치(eye) */
-	//		&m_CameraDesc.vAt, /* 월드에서의 카메라가 바라보는 위치(at) */
-	//		&m_CameraDesc.vUp /* 뷰행렬 만들기 위해 필요한 up벡터 */);
-	////	Ready_Cam = true;
-	//}
-#pragma region QuaternionRotate
-	//else
-	//{
-	////	//카메라 한프레임 전의 뷰매트릭스랑 다음 뷰매트릭스의 구면선형보간
-	////D3DXQUATERNION QuatP = { 0.f,0.f,0.f,0.f },QuatQ = { 0.f,0.f,0.f,0.f };
-	////D3DXQuaternionNormalize(&QuatP, &QuatP);
-	////D3DXQuaternionNormalize(&QuatQ, &QuatQ);
-	////_float4x4 matNextView;
-	////_float4x4 matCurView = m_CameraDesc.matView;
-	////matCurView._41 = 0.f;
-	////matCurView._42 = 0.f;
-	////matCurView._43 = 0.f;
-	////D3DXQuaternionRotationMatrix(&QuatP, &matCurView);
-	////CPipeline::Setup_ViewMatrix(&matNextView, &m_CameraDesc.vEye,
-	////	&m_CameraDesc.vAt, &m_CameraDesc.vUp);
-	////matNextView._41 = 0.f;
-	////matNextView._42 = 0.f;
-	////matNextView._43 = 0.f;
-	////D3DXQuaternionRotationMatrix(&QuatQ, &matNextView);
-
-	////D3DXQuaternionSlerp(&QuatQ,&QuatP,&QuatQ,
-	////	fDeltaTime*m_fDistanceFromTarget);
-
-	////D3DXMatrixRotationQuaternion(&matNextView, &QuatQ);
-	////_float3 vEye = m_CameraDesc.vEye;
-	////_float4x4 matTrans;
-
-	////D3DXMatrixTranslation(&matTrans, vEye.x, vEye.y, vEye.z);
-	////D3DXMatrixInverse(&matTrans, 0, &matTrans);
-	//////memcpy(&matNextView._41, &matTrans._41, sizeof(_float3));
-	////matNextView *= matTrans;
-	////m_CameraDesc.matView = matNextView;
-	//}
-#pragma endregion
-
 	return _uint();
 }
 

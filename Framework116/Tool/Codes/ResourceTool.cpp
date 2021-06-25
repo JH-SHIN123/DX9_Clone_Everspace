@@ -5,8 +5,7 @@
 #include "Tool.h"
 #include "../Headers/ResourceTool.h"
 #include "afxdialogex.h"
-
-
+#include"GameObject.h"
 
 // CResourceTool 대화 상자입니다.
 
@@ -15,11 +14,13 @@ IMPLEMENT_DYNAMIC(CResourceTool, CDialog)
 CResourceTool::CResourceTool(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_RESOURCETOOL, pParent)
 {
-
+	
 }
 
 CResourceTool::~CResourceTool()
 {
+	Safe_Release(m_pManagement);
+	Safe_Release(m_pDevice);
 }
 
 void CResourceTool::DoDataExchange(CDataExchange* pDX)
@@ -27,10 +28,15 @@ void CResourceTool::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_DROPFILELIST, CDropFileList);
 	DDX_Control(pDX, IDC_LIST1, CTextureIndexList);
+	DDX_Control(pDX, IDC_PICTURE, m_Picture);
 }
 
 void CResourceTool::OnDropFiles(HDROP hDropInfo)
 {
+	m_pManagement = CManagement::Get_Instance();
+	m_pManagement->AddRef();
+	m_pDevice = CManagement::Get_Instance()->Get_Device();
+	m_pDevice->AddRef();
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	TCHAR szFileName[MAX_PATH] = L""; //뭐 반환한다 했는지 기억하는게 좋을 것이야. 
 	int iSize = DragQueryFile(hDropInfo, -1, nullptr, 0);
@@ -51,10 +57,10 @@ void CResourceTool::OnDropFiles(HDROP hDropInfo)
 		TCHAR szType[32] = L"";
 		switch (pPathInfo->dwResourceType)
 		{
-		case (DWORD)EType::CUBE:
+		case (DWORD)ETextureType::Cube:
 			swprintf_s(szType, L"CUBE");
 			break;
-		case (DWORD)EType::TEXTURE:
+		case (DWORD)ETextureType::Normal:
 			swprintf_s(szType, L"TEXTURE");
 			break;
 		}
@@ -62,6 +68,55 @@ void CResourceTool::OnDropFiles(HDROP hDropInfo)
 			+ szType + L"|" + szDrawID;
 		CDropFileList.AddString(wstrPathCombine.c_str());
 	}
+	for (auto& pPathInfo : m_ListResource)
+	{
+		ETextureType eType = ETextureType::Normal;
+		switch (pPathInfo->dwResourceType)
+		{
+		case (DWORD)ETextureType::Cube:
+			eType = ETextureType::Cube;
+			break;
+		case (DWORD)ETextureType::Normal:
+			eType = ETextureType::Normal;
+			break;
+		}
+		TCHAR szType[32] = L"";
+		switch (pPathInfo->dwResourceType)
+		{
+		case (DWORD)ETextureType::Cube:
+			swprintf_s(szType, L".dds");
+			break;
+		case (DWORD)ETextureType::Normal:
+			swprintf_s(szType, L".png");
+			break;
+		}
+		wstring wstrTag = L"Component_Texture_";
+		wstrTag += pPathInfo->wstrPrototypeTag;
+		wstrTag += L"%d";
+		wstrTag += szType;
+		TCHAR szTagBuf[MAX_PATH] = {};
+		TCHAR szPathBuf[MAX_PATH] = {};
+		for (int i = 0; i < pPathInfo->dwTextureCount; i++)
+		{
+			swprintf_s(szTagBuf, wstrTag.c_str(),i);
+			swprintf_s(szPathBuf, pPathInfo->wstrFilePath, i);
+			if (FAILED(m_pManagement->Add_Component_Prototype(
+				EResourceType::NonStatic,
+				szTagBuf,CTexture::Create(m_pManagement->Get_Device()
+				, eType, szPathBuf,pPathInfo->dwTextureCount
+				))))
+			{
+				wstring Err = L"Failed To Add " + wstrTag;
+				PRINT_LOG(L"Error", Err.c_str());
+				return;
+			}
+			
+		}
+	}
+	m_pVIBuffer = CVIBuffer_RectTexture::Create(m_pManagement->Get_Device());
+	m_pVIBuffer->Ready_Component();
+	m_pCube = CVIBuffer_CubeTexture::Create(m_pDevice);
+	m_pCube->Ready_Component();
 	CDropFileList.SetHorizontalExtent(800);
 	UpdateData(FALSE);
 	CDialog::OnDropFiles(hDropInfo);
@@ -99,33 +154,33 @@ void CResourceTool::MultiTextureInfo_Extraction(const wstring wstrFilePath, list
 			wstring FileType = PathFindExtension(wstrTextureName.c_str());
 			if (L".png" == FileType)
 			{
-				pPathInfo->dwResourceType = (DWORD)EType::TEXTURE;
+				pPathInfo->dwResourceType = (DWORD)ETextureType::Normal;
 			}
 			else if (L".dds" == FileType)
 			{
-				pPathInfo->dwResourceType = (DWORD)EType::CUBE;
+				pPathInfo->dwResourceType = (DWORD)ETextureType::Cube;
 			}
 			else
 				continue;
 			PathRemoveFileSpec(szFileDirectory);
 			//D:\박병건\116A\FrameWork\Texture\Stage\Terrain\Tile
 			pPathInfo->dwTextureCount = MultiTextureCount(szFileDirectory);
-
 			// 경로부터. 
 			//Tile0
 			//D:\박병건\116A\FrameWork\Texture\Stage\Terrain\Tile\Tile0.png
 		
-			wstrTextureName = wstrTextureName.substr(0, wstrTextureName.length() - 4) + L"%d"+FileType;
+			wstrTextureName = wstrTextureName.substr(0, wstrTextureName.length() - 5)+L"%d" +FileType;
 			// Tile0 -> Tile%d.png
 			
 			PathCombine(szFileDirectory, szFileDirectory, wstrTextureName.c_str());
 			//D:\박병건\116A\FrameWork\Texture\Stage\Terrain\Tile\Tile%d.png
+
 			pPathInfo->wstrFilePath = ConvertRelativePath(szFileDirectory);
-		
 			PathRemoveFileSpec(szFileDirectory);
 			pPathInfo->wstrPrototypeTag = PathFindFileName(szFileDirectory);
 			
 			listPathInfo.emplace_back(pPathInfo);
+			
 			return;
 		}
 	}
@@ -160,48 +215,227 @@ CString CResourceTool::ConvertRelativePath(const CString & wstrabsPath)
 
 		return CString(szRelativePath);
 }
+void CResourceTool::Render_Texture()
+{
+	UpdateData(TRUE);
+	int iSelect = CTextureIndexList.GetCurSel();
+	CString strFileName = L"";
+
+	DWORD dwIndex = _ttoi(strFileName.GetString());
+	TCHAR szType[32] = L"";
+	ETextureType eType;
+	switch (m_tPicturePathInfo.dwResourceType)
+	{
+	case (DWORD)ETextureType::Cube:
+		swprintf_s(szType, L".dds");
+		eType = ETextureType::Cube;
+		break;
+	case (DWORD)ETextureType::Normal:
+		swprintf_s(szType, L".png");
+		eType = ETextureType::Normal;
+		break;
+	}
+	wstring wstrTag = L"Component_Texture_";
+	wstrTag += m_tPicturePathInfo.wstrPrototypeTag;
+	wstrTag += L"%d";
+	wstrTag += szType;
+	TCHAR szTagBuf[MAX_PATH] = {};
+	TCHAR szPathBuf[MAX_PATH] = {};
+
+	swprintf_s(szTagBuf, wstrTag.c_str(), iSelect);
+	swprintf_s(szPathBuf, m_tPicturePathInfo.wstrFilePath, iSelect);
+
+	wstring strTexTag = m_tPicturePathInfo.wstrPrototypeTag.GetString();
+
+	m_pTex = CTexture::Create(m_pManagement->Get_Device(), eType,
+		szPathBuf);
+
+	_float4x4 matWorld, matScale, matRot, matTrans;
+	D3DXMatrixScaling(&matScale, 5.f,5.f,5.f);
+
+	D3DXMatrixRotationX(&matRot, D3DXToRadian(45.f));
+	D3DXMatrixTranslation(&matTrans, 1.f, 1.f, 3.f);
+	matWorld = matScale*matRot*matTrans;
+	m_pDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+
+	m_pDevice->BeginScene();
+	m_pDevice->Clear(
+		0, nullptr,
+		D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
+		D3DCOLOR_ARGB(255, 0, 0, 255), 1.f, 0);
+	m_pTex->Set_Texture(0);
+	m_pVIBuffer->Render_VIBuffer();
+	m_pDevice->EndScene();
+	m_pDevice->Present(nullptr, nullptr, m_Picture.m_hWnd, nullptr);
+
+	m_Picture.Invalidate();
+}
+void CResourceTool::Render_Cube()
+{
+	UpdateData(TRUE);
+	int iSelect = CTextureIndexList.GetCurSel();
+	CString strFileName = L"";
+
+	DWORD dwIndex = _ttoi(strFileName.GetString());
+	TCHAR szType[32] = L"";
+	ETextureType eType;
+	switch (m_tPicturePathInfo.dwResourceType)
+	{
+	case (DWORD)ETextureType::Cube:
+		swprintf_s(szType, L".dds");
+		eType = ETextureType::Cube;
+		break;
+	case (DWORD)ETextureType::Normal:
+		swprintf_s(szType, L".png");
+		eType = ETextureType::Normal;
+		break;
+	}
+	wstring wstrTag = L"Component_Texture_";
+	wstrTag += m_tPicturePathInfo.wstrPrototypeTag;
+	wstrTag += L"%d";
+	wstrTag += szType;
+	TCHAR szTagBuf[MAX_PATH] = {};
+	TCHAR szPathBuf[MAX_PATH] = {};
+
+	swprintf_s(szTagBuf, wstrTag.c_str(), iSelect);
+	swprintf_s(szPathBuf, m_tPicturePathInfo.wstrFilePath, iSelect);
+
+	wstring strTexTag = m_tPicturePathInfo.wstrPrototypeTag.GetString();
+
+	
+	_float4x4 matWorld, matScale, matRot, matTrans;
+	D3DXMatrixScaling(&matScale, 5.f, 5.f,5.f);
+
+	D3DXMatrixRotationX(&matRot, D3DXToRadian(45.f));
+	D3DXMatrixTranslation(&matTrans, 1.f, 1.f, 3.f);
+	matWorld = matScale*matRot*matTrans;
+	m_pDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+	m_pTex = CTexture::Create(m_pManagement->Get_Device(), eType,
+		szPathBuf);
+
+	m_pDevice->BeginScene();
+	m_pDevice->Clear(
+		0, nullptr,
+		D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
+		D3DCOLOR_ARGB(255, 0, 0, 255), 1.f, 0);
+	m_pTex->Set_Texture(0);
+	m_pCube->Render_VIBuffer();
+	m_pDevice->EndScene();
+	m_pDevice->Present(nullptr, nullptr, m_Picture.m_hWnd, nullptr);
+
+	m_Picture.Invalidate();
+}
 void CResourceTool::OnLbnSelchangeDropfilelist()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	UpdateData(TRUE);
 	int iSelect = CDropFileList.GetCurSel();
 
-	CString strFileName = L"";
-	CDropFileList.GetText(iSelect, strFileName);
-	int i = 0;
-	for (; i < strFileName.GetLength(); ++i)
+	CTextureIndexList.ResetContent();
+	auto&iter = m_ListResource.begin();
+	for (_uint i = 0; i < iSelect; i++)
+		iter++;
+	m_tPicturePathInfo = *(*iter);
+	for (int i = 0; i < (*iter)->dwTextureCount; i++)
 	{
-		if (isdigit(strFileName[i]))
-			break;
+		TCHAR szIndex[32] = L"";
+		_itow_s(i, szIndex, 10);
+		CTextureIndexList.AddString(szIndex);
 	}
-	strFileName.Delete(0, i);
-	m_dwDrawID = _ttoi(strFileName.GetString());
-
-	CGraphic_Device::Get_Instance()->Render_Begin();
-	const TEXINFO* pTexInfo = CTexture_Manager::Get_Instance()->Get_TexInfo(L"Terrain", L"Tile", m_dwDrawID);
-	if (nullptr == pTexInfo)
-		return;
-	float fCenterX = pTexInfo->tImageInfo.Width >> 1;
-	float fCenterY = pTexInfo->tImageInfo.Height >> 1;
-	float fRatioX = g_iWinCX / TILECX;
-	float fRatioY = g_iWinCY / TILECY;
-	D3DXMATRIX matScale, matTrans;
-	D3DXMatrixScaling(&matScale, fRatioX, fRatioY, 0.f);
-	D3DXMatrixTranslation(&matTrans, 400.f, 300.f, 0.f);
-	matScale *= matTrans;
-
-
-	CGraphic_Device::Get_Instance()->Get_Sprite()->SetTransform(&matScale);
-	CGraphic_Device::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-
-	CGraphic_Device::Get_Instance()->Render_End(m_Picture.m_hWnd);
 	UpdateData(FALSE);
+}
+void CResourceTool::OnLbnSelchangeIndexList()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_tPicturePathInfo.dwResourceType == (DWORD)ETextureType::Normal)
+		Render_Texture();
+	else
+		Render_Cube();
+	
+}
+
+void CResourceTool::OnBnClickedSaveButton()
+{
+	wofstream fout;
+	fout.open("../Data/PathInfo.txt");
+
+	if (!fout.fail())
+	{
+		for (auto& pPathInfo : m_ListResource)
+		{
+			TCHAR szType[32] = L"";
+			switch (pPathInfo->dwResourceType)
+			{
+			case (DWORD)ETextureType::Cube:
+				swprintf_s(szType, L".dds");
+				break;
+			case (DWORD)ETextureType::Normal:
+				swprintf_s(szType, L".png");
+				break;
+			}
+			fout << pPathInfo->wstrFilePath << "|" << pPathInfo->wstrPrototypeTag << "|" << szType << "|" << pPathInfo->dwTextureCount << endl;
+		}
+		fout.close();
+	}
+
+
+}
+
+void CResourceTool::OnBnClickedLoadButton()
+{
+	CDropFileList.ResetContent();
+	for (auto& pPathInfo : m_ListResource)
+		Safe_Delete(pPathInfo);
+	m_ListResource.clear();
+
+	wifstream fin;
+	fin.open("../Data/PathInfo.txt");
+
+	if (!fin.fail())
+	{
+		TCHAR szFilePath[MAX_PATH] = L"";
+		TCHAR szPrototypeTag[MAX_PATH] = L"";
+		TCHAR szType[MAX_PATH] = L"";
+		TCHAR szCount[MAX_PATH] = L"";
+
+		while (true)
+		{
+			fin.getline(szFilePath, MAX_PATH, L'|');
+			fin.getline(szPrototypeTag, MAX_PATH, L'|');
+			fin.getline(szType, MAX_PATH, L'|');
+			fin.getline(szCount, MAX_PATH);
+
+			if (fin.eof())
+				break;
+
+			PASSDATA_RESOURCE* pPathInfo = new PASSDATA_RESOURCE;
+			pPathInfo->wstrFilePath = szFilePath;
+			pPathInfo->wstrPrototypeTag = szPrototypeTag;
+			if(szType == L".png")
+			pPathInfo->dwResourceType = (_uint)ETextureType::Normal;
+			else if (szType == L".dds")
+				pPathInfo->dwResourceType = (_uint)ETextureType::Cube;
+			pPathInfo->dwTextureCount = _ttoi(szCount);
+			m_ListResource.emplace_back(pPathInfo);
+			wstring wstrPathCombine = pPathInfo->wstrFilePath + L"|" + pPathInfo->wstrPrototypeTag
+				+ L"|" + szType+ L"|" + szCount;
+			CDropFileList.AddString(wstrPathCombine.c_str());
+		}
+		fin.close();
+		CDropFileList.SetHorizontalExtent(800);
+		UpdateData(FALSE);
+	}
 }
 
 
 BEGIN_MESSAGE_MAP(CResourceTool, CDialog)
 	ON_WM_DROPFILES()
 	ON_LBN_SELCHANGE(IDC_DROPFILELIST, &CResourceTool::OnLbnSelchangeDropfilelist)
+	ON_LBN_SELCHANGE(IDC_LIST1, &CResourceTool::OnLbnSelchangeIndexList)
+	ON_BN_CLICKED(IDC_BUTTON3, &CResourceTool::OnBnClickedSaveButton)
+	ON_BN_CLICKED(IDC_BUTTON1, &CResourceTool::OnBnClickedLoadButton)
 END_MESSAGE_MAP()
 
 

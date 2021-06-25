@@ -128,6 +128,7 @@ HRESULT CManagement::Add_Component_Prototype(
 	return m_pComponent_Manager->Add_Component_Prototype(eType, PrototypeTag, pPrototype);
 }
 
+
 CComponent * CManagement::Clone_Component(
 	EResourceType eType, 
 	const wstring & PrototypeTag, 
