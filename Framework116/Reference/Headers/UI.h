@@ -3,8 +3,15 @@
 #ifndef __UI_H__
 
 #include "GameObject.h"
+#include "Transform.h"
 
 BEGIN(Engine)
+typedef struct tagUIDesc : public BASE_DESC
+{
+	TRANSFORM_DESC tTransformDesc;
+	wstring wstrTexturePrototypeTag = L"";
+}UI_DESC;
+
 class ENGINE_DLL CUI : public CGameObject
 {
 protected:
@@ -28,6 +35,9 @@ protected:
 	class CVIBuffer* m_pVIBuffer = nullptr;
 	class CTransform* m_pTransform = nullptr;
 	class CTexture* m_pTexture = nullptr;
+
+protected:
+	wstring m_wstrTexturePrototypeTag = L"";
 	RECT m_tUIBounds;
 };
 END

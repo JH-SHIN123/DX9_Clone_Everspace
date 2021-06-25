@@ -25,6 +25,15 @@ HRESULT CUI::Ready_GameObject(void* pArg)
 {
 	CGameObject::Ready_GameObject(pArg);
 
+	UI_DESC* uiDescPtr = nullptr;
+	if (auto ptr = (BASE_DESC*)pArg)
+	{
+		if (uiDescPtr = dynamic_cast<UI_DESC*>(ptr))
+		{
+			m_wstrTexturePrototypeTag = uiDescPtr->wstrTexturePrototypeTag;
+		}
+	}
+
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -39,7 +48,7 @@ HRESULT CUI::Ready_GameObject(void* pArg)
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
-		L"Component_Texture_Grass",
+		m_wstrTexturePrototypeTag,
 		L"Com_Texture",
 		(CComponent**)&m_pTexture)))
 	{
@@ -53,7 +62,7 @@ HRESULT CUI::Ready_GameObject(void* pArg)
 		L"Component_Transform",
 		L"Com_Transform",
 		(CComponent**)&m_pTransform,
-		pArg)))
+		(void*)&uiDescPtr->tTransformDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;

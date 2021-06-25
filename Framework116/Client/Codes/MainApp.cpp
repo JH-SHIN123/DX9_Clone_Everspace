@@ -186,11 +186,35 @@ HRESULT CMainApp::Ready_StaticResources()
 HRESULT CMainApp::Setup_DefaultSetting()
 {
 	// 조명 off
-	if (FAILED(m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Set Lighting false");
-		return E_FAIL;
-	}
+	D3DXVECTOR3 dir(1.0f, -0.0f, 0.25f);
+	D3DXCOLOR   c = D3DCOLOR_XRGB(255, 255, 255);
+
+	D3DLIGHT9 light;
+	::ZeroMemory(&light, sizeof(light));
+
+	light.Type = D3DLIGHT_DIRECTIONAL;
+	light.Ambient = c * 0.6f;
+	light.Diffuse = c;
+	light.Specular = c * 0.6f;
+	light.Direction = dir;
+
+	//
+	// Set lighting related render states.
+	//
+	m_pDevice->SetLight(0, &light);
+	m_pDevice->LightEnable(0, true);
+
+	//
+	// Set lighting related render states.
+	//
+	m_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	m_pDevice->SetRenderState(D3DRS_SPECULARENABLE, false);
+
+	//if (FAILED(m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Set Lighting false");
+	//	return E_FAIL;
+	//}
 	
 	///*
 	//D3DFILL_WIREFRAME: 색을 채우지말고 외곽선만 그려라.

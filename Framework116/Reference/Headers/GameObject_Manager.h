@@ -2,6 +2,7 @@
 #ifndef __GAMEOBJECT_MANAGER_H__
 
 #include "Base.h"
+#include "UI.h"
 
 BEGIN(Engine)
 class CGameObject_Manager final : public CBase

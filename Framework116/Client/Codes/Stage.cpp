@@ -28,7 +28,9 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_UI(L"Layer_UI", { 150.f, 150.f }, {0.f, 0.f})))
+	TRANSFORM_DESC uiTransformDesc;
+	uiTransformDesc.vScale = { 150.f, 150.f,0.f };
+	if (FAILED(Add_Layer_UI(L"Layer_UI", uiTransformDesc, L"Component_Texture_Grass")))
 		return E_FAIL;
 
 	return S_OK;
@@ -154,19 +156,17 @@ HRESULT CStage::Add_Layer_Skybox(const wstring& LayerTag)
 	return S_OK;
 }
 
-HRESULT CStage::Add_Layer_UI(const wstring& LayerTag, const _float2& vScale, const _float2& vPos)
+HRESULT CStage::Add_Layer_UI(const wstring& LayerTag, const TRANSFORM_DESC& tTransformDesc, const wstring& wstrTexturePrototypeTag)
 {
-	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vScale.x = vScale.x;
-	TransformDesc.vScale.y = vScale.y;
-	TransformDesc.vPosition.x = vPos.x;
-	TransformDesc.vPosition.y = vPos.y;
+	UI_DESC uiDesc;
+	uiDesc.tTransformDesc = tTransformDesc;
+	uiDesc.wstrTexturePrototypeTag = wstrTexturePrototypeTag;
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
 		L"GameObject_UI",
 		LayerTag,
-		&TransformDesc)))
+		&uiDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
 		return E_FAIL;
