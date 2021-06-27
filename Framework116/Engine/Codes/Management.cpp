@@ -10,6 +10,7 @@ CManagement::CManagement()
 	, m_pGameObject_Manager(CGameObject_Manager::Get_Instance())
 	, m_pRenderer(CRenderer::Get_Instance())
 	, m_pTime_Manager(CTime_Manager::Get_Instance())
+	, m_pFrame_Manager(CFrame_Manager::Get_Instance())
 {
 }
 
@@ -20,7 +21,8 @@ HRESULT CManagement::Ready_Game(HWND hWnd, _uint iWinCX, _uint iWinCY, EDisplayM
 		nullptr == m_pComponent_Manager ||
 		nullptr == m_pGameObject_Manager ||
 		nullptr == m_pRenderer ||
-		nullptr == m_pTime_Manager)
+		nullptr == m_pTime_Manager ||
+		nullptr == m_pFrame_Manager)
 	{
 		PRINT_LOG(L"Error", L"One of Managers is nullptr");
 		return E_FAIL;
@@ -29,6 +31,12 @@ HRESULT CManagement::Ready_Game(HWND hWnd, _uint iWinCX, _uint iWinCY, EDisplayM
 	if (FAILED(m_pDevice_Manager->Ready_Graphic_Device(hWnd, iWinCX, iWinCY, eMode)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Ready_Graphic_Device");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pFrame_Manager->Ready_FrameManager(60.f)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Ready_FrameManager");
 		return E_FAIL;
 	}
 
@@ -43,11 +51,15 @@ _uint CManagement::Update_Game()
 	if (nullptr == m_pDevice_Manager || 
 		nullptr == m_pScene_Manager || 
 		nullptr == m_pGameObject_Manager ||
-		nullptr == m_pTime_Manager)
+		nullptr == m_pTime_Manager ||
+		nullptr == m_pFrame_Manager)
 	{
 		PRINT_LOG(L"Error", L"One of Managers is nullptr");
 		return UPDATE_ERROR;
 	}
+
+	if (false == m_pFrame_Manager->FrameLock())
+		return NO_EVENT;
 
 	_uint iEvent = NO_EVENT;
 	_float fDeltaTime = m_pTime_Manager->Update_Time_Manager();
@@ -104,6 +116,17 @@ _float CManagement::Get_DeltaTime() const
 	}
 
 	return m_pTime_Manager->Get_DeltaTime();
+}
+
+void CManagement::ShowFrame(const HWND hWnd)
+{
+	if (nullptr == m_pFrame_Manager)
+	{
+		PRINT_LOG(L"Error", L"Frame Manager is nullptr");
+		return;
+	}
+
+	return m_pFrame_Manager->ShowFrame(hWnd);
 }
 
 HRESULT CManagement::Setup_CurrentScene(_uint iNewSceneType, CScene * pNewScene)
@@ -245,6 +268,11 @@ HRESULT CManagement::Add_GameObject_InRenderer(ERenderType eType, CGameObject * 
 
 void CManagement::Free()
 {
+	if (Safe_Release(m_pFrame_Manager))
+	{
+		PRINT_LOG(L"Warning", L"Failed To Release Frame_Manager");
+	}
+
 	if (Safe_Release(m_pTime_Manager))
 	{
 		PRINT_LOG(L"Warning", L"Failed To Release Time_Manager");

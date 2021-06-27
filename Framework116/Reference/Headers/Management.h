@@ -8,6 +8,7 @@
 #include "GameObject_Manager.h"
 #include "Renderer.h"
 #include "Time_Manager.h"
+#include "Frame_Manager.h"
 
 BEGIN(Engine)
 class ENGINE_DLL CManagement final : public CBase
@@ -29,6 +30,9 @@ public: /* For.Device Manager */
 public: /* For.Time Manager */
 	_float Get_DeltaTime() const;
 	const _float2 Get_WindowSize() const { return _float2((float)m_iWinCX, (float)m_iWinCY); }
+
+public:  /* For.Frame Manager */
+	void ShowFrame(const HWND hWnd);
 
 public: /* For.Scene Manager */
 	HRESULT Setup_CurrentScene(_uint iNewSceneType, class CScene* pNewScene);
@@ -59,6 +63,7 @@ private:
 	CGameObject_Manager*	m_pGameObject_Manager = nullptr;
 	CRenderer*				m_pRenderer = nullptr;
 	CTime_Manager*			m_pTime_Manager = nullptr;
+	CFrame_Manager*			m_pFrame_Manager = nullptr;
 
 private:
 	_uint m_iWinCX = 0;

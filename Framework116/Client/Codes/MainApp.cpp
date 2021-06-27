@@ -49,6 +49,8 @@ HRESULT CMainApp::Ready_MainApp()
 
 _uint CMainApp::Update_MainApp()
 {
+	m_pManagement->ShowFrame(g_hWnd);
+
 	m_pManagement->Update_Game();
 
 	return _uint();
