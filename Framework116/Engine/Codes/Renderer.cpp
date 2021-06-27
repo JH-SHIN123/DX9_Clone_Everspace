@@ -103,7 +103,7 @@ _uint CRenderer::Render_Alpha()
 	_uint iEvent = NO_EVENT;	
 
 	///////////////// 알파 테스팅 ///////////////////////////////////////////////
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);	
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 1); /* 알파 기준 값 설정 */
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER); /* 위에서 설정한 기준값보다 작은 것들 */
 
@@ -117,6 +117,8 @@ _uint CRenderer::Render_Alpha()
 	}
 
 	m_GameObjects[iRenderIndex].clear();
+
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	///////////////// 알파 블렌딩 ///////////////////////////////////////////////
 	//pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
@@ -163,7 +165,7 @@ _uint CRenderer::Render_Particle()
 	_uint iRenderIndex = (_uint)ERenderType::Particle;
 	_uint iEvent = NO_EVENT;
 
-	///////////////// 알파 테스팅 ///////////////////////////////////////////////
+	// 조명 Off
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	pDevice->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
 	pDevice->SetRenderState(D3DRS_POINTSCALEENABLE, true);
@@ -180,7 +182,12 @@ _uint CRenderer::Render_Particle()
 	pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 
-	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+	// 알파테스팅 + 알파블랜딩
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 1); /* 알파 기준 값 설정 */
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER); /* 위에서 설정한 기준값보다 작은 것들 */
+
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
@@ -198,7 +205,8 @@ _uint CRenderer::Render_Particle()
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	pDevice->SetRenderState(D3DRS_POINTSCALEENABLE, false);
-	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	return iEvent;
 }
@@ -213,11 +221,7 @@ _uint CRenderer::Render_UI()
 	_uint iEvent = NO_EVENT;
 
 	// UI 조명 off
-	if (FAILED(pDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Set Lighting false");
-		return E_FAIL;
-	}
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	///////////////// 알파 테스팅 ///////////////////////////////////////////////
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
@@ -258,11 +262,7 @@ _uint CRenderer::Render_UI()
 	pDevice->SetTransform(D3DTS_VIEW, &matPrevView);
 	pDevice->SetTransform(D3DTS_PROJECTION, &matPrevProj);
 
-	if (FAILED(pDevice->SetRenderState(D3DRS_LIGHTING, TRUE)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Set Lighting false");
-		return E_FAIL;
-	}
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	return iEvent;
 }
