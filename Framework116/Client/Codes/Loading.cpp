@@ -10,7 +10,7 @@
 #include "Monster.h"
 #include "Grass.h"
 #include "Skybox.h"
-#include "Explosion.h"
+#include "ExplosionSystem.h"
 #pragma endregion
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)

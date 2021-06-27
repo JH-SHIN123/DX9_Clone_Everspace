@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Explosion.h"
+#include "ExplosionSystem.h"
 #include "Pipeline.h"
 
 CExplosionSystem::CExplosionSystem(LPDIRECT3DDEVICE9 pDevice)

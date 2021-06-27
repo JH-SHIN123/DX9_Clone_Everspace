@@ -28,12 +28,17 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
-	TRANSFORM_DESC uiTransformDesc;
-	uiTransformDesc.vScale = { 150.f, 150.f,0.f };
-	if (FAILED(Add_Layer_UI(L"Layer_UI", uiTransformDesc, L"Component_Texture_Grass")))
+	UI_DESC uiDesc;
+	uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
+	uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
+	if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_DirectionalLight(L"Layer_DirectionalLight", { 1.0f, -0.0f, 0.25f }, D3DCOLOR_XRGB(255, 255, 255))))
+	LIGHT_DESC lightDesc;
+	lightDesc.eLightType = ELightType::Directional;
+	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
+	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
 		return E_FAIL;
 
 	PARTICLESYSTEM_DESC pSystemDesc;
@@ -170,17 +175,13 @@ HRESULT CStage::Add_Layer_Skybox(const wstring& LayerTag)
 	return S_OK;
 }
 
-HRESULT CStage::Add_Layer_UI(const wstring& LayerTag, const TRANSFORM_DESC& tTransformDesc, const wstring& wstrTexturePrototypeTag)
+HRESULT CStage::Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc)
 {
-	UI_DESC uiDesc;
-	uiDesc.tTransformDesc = tTransformDesc;
-	uiDesc.wstrTexturePrototypeTag = wstrTexturePrototypeTag;
-
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
 		L"GameObject_UI",
 		LayerTag,
-		&uiDesc)))
+		(void*)pUIDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
 		return E_FAIL;
@@ -189,18 +190,13 @@ HRESULT CStage::Add_Layer_UI(const wstring& LayerTag, const TRANSFORM_DESC& tTra
 	return S_OK;
 }
 
-HRESULT CStage::Add_Layer_DirectionalLight(const wstring& LayerTag, const _float3 vDir, const D3DXCOLOR tColor)
+HRESULT CStage::Add_Layer_Light(const wstring& LayerTag, const LIGHT_DESC* pLightDesc)
 {
-	LIGHT_DESC lightDesc;
-	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.vLightDir = vDir;
-	lightDesc.tLightColor = tColor;
-
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
 		L"GameObject_DirectionalLight",
 		LayerTag,
-		&lightDesc)))
+		(void*)pLightDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Directional Light In Layer");
 		return E_FAIL;
