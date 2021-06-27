@@ -68,13 +68,13 @@ public:
 
 protected: // Component
 	// Component - VIBuffer_Particle
-	LPDIRECT3DVERTEXBUFFER9 m_pVB;
-	DWORD m_vbSize;
-	DWORD m_vbOffset;
-	DWORD m_vbBatchSize;
+	LPDIRECT3DVERTEXBUFFER9 m_pVB = nullptr;
+	DWORD m_vbSize = 0;
+	DWORD m_vbOffset = 0;
+	DWORD m_vbBatchSize = 0;
 
-	CTransform*				m_pTransform;
-	class CTexture*			m_pTexture;
+	CTransform*				m_pTransform = nullptr;
+	class CTexture*			m_pTexture = nullptr;
 	//class CCollideSphere*	m_pCollide;
 
 protected:

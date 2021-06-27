@@ -277,5 +277,7 @@ void CParticleSystem::Free()
 	Safe_Release(m_pTexture);
 	//Safe_Release(m_pCollide);
 
+	m_listParticles.clear();
+
 	CGameObject::Free();
 }

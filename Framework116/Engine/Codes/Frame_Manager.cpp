@@ -20,7 +20,7 @@ HRESULT CFrame_Manager::Ready_FrameManager(const _float fSPF)
 {
 	m_fSPF = 1.f / fSPF;
 
-	bool isSuccess = false;
+	BOOL isSuccess = FALSE;
 	isSuccess = QueryPerformanceFrequency(&m_CpuTick);
 	isSuccess = QueryPerformanceCounter(&m_BeginTime);
 
