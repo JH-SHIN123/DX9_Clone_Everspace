@@ -74,8 +74,8 @@ protected: // Component
 	DWORD m_vbBatchSize;
 
 	CTransform*				m_pTransform;
-	class CCollideSphere*	m_pCollide;
 	class CTexture*			m_pTexture;
+	//class CCollideSphere*	m_pCollide;
 
 protected:
 	list<tagAttribute> m_listParticles;

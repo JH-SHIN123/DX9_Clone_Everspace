@@ -274,8 +274,8 @@ void CParticleSystem::Free()
 {
 	Safe_Release(m_pVB);
 	Safe_Release(m_pTransform);
-	Safe_Release(m_pCollide);
 	Safe_Release(m_pTexture);
+	//Safe_Release(m_pCollide);
 
 	CGameObject::Free();
 }
