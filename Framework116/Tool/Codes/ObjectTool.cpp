@@ -28,6 +28,12 @@ CObjectTool::~CObjectTool()
 {
 	for (auto& Pair : m_mapObjectData)
 	{
+		for (auto& Iter : Pair.second->vecPrototypeTag_Mesh)
+		{
+			delete Iter;
+		}
+
+		
 		delete Pair.second;
 		Pair.second = nullptr;
 	}
@@ -487,7 +493,7 @@ void CObjectTool::OnBnClickedButton8() // Add Object List
 {
 	UpdateData(TRUE);
 
-	auto Pair = m_mapObjectData.find(m_wstrObjectPrototype_Tag);
+	auto Pair = m_mapObjectData.find(m_wstrPickedObject);
 
 	if (Pair == m_mapObjectData.end()) // 없을때만 추가
 	{
@@ -496,11 +502,16 @@ void CObjectTool::OnBnClickedButton8() // Add Object List
 		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
 		pData->vecPrototypeTag_Mesh.reserve(10);
 
-		m_mapObjectData.insert(make_pair(m_wstrPickedObject, pData));
+		m_mapObjectData.insert(make_pair(m_wstrPickedObject, pData)); ////////////////////////// 이거 수정 못찾는 이유가 있음
 
-		Pair->second->wstrPrototypeTag = m_wstrObjectPrototype_Tag;
-		Pair->second->tMaterial = m_tMaterial;
-		m_ListObject_Save.AddString(m_wstrObjectPrototype_Tag);
+		Pair = m_mapObjectData.find(m_wstrPickedObject);
+		if(Pair != m_mapObjectData.end())
+		{
+			//Pair->second->vecPrototypeTag_Mesh.emplace_back(L"None");
+			Pair->second->wstrPrototypeTag = m_wstrObjectPrototype_Tag.GetString();
+			Pair->second->tMaterial = m_tMaterial;
+			m_ListObject_Save.AddString(m_wstrPickedObject);
+		}
 	}
 
 	UpdateData(FALSE);

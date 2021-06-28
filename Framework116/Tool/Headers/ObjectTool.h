@@ -39,13 +39,13 @@ public:
 	CListBox m_ListObject_Save;	// 저장 할 데이터 리스트
 
 	_bool m_bListCheck = false;
-	CString m_wstrPickedObject = L"";	// 프로토타입 선택
-	CString m_wstrPickedComponentTag = L"";	// 컴포넌트 선택
+	CString m_wstrPickedObject = _T("");	// 프로토타입 선택
+	CString m_wstrPickedComponentTag = _T("");	// 컴포넌트 선택
 	
-	CString m_wstrObjectPrototype_Tag = L"";	// L"Prototype" + m_wstrPickedObject
-	CString m_wstrComponentProtoType_Tag = L""; // L"Prototype" + m_wstrPickedComponentTag
+	CString m_wstrObjectPrototype_Tag = _T("");	// L"Prototype" + m_wstrPickedObject
+	CString m_wstrComponentProtoType_Tag = _T(""); // L"Prototype" + m_wstrPickedComponentTag
 
-	CString m_wstrPickedObjectList_Tag_Save = L""; // 저장이 될 리스트의 ObjectTag
+	CString m_wstrPickedObjectList_Tag_Save = _T(""); // 저장이 될 리스트의 ObjectTag
 
 	map<CString, PASSDATA_OBJECT*> m_mapObjectData;
 	D3DMATERIAL9 m_tMaterial;
