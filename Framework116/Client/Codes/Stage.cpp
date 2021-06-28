@@ -34,10 +34,13 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
 		return E_FAIL;
 
+	// 우주에서 태양광을 표현하기 위해선
+	// 포인트라이트 혹은 스포트라이트가 더 어울릴듯
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
 	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
 	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.iLightIndex = 0;
 	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
 		return E_FAIL;
 

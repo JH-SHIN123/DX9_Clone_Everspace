@@ -62,6 +62,9 @@ _uint CExplosionSystem::Update_GameObject(_float fDeltaTime)
 {
 	CParticleSystem::Update_GameObject(fDeltaTime);
 
+	if (IsDead_ParticleSystem())
+		return DEAD_OBJECT;
+
 	for (auto& p : m_listParticles)
 	{
 		if (p.isAlive)
@@ -70,8 +73,8 @@ _uint CExplosionSystem::Update_GameObject(_float fDeltaTime)
 			p.fAge += fDeltaTime;
 
 			if (p.fAge > p.fLifeTime) {
-				ResetParticle_ParticleSystem(p);
-				//p.isAlive = false;
+				//ResetParticle_ParticleSystem(p);
+				p.isAlive = false;
 			}
 		}
 	}
