@@ -47,7 +47,7 @@ void CObjectTool::DoDataExchange(CDataExchange* pDX)
 	if (m_bListCheck == false)
 	{
 		Setting_List_Box();
-		Setting_ObjectData();
+		//Setting_ObjectData();
 		m_bListCheck = true;
 	}
 
@@ -73,8 +73,7 @@ void CObjectTool::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Text(pDX, IDC_EDIT19, m_tMaterial.Power);
 
-
-	DDX_LBString(pDX, IDC_LIST4, r2);
+	DDX_Control(pDX, IDC_LIST4, m_ListObject_Save);
 }
 
 void CObjectTool::Setting_List_Box()
@@ -189,13 +188,15 @@ void CObjectTool::Setting_ObjectData()
 
 
 BEGIN_MESSAGE_MAP(CObjectTool, CDialog)
-	ON_LBN_SELCHANGE(IDC_LIST1, &CObjectTool::OnLbnSelchangeList1)
-	ON_LBN_SELCHANGE(IDC_LIST2, &CObjectTool::OnLbnSelchangeList2)
-	ON_LBN_SELCHANGE(IDC_LIST3, &CObjectTool::OnLbnSelchangeList3)
-	ON_BN_CLICKED(IDC_BUTTON1, &CObjectTool::OnBnClickedButton1)	// Insert 
+	ON_LBN_SELCHANGE(IDC_LIST1, &CObjectTool::OnLbnSelchangeList1)	// Object Prototype List Picked
+	ON_LBN_SELCHANGE(IDC_LIST2, &CObjectTool::OnLbnSelchangeList2)	// Added Components List (Save Data)
+	ON_LBN_SELCHANGE(IDC_LIST3, &CObjectTool::OnLbnSelchangeList3)	// Component List
+	ON_LBN_SELCHANGE(IDC_LIST4, &CObjectTool::OnLbnSelchangeList4)	// Save Object List (Save Data)
+	ON_BN_CLICKED(IDC_BUTTON1, &CObjectTool::OnBnClickedButton1)	// Data ¼öÁ¤¿ë
 	ON_BN_CLICKED(IDC_BUTTON2, &CObjectTool::OnBnClickedButton2)	// Add Component
-	ON_BN_CLICKED(IDC_BUTTON5, &CObjectTool::OnBnClickedButton5)
-	ON_BN_CLICKED(IDC_BUTTON6, &CObjectTool::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON5, &CObjectTool::OnBnClickedButton5)	// Save
+	ON_BN_CLICKED(IDC_BUTTON6, &CObjectTool::OnBnClickedButton6)	// Load
+	ON_BN_CLICKED(IDC_BUTTON8, &CObjectTool::OnBnClickedButton8)	// Add Object List
 END_MESSAGE_MAP()
 
 
@@ -205,19 +206,27 @@ void CObjectTool::OnBnClickedButton2() // Add Component Button
 	UpdateData(TRUE);
 
 	if (m_wstrComponentProtoType_Tag == L"" ||
-		m_wstrPickedObject == L"")
+		m_wstrPickedObjectList_Tag_Save == L"")
 		return;
 
 	m_ListAddedCom.ResetContent();
 
-	auto Pair = m_mapObjectData.find(m_wstrPickedObject);
+	auto Pair = m_mapObjectData.find(m_wstrPickedObjectList_Tag_Save);
 
 	if (Pair != m_mapObjectData.end())
 	{
-		Pair->second->wstrPrototypeTag = m_wstrObjectPrototype_Tag;
+		// ÀÌ¹Ì ÀÔ·ÂµÊ
+		// Pair->second->wstrPrototypeTag = m_wstrObjectPrototype_Tag;
+		// Pair->second->tMaterial = m_tMaterial;
 	
 		//Pair->second->wstrPrototypeTag_Mesh = m_wstrComponentProtoType_Tag;
-		Pair->second->tMaterial = m_tMaterial;
+
+		auto iter = Pair->second->vecPrototypeTag_Mesh.begin();
+		// vector°¡ ÅÖÅÖ ºô¶§ ±îÁö for¹®
+		for (; iter != Pair->second->vecPrototypeTag_Mesh.end(); ++iter)
+		{
+			m_ListAddedCom.AddString(iter->GetString());
+		}
 
 		m_ListAddedCom.AddString(m_wstrComponentProtoType_Tag);
 		m_tMaterial = Pair->second->tMaterial;
@@ -231,25 +240,24 @@ void CObjectTool::OnBnClickedButton2() // Add Component Button
 void CObjectTool::OnLbnSelchangeList1() // Object ListBox 
 {
 	UpdateData(TRUE);
-	m_ListAddedCom.ResetContent();
 	
 	CString wstrTag = L"";
 	_int iIndex = m_ListBoxObject.GetCurSel();
 
 	m_ListBoxObject.GetText(iIndex, wstrTag);
 
-	if (m_wstrPickedObject != L"GameObject_" + wstrTag)
-	{
-		m_ListAddedCom.ResetContent();
-
-	}
 	m_wstrPickedObject = wstrTag;
 
 	m_wstrObjectPrototype_Tag = L"GameObject_" + m_wstrPickedObject;
+
+
+	//if (m_wstrPickedObject != L"GameObject_" + wstrTag)
+	//{
+	//	m_ListAddedCom.ResetContent();
+	//}
+	//m_ListAddedCom.ResetContent();
 	//m_wstrPickedObject 
-
-
-	auto Pair = m_mapObjectData.find(wstrTag);
+	//auto Pair = m_mapObjectData.find(wstrTag);
 	//if (Pair != m_mapObjectData.end())
 	//{
 	//	if (Pair->second->wstrPrototypeTag_Mesh != L"")
@@ -270,8 +278,10 @@ void CObjectTool::OnLbnSelchangeList1() // Object ListBox
 
 void CObjectTool::OnLbnSelchangeList2()	// Object's Added Component ListBox 
 {
+	UpdateData(TRUE);
 
 
+	UpdateData(FALSE);
 }
 
 void CObjectTool::OnLbnSelchangeList3()	// Addable Component ListBox 
@@ -284,17 +294,39 @@ void CObjectTool::OnLbnSelchangeList3()	// Addable Component ListBox
 	m_ListComponent.GetText(iIndex, m_wstrPickedComponentTag);
 	m_wstrComponentProtoType_Tag = L"Component_" + m_wstrPickedComponentTag;
 
+	UpdateData(FALSE);
+}
 
+void CObjectTool::OnLbnSelchangeList4() // Save Object List (Save Data)
+{
+	UpdateData(TRUE);
+
+	CString wstrTag = L"";
+	_int iIndex = m_ListObject_Save.GetCurSel();
+	m_ListObject_Save.GetText(iIndex, wstrTag);
+
+	auto Pair = m_mapObjectData.find(wstrTag);
+
+	if (Pair != m_mapObjectData.end()) // ¿øÇÏ´Â tag ¼±ÅÃ
+	{
+		m_wstrPickedObjectList_Tag_Save = wstrTag;
+		m_ListAddedCom.ResetContent();
+
+		auto iter = Pair->second->vecPrototypeTag_Mesh.begin();
+		// vector°¡ ÅÖÅÖ ºô¶§ ±îÁö for¹®
+		for (; iter != Pair->second->vecPrototypeTag_Mesh.end(); ++iter)
+		{
+			m_ListAddedCom.AddString(iter->GetString());
+		}
+	}
 
 	UpdateData(FALSE);
-
 }
 
 void CObjectTool::OnBnClickedButton1() // Object ProtoType Tag / Insert Button
 {
 	UpdateData(TRUE);
 
-	
 	m_wstrComponentProtoType_Tag;
 
 	UpdateData(FALSE);
@@ -356,8 +388,11 @@ void CObjectTool::OnBnClickedButton5() // Save
 	UpdateData(FALSE);
 }
 
-void CObjectTool::OnBnClickedButton6()
+void CObjectTool::OnBnClickedButton6() // Load
 {
+	UpdateData(TRUE);
+
+
 	CFileDialog Dlg(TRUE
 		, L".object", L"*.object"
 		, OFN_OVERWRITEPROMPT, L"Data File(*.object) | *.object||"
@@ -443,7 +478,30 @@ void CObjectTool::OnBnClickedButton6()
 					break;
 			}
 			fin.close();
-			UpdateData(FALSE);
 		}
 	}
+	UpdateData(FALSE);
+}
+
+void CObjectTool::OnBnClickedButton8() // Add Object List
+{
+	UpdateData(TRUE);
+
+	auto Pair = m_mapObjectData.find(m_wstrObjectPrototype_Tag);
+
+	if (Pair == m_mapObjectData.end()) // ¾øÀ»¶§¸¸ Ãß°¡
+	{
+		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
+		pData->wstrPrototypeTag = m_wstrObjectPrototype_Tag;
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
+		pData->vecPrototypeTag_Mesh.reserve(10);
+
+		m_mapObjectData.insert(make_pair(m_wstrPickedObject, pData));
+
+		Pair->second->wstrPrototypeTag = m_wstrObjectPrototype_Tag;
+		Pair->second->tMaterial = m_tMaterial;
+		m_ListObject_Save.AddString(m_wstrObjectPrototype_Tag);
+	}
+
+	UpdateData(FALSE);
 }

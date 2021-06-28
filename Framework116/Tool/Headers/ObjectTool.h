@@ -29,43 +29,47 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public: // 그냥 함수
-	void Setting_List_Box();
-	void Setting_ObjectData();
+	void Setting_List_Box(); 
+	void Setting_ObjectData(); // 안씀
 
 public:
 	CListBox m_ListBoxObject;	// 오브젝트 프로토 타입 리스트박스
 	CListBox m_ListAddedCom;	// 오브젝트 프로토 타입이 가지고 있는 컴포넌트들
 	CListBox m_ListComponent;	// 추가 가능한 컴포넌트 목록
+	CListBox m_ListObject_Save;	// 저장 할 데이터 리스트
 
 	_bool m_bListCheck = false;
-	CString m_wstrPickedObject = L"";		// 프로토타입 선택
-	CString m_wstrPickedComponentTag = L"";	// 매쉬 선택
+	CString m_wstrPickedObject = L"";	// 프로토타입 선택
+	CString m_wstrPickedComponentTag = L"";	// 컴포넌트 선택
 	
 	CString m_wstrObjectPrototype_Tag = L"";	// L"Prototype" + m_wstrPickedObject
 	CString m_wstrComponentProtoType_Tag = L""; // L"Prototype" + m_wstrPickedComponentTag
 
-	//CString m_wstrFileExtension = L".txt";					// 파일 확장자
-	//CString m_wstrFilePath = L"../../Data/PrototypeData/";	// 저장될 경로
-	
+	CString m_wstrPickedObjectList_Tag_Save = L""; // 저장이 될 리스트의 ObjectTag
+
 	map<CString, PASSDATA_OBJECT*> m_mapObjectData;
 	D3DMATERIAL9 m_tMaterial;
 
 	// key : tool에서 구별
-	// value 순서 : ObjectPrototype > 매쉬 > 머테리얼
+	// value : 저장 데이터 PrototypeTag > Material > <vector>ComponentTags
 
+	//CString m_wstrFileExtension = L".txt";					// 파일 확장자
+	//CString m_wstrFilePath = L"../../Data/PrototypeData/";	// 저장될 경로
+	
 
 
 public:
-	afx_msg void OnBnClickedButton2(); // Add Component
-
 	afx_msg void OnLbnSelchangeList1();	// Object Prototype List Picked
 	afx_msg void OnLbnSelchangeList2();	// Added Components List (Save Data)
 	afx_msg void OnLbnSelchangeList3();	// Component List
-	afx_msg void OnBnClickedButton1();
-	afx_msg void OnBnClickedButton5();	//Save
-	afx_msg void OnBnClickedButton6();	//Load
+	afx_msg void OnLbnSelchangeList4();	// Save Object List (Save Data)
+public:
+	afx_msg void OnBnClickedButton1();	// Data 수정용
+	afx_msg void OnBnClickedButton2();	// Add Component
+	afx_msg void OnBnClickedButton5();	// Save
+	afx_msg void OnBnClickedButton6();	// Load
+	afx_msg void OnBnClickedButton8();	// Add Object List
 	
-										// // Yeah
 	CString r2;
 };
 

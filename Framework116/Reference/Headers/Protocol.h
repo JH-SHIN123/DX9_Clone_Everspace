@@ -8,14 +8,14 @@ typedef struct tagPassingData_Object {
 	
 #ifdef _AFX
 	CString wstrPrototypeTag;
-	vector<CString> wstrPrototypeTag_Mesh;
+	vector<CString> vecPrototypeTag_Mesh;
 #else 
 	wstring wstrPrototypeTag_Object;
-	vector<wstring> wstrPrototypeTag_Mesh;
+	vector<wstring> vecPrototypeTag_Mesh;
 #endif // _AFX
 	
 	// Material Info
-	D3DMATERIAL9 tMaterial;		
+	D3DMATERIAL9 tMaterial;
 
 }PASSDATA_OBJECT;
 
