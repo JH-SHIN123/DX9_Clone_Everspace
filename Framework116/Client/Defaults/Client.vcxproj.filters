@@ -46,6 +46,12 @@
     <Filter Include="02.GameObject\05.Skybox">
       <UniqueIdentifier>{3ca2e3df-4489-45bc-9137-32396005b4bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\88.Dummy_Mon">
+      <UniqueIdentifier>{ddd69403-a9c0-4524-be6e-03eafb46a6af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="55.Load_Prototype">
+      <UniqueIdentifier>{82e5c622-5f88-46c7-a6f2-081528fcf004}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -96,6 +102,12 @@
     <ClInclude Include="..\Headers\Skybox.h">
       <Filter>02.GameObject\05.Skybox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Dummy_Mon.h">
+      <Filter>02.GameObject\88.Dummy_Mon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Load_Prototype.h">
+      <Filter>55.Load_Prototype</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -133,6 +145,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Skybox.cpp">
       <Filter>02.GameObject\05.Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Dummy_Mon.cpp">
+      <Filter>02.GameObject\88.Dummy_Mon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Load_Prototype.cpp">
+      <Filter>55.Load_Prototype</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
