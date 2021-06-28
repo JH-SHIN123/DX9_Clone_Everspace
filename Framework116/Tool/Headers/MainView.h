@@ -31,6 +31,9 @@ private:
 	HRESULT Setup_DefaultSetting();
 
 private:
+	HRESULT Load_Prototype_Object();
+
+private:
 	bool				m_bStart = true;
 	CManagement*		m_pManagement = nullptr;
 	LPDIRECT3DDEVICE9	m_pDevice = nullptr;

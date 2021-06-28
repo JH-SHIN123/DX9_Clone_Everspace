@@ -196,6 +196,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Axis.h" />
+    <ClInclude Include="..\Headers\Dummy_Object.h" />
     <ClInclude Include="..\Headers\MainCam.h" />
     <ClInclude Include="..\Headers\MainForm.h" />
     <ClInclude Include="..\Headers\MainFrm.h" />
@@ -217,6 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Axis.cpp" />
+    <ClCompile Include="..\Codes\Dummy_Object.cpp" />
     <ClCompile Include="..\Codes\MainCam.cpp" />
     <ClCompile Include="..\Codes\MainScene.cpp" />
     <ClCompile Include="..\Codes\MiniView.cpp" />

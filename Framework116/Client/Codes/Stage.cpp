@@ -31,6 +31,10 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
+	if (FAILED(Add_Layer_Dummy(L"Layer_Dummy")))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -105,7 +109,7 @@ HRESULT CStage::Add_Layer_Monster(const wstring & LayerTag)
 		LayerTag)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Monster In Layer");
-		return E_FAIL;
+		return E_FAIL;	
 	}
 
 	return S_OK;
@@ -148,6 +152,20 @@ HRESULT CStage::Add_Layer_Skybox(const wstring& LayerTag)
 		LayerTag)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Skybox In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Dummy(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Dummy",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Monster In Layer");
 		return E_FAIL;
 	}
 

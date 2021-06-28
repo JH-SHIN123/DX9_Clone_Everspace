@@ -88,6 +88,8 @@ void CObjectTool::Setting_List_Box()
 	m_ListBoxObject.InsertString(4, L"Monster_Buff");
 	m_ListBoxObject.InsertString(5, L"Monster_Boss");
 
+	m_ListBoxObject.InsertString(6, L"DUMMY"); // 더미 데이터
+
 
 
 	// 추가 가능한 컴포넌트 목록
@@ -117,6 +119,7 @@ void CObjectTool::Setting_ObjectData()
 		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
 		pData->wstrPrototypeTag = L"";
 		pData->wstrPrototypeTag_Mesh = L"";
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
 
 		m_mapObjectData.insert(make_pair(L"Player", pData));
 	}
@@ -127,6 +130,7 @@ void CObjectTool::Setting_ObjectData()
 		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
 		pData->wstrPrototypeTag = L"";
 		pData->wstrPrototypeTag_Mesh = L"";
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
 
 		m_mapObjectData.insert(make_pair(L"Monster_Normal", pData));
 	}
@@ -137,16 +141,18 @@ void CObjectTool::Setting_ObjectData()
 		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
 		pData->wstrPrototypeTag = L"";
 		pData->wstrPrototypeTag_Mesh = L"";
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
 
 		m_mapObjectData.insert(make_pair(L"Monster_Sniper", pData));
 	}
 
-	Pair = m_mapObjectData.find(L"Monster_stealth");
+	Pair = m_mapObjectData.find(L"Monster_Stealth");
 	if (Pair == m_mapObjectData.end())
 	{
 		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
 		pData->wstrPrototypeTag = L"";
 		pData->wstrPrototypeTag_Mesh = L"";
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
 
 		m_mapObjectData.insert(make_pair(L"Monster_Stealth", pData));
 	}
@@ -157,6 +163,7 @@ void CObjectTool::Setting_ObjectData()
 		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
 		pData->wstrPrototypeTag = L"";
 		pData->wstrPrototypeTag_Mesh = L"";
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
 
 		m_mapObjectData.insert(make_pair(L"Monster_Buff", pData));
 	}
@@ -167,16 +174,21 @@ void CObjectTool::Setting_ObjectData()
 		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
 		pData->wstrPrototypeTag = L"";
 		pData->wstrPrototypeTag_Mesh = L"";
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
 
 		m_mapObjectData.insert(make_pair(L"Monster_Boss", pData));
 	}
 
-	//auto Pair = m_mapObjectData.find(L"Player");
-	//if (Pair == m_mapObjectData.end())
-	//{
-	//	PASSDATA_OBJECT* pData = nullptr;
-	//	m_mapObjectData.insert(make_pair(L"Player", pData));
-	//}
+	Pair = m_mapObjectData.find(L"DUMMY");
+	if (Pair == m_mapObjectData.end())
+	{
+		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
+		pData->wstrPrototypeTag = L"";
+		pData->wstrPrototypeTag_Mesh = L"";
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
+
+		m_mapObjectData.insert(make_pair(L"DUMMY", pData));
+	}
 
 }
 
@@ -231,14 +243,14 @@ void CObjectTool::OnLbnSelchangeList1() // Object ListBox
 
 	m_ListBoxObject.GetText(iIndex, wstrTag);
 
-	if (m_wstrPickedObject != L"Prototype_" + wstrTag)
+	if (m_wstrPickedObject != L"GameObject_" + wstrTag)
 	{
 		m_ListAddedCom.ResetContent();
 
 	}
 	m_wstrPickedObject = wstrTag;
 
-	m_wstrObjectPrototype_Tag = L"Prototype_" + m_wstrPickedObject;
+	m_wstrObjectPrototype_Tag = L"GameObject_" + m_wstrPickedObject;
 	//m_wstrPickedObject 
 
 
@@ -328,9 +340,6 @@ void CObjectTool::OnBnClickedButton5() // Save
 
 	wstring wstrPower = to_wstring(_float(tMaterial.Power));
 
-
-
-
 	CString wstrPath = L"../../Data/PrototypeData/" + wstrObjectKey + L".object";
 	CStringA wstrPath_A = (CStringA)wstrPath;
 	CHAR szRealPath[MAX_PATH] = "";
@@ -357,7 +366,7 @@ void CObjectTool::OnBnClickedButton6()
 	CFileDialog Dlg(TRUE
 		, L".object", L"*.object"
 		, OFN_OVERWRITEPROMPT, L"Data File(*.object) | *.object||"
-		,0,0,0);
+		, 0, 0, 0);
 
 	TCHAR szBuf[MAX_PATH] = L"";
 	GetCurrentDirectory(MAX_PATH, szBuf);
@@ -386,6 +395,8 @@ void CObjectTool::OnBnClickedButton6()
 			TCHAR szMaterial_Emissive[MAX_PATH][4]	= { L"" };
 			TCHAR szMaterial_Power[MAX_PATH]		= L"";
 
+			D3DMATERIAL9 tMaterial;
+
 			while (true)
 			{
 				fin.getline(szObjectProtoTypeTag, MAX_PATH, L'?');
@@ -405,31 +416,32 @@ void CObjectTool::OnBnClickedButton6()
 				auto Pair = m_mapObjectData.find(strFileName);
 				if (Pair != m_mapObjectData.end())
 				{
+					tMaterial.Diffuse.r = (_float)_tstof(szMaterial_Diffuse[0]);
+					tMaterial.Diffuse.g = (_float)_tstof(szMaterial_Diffuse[1]);
+					tMaterial.Diffuse.b = (_float)_tstof(szMaterial_Diffuse[2]);
+					tMaterial.Diffuse.a = (_float)_tstof(szMaterial_Diffuse[3]);
+
+					tMaterial.Ambient.r = (_float)_tstof(szMaterial_Ambient[0]);
+					tMaterial.Ambient.g = (_float)_tstof(szMaterial_Ambient[1]);
+					tMaterial.Ambient.b = (_float)_tstof(szMaterial_Ambient[2]);
+					tMaterial.Ambient.a = (_float)_tstof(szMaterial_Ambient[3]);
+
+					tMaterial.Specular.r = (_float)_tstof(szMaterial_Specular[0]);
+					tMaterial.Specular.g = (_float)_tstof(szMaterial_Specular[1]);
+					tMaterial.Specular.b = (_float)_tstof(szMaterial_Specular[2]);
+					tMaterial.Specular.a = (_float)_tstof(szMaterial_Specular[3]);
+
+					tMaterial.Emissive.r = (_float)_tstof(szMaterial_Emissive[0]);
+					tMaterial.Emissive.g = (_float)_tstof(szMaterial_Emissive[1]);
+					tMaterial.Emissive.b = (_float)_tstof(szMaterial_Emissive[2]);
+					tMaterial.Emissive.a = (_float)_tstof(szMaterial_Emissive[3]);
+
+					tMaterial.Power = (_float)_tstof(szMaterial_Power);
+
 					//Pair->first = strPath.GetString;
 					Pair->second->wstrPrototypeTag = szObjectProtoTypeTag;
 					Pair->second->wstrPrototypeTag_Mesh = szMeshProtoTypeTag;
-
-					Pair->second->tMaterial.Diffuse.r = (_float)_tstof(szMaterial_Diffuse[0]);
-					Pair->second->tMaterial.Diffuse.g = (_float)_tstof(szMaterial_Diffuse[1]);
-					Pair->second->tMaterial.Diffuse.b = (_float)_tstof(szMaterial_Diffuse[2]);
-					Pair->second->tMaterial.Diffuse.a = (_float)_tstof(szMaterial_Diffuse[3]);
-
-					Pair->second->tMaterial.Ambient.r = (_float)_tstof(szMaterial_Ambient[0]);
-					Pair->second->tMaterial.Ambient.g = (_float)_tstof(szMaterial_Ambient[1]);
-					Pair->second->tMaterial.Ambient.b = (_float)_tstof(szMaterial_Ambient[2]);
-					Pair->second->tMaterial.Ambient.a = (_float)_tstof(szMaterial_Ambient[3]);
-
-					Pair->second->tMaterial.Specular.r = (_float)_tstof(szMaterial_Specular[0]);
-					Pair->second->tMaterial.Specular.g = (_float)_tstof(szMaterial_Specular[1]);
-					Pair->second->tMaterial.Specular.b = (_float)_tstof(szMaterial_Specular[2]);
-					Pair->second->tMaterial.Specular.a = (_float)_tstof(szMaterial_Specular[3]);
-
-					Pair->second->tMaterial.Emissive.r = (_float)_tstof(szMaterial_Emissive[0]);
-					Pair->second->tMaterial.Emissive.g = (_float)_tstof(szMaterial_Emissive[1]);
-					Pair->second->tMaterial.Emissive.b = (_float)_tstof(szMaterial_Emissive[2]);
-					Pair->second->tMaterial.Emissive.a = (_float)_tstof(szMaterial_Emissive[3]);
-
-					Pair->second->tMaterial.Power = (_float)_tstof(szMaterial_Power);
+					Pair->second->tMaterial = tMaterial;
 				}
 
 				if (fin.eof())

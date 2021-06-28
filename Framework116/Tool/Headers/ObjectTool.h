@@ -68,8 +68,8 @@ public:
 	afx_msg void OnLbnSelchangeList2();
 	afx_msg void OnLbnSelchangeList3();
 	afx_msg void OnBnClickedButton1();
-	afx_msg void OnBnClickedButton5();
-	afx_msg void OnBnClickedButton6();
+	afx_msg void OnBnClickedButton5();	//Save
+	afx_msg void OnBnClickedButton6();	//Load
 };
 
 #endif // !__OBJECT_PROTOTYPE_TOOL_H__
