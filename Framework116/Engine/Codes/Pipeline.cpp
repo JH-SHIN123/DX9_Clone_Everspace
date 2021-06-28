@@ -28,7 +28,9 @@ void CPipeline::Setup_WorldMatrix(
 	vUp.y *= pScale->y;
 	vLook.z *= pScale->z;
 
+
 	D3DXQUATERNION Quaternion;
+	//단위 사원수로 만들기
 	D3DXQuaternionNormalize(&Quaternion, &Quaternion);
 	_float4x4 matRot,matScale;
 	D3DXMatrixIdentity(&matScale);
@@ -36,10 +38,16 @@ void CPipeline::Setup_WorldMatrix(
 	matScale._11 = pScale->x;
 	matScale._22 = pScale->y;
 	matScale._33 = pScale->z;
+	//Yaw Y(Up)축회전 pitch X(Right)축 회전	roll Z(Look벡터)축 회전.
+	//쿼터니언 회전은 세축을 한번에 계산하기 때문에 따로 나누어져있지 않다
+	//짐벌락이 일어나지 않음.
 	D3DXQuaternionRotationYawPitchRoll(&Quaternion, pRotate->y,pRotate->x,pRotate->z);
+	//나온 쿼터니언을 회전행렬로 바꿔줌
 	D3DXMatrixRotationQuaternion(&matRot, &Quaternion);
+	//스*자
 	matScale *= matRot;
 	*pOut = matScale;
+	//이동
 	memcpy(&pOut->_41, pPosition, sizeof(_float3));
 
 	
@@ -122,6 +130,29 @@ void CPipeline::Setup_ProjectionMatrix(
 	*/
 	pOut->_34 = 1.f;
 	pOut->_44 = 0.f;
+}
+
+void CPipeline::Setup_OrthoMatrix(_float4x4* pOut, _float fWidth, _float fHeight, _float fNear, _float fFar)
+{
+	//원근투영과는 다르게 월드의 Z 를 반영하지
+	//않습니다. (Far와 Near을 0,1 의 범위로
+	//변환하는 과정은 없다는 뜻입니다.)
+
+	//때문에 Z 는 고정값으로 
+	//Far = 1
+	//Near = 0 
+	//으로 삼도록 합니다.
+	D3DXMatrixIdentity(pOut);
+
+	float w = 2.f / fWidth;
+	float h = 2.f / fHeight;
+	float a = 1.f; //1.f / (fFar - fNear);
+	float b = 0.f; //-fNear * a;
+
+	pOut->_11 = w;
+	pOut->_22 = h;
+	pOut->_33 = a;
+	pOut->_43 = b;
 }
 
 void CPipeline::Setup_StateMatrix(

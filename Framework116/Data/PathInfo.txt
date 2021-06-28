@@ -1,0 +1,2 @@
+..\..\Resources\Player\Player%d.png|Player|NORMAL|3
+..\..\Resources\Skybox\Skybox%d.dds|Skybox|CUBE|1

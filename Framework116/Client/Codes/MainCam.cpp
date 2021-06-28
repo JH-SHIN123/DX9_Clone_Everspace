@@ -47,17 +47,6 @@ _uint CMainCam::Update_GameObject(_float fDeltaTime)
 _uint CMainCam::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CCamera::LateUpdate_GameObject(fDeltaTime);
-
-	//CPipeline::Setup_ProjectionMatrix(
-	//	&m_CameraDesc.matProj, /* 투영행렬 반환 */
-	//	m_CameraDesc.fFovY, /* FovY: Y축 시야각. */
-	//	m_CameraDesc.fAspect, /* Aspect 종횡비 */
-	//	m_CameraDesc.fNear, /* Near평면의 z값. 현재 카메라와의 깊이 */
-	//	m_CameraDesc.fFar /* Far평면의 z값. 현재 카메라와의 깊이 */);
-
-	//m_pDevice->SetTransform(D3DTS_VIEW, &m_CameraDesc.matView);
-	//m_pDevice->SetTransform(D3DTS_PROJECTION, &m_CameraDesc.matProj);
-	//
 	return _uint();
 }
 
@@ -76,15 +65,11 @@ _uint CMainCam::Movement(_float fDeltaTime)
 
 	/* 파란 벡터 */
 	_float3 vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
-	/*if (m_pPlayerTransform->Get_TransformDesc().vRotate.x > D3DXToRadian(45.f))
-		m_CameraDesc.vUp = { 0.f,-1.f,0.f };
-	else
-		m_CameraDesc.vUp = { 0.f,1.f,0.f };
-*/
+	
 	D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
 
 	/* 보라색 벡터 */
-	vPlayerLook *= -m_fDistanceFromTarget;
+
 
 	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
 	D3DXVec3Normalize(&vPlayerRight, &vPlayerRight);
@@ -97,29 +82,41 @@ _uint CMainCam::Movement(_float fDeltaTime)
 	/* 초록 벡터 */
 	/*_float3 vPreEye = m_CameraDesc.vEye;
 	_float3 vCurEye = vPlayerPos + (vPlayerLook);*/
-	m_CameraDesc.vEye = vPlayerPos + (vPlayerLook)*1.5f;
+	m_CameraDesc.vEye = vPlayerPos + (vPlayerLook)*-m_fDistanceFromTarget*1.5f;
+	
 	/* 바라볼 위치 */
-
+	//한 프레임전의 에임
 	_float3 vPreAim = m_CameraDesc.vAt;
-	_float3 vCurAim = vPlayerPos - vPlayerLook;
+	//이번에 바뀔 에임 
+	_float3 vCurAim = vPlayerPos - (vPlayerLook)*-m_fDistanceFromTarget*3.f;
+
 	D3DXVec3Normalize(&vPreAim, &vPreAim);
 	D3DXVec3Normalize(&vCurAim, &vCurAim);
 
+	//이동이 있을시만 계산
 	if (vPreAim != vCurAim)
 	{
-		D3DXQUATERNION QuatP = {vPreAim.x,vPreAim.y ,vPreAim.z ,0.f}
+		D3DXQUATERNION QuatP = {vPreAim.x,vPreAim.y ,vPreAim.z ,0.f} 
+			//w는 스칼라.축이니 0으로 주자
 		, QuatQ = { vCurAim.x,vCurAim.y,vCurAim.z,0.f };
 		D3DXQuaternionSlerp(&QuatQ,&QuatP,&QuatQ,0.00001f/*민감도*/);
+		//QuatQ에 두 사원수의 구면 선형보간,민감도가 커지면 카메라 회전이 많이 됨.
 		vCurAim = { QuatQ.x,QuatQ.y,
 			QuatQ.z };
 	}
+	//위치
 	vCurAim += vPlayerPos;
 	m_CameraDesc.vAt = vCurAim;
-	_float3 vPlayerUp = m_pPlayerTransform->Get_State(EState::Up);
-	
-	m_fCamAngle = -D3DXVec3Dot(&vCurAim, &vPlayerUp);
-	
 
+	//카메라 앵글값보정.
+	/*_float3 vPlayerUp = m_pPlayerTransform->Get_State(EState::Up);
+	m_fCamAngle = -D3DXVec3Dot(&vCurAim, &vPlayerUp);
+	*/
+	m_fCamAngle = 0.f;
+	//카메라 위치를 조금 위로
+	_float3 vCamDist;
+	D3DXVec3Cross(&vCamDist, &vPlayerLook, &vPlayerRight);
+	m_CameraDesc.vEye += vCamDist*m_fDistanceFromTarget;
 	return _uint();
 }
 

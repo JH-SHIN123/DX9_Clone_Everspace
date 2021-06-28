@@ -113,10 +113,16 @@ void CResourceTool::OnDropFiles(HDROP hDropInfo)
 			
 		}
 	}
+	if (!m_pVIBuffer)
+	{
 	m_pVIBuffer = CVIBuffer_RectTexture::Create(m_pManagement->Get_Device());
 	m_pVIBuffer->Ready_Component();
+	}
+	if (!m_pCube)
+	{
 	m_pCube = CVIBuffer_CubeTexture::Create(m_pDevice);
 	m_pCube->Ready_Component();
+	}
 	CDropFileList.SetHorizontalExtent(800);
 	UpdateData(FALSE);
 	CDialog::OnDropFiles(hDropInfo);
@@ -246,7 +252,8 @@ void CResourceTool::Render_Texture()
 	swprintf_s(szPathBuf, m_tPicturePathInfo.wstrFilePath, iSelect);
 
 	wstring strTexTag = m_tPicturePathInfo.wstrPrototypeTag.GetString();
-
+	if (m_pTex)
+		Safe_Release(m_pTex);
 	m_pTex = CTexture::Create(m_pManagement->Get_Device(), eType,
 		szPathBuf);
 
@@ -311,6 +318,8 @@ void CResourceTool::Render_Cube()
 	D3DXMatrixTranslation(&matTrans, 1.f, 1.f, 3.f);
 	matWorld = matScale*matRot*matTrans;
 	m_pDevice->SetTransform(D3DTS_WORLD, &matWorld);
+	if (m_pTex)
+		Safe_Release(m_pTex);
 
 	m_pTex = CTexture::Create(m_pManagement->Get_Device(), eType,
 		szPathBuf);
@@ -359,7 +368,7 @@ void CResourceTool::OnLbnSelchangeIndexList()
 void CResourceTool::OnBnClickedSaveButton()
 {
 	wofstream fout;
-	fout.open("../Data/PathInfo.txt");
+	fout.open("../../Data/PathInfo.txt");
 
 	if (!fout.fail())
 	{
@@ -369,13 +378,14 @@ void CResourceTool::OnBnClickedSaveButton()
 			switch (pPathInfo->dwResourceType)
 			{
 			case (DWORD)ETextureType::Cube:
-				swprintf_s(szType, L".dds");
+				swprintf_s(szType, L"CUBE");
 				break;
 			case (DWORD)ETextureType::Normal:
-				swprintf_s(szType, L".png");
+				swprintf_s(szType, L"NORMAL");
 				break;
 			}
-			fout << pPathInfo->wstrFilePath << "|" << pPathInfo->wstrPrototypeTag << "|" << szType << "|" << pPathInfo->dwTextureCount << endl;
+			fout << pPathInfo->wstrFilePath.GetString() << "|" << pPathInfo->wstrPrototypeTag.GetString()
+				<< "|" << szType << "|" << pPathInfo->dwTextureCount << endl;
 		}
 		fout.close();
 	}
@@ -385,13 +395,23 @@ void CResourceTool::OnBnClickedSaveButton()
 
 void CResourceTool::OnBnClickedLoadButton()
 {
+	if (!m_pManagement)
+	{
+	m_pManagement = CManagement::Get_Instance();
+	m_pManagement->AddRef();
+	}
+	if (!m_pDevice)
+	{
+	m_pDevice = CManagement::Get_Instance()->Get_Device();
+	m_pDevice->AddRef();
+	}
 	CDropFileList.ResetContent();
 	for (auto& pPathInfo : m_ListResource)
 		Safe_Delete(pPathInfo);
 	m_ListResource.clear();
 
 	wifstream fin;
-	fin.open("../Data/PathInfo.txt");
+	fin.open("../../Data/PathInfo.txt");
 
 	if (!fin.fail())
 	{
@@ -413,9 +433,9 @@ void CResourceTool::OnBnClickedLoadButton()
 			PASSDATA_RESOURCE* pPathInfo = new PASSDATA_RESOURCE;
 			pPathInfo->wstrFilePath = szFilePath;
 			pPathInfo->wstrPrototypeTag = szPrototypeTag;
-			if(szType == L".png")
-			pPathInfo->dwResourceType = (_uint)ETextureType::Normal;
-			else if (szType == L".dds")
+			if(!lstrcmp(szType,L"NORMAL"))
+				pPathInfo->dwResourceType = (_uint)ETextureType::Normal;
+			else if (!lstrcmp(szType, L"CUBE"))
 				pPathInfo->dwResourceType = (_uint)ETextureType::Cube;
 			pPathInfo->dwTextureCount = _ttoi(szCount);
 			m_ListResource.emplace_back(pPathInfo);
@@ -424,6 +444,62 @@ void CResourceTool::OnBnClickedLoadButton()
 			CDropFileList.AddString(wstrPathCombine.c_str());
 		}
 		fin.close();
+		if (!m_pVIBuffer)
+		{
+			m_pVIBuffer = CVIBuffer_RectTexture::Create(m_pManagement->Get_Device());
+			m_pVIBuffer->Ready_Component();
+		}
+		if (!m_pCube)
+		{
+			m_pCube = CVIBuffer_CubeTexture::Create(m_pDevice);
+			m_pCube->Ready_Component();
+		}
+		for (auto& pPathInfo : m_ListResource)
+		{
+			ETextureType eType = ETextureType::Normal;
+			switch (pPathInfo->dwResourceType)
+			{
+			case (DWORD)ETextureType::Cube:
+				eType = ETextureType::Cube;
+				break;
+			case (DWORD)ETextureType::Normal:
+				eType = ETextureType::Normal;
+				break;
+			}
+			TCHAR szType[32] = L"";
+			switch (pPathInfo->dwResourceType)
+			{
+			case (DWORD)ETextureType::Cube:
+				swprintf_s(szType, L".dds");
+				break;
+			case (DWORD)ETextureType::Normal:
+				swprintf_s(szType, L".png");
+				break;
+			}
+			wstring wstrTag = L"Component_Texture_";
+			wstrTag += pPathInfo->wstrPrototypeTag;
+			wstrTag += L"%d";
+			wstrTag += szType;
+			TCHAR szTagBuf[MAX_PATH] = {};
+			TCHAR szPathBuf[MAX_PATH] = {};
+			for (int i = 0; i < pPathInfo->dwTextureCount; i++)
+			{
+				swprintf_s(szTagBuf, wstrTag.c_str(), i);
+				swprintf_s(szPathBuf, pPathInfo->wstrFilePath, i);
+				if (FAILED(m_pManagement->Add_Component_Prototype(
+					EResourceType::NonStatic,
+					szTagBuf, CTexture::Create(m_pManagement->Get_Device()
+						, eType, szPathBuf, pPathInfo->dwTextureCount
+					))))
+				{
+					wstring Err = L"Failed To Add " + wstrTag;
+					PRINT_LOG(L"Error", Err.c_str());
+					return;
+				}
+
+			}
+		}
+		CDropFileList.SetHorizontalExtent(800);
 		CDropFileList.SetHorizontalExtent(800);
 		UpdateData(FALSE);
 	}

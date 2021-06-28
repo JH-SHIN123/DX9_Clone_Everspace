@@ -129,22 +129,6 @@ void CPlayer::OffSet()
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
-	//// Mouse Rotate
-	//GetCursorPos(&m_tCurCursorPos);
-	//ScreenToClient(g_hWnd, &m_tCurCursorPos);
-
-	//// 이전 프레임과 현재프레임의 마우스 이동거리 구하기
-	//_float2 tCenter = { WINCX / 2.f,WINCY / 2.f};
-	//_float2 vGap = { float(m_tCurCursorPos.x - tCenter.x) ,
-	//	float(m_tCurCursorPos.y - tCenter.y) };
-
-	//m_tPrevCursorPos = m_tCurCursorPos;
-
-	//float dps = 100.f;
-
-	/*m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * dps);
-	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * dps);*/
-
 	
 	POINT pt;
 	GetCursorPos(&pt);
