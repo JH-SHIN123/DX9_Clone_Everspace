@@ -49,14 +49,8 @@ public:
 	
 	map<CString, PASSDATA_OBJECT*> m_mapObjectData;
 	D3DMATERIAL9 m_tMaterial;
-	/*
-	
-	CString wstrPrototypeTag; = m_wstrObjectPrototypeTag
-	CString wstrPrototypeTag_Mesh; = m_wstrComponentProtoType_Tag
-	//
-	*/
 
-	// key tool에서 구별
+	// key : tool에서 구별
 	// value 순서 : ObjectPrototype > 매쉬 > 머테리얼
 
 
