@@ -180,6 +180,7 @@ CGameObject * CDummy_Mon::Clone(void * pArg/* = nullptr*/)
 		Safe_Release(pClone);
 	}
 
+	//
 	return pClone;
 }
 
