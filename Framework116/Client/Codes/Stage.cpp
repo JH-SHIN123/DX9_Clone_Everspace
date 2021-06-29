@@ -28,7 +28,37 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_UI(L"Layer_UI", 0.f, 0.f)))
+	UI_DESC uiDesc;
+	uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
+	uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
+	if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
+		return E_FAIL;
+
+	// 우주에서 태양광을 표현하기 위해선
+	// 포인트라이트 혹은 스포트라이트가 더 어울릴듯
+	LIGHT_DESC lightDesc;
+	lightDesc.eLightType = ELightType::Directional;
+	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
+	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.iLightIndex = 0;
+	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
+		return E_FAIL;
+
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
+	pSystemDesc.iNumParticles = 500;
+	pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
+	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
+	if(FAILED(Add_Layer_ExplosionSystem(L"Layer_ExplosionSystem", &pSystemDesc)))
+		return E_FAIL;
+
+	pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
+	pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 100.f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+	if (FAILED(Add_Layer_LaserSystem(L"Layer_LaserSystem", &pSystemDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -37,6 +67,19 @@ HRESULT CStage::Ready_Scene()
 _uint CStage::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
+
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	{
+		PARTICLESYSTEM_DESC pSystemDesc;
+		pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
+		pSystemDesc.iNumParticles = 500;
+		pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
+		pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
+		pSystemDesc.tResetAttribute.fLifeTime = 2.f;
+		if (FAILED(Add_Layer_ExplosionSystem(L"Layer_Particle_Explosion", &pSystemDesc)))
+			return E_FAIL;
+
+	}
 
 	return _uint();
 }
@@ -83,8 +126,6 @@ HRESULT CStage::Add_Layer_Cam(const wstring & LayerTag)
 	CameraDesc.fAspect = (_float)WINCX / WINCY;
 	CameraDesc.fNear = 1.f;
 	CameraDesc.fFar = 1000.f;
-	CameraDesc.iWinCx = WINCX;
-	CameraDesc.iWinCy = WINCY;
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
@@ -156,21 +197,60 @@ HRESULT CStage::Add_Layer_Skybox(const wstring& LayerTag)
 	return S_OK;
 }
 
-HRESULT CStage::Add_Layer_UI(const wstring& LayerTag, const float fWidth, const float fHeight)
+HRESULT CStage::Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc)
 {
-	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition.x = 3.f;
-	TransformDesc.vPosition.z = 3.f;
-	TransformDesc.vScale.x = 5.f;
-	TransformDesc.vScale.y = 5.f;
-
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
 		L"GameObject_UI",
 		LayerTag,
-		&TransformDesc)))
+		(void*)pUIDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Light(const wstring& LayerTag, const LIGHT_DESC* pLightDesc)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_DirectionalLight",
+		LayerTag,
+		(void*)pLightDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Directional Light In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_ExplosionSystem(const wstring& LayerTag, const PARTICLESYSTEM_DESC* pParticleSystemDesc)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		LayerTag,
+		(void*)pParticleSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_LaserSystem(const wstring& LayerTag, const PARTICLESYSTEM_DESC* pParticleSystemDesc)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_LaserSystem",
+		LayerTag,
+		(void*)pParticleSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
 		return E_FAIL;
 	}
 

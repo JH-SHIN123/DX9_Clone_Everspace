@@ -22,7 +22,10 @@ private:
 	HRESULT Add_Layer_Monster(const wstring& LayerTag);
 	HRESULT Add_Layer_Grass(const wstring& LayerTag);
 	HRESULT Add_Layer_Skybox(const wstring& LayerTag);
-	HRESULT Add_Layer_UI(const wstring& LayerTag, const float fWidth, const float fHeight);
+	HRESULT Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc);
+	HRESULT Add_Layer_Light(const wstring& LayerTag, const LIGHT_DESC* pLightDesc);
+	HRESULT Add_Layer_ExplosionSystem(const wstring& LayerTag, const PARTICLESYSTEM_DESC* pParticleSystemDesc);
+	HRESULT Add_Layer_LaserSystem(const wstring& LayerTag, const PARTICLESYSTEM_DESC* pParticleSystemDesc);
 
 public:
 	static CStage* Create(LPDIRECT3DDEVICE9 pDevice);
