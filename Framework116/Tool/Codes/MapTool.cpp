@@ -95,8 +95,6 @@ BEGIN_MESSAGE_MAP(CMapTool, CDialog)
 	ON_BN_CLICKED(IDC_DELETENAVI, &CMapTool::OnBnClickedDeletenavi)
 	ON_BN_CLICKED(IDC_LOADPROTOTYPE, &CMapTool::OnBnClickedLoadPrototype)
 	ON_LBN_SELCHANGE(IDC_CLONELIST3, &CMapTool::OnLbnSelchangeClonelist3)
-	ON_WM_KEYDOWN()
-	ON_WM_KEYUP()
 END_MESSAGE_MAP()
 
 // CMapTool 메시지 처리기입니다.

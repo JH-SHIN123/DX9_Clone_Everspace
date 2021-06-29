@@ -68,6 +68,8 @@ void CMainView::OnInitialUpdate()
 	int iGapY = (rcMain.bottom - rcView.bottom) + 1;
 	pMain->SetWindowPos(nullptr, 0, 0, MAINVIEW_WINCX + iGapX, MAINVIEW_WINCY + iGapY, PM_NOREMOVE);
 
+
+
 	// Init Device 
 	if (FAILED(m_pManagement->Ready_Game(m_hWnd, MAINVIEW_WINCX, MAINVIEW_WINCY, EDisplayMode::Win)))
 	{
@@ -278,13 +280,6 @@ void CMainView::OnDraw(CDC* pDC)
 	// 툴별로 씬을 나누자.
 	m_pManagement->Update_Game();
 	Invalidate(FALSE);
-}
-
-void CMainView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	Invalidate(FALSE);
-	CScrollView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
 

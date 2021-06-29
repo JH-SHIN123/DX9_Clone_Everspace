@@ -82,4 +82,5 @@ public:
 
 	// Player 월드행렬 얻어오기 위한 변수
 	CTransform* m_pPlayerTransform;
+
 };

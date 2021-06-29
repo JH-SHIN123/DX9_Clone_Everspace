@@ -55,6 +55,8 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	//// Setting Prev Cursor 
 	//GetCursorPos(&m_tPrevCursorPos);
 	//ScreenToClient(g_hWnd, &m_tPrevCursorPos);
+	m_pMapTool = (CMapTool*)::AfxGetApp()->m_pMainWnd;
+
 
 	return S_OK;
 }
@@ -63,13 +65,20 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
 	Movement(fDeltaTime);
-
+	if (m_pMapTool != nullptr)
+	{
+		m_pMapTool->UpdateData(TRUE);
+		m_pMapTool->m_fPositionX = m_pTransform->Get_TransformDesc().vPosition.x;
+		m_pMapTool->UpdateData(FALSE);
+	}
 	return m_pTransform->Update_Transform();
 }
 
 _uint CPlayer::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CGameObject::LateUpdate_GameObject(fDeltaTime);
+
+
 
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
 		return UPDATE_ERROR;

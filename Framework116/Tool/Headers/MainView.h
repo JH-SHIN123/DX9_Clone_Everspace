@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "MapTool.h"
 
 
 // CMainView 보기
@@ -34,8 +34,9 @@ private:
 	bool				m_bStart = true;
 	CManagement*		m_pManagement = nullptr;
 	LPDIRECT3DDEVICE9	m_pDevice = nullptr;
-public:
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+	// Dialog 변수
+	CMapTool*			m_pMapTool = nullptr;
 };
 
 

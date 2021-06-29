@@ -2,6 +2,7 @@
 #ifndef __PLAYER_H__
 
 #include "GameObject.h"
+#include "MapTool.h"
 
 USING(Engine)
 class CPlayer final : public CGameObject
@@ -33,6 +34,9 @@ private:
 private:
 	POINT m_tCurCursorPos = { 0,0 };
 	POINT m_tPrevCursorPos = { 0,0 };
+
+	// MapTool 과 통신할 변수
+	CMapTool* m_pMapTool = nullptr;
 
 };
 
