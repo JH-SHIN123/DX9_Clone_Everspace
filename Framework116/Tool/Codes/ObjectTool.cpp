@@ -28,12 +28,17 @@ CObjectTool::~CObjectTool()
 {
 	for (auto& Pair : m_mapObjectData)
 	{
-		//for (auto& Iter : Pair.second->vecPrototypeTag_Mesh)
-		//{
-		//	delete Iter;
-		//}
-
+		for (auto& Iter : Pair.second->vecPrototypeTag_Mesh)
+		{
+			Iter.ReleaseBuffer();
+			int i = 0;
+		}
+		Pair.second->vecPrototypeTag_Mesh.clear();
+		Pair.second->vecPrototypeTag_Mesh.shrink_to_fit();
 		
+		Pair.second->wstrPrototypeTag.ReleaseBuffer();
+		ZeroMemory(&Pair.second->tMaterial, sizeof(D3DMATERIAL9));
+
 		delete Pair.second;
 		Pair.second = nullptr;
 	}
@@ -412,7 +417,7 @@ void CObjectTool::OnBnClickedButton5() // Save
 
 				wstring wstrPower = to_wstring(_float(tMaterial.Power));
 
-				fout << "%" << wstrObjectPrototypeTag << "("
+				fout << wstrObjectPrototypeTag << "("
 					<< wstrObjectClassTag << ")"
 					<< wstrDiffuse	<< "?"
 					<< wstrAmbient	<< "?"
@@ -421,11 +426,13 @@ void CObjectTool::OnBnClickedButton5() // Save
 					<< wstrPower	<< "?" << endl;
 
 				wstring wstrComponentTags = L"";
+				wstring wstrComponentTags_Count = to_wstring(_uint(Pair.second->vecPrototypeTag_Mesh.size()));
 
 				for (auto& Iter : Pair.second->vecPrototypeTag_Mesh)
 					wstrComponentTags = wstrComponentTags.c_str() + Iter + L"|";
 
-				fout << wstrComponentTags << endl;
+				fout << wstrComponentTags_Count << L"|"
+					<< wstrComponentTags << endl;
 
 				/*
 
@@ -476,24 +483,40 @@ void CObjectTool::OnBnClickedButton6() // Load
 		fin.open(strPath.GetString());
 
 		// 읽는 순서
-		// 프로토타입 태그 > 머테리얼 정보들 > 
+		// 프로토타입 태그 > 클래스 이름 > 머테리얼 정보들 >
+		// 수많은 컴포넌트 태그들
 
 		if (!fin.fail())
 		{
-			TCHAR szObjectProtoTypeTag[MAX_PATH]	= L"";
-			TCHAR szMeshProtoTypeTag[MAX_PATH]		= L"";
-			TCHAR szMaterial_Diffuse[MAX_PATH][4]	= { L"" };
-			TCHAR szMaterial_Ambient[MAX_PATH][4]	= { L"" };
-			TCHAR szMaterial_Specular[MAX_PATH][4]	= { L"" };
-			TCHAR szMaterial_Emissive[MAX_PATH][4]	= { L"" };
-			TCHAR szMaterial_Power[MAX_PATH]		= L"";
+			//TCHAR szObjectProtoTypeTag_Start[MAX_PATH]	= L"";
+			TCHAR szObjectProtoTypeTag[MAX_PATH]		= L"";
+			TCHAR szObjectClassName[MAX_PATH]			= L"";
+			TCHAR szMaterial_Diffuse[MAX_PATH][4]		= { L"" };
+			TCHAR szMaterial_Ambient[MAX_PATH][4]		= { L"" };
+			TCHAR szMaterial_Specular[MAX_PATH][4]		= { L"" };
+			TCHAR szMaterial_Emissive[MAX_PATH][4]		= { L"" };
+			TCHAR szMaterial_Power[MAX_PATH]			= L"";
+			TCHAR szComponentTag_Count[MAX_PATH]		= L"";
+			TCHAR szComponentTag[MAX_PATH]				= L"";
 
-			D3DMATERIAL9 tMaterial;
 
 			while (true)
 			{
-				fin.getline(szObjectProtoTypeTag, MAX_PATH, L'?');
-				fin.getline(szMeshProtoTypeTag, MAX_PATH, L'?');
+				PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
+				pData->wstrPrototypeTag = L"";
+				ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
+				pData->vecPrototypeTag_Mesh.reserve(10);
+
+				//fin.getline(szObjectProtoTypeTag_Start, MAX_PATH, L'%');// % 건너 뛰고
+				fin.getline(szObjectProtoTypeTag, MAX_PATH, L'(');		// PrototypeTag
+				fin.getline(szObjectClassName, MAX_PATH, L')');			// ClassName
+
+				if (fin.eof())
+				{
+					delete pData;
+					pData = nullptr;
+					break;
+				}
 
 				for (_int i = 0; i < 4; ++i)
 					fin.getline(szMaterial_Diffuse[i], MAX_PATH, L'?');
@@ -504,45 +527,57 @@ void CObjectTool::OnBnClickedButton6() // Load
 				for (_int i = 0; i < 4; ++i)
 					fin.getline(szMaterial_Emissive[i], MAX_PATH, L'?');
 
-				fin.getline(szMaterial_Power, MAX_PATH);
+				fin.getline(szMaterial_Power, MAX_PATH, L'?');
 
-				auto Pair = m_mapObjectData.find(strFileName);
-				if (Pair != m_mapObjectData.end())
+				// 읽은 값 삽입
+				pData->wstrPrototypeTag = szObjectProtoTypeTag;
+
+				pData->tMaterial.Diffuse.r = _ttof(szMaterial_Diffuse[0]);
+				pData->tMaterial.Diffuse.g = _ttof(szMaterial_Diffuse[1]);
+				pData->tMaterial.Diffuse.b = _ttof(szMaterial_Diffuse[2]);
+				pData->tMaterial.Diffuse.a = _ttof(szMaterial_Diffuse[3]);
+
+				pData->tMaterial.Ambient.r = _ttof(szMaterial_Ambient[0]);
+				pData->tMaterial.Ambient.g = _ttof(szMaterial_Ambient[1]);
+				pData->tMaterial.Ambient.b = _ttof(szMaterial_Ambient[2]);
+				pData->tMaterial.Ambient.a = _ttof(szMaterial_Ambient[3]);
+
+				pData->tMaterial.Specular.r = _ttof(szMaterial_Specular[0]);
+				pData->tMaterial.Specular.g = _ttof(szMaterial_Specular[1]);
+				pData->tMaterial.Specular.b = _ttof(szMaterial_Specular[2]);
+				pData->tMaterial.Specular.a = _ttof(szMaterial_Specular[3]);
+
+				pData->tMaterial.Emissive.r = _ttof(szMaterial_Emissive[0]);
+				pData->tMaterial.Emissive.g = _ttof(szMaterial_Emissive[1]);
+				pData->tMaterial.Emissive.b = _ttof(szMaterial_Emissive[2]);
+				pData->tMaterial.Emissive.a = _ttof(szMaterial_Emissive[3]);
+
+				pData->tMaterial.Power = _ttof(szMaterial_Power);
+
+
+				// 카운트 만큼 읽어서 삽입
+				fin.getline(szComponentTag_Count, MAX_PATH, L'|');
+				_uint iComponentTag_Count = _ttoi(szComponentTag_Count);
+
+				for (_uint i = 0; i < iComponentTag_Count; ++i)
 				{
-					tMaterial.Diffuse.r = (_float)_tstof(szMaterial_Diffuse[0]);
-					tMaterial.Diffuse.g = (_float)_tstof(szMaterial_Diffuse[1]);
-					tMaterial.Diffuse.b = (_float)_tstof(szMaterial_Diffuse[2]);
-					tMaterial.Diffuse.a = (_float)_tstof(szMaterial_Diffuse[3]);
-
-					tMaterial.Ambient.r = (_float)_tstof(szMaterial_Ambient[0]);
-					tMaterial.Ambient.g = (_float)_tstof(szMaterial_Ambient[1]);
-					tMaterial.Ambient.b = (_float)_tstof(szMaterial_Ambient[2]);
-					tMaterial.Ambient.a = (_float)_tstof(szMaterial_Ambient[3]);
-
-					tMaterial.Specular.r = (_float)_tstof(szMaterial_Specular[0]);
-					tMaterial.Specular.g = (_float)_tstof(szMaterial_Specular[1]);
-					tMaterial.Specular.b = (_float)_tstof(szMaterial_Specular[2]);
-					tMaterial.Specular.a = (_float)_tstof(szMaterial_Specular[3]);
-
-					tMaterial.Emissive.r = (_float)_tstof(szMaterial_Emissive[0]);
-					tMaterial.Emissive.g = (_float)_tstof(szMaterial_Emissive[1]);
-					tMaterial.Emissive.b = (_float)_tstof(szMaterial_Emissive[2]);
-					tMaterial.Emissive.a = (_float)_tstof(szMaterial_Emissive[3]);
-
-					tMaterial.Power = (_float)_tstof(szMaterial_Power);
-
-					//Pair->first = strPath.GetString;
-					Pair->second->wstrPrototypeTag = szObjectProtoTypeTag;
-					//Pair->second->wstrPrototypeTag_Mesh = szMeshProtoTypeTag;
-					Pair->second->tMaterial = tMaterial;
+					fin.getline(szComponentTag, MAX_PATH, L'|');
+					pData->vecPrototypeTag_Mesh.emplace_back(szComponentTag);
 				}
 
-				if (fin.eof())
+				auto Pair = m_mapObjectData.find(szObjectProtoTypeTag); // ClassName으로 탐색
+
+				if (Pair != m_mapObjectData.end())
 					break;
+
+				m_mapObjectData.insert(make_pair(szObjectClassName, pData));
+				m_ListObject_Save.AddString(szObjectClassName);
+
 			}
 			fin.close();
 		}
 	}
+
 	UpdateData(FALSE);
 }
 
