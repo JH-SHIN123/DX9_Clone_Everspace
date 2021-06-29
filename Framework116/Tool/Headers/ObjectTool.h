@@ -46,6 +46,7 @@ public:
 	CString m_wstrComponentProtoType_Tag = _T(""); // L"Prototype" + m_wstrPickedComponentTag
 
 	CString m_wstrPickedObjectList_Tag_Save = _T(""); // 저장이 될 리스트의 ObjectTag
+	CString m_wstrPickedAddedComponentList_Tag_Save = _T(""); // 저장이 될 리스트의 Component Tags
 
 	map<CString, PASSDATA_OBJECT*> m_mapObjectData;
 	D3DMATERIAL9 m_tMaterial;
@@ -66,6 +67,7 @@ public:
 public:
 	afx_msg void OnBnClickedButton1();	// Data 수정용
 	afx_msg void OnBnClickedButton2();	// Add Component
+	afx_msg void OnBnClickedButton3();	// Delete This Component
 	afx_msg void OnBnClickedButton5();	// Save
 	afx_msg void OnBnClickedButton6();	// Load
 	afx_msg void OnBnClickedButton8();	// Add Object List

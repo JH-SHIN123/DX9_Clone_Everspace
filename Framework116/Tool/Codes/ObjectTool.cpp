@@ -28,10 +28,10 @@ CObjectTool::~CObjectTool()
 {
 	for (auto& Pair : m_mapObjectData)
 	{
-		for (auto& Iter : Pair.second->vecPrototypeTag_Mesh)
-		{
-			delete Iter;
-		}
+		//for (auto& Iter : Pair.second->vecPrototypeTag_Mesh)
+		//{
+		//	delete Iter;
+		//}
 
 		
 		delete Pair.second;
@@ -47,6 +47,7 @@ void CObjectTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_ListBoxObject);
 	DDX_Control(pDX, IDC_LIST2, m_ListAddedCom);
 	DDX_Control(pDX, IDC_LIST3, m_ListComponent);
+	DDX_Control(pDX, IDC_LIST4, m_ListObject_Save);
 	DDX_Text(pDX, IDC_EDIT1, m_wstrObjectPrototype_Tag); // 오브젝트 프로토타입 기입란
 	DDX_Text(pDX, IDC_EDIT14, m_wstrComponentProtoType_Tag);
 
@@ -79,7 +80,6 @@ void CObjectTool::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Text(pDX, IDC_EDIT19, m_tMaterial.Power);
 
-	DDX_Control(pDX, IDC_LIST4, m_ListObject_Save);
 }
 
 void CObjectTool::Setting_List_Box()
@@ -200,6 +200,7 @@ BEGIN_MESSAGE_MAP(CObjectTool, CDialog)
 	ON_LBN_SELCHANGE(IDC_LIST4, &CObjectTool::OnLbnSelchangeList4)	// Save Object List (Save Data)
 	ON_BN_CLICKED(IDC_BUTTON1, &CObjectTool::OnBnClickedButton1)	// Data 수정용
 	ON_BN_CLICKED(IDC_BUTTON2, &CObjectTool::OnBnClickedButton2)	// Add Component
+	ON_BN_CLICKED(IDC_BUTTON3, &CObjectTool::OnBnClickedButton3)	// Delete This Component
 	ON_BN_CLICKED(IDC_BUTTON5, &CObjectTool::OnBnClickedButton5)	// Save
 	ON_BN_CLICKED(IDC_BUTTON6, &CObjectTool::OnBnClickedButton6)	// Load
 	ON_BN_CLICKED(IDC_BUTTON8, &CObjectTool::OnBnClickedButton8)	// Add Object List
@@ -234,6 +235,7 @@ void CObjectTool::OnBnClickedButton2() // Add Component Button
 			m_ListAddedCom.AddString(iter->GetString());
 		}
 
+		Pair->second->vecPrototypeTag_Mesh.emplace_back(m_wstrComponentProtoType_Tag);
 		m_ListAddedCom.AddString(m_wstrComponentProtoType_Tag);
 		m_tMaterial = Pair->second->tMaterial;
 
@@ -241,6 +243,11 @@ void CObjectTool::OnBnClickedButton2() // Add Component Button
 
 
 	UpdateData(FALSE);
+}
+
+void CObjectTool::OnBnClickedButton3() // Delete This Component
+{
+
 }
 
 void CObjectTool::OnLbnSelchangeList1() // Object ListBox 
@@ -253,8 +260,8 @@ void CObjectTool::OnLbnSelchangeList1() // Object ListBox
 	m_ListBoxObject.GetText(iIndex, wstrTag);
 
 	m_wstrPickedObject = wstrTag;
-
 	m_wstrObjectPrototype_Tag = L"GameObject_" + m_wstrPickedObject;
+	ZeroMemory(&m_tMaterial, sizeof(D3DMATERIAL9));
 
 
 	//if (m_wstrPickedObject != L"GameObject_" + wstrTag)
@@ -286,6 +293,18 @@ void CObjectTool::OnLbnSelchangeList2()	// Object's Added Component ListBox
 {
 	UpdateData(TRUE);
 
+	//CString wstrTag = L"";
+	//m_ListAddedCom.GetText(iIndex, wstrTag);
+	_int iIndex = m_ListAddedCom.GetCurSel();
+
+	auto Pair = m_mapObjectData.find(m_wstrPickedObjectList_Tag_Save);
+	if (Pair != m_mapObjectData.end())
+	{
+		//auto Iter = Pair->second->vecPrototypeTag_Mesh;
+		m_wstrComponentProtoType_Tag = Pair->second->vecPrototypeTag_Mesh[iIndex];
+
+
+	}
 
 	UpdateData(FALSE);
 }
@@ -316,6 +335,8 @@ void CObjectTool::OnLbnSelchangeList4() // Save Object List (Save Data)
 	if (Pair != m_mapObjectData.end()) // 원하는 tag 선택
 	{
 		m_wstrPickedObjectList_Tag_Save = wstrTag;
+		m_wstrObjectPrototype_Tag = Pair->second->wstrPrototypeTag;
+		m_tMaterial = Pair->second->tMaterial;
 		m_ListAddedCom.ResetContent();
 
 		auto iter = Pair->second->vecPrototypeTag_Mesh.begin();
