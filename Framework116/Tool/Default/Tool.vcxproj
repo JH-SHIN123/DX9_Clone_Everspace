@@ -217,6 +217,7 @@
     <ClInclude Include="..\Headers\Skybox.h" />
     <ClInclude Include="..\Headers\Tool_Define.h" />
     <ClInclude Include="..\Headers\Tool_Enum.h" />
+    <ClInclude Include="..\Headers\UiTool.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -235,6 +236,7 @@
     <ClCompile Include="..\Codes\Player.cpp" />
     <ClCompile Include="..\Codes\ResourceTool.cpp" />
     <ClCompile Include="..\Codes\Skybox.cpp" />
+    <ClCompile Include="..\Codes\UiTool.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

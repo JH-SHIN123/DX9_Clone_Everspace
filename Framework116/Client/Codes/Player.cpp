@@ -242,3 +242,4 @@ void CPlayer::Free()
 
 	CGameObject::Free();
 }
+

@@ -103,6 +103,9 @@
     <ClInclude Include="..\Headers\ResourceTool.h">
       <Filter>00.View\03.ResourceTool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UiTool.h">
+      <Filter>00.View\04.UiTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\ResourceTool.cpp">
       <Filter>00.View\03.ResourceTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UiTool.cpp">
+      <Filter>00.View\04.UiTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
