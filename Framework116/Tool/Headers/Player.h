@@ -12,6 +12,9 @@ public:
 	virtual ~CPlayer() = default;
 
 public:
+	HRESULT ChangeMesh(const wstring& wstrMeshPrototypeTag);
+
+public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
 	virtual HRESULT Ready_GameObject(void * pArg = nullptr) override;
 	virtual _uint Update_GameObject(_float fDeltaTime) override;

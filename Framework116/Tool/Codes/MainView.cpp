@@ -18,6 +18,7 @@
 
 // CMainView
 HWND g_hWnd;
+bool g_IsMainViewInvalidate = true;
 
 IMPLEMENT_DYNCREATE(CMainView, CScrollView)
 
@@ -384,7 +385,8 @@ void CMainView::OnDraw(CDC* pDC)
 	// 툴별로 씬을 나누자.
 	m_pManagement->Update_Game();
 
-	Invalidate(FALSE);
+	if(g_IsMainViewInvalidate)
+		Invalidate(FALSE);
 }
 
 

@@ -3,7 +3,8 @@
 
 
 // CMainForm 폼 보기
-
+#include "MeshTool.h"
+#include "CollideTool.h"
 class CMainForm : public CFormView
 {
 	DECLARE_DYNCREATE(CMainForm)
@@ -27,6 +28,13 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButton_MeshTool();
+	afx_msg void OnBnClickedButton_CollideTool();
+
+public:
+	CMeshTool		m_MeshTool;
+	CCollideTool	m_CollideTool;
 };
 
 

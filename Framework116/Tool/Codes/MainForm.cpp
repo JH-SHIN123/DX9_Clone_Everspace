@@ -25,7 +25,23 @@ void CMainForm::DoDataExchange(CDataExchange* pDX)
 	CFormView::DoDataExchange(pDX);
 }
 
+void CMainForm::OnBnClickedButton_MeshTool()
+{
+	if (nullptr == m_MeshTool.GetSafeHwnd())
+		m_MeshTool.Create(IDD_CMeshTool);
+	m_MeshTool.ShowWindow(SW_SHOW);
+}
+
+void CMainForm::OnBnClickedButton_CollideTool()
+{
+	if (nullptr == m_CollideTool.GetSafeHwnd())
+		m_CollideTool.Create(IDD_CCollideTool);
+	m_CollideTool.ShowWindow(SW_SHOW);
+}
+
 BEGIN_MESSAGE_MAP(CMainForm, CFormView)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMainForm::OnBnClickedButton_MeshTool)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMainForm::OnBnClickedButton_CollideTool)
 END_MESSAGE_MAP()
 
 

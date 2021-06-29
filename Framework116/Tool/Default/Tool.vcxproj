@@ -196,11 +196,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Axis.h" />
+    <ClInclude Include="..\Headers\CollideTool.h" />
     <ClInclude Include="..\Headers\MainCam.h" />
     <ClInclude Include="..\Headers\MainForm.h" />
     <ClInclude Include="..\Headers\MainFrm.h" />
     <ClInclude Include="..\Headers\MainScene.h" />
     <ClInclude Include="..\Headers\MainView.h" />
+    <ClInclude Include="..\Headers\MeshTool.h" />
     <ClInclude Include="..\Headers\MiniView.h" />
     <ClInclude Include="..\Headers\Player.h" />
     <ClInclude Include="..\Headers\Skybox.h" />
@@ -214,8 +216,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Axis.cpp" />
+    <ClCompile Include="..\Codes\CollideTool.cpp" />
     <ClCompile Include="..\Codes\MainCam.cpp" />
     <ClCompile Include="..\Codes\MainScene.cpp" />
+    <ClCompile Include="..\Codes\MeshTool.cpp" />
     <ClCompile Include="..\Codes\MiniView.cpp" />
     <ClCompile Include="..\Codes\MainForm.cpp" />
     <ClCompile Include="..\Codes\MainFrm.cpp" />

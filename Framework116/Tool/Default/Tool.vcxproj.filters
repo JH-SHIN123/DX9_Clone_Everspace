@@ -43,6 +43,15 @@
     <Filter Include="03.GameObject\03.Axis">
       <UniqueIdentifier>{1bdb2459-962e-45e7-ace9-8258842ece8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Dialog">
+      <UniqueIdentifier>{87cc1926-13aa-415f-bc34-21e9f8923c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Dialog\MeshTool">
+      <UniqueIdentifier>{e5eeac07-fae8-4887-8874-918bbdd6ed9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Dialog\CollideTool">
+      <UniqueIdentifier>{54142587-59ce-473c-8575-7308ebad7d47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -93,6 +102,12 @@
     <ClInclude Include="..\Headers\Axis.h">
       <Filter>03.GameObject\03.Axis</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\MeshTool.h">
+      <Filter>04.Dialog\MeshTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\CollideTool.h">
+      <Filter>04.Dialog\CollideTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -127,6 +142,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Axis.cpp">
       <Filter>03.GameObject\03.Axis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\MeshTool.cpp">
+      <Filter>04.Dialog\MeshTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\CollideTool.cpp">
+      <Filter>04.Dialog\CollideTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,32 @@ CPlayer::CPlayer(const CPlayer & other)
 {
 }
 
+HRESULT CPlayer::ChangeMesh(const wstring& wstrMeshPrototypeTag)
+{
+	// 기존꺼 해제
+	Safe_Release(m_pMesh);
+
+	// 메시 교체
+	auto iter_find = m_Components.find(L"Com_Mesh");
+	if (m_Components.end() != iter_find)
+	{
+		CComponent* pClone = m_pManagement->Clone_Component(EResourceType::Static, wstrMeshPrototypeTag);
+		if (nullptr == pClone)
+		{
+			PRINT_LOG(L"Error", L"Failed to Change Mesh");
+			return E_FAIL;
+		}
+
+		if (m_pMesh)
+		{
+			m_pMesh = (CMesh*)pClone;
+			Safe_AddRef(pClone);
+		}
+	}
+
+	return S_OK;
+}
+
 HRESULT CPlayer::Ready_GameObject_Prototype()
 {
 	CGameObject::Ready_GameObject_Prototype();
@@ -22,10 +48,11 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 {
 	CGameObject::Ready_GameObject(pArg);
 
+	// Default Player Mesh
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Mesh_BigShip",
+		L"Component_Mesh_Axis",
 		L"Com_Mesh",
 		(CComponent**)&m_pMesh)))
 	{
@@ -37,7 +64,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
-	TransformDesc.vScale = { 0.005f,0.005f,0.005f };
+	TransformDesc.vScale = { 0.5f,0.5f,0.5f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -50,9 +77,8 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	//// Setting Prev Cursor 
-	//GetCursorPos(&m_tPrevCursorPos);
-	//ScreenToClient(g_hWnd, &m_tPrevCursorPos);
+	// For.Com_Controller
+
 
 	return S_OK;
 }
