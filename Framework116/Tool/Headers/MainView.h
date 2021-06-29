@@ -28,6 +28,8 @@ protected:
 
 private:
 	HRESULT Ready_StaticResources();
+	HRESULT Ready_StageResources();
+
 	HRESULT Setup_DefaultSetting();
 
 private:

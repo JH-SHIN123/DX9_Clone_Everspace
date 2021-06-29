@@ -11,6 +11,11 @@
 #include "MainCam.h"
 #include "Axis.h"
 
+#pragma region Stage
+#include "Skybox.h"
+#pragma endregion
+
+
 // CMainView
 HWND g_hWnd;
 
@@ -83,6 +88,12 @@ void CMainView::OnInitialUpdate()
 		return;
 	}
 
+	if (FAILED(Ready_StageResources()))
+	{
+		PRINT_LOG(L"Error", L"Failed To Ready Static Resources");
+		return;
+	}
+
 	if (FAILED(Setup_DefaultSetting()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Setup Default Setting");
@@ -111,6 +122,16 @@ HRESULT CMainView::Ready_StaticResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_Axis */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_Axis",
+		CAxis::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Axis");
+		return E_FAIL;
+	}
+
 	/* For.GameObject_MainCam */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::Static,
@@ -121,14 +142,26 @@ HRESULT CMainView::Ready_StaticResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_UI */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::Static,
-		L"GameObject_Axis",
-		CAxis::Create(m_pDevice))))
+		L"GameObject_UI",
+		CUI::Create(m_pDevice))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Axis");
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
 		return E_FAIL;
 	}
+
+	/* For.GameObject_DirectionalLight */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_DirectionalLight",
+		CLight::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_DirectionalLight");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 #pragma region Components
@@ -201,7 +234,107 @@ HRESULT CMainView::Ready_StaticResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Axis");
 		return E_FAIL;
 	}
+
+	/* For.Component_CollideSphere */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_CollideSphere",
+		CCollideSphere::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_CollideSphere");
+		return E_FAIL;
+	}
+
+	/* For.Component_Controller */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Controller",
+		CController::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Controller");
+		return E_FAIL;
+	}
 #pragma endregion
+
+	return S_OK;
+}
+
+HRESULT CMainView::Ready_StageResources()
+{
+#pragma region GameObjects
+	/* For.GameObject_Skybox */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Skybox",
+		CSkybox::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
+		return E_FAIL;
+	}
+
+#pragma endregion
+
+//#pragma region Components
+//	/* For.Component_VIBuffer_TerrainColor */
+//	if (FAILED(m_pManagement->Add_Component_Prototype(
+//		EResourceType::NonStatic,
+//		L"Component_VIBuffer_TerrainColor",
+//		CVIBuffer_TerrainColor::Create(m_pDevice, 129, 129))))
+//	{
+//		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_TerrainColor");
+//		return E_FAIL;
+//	}
+//
+//	/* For.Component_VIBuffer_TerrainTexture */
+//	if (FAILED(m_pManagement->Add_Component_Prototype(
+//		EResourceType::NonStatic,
+//		L"Component_VIBuffer_TerrainTexture",
+//		CVIBuffer_TerrainTexture::Create(m_pDevice, 129, 129))))
+//	{
+//		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_TerrainTexture");
+//		return E_FAIL;
+//	}
+//
+//	/* For.Component_Texture_Terrain */
+//	if (FAILED(m_pManagement->Add_Component_Prototype(
+//		EResourceType::NonStatic,
+//		L"Component_Texture_Terrain",
+//		CTexture::Create(m_pDevice, ETextureType::Normal, L"../Resources/Terrain/Terrain%d.png"))))
+//	{
+//		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Terrain");
+//		return E_FAIL;
+//	}
+//
+//	/* For.Component_Texture_Monster */
+//	if (FAILED(m_pManagement->Add_Component_Prototype(
+//		EResourceType::NonStatic,
+//		L"Component_Texture_Monster",
+//		CTexture::Create(m_pDevice, ETextureType::Cube, L"../Resources/Monster%d.dds", 2))))
+//	{
+//		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Monster");
+//		return E_FAIL;
+//	}
+//
+//	/* For.Component_Texture_Grass */
+//	if (FAILED(m_pManagement->Add_Component_Prototype(
+//		EResourceType::NonStatic,
+//		L"Component_Texture_Grass",
+//		CTexture::Create(m_pDevice, ETextureType::Normal, L"../Resources/BillboardGrass%d.png"))))
+//	{
+//		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Grass");
+//		return E_FAIL;
+//	}
+//
+//	/* For.Component_Texture_Skybox */
+//	if (FAILED(m_pManagement->Add_Component_Prototype(
+//		EResourceType::NonStatic,
+//		L"Component_Texture_Skybox",
+//		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Skybox%d.dds", 1))))
+//	{
+//		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
+//		return E_FAIL;
+//	}
+//#pragma endregion
 
 	return S_OK;
 }
@@ -209,11 +342,15 @@ HRESULT CMainView::Ready_StaticResources()
 HRESULT CMainView::Setup_DefaultSetting()
 {
 	// 조명 off
-	if (FAILED(m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Set Lighting false");
-		return E_FAIL;
-	}
+	m_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	m_pDevice->SetRenderState(D3DRS_SPECULARENABLE, false);
+
+
+	//if (FAILED(m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE)))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Set Lighting false");
+	//	return E_FAIL;
+	//}
 
 	///*
 	//D3DFILL_WIREFRAME: 색을 채우지말고 외곽선만 그려라.

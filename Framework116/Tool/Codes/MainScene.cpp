@@ -20,6 +20,16 @@ HRESULT CMainScene::Ready_Scene()
 	if (FAILED(Add_Layer_Axis(L"Layer_Axis")))
 		return E_FAIL;
 
+		// 우주에서 태양광을 표현하기 위해선
+	// 포인트라이트 혹은 스포트라이트가 더 어울릴듯
+	LIGHT_DESC lightDesc;
+	lightDesc.eLightType = ELightType::Directional;
+	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
+	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.iLightIndex = 0;
+	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -80,6 +90,21 @@ HRESULT CMainScene::Add_Layer_Axis(const wstring& LayerTag)
 		LayerTag)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Axis In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CMainScene::Add_Layer_Light(const wstring& LayerTag, const LIGHT_DESC* pLightDesc)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_DirectionalLight",
+		LayerTag,
+		(void*)pLightDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Directional Light In Layer");
 		return E_FAIL;
 	}
 
