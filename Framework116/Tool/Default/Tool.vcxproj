@@ -197,6 +197,7 @@
   <ItemGroup>
     <ClInclude Include="..\Headers\Axis.h" />
     <ClInclude Include="..\Headers\CollideTool.h" />
+    <ClInclude Include="..\Headers\CustomMesh.h" />
     <ClInclude Include="..\Headers\MainCam.h" />
     <ClInclude Include="..\Headers\MainForm.h" />
     <ClInclude Include="..\Headers\MainFrm.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\Headers\Tool_Define.h" />
     <ClInclude Include="..\Headers\Tool_Enum.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GeometryMesh.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -217,6 +219,8 @@
   <ItemGroup>
     <ClCompile Include="..\Codes\Axis.cpp" />
     <ClCompile Include="..\Codes\CollideTool.cpp" />
+    <ClCompile Include="..\Codes\CustomMesh.cpp" />
+    <ClCompile Include="..\Codes\GeometryMesh.cpp" />
     <ClCompile Include="..\Codes\MainCam.cpp" />
     <ClCompile Include="..\Codes\MainScene.cpp" />
     <ClCompile Include="..\Codes\MeshTool.cpp" />
@@ -226,6 +230,7 @@
     <ClCompile Include="..\Codes\MainView.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
     <ClCompile Include="..\Codes\Skybox.cpp" />
+    <ClCompile Include="..\Headers\MESHTOOL.CPP" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

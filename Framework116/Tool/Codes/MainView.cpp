@@ -7,9 +7,12 @@
 #include <MainFrm.h>
 #include "MainScene.h"
 
+#pragma region Static
 #include "Player.h"
 #include "MainCam.h"
 #include "Axis.h"
+#include "GeometryMesh.h"
+#pragma endregion
 
 #pragma region Stage
 #include "Skybox.h"
@@ -233,6 +236,46 @@ HRESULT CMainView::Ready_StaticResources()
 		CMesh::Create(m_pDevice, L"../../Resources/axis.X", L"../../Resources/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Axis");
+		return E_FAIL;
+	}
+
+	/* For.Component_GeoMesh_Cube */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Cube",
+		CGeometryMesh::Create(m_pDevice,EGeoMeshType::Cube))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Cube");
+		return E_FAIL;
+	}
+
+	/* For.Component_GeoMesh_Sphere */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Sphere",
+		CGeometryMesh::Create(m_pDevice, EGeoMeshType::Sphere))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Sphere");
+		return E_FAIL;
+	}
+
+	/* For.Component_GeoMesh_Cylinder */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Cylinder",
+		CGeometryMesh::Create(m_pDevice, EGeoMeshType::Cylinder))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Cylinder");
+		return E_FAIL;
+	}
+
+	/* For.Component_GeoMesh_Torus */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Torus",
+		CGeometryMesh::Create(m_pDevice, EGeoMeshType::Torus))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Torus");
 		return E_FAIL;
 	}
 

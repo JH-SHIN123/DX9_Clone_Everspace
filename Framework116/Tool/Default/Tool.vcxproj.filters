@@ -52,6 +52,15 @@
     <Filter Include="04.Dialog\CollideTool">
       <UniqueIdentifier>{54142587-59ce-473c-8575-7308ebad7d47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Component">
+      <UniqueIdentifier>{ec2e06fb-4813-4b9f-be9e-647d4caa35c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Component\00.CustomMesh">
+      <UniqueIdentifier>{13ea04ac-89e4-4aea-96bc-80b0c6da5ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Component\01.GeometryMesh">
+      <UniqueIdentifier>{668172cc-919d-490b-8246-1cfcedc875cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -108,6 +117,12 @@
     <ClInclude Include="..\Headers\CollideTool.h">
       <Filter>04.Dialog\CollideTool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\CustomMesh.h">
+      <Filter>04.Component\00.CustomMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryMesh.h">
+      <Filter>04.Component\01.GeometryMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -148,6 +163,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\CollideTool.cpp">
       <Filter>04.Dialog\CollideTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\CustomMesh.cpp">
+      <Filter>04.Component\00.CustomMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Headers\MESHTOOL.CPP">
+      <Filter>04.Dialog\MeshTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GeometryMesh.cpp">
+      <Filter>04.Component\01.GeometryMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

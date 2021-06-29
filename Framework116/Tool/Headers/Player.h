@@ -30,7 +30,8 @@ public:
 	virtual void Free() override;
 
 private:
-	CMesh*  m_pMesh = nullptr;
+	class CGeometryMesh*  m_pMesh = nullptr;
+	//class CGeometryMesh* m_pGeoMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
 
 private:

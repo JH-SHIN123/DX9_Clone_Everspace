@@ -20,4 +20,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CListBox m_listbox_InstallableMesh;
+	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	virtual BOOL OnInitDialog();
+	virtual INT_PTR DoModal();
+	afx_msg void OnLbnSelchangeList_SelectContent();
 };

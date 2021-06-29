@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "..\Headers\Player.h"
+#include "GeometryMesh.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -13,25 +14,29 @@ CPlayer::CPlayer(const CPlayer & other)
 
 HRESULT CPlayer::ChangeMesh(const wstring& wstrMeshPrototypeTag)
 {
-	// 기존꺼 해제
+	// 기존꺼 m_pMesh 레퍼런스 카운팅 반납
 	Safe_Release(m_pMesh);
 
 	// 메시 교체
 	auto iter_find = m_Components.find(L"Com_Mesh");
 	if (m_Components.end() != iter_find)
 	{
-		CComponent* pClone = m_pManagement->Clone_Component(EResourceType::Static, wstrMeshPrototypeTag);
+		// 실질적 메모리 해제 (클론삭제)
+		Safe_Release(iter_find->second);
+
+		// 새로운거로 변경
+		CComponent* pClone = (CComponent*)m_pManagement->Clone_Component(EResourceType::Static, wstrMeshPrototypeTag);
 		if (nullptr == pClone)
 		{
 			PRINT_LOG(L"Error", L"Failed to Change Mesh");
 			return E_FAIL;
 		}
 
-		if (m_pMesh)
-		{
-			m_pMesh = (CMesh*)pClone;
-			Safe_AddRef(pClone);
-		}
+		// 원본데이터(m_Components) 포인터지정
+		iter_find->second = pClone;
+
+		m_pMesh = (CGeometryMesh*)pClone;
+		Safe_AddRef(pClone);
 	}
 
 	return S_OK;
@@ -52,7 +57,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Mesh_Axis",
+		L"Component_GeoMesh_Cube",
 		L"Com_Mesh",
 		(CComponent**)&m_pMesh)))
 	{
@@ -106,7 +111,9 @@ _uint CPlayer::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pMesh->Render_Mesh();
+
+	if(m_pMesh)
+		m_pMesh->Render_Mesh();
 
 	return _uint();
 }
