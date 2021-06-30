@@ -185,6 +185,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 		}
 	}
 
+
 	return _uint();
 }
 
