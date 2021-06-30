@@ -111,10 +111,26 @@ HRESULT CLoad_Prototype::Load_PassData_Object_Static(const wstring & wstrObjectP
 	// 구별 할 클래스명
 	TCHAR szObjectClassName[MAX_PATH] = L"";
 	// 머테리얼 정보
-	TCHAR szMaterial_Diffuse[MAX_PATH][4] = { L"" };
-	TCHAR szMaterial_Ambient[MAX_PATH][4] = { L"" };
-	TCHAR szMaterial_Specular[MAX_PATH][4] = { L"" };
-	TCHAR szMaterial_Emissive[MAX_PATH][4] = { L"" };
+	TCHAR szMaterial_Diffuse_r[MAX_PATH] = L"";
+	TCHAR szMaterial_Diffuse_g[MAX_PATH] = L"";
+	TCHAR szMaterial_Diffuse_b[MAX_PATH] = L"";
+	TCHAR szMaterial_Diffuse_a[MAX_PATH] = L"";
+
+	TCHAR szMaterial_Ambient_r[MAX_PATH] = L"";
+	TCHAR szMaterial_Ambient_g[MAX_PATH] = L"";
+	TCHAR szMaterial_Ambient_b[MAX_PATH] = L"";
+	TCHAR szMaterial_Ambient_a[MAX_PATH] = L"";
+
+	TCHAR szMaterial_Specular_r[MAX_PATH] = L"";
+	TCHAR szMaterial_Specular_g[MAX_PATH] = L"";
+	TCHAR szMaterial_Specular_b[MAX_PATH] = L"";
+	TCHAR szMaterial_Specular_a[MAX_PATH] = L"";
+
+	TCHAR szMaterial_Emissive_r[MAX_PATH] = L"";
+	TCHAR szMaterial_Emissive_g[MAX_PATH] = L"";
+	TCHAR szMaterial_Emissive_b[MAX_PATH] = L"";
+	TCHAR szMaterial_Emissive_a[MAX_PATH] = L"";
+
 	TCHAR szMaterial_Power[MAX_PATH] = L"";
 	// 컴포넌트의 개수
 	TCHAR szComponentTag_Count[MAX_PATH] = L"";
@@ -138,39 +154,50 @@ HRESULT CLoad_Prototype::Load_PassData_Object_Static(const wstring & wstrObjectP
 			break;
 		}
 
-		for (_int i = 0; i < 4; ++i)
-			fin.getline(szMaterial_Diffuse[i], MAX_PATH, L'?');
-		for (_int i = 0; i < 4; ++i)
-			fin.getline(szMaterial_Ambient[i], MAX_PATH, L'?');
-		for (_int i = 0; i < 4; ++i)
-			fin.getline(szMaterial_Specular[i], MAX_PATH, L'?');
-		for (_int i = 0; i < 4; ++i)
-			fin.getline(szMaterial_Emissive[i], MAX_PATH, L'?');
+		fin.getline(szMaterial_Diffuse_r, MAX_PATH, L'?');
+		fin.getline(szMaterial_Diffuse_g, MAX_PATH, L'?');
+		fin.getline(szMaterial_Diffuse_b, MAX_PATH, L'?');
+		fin.getline(szMaterial_Diffuse_a, MAX_PATH, L'?');
+
+		fin.getline(szMaterial_Ambient_r, MAX_PATH, L'?');
+		fin.getline(szMaterial_Ambient_g, MAX_PATH, L'?');
+		fin.getline(szMaterial_Ambient_b, MAX_PATH, L'?');
+		fin.getline(szMaterial_Ambient_a, MAX_PATH, L'?');
+
+		fin.getline(szMaterial_Specular_r, MAX_PATH, L'?');
+		fin.getline(szMaterial_Specular_g, MAX_PATH, L'?');
+		fin.getline(szMaterial_Specular_b, MAX_PATH, L'?');
+		fin.getline(szMaterial_Specular_a, MAX_PATH, L'?');
+
+		fin.getline(szMaterial_Emissive_r, MAX_PATH, L'?');
+		fin.getline(szMaterial_Emissive_g, MAX_PATH, L'?');
+		fin.getline(szMaterial_Emissive_b, MAX_PATH, L'?');
+		fin.getline(szMaterial_Emissive_a, MAX_PATH, L'?');
 
 		fin.getline(szMaterial_Power, MAX_PATH, L'?');
 
 		// 읽은 값 삽입
 		pData->wstrPrototypeTag_Object = szObjectProtoTypeTag;
 
-		pData->tMaterial.Diffuse.r = _ttof(szMaterial_Diffuse[0]);
-		pData->tMaterial.Diffuse.g = _ttof(szMaterial_Diffuse[1]);
-		pData->tMaterial.Diffuse.b = _ttof(szMaterial_Diffuse[2]);
-		pData->tMaterial.Diffuse.a = _ttof(szMaterial_Diffuse[3]);
+		pData->tMaterial.Diffuse.r = _ttof(szMaterial_Diffuse_r);
+		pData->tMaterial.Diffuse.g = _ttof(szMaterial_Diffuse_g);
+		pData->tMaterial.Diffuse.b = _ttof(szMaterial_Diffuse_b);
+		pData->tMaterial.Diffuse.a = _ttof(szMaterial_Diffuse_a);
 
-		pData->tMaterial.Ambient.r = _ttof(szMaterial_Ambient[0]);
-		pData->tMaterial.Ambient.g = _ttof(szMaterial_Ambient[1]);
-		pData->tMaterial.Ambient.b = _ttof(szMaterial_Ambient[2]);
-		pData->tMaterial.Ambient.a = _ttof(szMaterial_Ambient[3]);
+		pData->tMaterial.Ambient.r = _ttof(szMaterial_Ambient_r);
+		pData->tMaterial.Ambient.g = _ttof(szMaterial_Ambient_g);
+		pData->tMaterial.Ambient.b = _ttof(szMaterial_Ambient_b);
+		pData->tMaterial.Ambient.a = _ttof(szMaterial_Ambient_a);
 
-		pData->tMaterial.Specular.r = _ttof(szMaterial_Specular[0]);
-		pData->tMaterial.Specular.g = _ttof(szMaterial_Specular[1]);
-		pData->tMaterial.Specular.b = _ttof(szMaterial_Specular[2]);
-		pData->tMaterial.Specular.a = _ttof(szMaterial_Specular[3]);
+		pData->tMaterial.Specular.r = _ttof(szMaterial_Specular_r);
+		pData->tMaterial.Specular.g = _ttof(szMaterial_Specular_g);
+		pData->tMaterial.Specular.b = _ttof(szMaterial_Specular_b);
+		pData->tMaterial.Specular.a = _ttof(szMaterial_Specular_a);
 
-		pData->tMaterial.Emissive.r = _ttof(szMaterial_Emissive[0]);
-		pData->tMaterial.Emissive.g = _ttof(szMaterial_Emissive[1]);
-		pData->tMaterial.Emissive.b = _ttof(szMaterial_Emissive[2]);
-		pData->tMaterial.Emissive.a = _ttof(szMaterial_Emissive[3]);
+		pData->tMaterial.Emissive.r = _ttof(szMaterial_Emissive_r);
+		pData->tMaterial.Emissive.g = _ttof(szMaterial_Emissive_g);
+		pData->tMaterial.Emissive.b = _ttof(szMaterial_Emissive_b);
+		pData->tMaterial.Emissive.a = _ttof(szMaterial_Emissive_a);
 
 		pData->tMaterial.Power = _ttof(szMaterial_Power);
 
