@@ -183,10 +183,6 @@ _uint CPlayer::Movement(_float fDeltaTime)
 			m_pManagement->Get_GameObjectList(L"Layer_Monster"))) {
 			PRINT_LOG(L"", L"Pick!");
 		}
-
-		//float fDist_Player = 0.f;
-		//CCollision::PickingObject(fDist_Player, g_hWnd, WINCX, WINCY, m_pDevice,
-		//	m_pManagement->Get_GameObjectList(L"Layer_Player"));
 	}
 
 	return _uint();

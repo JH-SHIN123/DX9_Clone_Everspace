@@ -96,14 +96,14 @@ _uint CMainCam::KeyInput(_float fDeltaTime)
 	{
 		m_fDistanceFromTarget += 10.f * fDeltaTime;
 	}
-	if (GetAsyncKeyState(VK_NUMPAD8) & 0x8000)
-	{
-		m_fCamAngle += D3DXToRadian(90.f) * fDeltaTime;
-	}
-	if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000)
-	{
-		m_fCamAngle += D3DXToRadian(90.f) * -fDeltaTime;
-	}
+	//if (GetAsyncKeyState(VK_NUMPAD8) & 0x8000)
+	//{
+	//	m_fCamAngle += D3DXToRadian(90.f) * fDeltaTime;
+	//}
+	//if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000)
+	//{
+	//	m_fCamAngle += D3DXToRadian(90.f) * -fDeltaTime;
+	//}
 
 	return _uint();
 }
