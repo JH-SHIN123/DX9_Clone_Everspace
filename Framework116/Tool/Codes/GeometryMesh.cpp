@@ -46,6 +46,8 @@ HRESULT CGeometryMesh::Ready_Component_Prototype()
 
 HRESULT CGeometryMesh::Ready_Component(void* pArg)
 {
+	CComponent::Ready_Component(pArg);
+
 	return S_OK;
 }
 
@@ -74,7 +76,7 @@ CComponent* CGeometryMesh::Clone(void* pArg)
 	CGeometryMesh* pClone = new CGeometryMesh(*this);
 	if (FAILED(pClone->Ready_Component(pArg)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Clone Texture");
+		PRINT_LOG(L"Error", L"Failed To Clone CGeometryMesh");
 		Safe_Release(pClone);
 	}
 
