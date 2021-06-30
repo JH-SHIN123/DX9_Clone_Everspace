@@ -402,19 +402,40 @@ void CMapTool::OnBnClickedDeleteclone()
 	int iIndex = CCloneListBox.GetCurSel();
 	CString strFindName;
 	CCloneListBox.GetText(iIndex, strFindName);
-	auto& iter = m_listCloneData.begin();
-	for (; iter != m_listCloneData.end();)
+
+	wstring PrototypeTag = m_strPrototypeTag;
+	wstring LayerTag = (wstring)L"Layer_" + PrototypeTag;
+	const list<CGameObject*>* Objlist = CManagement::Get_Instance()->Get_GameObjectList(LayerTag);
+	
+	if (Objlist == nullptr)
+		return;
+	
+	CGameObject* pObj = nullptr;
+
+	for (auto& p : *Objlist)
 	{
-		if ((*iter)->wstrCloneName.c_str() == strFindName)
+		if (p->Get_ListBoxIndex() == iIndex + 1)
 		{
-			Safe_Delete(*iter);
-			m_listCloneData.erase(iter);
-			CCloneListBox.DeleteString(iIndex);
+			pObj = (CGameObject*)p;
+			p->Set_IsDead(true);
 			break;
 		}
-		else
-			++iter;
 	}
+	CCloneListBox.DeleteString(iIndex);
+
+	//auto& iter = m_listCloneData.begin();
+	//for (; iter != m_listCloneData.end();)
+	//{
+	//	if ((*iter)->wstrCloneName.c_str() == strFindName)
+	//	{
+	//		Safe_Delete(*iter);
+	//		m_listCloneData.erase(iter);
+	//		CCloneListBox.DeleteString(iIndex);
+	//		break;
+	//	}
+	//	else
+	//		++iter;
+	//}
 	// map이 아니라서 String 으로 list안에있는걸 찾아서 지우는게 안대넹. 저장할때 구분할 수 있는 무언가를 또 저장합시다.
 	
 	UpdateData(FALSE);

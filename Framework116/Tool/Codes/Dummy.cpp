@@ -68,6 +68,9 @@ _uint CDummy::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
 
+	if (m_IsDead)
+		return DEAD_OBJECT;
+
 	m_pTransform->Update_Transform();
 	return NO_EVENT;
 }
