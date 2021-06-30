@@ -32,6 +32,9 @@ public:
 	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
 
 public:
+	HRESULT Add_Layer_Dummy(const wstring& LayerTag);
+
+public:
 	static CMeshTool* s_pInstance;
 
 public:
@@ -50,4 +53,5 @@ public:
 
 public:
 	CListBox m_Listbox_InstalledMesh;
+	afx_msg void OnBnClickedButton_Install();
 };

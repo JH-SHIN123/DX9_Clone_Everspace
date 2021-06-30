@@ -6,6 +6,8 @@
 #include "MeshTool.h"
 #include "afxdialogex.h"
 #include "Player.h"
+#include "Management.h"
+#include "Dummy.h"
 
 
 // CMeshTool 대화 상자
@@ -114,6 +116,35 @@ void CMeshTool::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 	CDialog::OnActivate(nState, pWndOther, bMinimized);
 }
 
+HRESULT CMeshTool::Add_Layer_Dummy(const wstring& LayerTag)
+{
+	int installedCount = m_Listbox_InstalledMesh.GetCount();
+
+	DUMMY_DESC tDummyDesc;
+	tDummyDesc.wstrMeshPrototypeTag = L"";
+	tDummyDesc.tTransformDesc;
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer_Tool(
+		EResourceType::Static,
+		L"GameObject_Dummy",
+		LayerTag, installedCount, &tDummyDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Dummy In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+void CMeshTool::OnBnClickedButton_Install()
+{
+	// Add Layer Dummy
+	//if(FAILED(Add_Layer_Dummy()))
+
+	// Add ListBox
+
+}
+
 
 void CMeshTool::OnEnChangeEdit_ScaleX()
 {
@@ -170,6 +201,7 @@ BEGIN_MESSAGE_MAP(CMeshTool, CDialog)
 	ON_EN_CHANGE(IDC_EDIT8, &CMeshTool::OnEnChangeEdit_ScaleX)
 	ON_EN_CHANGE(IDC_EDIT9, &CMeshTool::OnEnChangeEdit_ScaleY)
 	ON_EN_CHANGE(IDC_EDIT10, &CMeshTool::OnEnChangeEdit_ScaleZ)
+	ON_BN_CLICKED(IDC_BUTTON4, &CMeshTool::OnBnClickedButton_Install)
 END_MESSAGE_MAP()
 
 
