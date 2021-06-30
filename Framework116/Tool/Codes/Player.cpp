@@ -160,6 +160,17 @@ _uint CPlayer::Movement(_float fDeltaTime)
 		m_pTransform->Go_Side(-fDeltaTime);
 	}
 
+	// y로 이동하는 코드 작성해야함
+	//if (GetAsyncKeyState('D') & 0x8000)
+	//{
+	//	m_pTransform->Go_Side(fDeltaTime);
+	//}
+
+	//if (GetAsyncKeyState('A') & 0x8000)
+	//{
+	//	m_pTransform->Go_Side(-fDeltaTime);
+	//}
+
 	// Rotate
 	if (GetAsyncKeyState('Q') & 0x8000)
 	{
