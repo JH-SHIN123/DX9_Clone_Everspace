@@ -86,9 +86,11 @@ _uint CDummy::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
+	m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer();
+	m_pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 #ifdef _DEBUG // Render Collide
 #endif

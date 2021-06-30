@@ -256,6 +256,16 @@ HRESULT CMainView::Ready_StaticResources()
 		return E_FAIL;
 	}
 
+	/* For.Component_Controller */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Controller",
+		CController::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Controller");
+		return E_FAIL;
+	}
+
 
 #pragma endregion
 

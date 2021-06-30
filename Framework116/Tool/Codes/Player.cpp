@@ -37,7 +37,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
+	TransformDesc.fSpeedPerSec = 10.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
 	TransformDesc.vScale = { 0.005f,0.005f,0.005f };
 
@@ -49,6 +49,17 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		&TransformDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
+		return E_FAIL;
+	}
+
+	// For.Com_Controller
+	if (FAILED(CGameObject::Add_Component(
+		EResourceType::Static,
+		L"Component_Controller",
+		L"Com_Controller",
+		(CComponent**)&m_pController)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Controller");
 		return E_FAIL;
 	}
 
@@ -92,6 +103,7 @@ _uint CPlayer::Render_GameObject()
 	m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pMesh->Render_Mesh();
+	m_pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	return _uint();
 }
@@ -150,6 +162,16 @@ _uint CPlayer::Movement(_float fDeltaTime)
 		m_pTransform->RotateY(fDeltaTime);
 	}	
 
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	{
+		m_pTransform->Go_Up(fDeltaTime);
+	}
+
+	if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
+	{
+		m_pTransform->Go_Up(-fDeltaTime);
+	}
+
 	return _uint();
 }
 
@@ -179,6 +201,7 @@ CGameObject * CPlayer::Clone(void * pArg/* = nullptr*/)
 
 void CPlayer::Free()
 {
+	Safe_Release(m_pController);
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 
