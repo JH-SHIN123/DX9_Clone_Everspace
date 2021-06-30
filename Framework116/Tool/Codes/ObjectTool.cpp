@@ -26,13 +26,7 @@ CObjectTool::CObjectTool(CWnd* pParent /*=NULL*/)
 
 CObjectTool::~CObjectTool()
 {
-	for (auto& Pair : m_mapObjectData)
-	{
-		delete Pair.second;
-		Pair.second = nullptr;
-	}
-
-	m_mapObjectData.clear();
+	Release_ObjectData();
 }
 
 void CObjectTool::DoDataExchange(CDataExchange* pDX)
@@ -102,17 +96,16 @@ void CObjectTool::Setting_List_Box()
 	m_ListComponent.InsertString(5, L"VIBuffer_CubeTexture");
 	m_ListComponent.InsertString(6, L"Transform");
 	m_ListComponent.InsertString(7, L"Texture");
-	m_ListComponent.InsertString(8, L"Mesh");
+	m_ListComponent.InsertString(8, L"Geometry_Polygon");
 
 }
 
 void CObjectTool::Setting_ObjectData()
 {
-	// 툴에서 다루기 위한 key값 세팅
-	//PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
-	//pData->wstrPrototypeTag = L"";
-	//pData->wstrPrototypeTag_Mesh = L"";
-	//ZeroMemory(pData->tMaterial, sizeof(D3DXMATERIAL));
+
+	/*
+	안씀 안씀 안씀 안씀 안씀 안씀 안씀 안씀 안씀 안씀 안씀 안씀 안씀 안씀 안씀 
+	*/
 
 	auto Pair = m_mapObjectData.find(L"Player");
 	if (Pair == m_mapObjectData.end())
@@ -186,6 +179,17 @@ void CObjectTool::Setting_ObjectData()
 
 }
 
+void CObjectTool::Release_ObjectData()
+{
+	for (auto& Pair : m_mapObjectData)
+	{
+		delete Pair.second;
+		Pair.second = nullptr;
+	}
+
+	m_mapObjectData.clear();
+}
+
 
 BEGIN_MESSAGE_MAP(CObjectTool, CDialog)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CObjectTool::OnLbnSelchangeList1)	// Object Prototype List Picked
@@ -198,6 +202,8 @@ BEGIN_MESSAGE_MAP(CObjectTool, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON5, &CObjectTool::OnBnClickedButton5)	// Save
 	ON_BN_CLICKED(IDC_BUTTON6, &CObjectTool::OnBnClickedButton6)	// Load
 	ON_BN_CLICKED(IDC_BUTTON8, &CObjectTool::OnBnClickedButton8)	// Add Object List
+	ON_BN_CLICKED(IDC_BUTTON9, &CObjectTool::OnBnClickedButton9)	// Clear Object List
+	ON_BN_CLICKED(IDC_BUTTON10, &CObjectTool::OnBnClickedButton10)	// Delete This Object List
 END_MESSAGE_MAP()
 
 
@@ -219,7 +225,7 @@ void CObjectTool::OnBnClickedButton2() // Add Component Button
 		// 이미 입력됨
 		// Pair->second->wstrPrototypeTag = m_wstrObjectPrototype_Tag;
 		// Pair->second->tMaterial = m_tMaterial;
-	
+
 		//Pair->second->wstrPrototypeTag_Mesh = m_wstrComponentProtoType_Tag;
 
 		auto iter = Pair->second->vecPrototypeTag_Mesh.begin();
@@ -242,12 +248,39 @@ void CObjectTool::OnBnClickedButton2() // Add Component Button
 void CObjectTool::OnBnClickedButton3() // Delete This Component
 {
 
+	// 1. Save Object List에서 마지막으로 클릭한 인덱스로 key값 순회
+	// 2. 찾은 key값을 바탕으로 Added Component List의 인덱스로 value의 vetor 순회
+	// 3. 해당 value 삭제
+	// 4. Added Component List 갱신
+
+	_uint iObjectList_Index = m_ListObject_Save.GetCurSel();
+	CString wstrObject_Tag = L"";
+	m_ListObject_Save.GetText(iObjectList_Index, wstrObject_Tag);
+
+	auto Pair = m_mapObjectData.find(wstrObject_Tag);
+	if (Pair != m_mapObjectData.end())
+	{
+		_uint iComponentList_Index = m_ListAddedCom.GetCurSel();
+
+		Pair->second->vecPrototypeTag_Mesh.erase(
+			Pair->second->vecPrototypeTag_Mesh.begin() + iComponentList_Index);
+
+		m_ListAddedCom.ResetContent();
+
+
+		auto iter = Pair->second->vecPrototypeTag_Mesh.begin();
+		// vector가 텅텅 빌때 까지 for문
+		for (; iter != Pair->second->vecPrototypeTag_Mesh.end(); ++iter)
+		{
+			m_ListAddedCom.AddString(iter->GetString());
+		}
+	}
 }
 
 void CObjectTool::OnLbnSelchangeList1() // Object ListBox 
 {
 	UpdateData(TRUE);
-	
+
 	CString wstrTag = L"";
 	_int iIndex = m_ListBoxObject.GetCurSel();
 
@@ -321,8 +354,8 @@ void CObjectTool::OnLbnSelchangeList4() // Save Object List (Save Data)
 	UpdateData(TRUE);
 
 	CString wstrTag = L"";
-	_int iIndex = m_ListObject_Save.GetCurSel();
-	m_ListObject_Save.GetText(iIndex, wstrTag);
+	m_iPickedObjectList_Tag_Index = m_ListObject_Save.GetCurSel();
+	m_ListObject_Save.GetText(m_iPickedObjectList_Tag_Index, wstrTag);
 
 	auto Pair = m_mapObjectData.find(wstrTag);
 
@@ -408,11 +441,11 @@ void CObjectTool::OnBnClickedButton5() // Save
 
 				fout << wstrObjectPrototypeTag << "("
 					<< wstrObjectClassTag << ")"
-					<< wstrDiffuse	<< "?"
-					<< wstrAmbient	<< "?"
+					<< wstrDiffuse << "?"
+					<< wstrAmbient << "?"
 					<< wstrSpecular << "?"
 					<< wstrEmissive << "?"
-					<< wstrPower	<< "?" << endl;
+					<< wstrPower << "?" << endl;
 
 				wstring wstrComponentTags = L"";
 				wstring wstrComponentTags_Count = to_wstring(_uint(Pair.second->vecPrototypeTag_Mesh.size()));
@@ -422,21 +455,6 @@ void CObjectTool::OnBnClickedButton5() // Save
 
 				fout << wstrComponentTags_Count << L"|"
 					<< wstrComponentTags << endl;
-
-				/*
-
-				%프로토타입태그?머?테?리?얼?
-				컴포|넌트|는|or연산자|로|구별|한다|
-
-				가독성을 위해 컴포넌트태그들은 개행을 한번 함
-
-				정리)
-				1. 프로토 타입 태그는 %로 시작해 ? 로 끝난다
-				2. 머테리얼 정보는 ? 까지 구별 하면 된다
-				3. 컴포넌트태그들은 |로 구별
-				4. %를 만났다는것은 새로 입력할 프로토 타입 태그의 시작점이라고 알리는 역할 (1번으로 다시 읽기)
-				
-				*/
 			}
 
 			fout.close();
@@ -477,34 +495,35 @@ void CObjectTool::OnBnClickedButton6() // Load
 
 		if (!fin.fail())
 		{
-			TCHAR szObjectProtoTypeTag[MAX_PATH]	= L"";
-			TCHAR szObjectClassName[MAX_PATH]		= L"";
+			TCHAR szObjectProtoTypeTag[MAX_PATH] = L"";
+			TCHAR szObjectClassName[MAX_PATH] = L"";
 
-			TCHAR szMaterial_Diffuse_r[MAX_PATH]	= L"";
-			TCHAR szMaterial_Diffuse_g[MAX_PATH]	= L"";
-			TCHAR szMaterial_Diffuse_b[MAX_PATH]	= L"";
-			TCHAR szMaterial_Diffuse_a[MAX_PATH]	= L"";
+			TCHAR szMaterial_Diffuse_r[MAX_PATH] = L"";
+			TCHAR szMaterial_Diffuse_g[MAX_PATH] = L"";
+			TCHAR szMaterial_Diffuse_b[MAX_PATH] = L"";
+			TCHAR szMaterial_Diffuse_a[MAX_PATH] = L"";
 
-			TCHAR szMaterial_Ambient_r[MAX_PATH]	= L"";
-			TCHAR szMaterial_Ambient_g[MAX_PATH]	= L"";
-			TCHAR szMaterial_Ambient_b[MAX_PATH]	= L"";
-			TCHAR szMaterial_Ambient_a[MAX_PATH]	= L"";
+			TCHAR szMaterial_Ambient_r[MAX_PATH] = L"";
+			TCHAR szMaterial_Ambient_g[MAX_PATH] = L"";
+			TCHAR szMaterial_Ambient_b[MAX_PATH] = L"";
+			TCHAR szMaterial_Ambient_a[MAX_PATH] = L"";
 
-			TCHAR szMaterial_Specular_r[MAX_PATH]	= L"";
-			TCHAR szMaterial_Specular_g[MAX_PATH]	= L"";
-			TCHAR szMaterial_Specular_b[MAX_PATH]	= L"";
-			TCHAR szMaterial_Specular_a[MAX_PATH]	= L"";
+			TCHAR szMaterial_Specular_r[MAX_PATH] = L"";
+			TCHAR szMaterial_Specular_g[MAX_PATH] = L"";
+			TCHAR szMaterial_Specular_b[MAX_PATH] = L"";
+			TCHAR szMaterial_Specular_a[MAX_PATH] = L"";
 
-			TCHAR szMaterial_Emissive_r[MAX_PATH]	= L"";
-			TCHAR szMaterial_Emissive_g[MAX_PATH]	= L"";
-			TCHAR szMaterial_Emissive_b[MAX_PATH]	= L"";
-			TCHAR szMaterial_Emissive_a[MAX_PATH]	= L"";
+			TCHAR szMaterial_Emissive_r[MAX_PATH] = L"";
+			TCHAR szMaterial_Emissive_g[MAX_PATH] = L"";
+			TCHAR szMaterial_Emissive_b[MAX_PATH] = L"";
+			TCHAR szMaterial_Emissive_a[MAX_PATH] = L"";
 
-			TCHAR szMaterial_Power[MAX_PATH]		= L"";
+			TCHAR szMaterial_Power[MAX_PATH] = L"";
 
-			TCHAR szComponentTag_Count[MAX_PATH]	= L"";
-			TCHAR szComponentTag[MAX_PATH]			= L"";
+			TCHAR szComponentTag_Count[MAX_PATH] = L"";
+			TCHAR szComponentTag[MAX_PATH] = L"";
 
+			Release_ObjectData();
 
 			while (true)
 			{
@@ -544,7 +563,7 @@ void CObjectTool::OnBnClickedButton6() // Load
 				fin.getline(szMaterial_Emissive_g, MAX_PATH, L'?');
 				fin.getline(szMaterial_Emissive_b, MAX_PATH, L'?');
 				fin.getline(szMaterial_Emissive_a, MAX_PATH, L'?');
-																   
+
 				fin.getline(szMaterial_Power, MAX_PATH, L'?');
 
 				// 읽은 값 삽입
@@ -612,10 +631,10 @@ void CObjectTool::OnBnClickedButton8() // Add Object List
 		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
 		pData->vecPrototypeTag_Mesh.reserve(10);
 
-		m_mapObjectData.insert(make_pair(m_wstrPickedObject, pData)); ////////////////////////// 이거 수정 못찾는 이유가 있음
+		m_mapObjectData.insert(make_pair(m_wstrPickedObject, pData));
 
 		Pair = m_mapObjectData.find(m_wstrPickedObject);
-		if(Pair != m_mapObjectData.end())
+		if (Pair != m_mapObjectData.end())
 		{
 			//Pair->second->vecPrototypeTag_Mesh.emplace_back(L"None");
 			Pair->second->wstrPrototypeTag = m_wstrObjectPrototype_Tag.GetString();
@@ -623,6 +642,38 @@ void CObjectTool::OnBnClickedButton8() // Add Object List
 			m_ListObject_Save.AddString(m_wstrPickedObject);
 		}
 	}
+
+	UpdateData(FALSE);
+}
+
+void CObjectTool::OnBnClickedButton9() // Clear Object List
+{
+	UpdateData(TRUE);
+
+	Release_ObjectData();
+
+	m_ListObject_Save.ResetContent();
+
+	UpdateData(FALSE);
+}
+
+void CObjectTool::OnBnClickedButton10()	// Delete This Object List
+{
+	UpdateData(TRUE);
+
+	auto Pair = m_mapObjectData.find(m_wstrPickedObjectList_Tag_Save);
+
+	if (Pair != m_mapObjectData.end())
+	{
+		delete Pair->second;
+		Pair->second = nullptr;
+	}
+	m_mapObjectData.erase(Pair);
+
+	m_ListObject_Save.ResetContent();
+
+	for (auto Pair2 : m_mapObjectData)
+		m_ListObject_Save.AddString(Pair2.first);
 
 	UpdateData(FALSE);
 }

@@ -76,7 +76,7 @@ HRESULT CDummy_Mon::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CDummy_Mon::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
-	Movement(fDeltaTime);
+	//Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().vPosition);

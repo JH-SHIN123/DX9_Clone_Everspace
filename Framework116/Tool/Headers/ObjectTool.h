@@ -18,7 +18,7 @@ public:
 	CObjectTool(CWnd* pParent = NULL);   // 표준 생성자입니다.
 	virtual ~CObjectTool();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_OBJECTTOOL };
 #endif
@@ -29,8 +29,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public: // 그냥 함수
-	void Setting_List_Box(); 
+	void Setting_List_Box();
 	void Setting_ObjectData(); // 안씀
+	void Release_ObjectData();
 
 public:
 	CListBox m_ListBoxObject;	// 오브젝트 프로토 타입 리스트박스
@@ -41,12 +42,14 @@ public:
 	_bool m_bListCheck = false;
 	CString m_wstrPickedObject = _T("");	// 프로토타입 선택
 	CString m_wstrPickedComponentTag = _T("");	// 컴포넌트 선택
-	
+
 	CString m_wstrObjectPrototype_Tag = _T("");	// L"Prototype" + m_wstrPickedObject
 	CString m_wstrComponentProtoType_Tag = _T(""); // L"Prototype" + m_wstrPickedComponentTag
 
 	CString m_wstrPickedObjectList_Tag_Save = _T(""); // 저장이 될 리스트의 ObjectTag
 	CString m_wstrPickedAddedComponentList_Tag_Save = _T(""); // 저장이 될 리스트의 Component Tags
+	_uint m_iPickedObjectList_Tag_Index = 0;
+
 
 	map<CString, PASSDATA_OBJECT*> m_mapObjectData;
 	D3DMATERIAL9 m_tMaterial;
@@ -56,7 +59,7 @@ public:
 
 	//CString m_wstrFileExtension = L".txt";					// 파일 확장자
 	//CString m_wstrFilePath = L"../../Data/PrototypeData/";	// 저장될 경로
-	
+
 
 
 public:
@@ -71,7 +74,9 @@ public:
 	afx_msg void OnBnClickedButton5();	// Save
 	afx_msg void OnBnClickedButton6();	// Load
 	afx_msg void OnBnClickedButton8();	// Add Object List
-	
+	afx_msg void OnBnClickedButton9();	// Clear Object List
+	afx_msg void OnBnClickedButton10();	// Delete This Object List
+
 	CString r2;
 };
 
