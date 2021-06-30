@@ -2,6 +2,10 @@
 #include "..\Headers\Load_Prototype.h"
 #include <fstream>
 
+#pragma region GameObject
+#include "Dummy_Mon.h"
+#pragma endregion
+
 
 CLoad_Prototype::CLoad_Prototype()
 {
@@ -88,4 +92,122 @@ _bool CLoad_Prototype::Load_PassData_Object(const wstring & wstrObjectPrototypeP
 
 
 	return true;
+}
+
+HRESULT CLoad_Prototype::Load_PassData_Object_Static(const wstring & wstrObjectPrototypePath)
+{
+	wifstream fin;
+	fin.open(wstrObjectPrototypePath);
+
+	if (fin.fail())
+	{
+		wstring wstrErrorLog = wstrObjectPrototypePath + L" is wrong path";
+		PRINT_LOG(L"Error", wstrErrorLog.c_str());
+		return E_FAIL;
+	}
+
+	// 오브젝트 프로토타입
+	TCHAR szObjectProtoTypeTag[MAX_PATH] = L"";
+	// 구별 할 클래스명
+	TCHAR szObjectClassName[MAX_PATH] = L"";
+	// 머테리얼 정보
+	TCHAR szMaterial_Diffuse[MAX_PATH][4] = { L"" };
+	TCHAR szMaterial_Ambient[MAX_PATH][4] = { L"" };
+	TCHAR szMaterial_Specular[MAX_PATH][4] = { L"" };
+	TCHAR szMaterial_Emissive[MAX_PATH][4] = { L"" };
+	TCHAR szMaterial_Power[MAX_PATH] = L"";
+	// 컴포넌트의 개수
+	TCHAR szComponentTag_Count[MAX_PATH] = L"";
+	// 읽을 컴포넌트
+	TCHAR szComponentTag[MAX_PATH] = L"";
+
+	while (true)
+	{
+		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
+		pData->wstrPrototypeTag_Object = L"";
+		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
+		pData->vecPrototypeTag_Mesh.reserve(10);
+
+		fin.getline(szObjectProtoTypeTag, MAX_PATH, L'(');		// PrototypeTag
+		fin.getline(szObjectClassName, MAX_PATH, L')');			// ClassName
+
+		if (fin.eof())
+		{
+			delete pData;
+			pData = nullptr;
+			break;
+		}
+
+		for (_int i = 0; i < 4; ++i)
+			fin.getline(szMaterial_Diffuse[i], MAX_PATH, L'?');
+		for (_int i = 0; i < 4; ++i)
+			fin.getline(szMaterial_Ambient[i], MAX_PATH, L'?');
+		for (_int i = 0; i < 4; ++i)
+			fin.getline(szMaterial_Specular[i], MAX_PATH, L'?');
+		for (_int i = 0; i < 4; ++i)
+			fin.getline(szMaterial_Emissive[i], MAX_PATH, L'?');
+
+		fin.getline(szMaterial_Power, MAX_PATH, L'?');
+
+		// 읽은 값 삽입
+		pData->wstrPrototypeTag_Object = szObjectProtoTypeTag;
+
+		pData->tMaterial.Diffuse.r = _ttof(szMaterial_Diffuse[0]);
+		pData->tMaterial.Diffuse.g = _ttof(szMaterial_Diffuse[1]);
+		pData->tMaterial.Diffuse.b = _ttof(szMaterial_Diffuse[2]);
+		pData->tMaterial.Diffuse.a = _ttof(szMaterial_Diffuse[3]);
+
+		pData->tMaterial.Ambient.r = _ttof(szMaterial_Ambient[0]);
+		pData->tMaterial.Ambient.g = _ttof(szMaterial_Ambient[1]);
+		pData->tMaterial.Ambient.b = _ttof(szMaterial_Ambient[2]);
+		pData->tMaterial.Ambient.a = _ttof(szMaterial_Ambient[3]);
+
+		pData->tMaterial.Specular.r = _ttof(szMaterial_Specular[0]);
+		pData->tMaterial.Specular.g = _ttof(szMaterial_Specular[1]);
+		pData->tMaterial.Specular.b = _ttof(szMaterial_Specular[2]);
+		pData->tMaterial.Specular.a = _ttof(szMaterial_Specular[3]);
+
+		pData->tMaterial.Emissive.r = _ttof(szMaterial_Emissive[0]);
+		pData->tMaterial.Emissive.g = _ttof(szMaterial_Emissive[1]);
+		pData->tMaterial.Emissive.b = _ttof(szMaterial_Emissive[2]);
+		pData->tMaterial.Emissive.a = _ttof(szMaterial_Emissive[3]);
+
+		pData->tMaterial.Power = _ttof(szMaterial_Power);
+
+
+		// 카운트 만큼 읽어서 삽입
+		fin.getline(szComponentTag_Count, MAX_PATH, L'|');
+		_uint iComponentTag_Count = _ttoi(szComponentTag_Count);
+
+		for (_uint i = 0; i < iComponentTag_Count; ++i)
+		{
+			fin.getline(szComponentTag, MAX_PATH, L'|');
+			pData->vecPrototypeTag_Mesh.emplace_back(szComponentTag);
+		}
+
+		Create_Object_Prototype_Static(szObjectClassName, pData);
+
+	}
+
+	fin.close();
+
+
+
+	return S_OK;
+}
+
+void CLoad_Prototype::Create_Object_Prototype_Static(const wstring& wstrClassName, PASSDATA_OBJECT* tPassDataObject)
+{
+	if (wstrClassName == L"DUMMY")
+	{
+		if (FAILED(CManagement::Get_Instance()->Add_GameObject_Prototype(
+			EResourceType::NonStatic,
+			tPassDataObject->wstrPrototypeTag_Object,
+			CDummy_Mon::Create(CManagement::Get_Instance()->Get_Device(), tPassDataObject))))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add GameObject_Player");
+			return;
+		}
+	}
+	
 }

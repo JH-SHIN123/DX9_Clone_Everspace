@@ -8,7 +8,7 @@ USING(Engine)
 class CDummy_Mon final : public CGameObject
 {
 public:
-	explicit CDummy_Mon(LPDIRECT3DDEVICE9 pDevice);
+	explicit CDummy_Mon(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData);
 	explicit CDummy_Mon(const CDummy_Mon& other);
 	virtual ~CDummy_Mon() = default;
 
@@ -23,7 +23,7 @@ private:
 	_uint Movement(_float fDeltaTime);
 
 public:
-	static CDummy_Mon* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CDummy_Mon* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
@@ -33,11 +33,7 @@ private:
 	CCollideSphere*	m_pCollide = nullptr;
 
 private:
-	POINT m_tCurCursorPos = { 0,0 };
-	POINT m_tPrevCursorPos = { 0,0 };
-
-private:
-	PASSDATA_OBJECT m_tPassData;
+	PASSDATA_OBJECT* m_pPassData;
 
 };
 

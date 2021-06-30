@@ -13,9 +13,9 @@
 #include "ExplosionSystem.h"
 #include "LaserSystem.h"
 
-#include "Dummy_Mon.h"
-
 #pragma endregion
+
+#include "Load_Prototype.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
 	: CScene(pDevice)
@@ -178,16 +178,6 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-	/* For.GameObject_Skybox */
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_Dummy",
-		CDummy_Mon::Create(m_pDevice))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
-		return E_FAIL;
-	}
-
 	/* For.GameObject_ExplosionSystem */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -270,6 +260,9 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 #pragma endregion
+
+	// Test
+	CLoad_Prototype::Load_PassData_Object_Static(L"../../Data/PrototypeData/TestSaveFile.object");
 
 	return S_OK;
 }

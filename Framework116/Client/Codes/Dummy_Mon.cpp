@@ -3,19 +3,15 @@
 #include "Collision.h"
 #include "Load_Prototype.h"
 
-CDummy_Mon::CDummy_Mon(LPDIRECT3DDEVICE9 pDevice)
+CDummy_Mon::CDummy_Mon(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 	: CGameObject(pDevice)
 {
-	if (CLoad_Prototype::Load_PassData_Object(
-		L"../../Data/PrototypeData/DUMMY.object", m_tPassData) == false)
-	{
-		PRINT_LOG(L"Load Error", L"Wrong PrototypeData Path");
-	}
+	m_pPassData = pData;
 }
 
 CDummy_Mon::CDummy_Mon(const CDummy_Mon & other)
 	: CGameObject(other)
-	, m_tPassData(other.m_tPassData)
+	, m_pPassData(other.m_pPassData)
 {
 }
 
@@ -30,16 +26,16 @@ HRESULT CDummy_Mon::Ready_GameObject(void * pArg/* = nullptr*/)
 {
 	CGameObject::Ready_GameObject(pArg);
 
-	//// For.Com_VIBuffer
-	//if (FAILED(CGameObject::Add_Component(
-	//	EResourceType::Static,
-	//	m_tPassData.wstrPrototypeTag_Mesh,
-	//	L"Com_Mesh",
-	//	(CComponent**)&m_pMesh)))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add_Component Com_Mesh");
-	//	return E_FAIL;
-	//}
+	// For.Com_VIBuffer
+	if (FAILED(CGameObject::Add_Component(
+		EResourceType::Static,
+		m_pPassData->vecPrototypeTag_Mesh[0],
+		L"Com_Mesh",
+		(CComponent**)&m_pMesh)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Mesh");
+		return E_FAIL;
+	}
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
@@ -116,9 +112,9 @@ _uint CDummy_Mon::Movement(_float fDeltaTime)
 	return _uint();
 }
 
-CDummy_Mon * CDummy_Mon::Create(LPDIRECT3DDEVICE9 pDevice)
+CDummy_Mon * CDummy_Mon::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 {
-	CDummy_Mon* pInstance = new CDummy_Mon(pDevice);
+	CDummy_Mon* pInstance = new CDummy_Mon(pDevice, pData);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Player");

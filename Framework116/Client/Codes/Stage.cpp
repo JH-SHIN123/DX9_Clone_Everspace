@@ -210,10 +210,10 @@ HRESULT CStage::Add_Layer_Dummy(const wstring & LayerTag)
 {
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
-		L"GameObject_Dummy",
+		L"GameObject_DUMMY",
 		LayerTag)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Monster In Layer");
+		PRINT_LOG(L"Error", L"Failed To Add Dummy In Layer");
 	}
 
 	return S_OK;

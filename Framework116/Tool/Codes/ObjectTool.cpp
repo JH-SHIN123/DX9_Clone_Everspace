@@ -28,17 +28,6 @@ CObjectTool::~CObjectTool()
 {
 	for (auto& Pair : m_mapObjectData)
 	{
-		for (auto& Iter : Pair.second->vecPrototypeTag_Mesh)
-		{
-			Iter.ReleaseBuffer();
-			int i = 0;
-		}
-		Pair.second->vecPrototypeTag_Mesh.clear();
-		Pair.second->vecPrototypeTag_Mesh.shrink_to_fit();
-		
-		Pair.second->wstrPrototypeTag.ReleaseBuffer();
-		ZeroMemory(&Pair.second->tMaterial, sizeof(D3DMATERIAL9));
-
 		delete Pair.second;
 		Pair.second = nullptr;
 	}

@@ -12,6 +12,10 @@ public:
 
 public:
 	static _bool Load_PassData_Object(const wstring& wstrObjectPrototypePath, PASSDATA_OBJECT& tPassDataObject);
+	static HRESULT Load_PassData_Object_Static(const wstring& wstrObjectPrototypePath);
+
+public:
+	static void Create_Object_Prototype_Static(const wstring& wstrClassName, PASSDATA_OBJECT* tPassDataObject);
 };
 
 #define __LOAD_PROTOTYPE_H__
