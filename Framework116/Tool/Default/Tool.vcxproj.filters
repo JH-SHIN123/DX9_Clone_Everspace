@@ -61,6 +61,9 @@
     <Filter Include="04.Component\01.GeometryMesh">
       <UniqueIdentifier>{668172cc-919d-490b-8246-1cfcedc875cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\04.Dummy">
+      <UniqueIdentifier>{c2c18f51-24c9-49c3-a58d-553588e1d592}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tool.h">
@@ -123,6 +126,9 @@
     <ClInclude Include="GeometryMesh.h">
       <Filter>04.Component\01.GeometryMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Dummy.h">
+      <Filter>03.GameObject\04.Dummy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -172,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="..\Headers\MESHTOOL.CPP">
       <Filter>04.Dialog\MeshTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Dummy.cpp">
+      <Filter>03.GameObject\04.Dummy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

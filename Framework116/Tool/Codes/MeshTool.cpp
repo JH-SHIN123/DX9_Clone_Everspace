@@ -36,6 +36,7 @@ void CMeshTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT8, m_Edit_ScaleX);
 	DDX_Control(pDX, IDC_EDIT9, m_Edit_ScaleY);
 	DDX_Control(pDX, IDC_EDIT10, m_Edit_ScaleZ);
+	DDX_Control(pDX, IDC_LIST2, m_Listbox_InstalledMesh);
 }
 
 void CMeshTool::OnShowWindow(BOOL bShow, UINT nStatus)

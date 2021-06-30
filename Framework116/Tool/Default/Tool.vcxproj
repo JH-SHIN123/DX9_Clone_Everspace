@@ -198,6 +198,7 @@
     <ClInclude Include="..\Headers\Axis.h" />
     <ClInclude Include="..\Headers\CollideTool.h" />
     <ClInclude Include="..\Headers\CustomMesh.h" />
+    <ClInclude Include="..\Headers\Dummy.h" />
     <ClInclude Include="..\Headers\MainCam.h" />
     <ClInclude Include="..\Headers\MainForm.h" />
     <ClInclude Include="..\Headers\MainFrm.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="..\Codes\Axis.cpp" />
     <ClCompile Include="..\Codes\CollideTool.cpp" />
     <ClCompile Include="..\Codes\CustomMesh.cpp" />
+    <ClCompile Include="..\Codes\Dummy.cpp" />
     <ClCompile Include="..\Codes\GeometryMesh.cpp" />
     <ClCompile Include="..\Codes\MainCam.cpp" />
     <ClCompile Include="..\Codes\MainScene.cpp" />

@@ -47,4 +47,7 @@ public:
 	afx_msg void OnEnChangeEdit_ScaleX();
 	afx_msg void OnEnChangeEdit_ScaleY();
 	afx_msg void OnEnChangeEdit_ScaleZ();
+
+public:
+	CListBox m_Listbox_InstalledMesh;
 };
