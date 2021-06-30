@@ -12,6 +12,7 @@
 #include "MainCam.h"
 #include "Axis.h"
 #include "GeometryMesh.h"
+#include "Dummy.h"
 #pragma endregion
 
 #pragma region Stage
@@ -133,6 +134,16 @@ HRESULT CMainView::Ready_StaticResources()
 		CAxis::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Axis");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Dummy */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_Dummy",
+		CDummy::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Dummy");
 		return E_FAIL;
 	}
 

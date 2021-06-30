@@ -13,6 +13,7 @@ public:
 
 public:
 	HRESULT ChangeMesh(const wstring& wstrMeshPrototypeTag);
+	const wstring& Get_MeshPrototypeTag() const { return m_wstrMeshPrototypeTag; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -31,6 +32,7 @@ public:
 
 private:
 	class CGeometryMesh*  m_pMesh = nullptr;
+	wstring m_wstrMeshPrototypeTag = L"";
 	//class CGeometryMesh* m_pGeoMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
 

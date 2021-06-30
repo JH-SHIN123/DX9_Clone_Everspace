@@ -54,4 +54,6 @@ public:
 public:
 	CListBox m_Listbox_InstalledMesh;
 	afx_msg void OnBnClickedButton_Install();
+	afx_msg void OnBnClickedButton_Delete();
+	afx_msg void OnBnClickedButton_Clear();
 };

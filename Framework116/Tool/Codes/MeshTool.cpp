@@ -120,9 +120,21 @@ HRESULT CMeshTool::Add_Layer_Dummy(const wstring& LayerTag)
 {
 	int installedCount = m_Listbox_InstalledMesh.GetCount();
 
+	CPlayer* pPlayer = (CPlayer*)CManagement::Get_Instance()->Get_GameObject(L"Layer_Player");
+	if (pPlayer == nullptr) {
+		PRINT_LOG(L"Warning", L"Player is nullptr");
+		return E_FAIL;
+	}
+
+	CTransform* pPlayerTransform = (CTransform*)(pPlayer->Get_Component(L"Com_Transform"));
+	if (pPlayerTransform == nullptr) {
+		PRINT_LOG(L"Warning", L"pPlayerTransform is nullptr");
+		return E_FAIL;
+	}
+
 	DUMMY_DESC tDummyDesc;
-	tDummyDesc.wstrMeshPrototypeTag = L"";
-	tDummyDesc.tTransformDesc;
+	tDummyDesc.wstrMeshPrototypeTag = pPlayer->Get_MeshPrototypeTag();
+	tDummyDesc.tTransformDesc = pPlayerTransform->Get_TransformDesc();
 
 	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer_Tool(
 		EResourceType::Static,
@@ -139,10 +151,42 @@ HRESULT CMeshTool::Add_Layer_Dummy(const wstring& LayerTag)
 void CMeshTool::OnBnClickedButton_Install()
 {
 	// Add Layer Dummy
-	//if(FAILED(Add_Layer_Dummy()))
+	if (FAILED(Add_Layer_Dummy(L"Layer_Dummy"))) {
+		PRINT_LOG(L"Error", L"Failed To Add Dummy In Layer");
+		return;
+	}
+
+	CPlayer* pPlayer = (CPlayer*)CManagement::Get_Instance()->Get_GameObject(L"Layer_Player");
+	if (pPlayer == nullptr) {
+		PRINT_LOG(L"Warning", L"Player is nullptr");
+		return;
+	}
+
+	wstring objIndex = to_wstring(m_Listbox_InstalledMesh.GetCount());
+	wstring meshTag = pPlayer->Get_MeshPrototypeTag();
+
+	if (meshTag == L"Component_GeoMesh_Cube")
+	{
+		meshTag = L"박스";
+	}
+	else if (meshTag == L"Component_GeoMesh_Cylinder")
+	{
+		meshTag = L"실린더";
+	}
+	else if (meshTag == L"Component_GeoMesh_Sphere")
+	{
+		meshTag = L"스피어";
+	}
+	else if (meshTag == L"Component_GeoMesh_Torus")
+	{
+		meshTag = L"토러스";
+	}
+
+	objIndex += L"/";
+	objIndex += meshTag;
 
 	// Add ListBox
-
+	m_Listbox_InstalledMesh.AddString(objIndex.c_str());
 }
 
 
@@ -193,6 +237,33 @@ void CMeshTool::OnEnChangeEdit_ScaleZ()
 	pPlayerTransform->Set_ScaleZ(fScaleZ);
 }
 
+void CMeshTool::OnBnClickedButton_Delete()
+{
+	int iSelect = m_Listbox_InstalledMesh.GetCurSel();
+	if (iSelect == -1) return;
+
+	const list<class CGameObject*>* dummyList = CManagement::Get_Instance()->Get_GameObjectList(L"GameObject_Dummy");
+	if (nullptr == dummyList) return;
+
+	CGameObject* pDummy = nullptr;
+	for (auto& p : *dummyList)
+	{
+		if (p->Get_ListBoxIndex() == iSelect) {
+			pDummy = (CGameObject*)p;
+			break;
+		}
+	}
+
+	//pDummy->Set_Dead();
+
+	// 리스트박스에서 삭제
+	m_Listbox_InstalledMesh.DeleteString(iSelect);
+}
+
+void CMeshTool::OnBnClickedButton_Clear()
+{
+}
+
 
 BEGIN_MESSAGE_MAP(CMeshTool, CDialog)
 	ON_WM_SHOWWINDOW()
@@ -202,6 +273,8 @@ BEGIN_MESSAGE_MAP(CMeshTool, CDialog)
 	ON_EN_CHANGE(IDC_EDIT9, &CMeshTool::OnEnChangeEdit_ScaleY)
 	ON_EN_CHANGE(IDC_EDIT10, &CMeshTool::OnEnChangeEdit_ScaleZ)
 	ON_BN_CLICKED(IDC_BUTTON4, &CMeshTool::OnBnClickedButton_Install)
+	ON_BN_CLICKED(IDC_BUTTON5, &CMeshTool::OnBnClickedButton_Delete)
+	ON_BN_CLICKED(IDC_BUTTON6, &CMeshTool::OnBnClickedButton_Clear)
 END_MESSAGE_MAP()
 
 

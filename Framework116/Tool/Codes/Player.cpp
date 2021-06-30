@@ -38,6 +38,8 @@ HRESULT CPlayer::ChangeMesh(const wstring& wstrMeshPrototypeTag)
 
 		m_pMesh = (CGeometryMesh*)pClone;
 		Safe_AddRef(pClone);
+
+		m_wstrMeshPrototypeTag = wstrMeshPrototypeTag;
 	}
 
 	return S_OK;
@@ -65,6 +67,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add_Component Component_Mesh_Axis");
 		return E_FAIL;
 	}
+	m_wstrMeshPrototypeTag = L"Component_GeoMesh_Cube";
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;

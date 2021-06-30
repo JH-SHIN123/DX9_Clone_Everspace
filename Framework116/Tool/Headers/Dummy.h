@@ -4,7 +4,7 @@
 
 #include "GameObject.h"
 
-typedef struct tagDummyDesc {
+typedef struct tagDummyDesc : public BASE_DESC{
 	wstring wstrMeshPrototypeTag;
 	TRANSFORM_DESC tTransformDesc;
 }DUMMY_DESC;

@@ -69,7 +69,7 @@ _uint CDummy::Update_GameObject(_float fDeltaTime)
 {
     CGameObject::Update_GameObject(fDeltaTime);
 
-    return _uint();
+    return m_pTransform->Update_Transform();
 }
 
 _uint CDummy::LateUpdate_GameObject(_float fDeltaTime)
