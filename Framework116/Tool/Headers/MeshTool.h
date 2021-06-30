@@ -44,4 +44,5 @@ public:
 	CEdit m_Edit_ScaleX;
 	CEdit m_Edit_ScaleY;
 	CEdit m_Edit_ScaleZ;
+	afx_msg void OnEnChangeEdit_ScaleX();
 };

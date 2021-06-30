@@ -116,13 +116,7 @@ _uint CPlayer::LateUpdate_GameObject(_float fDeltaTime)
 		CMeshTool::s_pInstance->m_Edit_RotateX.SetWindowTextW(to_wstring(vRotate.x).c_str());
 		CMeshTool::s_pInstance->m_Edit_RotateY.SetWindowTextW(to_wstring(vRotate.y).c_str());
 		CMeshTool::s_pInstance->m_Edit_RotateZ.SetWindowTextW(to_wstring(vRotate.z).c_str());
-
-		const _float3 vScale = m_pTransform->Get_TransformDesc().vScale;
-		CMeshTool::s_pInstance->m_Edit_ScaleX.SetWindowTextW(to_wstring(vScale.x).c_str());
-		CMeshTool::s_pInstance->m_Edit_ScaleY.SetWindowTextW(to_wstring(vScale.y).c_str());
-		CMeshTool::s_pInstance->m_Edit_ScaleZ.SetWindowTextW(to_wstring(vScale.z).c_str());
 	}
-
 
 	return _uint();
 }

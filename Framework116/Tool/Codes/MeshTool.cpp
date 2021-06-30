@@ -105,6 +105,7 @@ void CMeshTool::OnLbnSelchangeList_SelectContent()
 	{
 		pPlayer->ChangeMesh(L"Component_GeoMesh_Torus");
 	}
+
 }
 
 void CMeshTool::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
@@ -113,10 +114,27 @@ void CMeshTool::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 }
 
 
+void CMeshTool::OnEnChangeEdit_ScaleX()
+{
+	CTransform* pPlayerTransform = (CTransform*)CManagement::Get_Instance()->Get_Component(L"Layer_Player", L"Com_Transform");
+	if (pPlayerTransform == nullptr) {
+		PRINT_LOG(L"Warning", L"pPlayerTransform is nullptr");
+		return;
+	}
+
+	CString strScaleX;
+	m_Edit_ScaleX.GetWindowTextW(strScaleX);
+
+	float fScaleX = _ttof(strScaleX);
+	pPlayerTransform->Set_Scale({ fScaleX, 1.f, 1.f });
+}
+
+
 BEGIN_MESSAGE_MAP(CMeshTool, CDialog)
 	ON_WM_SHOWWINDOW()
 	ON_LBN_SELCHANGE(IDC_LIST1, &CMeshTool::OnLbnSelchangeList_SelectContent)
 	ON_WM_ACTIVATE()
+	ON_EN_CHANGE(IDC_EDIT8, &CMeshTool::OnEnChangeEdit_ScaleX)
 END_MESSAGE_MAP()
 
 
