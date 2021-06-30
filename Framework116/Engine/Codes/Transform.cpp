@@ -44,6 +44,11 @@ void CTransform::Set_Position(const _float3 & vPos)
 	m_TransformDesc.vPosition = vPos;
 }
 
+void CTransform::Set_Scale(const _float3& vScale)
+{
+	m_TransformDesc.vScale = vScale;
+}
+
 void CTransform::Set_WorldMatrix(const _float4x4 & NewWorld)
 {
 	m_TransformDesc.matWorld = NewWorld;
@@ -127,6 +132,13 @@ _uint CTransform::RotateY(_float fDeltaTime)
 _uint CTransform::RotateZ(_float fDeltaTime)
 {
 	m_TransformDesc.vRotate.z += m_TransformDesc.fRotatePerSec * fDeltaTime;
+
+	return _uint();
+}
+
+_uint CTransform::Scale(const _float3& _vScale)
+{
+	m_TransformDesc.vScale += _vScale;
 
 	return _uint();
 }

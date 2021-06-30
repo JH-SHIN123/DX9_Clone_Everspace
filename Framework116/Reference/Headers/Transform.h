@@ -40,6 +40,7 @@ public:
 
 public:
 	void Set_Position(const _float3& vPos);
+	void Set_Scale(const _float3& vScale);
 	void Set_WorldMatrix(const _float4x4& NewWorld);
 
 public:
@@ -57,6 +58,8 @@ public:
 	_uint RotateX(_float fDeltaTime);
 	_uint RotateY(_float fDeltaTime);
 	_uint RotateZ(_float fDeltaTime);
+
+	_uint Scale(const _float3& _vScale);
 
 public:
 	static CTransform* Create(LPDIRECT3DDEVICE9 pDevice);
