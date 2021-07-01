@@ -36,7 +36,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 45.f;
+	TransformDesc.fSpeedPerSec = 25.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
 	TransformDesc.vScale = { 0.01f,0.01f,0.01f };
 
@@ -126,46 +126,74 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
 		m_pTransform->Go_Straight(fDeltaTime);
+
+		// Booster
+		if (m_pController->Key_Pressing(KEY_SPACE))
+			m_pTransform->Go_Straight(fDeltaTime * 0.8f);
 	}
 
 	if (GetAsyncKeyState('S') & 0x8000)
-	{
 		m_pTransform->Go_Straight(-fDeltaTime);
-	}
 
 	if (GetAsyncKeyState('D') & 0x8000)
-	{
 		m_pTransform->Go_Side(fDeltaTime);
-	}
 
 	if (GetAsyncKeyState('A') & 0x8000)
-	{
 		m_pTransform->Go_Side(-fDeltaTime);
-	}
 
-	// Rotate
-	if (GetAsyncKeyState('Q') & 0x8000)
+	// Weapon Change
+	if (m_pController->Key_Down(KEY_1))
 	{
-		m_pTransform->RotateZ(fDeltaTime);
+
 	}
 
-	if (GetAsyncKeyState('E') & 0x8000)
+	if (m_pController->Key_Down(KEY_2))
 	{
-		m_pTransform->RotateZ(-fDeltaTime);
+
 	}
 
+	if (m_pController->Key_Down(KEY_3))
+	{
+
+	}
+
+	// 마우스 고정시켜서 끄기 불편해서.. ESC키 쓰세용
+	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+	{
+		DestroyWindow(g_hWnd);
+	}
+
+
+	//// Rotate (쿼터니언 회전 보류)
+	//if (GetAsyncKeyState('Q') & 0x8000)
+	//{
+	//	m_pTransform->RotateZ(fDeltaTime);
+	//}
+
+	//if (GetAsyncKeyState('E') & 0x8000)
+	//{
+	//	m_pTransform->RotateZ(-fDeltaTime);
+	//}
+
+
+	// TEST //
 	if (m_pController->Key_Down(KEY_LBUTTON))
 	{
-		//float fDist_Monster = 0.f;
-		//if (CCollision::PickingObject(fDist_Monster, g_hWnd, WINCX, WINCY, m_pDevice,
-		//	m_pManagement->Get_GameObjectList(L"Layer_Monster"))) {
-		//	PRINT_LOG(L"", L"Pick!");
-		//}
+		float fDist_Monster = 0.f;
+		if (CCollision::PickingObject(fDist_Monster, g_hWnd, WINCX, WINCY, m_pDevice,
+			m_pManagement->Get_GameObjectList(L"Layer_Monster"))) {
+			PRINT_LOG(L"", L"Pick!");
+		}
 	}
+
+
 }
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
+
+	// 화면 가둬줄 가상의 네모
+
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
@@ -175,10 +203,10 @@ _uint CPlayer::Movement(_float fDeltaTime)
 
 	GetClientRect(g_hWnd, &rc);
 
-	p1.x = rc.left + 100.f;
-	p1.y = rc.top + 100.f;
-	p2.x = rc.right - 100.f;
-	p2.y = rc.bottom - 100.f;
+	p1.x = rc.left + 100;
+	p1.y = rc.top + 100;
+	p2.x = rc.right - 100;
+	p2.y = rc.bottom - 100;
 
 	ClientToScreen(g_hWnd, &p1);
 	ClientToScreen(g_hWnd, &p2);
@@ -196,7 +224,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
 	_float3 vGap = vMouse - vScreenCenter;
 
-	_float fSpeed = D3DXVec3Length(&vGap) * 1.f;
+	_float fSpeed = D3DXVec3Length(&vGap) * 0.5f;
 	D3DXVec3Normalize(&vGap, &vGap);
 	_float fNewRotX = vGap.y;
 	_bool bRotYDir = false; // true면 위쪽 회전, false면 밑에 회전
@@ -206,16 +234,19 @@ _uint CPlayer::Movement(_float fDeltaTime)
 		bRotYDir = true;
 
 	_float fRotX = m_pTransform->Get_TransformDesc().vRotate.x;
+	
+	//90도 넘을때 반전되는 문제 ->
 
 	if (fRotX >= -D3DXToRadian(90.f) && !bRotYDir)
 		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
-	else if (fRotX < D3DXToRadian(65.f) && bRotYDir)
+	else if (fRotX < D3DXToRadian(55.f) && bRotYDir)
 	{
 		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
 	}
 
 	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed);
 
+	
 	
 	//POINT ptMouse = { WINCX >> 1, WINCY >> 1 }; // 400 / 300
 	//ClientToScreen(g_hWnd, &ptMouse);
