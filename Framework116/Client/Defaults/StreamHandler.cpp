@@ -131,6 +131,47 @@ HRESULT CStreamHandler::Load_PassData_Object(const wstring& wstrObjectPrototypeP
 	return S_OK;
 }
 
+HRESULT CStreamHandler::Load_PassData_Map(const wstring& wstrFilePath)
+{
+	HANDLE hFile = CreateFile(wstrFilePath.c_str(), GENERIC_READ
+		, NULL, NULL
+		, OPEN_EXISTING
+		, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MessageBox(g_hWnd, L"불러오기 실패!", L"실패", MB_OK);
+		return E_FAIL;
+	}
+
+	PASSDATA_MAP tPassDataMap;
+	DWORD		dwByte = 0;
+
+	while (true)
+	{
+		ReadFile(hFile, &tPassDataMap.wstrPrototypeTag, sizeof(wstring), &dwByte, nullptr);
+		ReadFile(hFile, &tPassDataMap.matWorld, sizeof(D3DXMATRIX), &dwByte, nullptr);
+		ReadFile(hFile, &tPassDataMap.wstrCloneName, sizeof(wstring), &dwByte, nullptr);
+		ReadFile(hFile, &tPassDataMap.Rotate, sizeof(_float3), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		TRANSFORM_DESC TransformDesc;
+		TransformDesc.vPosition = { tPassDataMap.matWorld._41, tPassDataMap.matWorld._42, tPassDataMap.matWorld._43 };
+		TransformDesc.vRotate = { tPassDataMap.Rotate.x, tPassDataMap.Rotate.y, tPassDataMap.Rotate.z };
+		TransformDesc.vScale = { tPassDataMap.matWorld._11, pMap->matWorld._22, pMap->matWorld._33 };
+		TransformDesc.matWorld = tPassDataMap.matWorld;
+
+
+		CManagement::Get_Instance()->Add_GameObject_InLayer(EResourceType::NonStatic, pMap->wstrPrototypeTag, L"Layer_Dummy", &TransformDesc);
+	}
+
+	CloseHandle(hFile);
+
+	return S_OK;
+}
+
 void CStreamHandler::Add_GameObject_Prototype(const wstring& wstrClassName, const PASSDATA_OBJECT* tPassDataObject)
 {
 	//if (wstrClassName == L"DUMMY")
