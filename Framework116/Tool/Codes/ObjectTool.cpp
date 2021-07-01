@@ -653,6 +653,7 @@ void CObjectTool::OnBnClickedButton9() // Clear Object List
 	Release_ObjectData();
 
 	m_ListObject_Save.ResetContent();
+	m_ListAddedCom.ResetContent();
 
 	UpdateData(FALSE);
 }

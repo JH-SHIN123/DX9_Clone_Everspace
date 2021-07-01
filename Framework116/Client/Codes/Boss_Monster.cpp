@@ -132,6 +132,8 @@ _uint CBoss_Monster::Movement(_float fDeltaTime)
 
 	// 플레이어의 위치 - 내 위치 = 갈 방향
 	// 갈 방향과 내 방향을 내적
+	// 세타 값 나옴
+	// 세타 값 나눠서 조금씩 방향전환
 
 	_float3 vTarget_Pos = m_pTargetTransform->Get_State(EState::Position);
 	_float3 vMy_Pos = m_pTransform->Get_State(EState::Position);
