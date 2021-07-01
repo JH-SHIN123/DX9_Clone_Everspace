@@ -37,12 +37,8 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform Test
 	TRANSFORM_DESC TransformDesc;
-<<<<<<< HEAD
 	TransformDesc.fSpeedPerSec = 45.f;
-=======
 	TransformDesc.vPosition = _float3(0.f, 3.f, 0.f);
-	TransformDesc.fSpeedPerSec = 5.f;
->>>>>>> SJH_Clien
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
 	TransformDesc.vScale = { 0.01f,0.01f,0.01f };
 
@@ -157,15 +153,8 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 	if (GetAsyncKeyState('E') & 0x8000)
 	{
-<<<<<<< HEAD
 		m_pTransform->RotateZ(-fDeltaTime);
 	}
-=======
-		m_pTransform->RotateY(fDeltaTime);
-	}
-
->>>>>>> SJH_Clien
-
 	if (m_pController->Key_Down(KEY_LBUTTON))
 	{
 		//float fDist_Monster = 0.f;

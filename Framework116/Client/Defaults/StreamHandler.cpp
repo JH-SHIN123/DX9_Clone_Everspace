@@ -178,7 +178,6 @@ HRESULT CStreamHandler::Load_PassData_Map(const wstring& wstrFilePath)
 	return S_OK;
 }
 
-<<<<<<< HEAD
 HRESULT CStreamHandler::Load_PassData_Ui(const wstring& wstrFilePath)
 {
 	//wifstream fin;
@@ -355,10 +354,7 @@ HRESULT CStreamHandler::Load_PassData_Resource(const wstring& wstrFilePath)
 	return S_OK;
 }
 
-HRESULT CStreamHandler::Add_GameObject_Prototype(const wstring& wstrClassName, const PASSDATA_OBJECT* tPassDataObject)
-=======
 HRESULT CStreamHandler::Add_GameObject_Prototype(const wstring & wstrClassName, PASSDATA_OBJECT * pPassDataObject, EResourceType eType)
->>>>>>> SJH_Clien
 {
 	if (wstrClassName == L"Player")
 	{
