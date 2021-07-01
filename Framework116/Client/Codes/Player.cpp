@@ -37,12 +37,9 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform Test
 	TRANSFORM_DESC TransformDesc;
-<<<<<<< HEAD
 	TransformDesc.fSpeedPerSec = 45.f;
 	TransformDesc.vPosition = _float3(0.f, 3.f, 0.f);
-=======
 	TransformDesc.fSpeedPerSec = 25.f;
->>>>>>> New_YoonYoung_Client
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
 	TransformDesc.vScale = { 0.01f,0.01f,0.01f };
 
@@ -168,8 +165,6 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	{
 		DestroyWindow(g_hWnd);
 	}
-<<<<<<< HEAD
-=======
 
 
 	//// Rotate (쿼터니언 회전 보류)
@@ -185,7 +180,6 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 
 	// TEST //
->>>>>>> New_YoonYoung_Client
 	if (m_pController->Key_Down(KEY_LBUTTON))
 	{
 		float fDist_Monster = 0.f;
