@@ -130,12 +130,24 @@ _uint CBoss_Monster::Movement(_float fDeltaTime)
 {
 	Check_Direction();
 
+	// 플레이어의 위치 - 내 위치 = 갈 방향
+	// 갈 방향과 내 방향을 내적
+
+	_float3 vTarget_Pos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMy_Pos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vTarget_Dir = vTarget_Pos - vMy_Pos;
+	D3DXVec3Normalize(&vTarget_Dir, &vTarget_Dir);
+
+
+
 	return _uint();
 }
 
 _uint CBoss_Monster::Check_Direction()
 {
-	return ;
+	
+	return 1;
 }
 
 CBoss_Monster * CBoss_Monster::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
