@@ -13,6 +13,9 @@ private:
 public: 
 	static HRESULT Load_PassData_Object(const wstring& wstrObjectPrototypePath);
 	static HRESULT Load_PassData_Map(const wstring& wstrFilePath);
+	static HRESULT Load_PassData_Resource(const wstring& wstrFilePath);
+	static HRESULT Load_PassData_Ui(const wstring& wstrFilePath);
+
 
 private:
 	static HRESULT Add_GameObject_Prototype(const wstring& wstrClassName, const PASSDATA_OBJECT* tPassDataObject);

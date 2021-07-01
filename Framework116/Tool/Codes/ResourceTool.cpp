@@ -372,7 +372,7 @@ void CResourceTool::OnBnClickedSaveButton()
 {
 	wofstream fout;
 	UpdateData(TRUE);
-	wstring strPassFileName = L"../../Data/";
+	wstring strPassFileName = L"../../Resources/Data/";
 	strPassFileName += m_strPassFileName;
 	strPassFileName += L".txt";
 	fout.open(strPassFileName);
@@ -422,7 +422,7 @@ void CResourceTool::OnBnClickedLoadButton()
 
 	wifstream fin;
 	UpdateData(TRUE);
-	wstring strPassFileName = L"../../Data/";
+	wstring strPassFileName = L"../../Resources/Data/";
 	strPassFileName += m_strPassFileName;
 	strPassFileName += L".txt";
 	fin.open(strPassFileName);

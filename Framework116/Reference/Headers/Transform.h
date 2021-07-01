@@ -40,17 +40,16 @@ public:
 
 public:
 	void Set_Position(const _float3& vPos);
-<<<<<<< HEAD
+
 	void Set_Rot(const _float3& vRot);
 	void Set_Size(const _float3& vSize);
-=======
+
 	void Set_Rotate(const _float3& vRotate);
 	void Set_Scale(const _float3& vScale);
 	void Set_ScaleX(const _float fScaleX);
 	void Set_ScaleY(const _float fScaleY);
 	void Set_ScaleZ(const _float fScaleZ);
 
->>>>>>> origin/main
 	void Set_WorldMatrix(const _float4x4& NewWorld);
 	
 public:

@@ -186,7 +186,7 @@ HRESULT CMainView::Ready_StaticResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
 		L"Component_Mesh_BigShip",
-		CMesh::Create(m_pDevice, L"../../Resources/ship.X", L"../../Resources/"))))
+		CMesh::Create(m_pDevice, L"../../Resources/Models/ship.X", L"../../Resources/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
@@ -196,7 +196,7 @@ HRESULT CMainView::Ready_StaticResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
 		L"Component_Mesh_Axis",
-		CMesh::Create(m_pDevice, L"../../Resources/axis.X", L"../../Resources/"))))
+		CMesh::Create(m_pDevice, L"../../Resources/Models/axis.X", L"../../Resources/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Axis");
 		return E_FAIL;
@@ -249,7 +249,7 @@ void CMainView::OnDraw(CDC* pDC)
 	{
 		PRINT_LOG(L"Error", L"Failed To Set Lighting false");
 	}
-
+	m_pManagement->Get_Device()->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pManagement->Update_Game();
 
 	Invalidate(FALSE);

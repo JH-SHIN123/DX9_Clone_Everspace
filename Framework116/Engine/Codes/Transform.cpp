@@ -44,7 +44,7 @@ void CTransform::Set_Position(const _float3 & vPos)
 	m_TransformDesc.vPosition = vPos;
 }
 
-<<<<<<< HEAD
+
 void CTransform::Set_Rot(const _float3 & vRot)
 {
 	m_TransformDesc.vRotate = vRot;
@@ -53,7 +53,10 @@ void CTransform::Set_Rot(const _float3 & vRot)
 void CTransform::Set_Size(const _float3 & vSize)
 {
 	m_TransformDesc.vScale = vSize;
-=======
+}
+
+
+
 void CTransform::Set_Rotate(const _float3& vRotate)
 {
 	m_TransformDesc.vRotate = vRotate;
@@ -77,7 +80,7 @@ void CTransform::Set_ScaleY(const _float fScaleY)
 void CTransform::Set_ScaleZ(const _float fScaleZ)
 {
 	m_TransformDesc.vScale.z = fScaleZ;
->>>>>>> origin/main
+
 }
 
 void CTransform::Set_WorldMatrix(const _float4x4 & NewWorld)

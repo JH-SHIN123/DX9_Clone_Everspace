@@ -225,7 +225,7 @@ void CUiTool::OnBnClickedSaveButton()
 {
 	wofstream fout;
 	UpdateData(TRUE);
-	wstring strPassFileName = L"../../Data/";
+	wstring strPassFileName = L"../../Resources/Data/";
 	strPassFileName += m_strFileName;
 	strPassFileName += L".txt";
 	fout.open(strPassFileName);
@@ -257,7 +257,7 @@ void CUiTool::OnBnClickedLoadFileButton()
 
 	wifstream fin;
 	UpdateData(TRUE);
-	wstring strPassFileName = L"../../Data/";
+	wstring strPassFileName = L"../../Resources/Data/";
 	strPassFileName += m_strFileName;
 	strPassFileName += L".txt";
 	m_iUiCount = 0;

@@ -222,11 +222,8 @@ HRESULT CLoading::Ready_StageResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Terrain",
-<<<<<<< HEAD
-		CTexture::Create(m_pDevice, ETextureType::SINGLE, L"../Resources/Terrain/Terrain%d.png"))))
-=======
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Terrain/Terrain%d.png"))))
->>>>>>> origin/main
+
+		CTexture::Create(m_pDevice, ETextureType::SINGLE, L"../../Resources/Textures/Terrain/Terrain%d.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Terrain");
 		return E_FAIL;
@@ -246,11 +243,7 @@ HRESULT CLoading::Ready_StageResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Grass",
-<<<<<<< HEAD
-		CTexture::Create(m_pDevice, ETextureType::SINGLE, L"../Resources/BillboardGrass%d.png"))))
-=======
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/BillboardGrass%d.png"))))
->>>>>>> origin/main
+		CTexture::Create(m_pDevice, ETextureType::SINGLE, L"../../Resources/Textures/BillboardGrass%d.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Grass");
 		return E_FAIL;
@@ -260,17 +253,15 @@ HRESULT CLoading::Ready_StageResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Skybox",
-<<<<<<< HEAD
-		CTexture::Create(m_pDevice, ETextureType::SINGLE, L"../../Resources/Skybox%d.dds",1))))
-=======
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Skybox%d.dds",1))))
->>>>>>> origin/main
+		CTexture::Create(m_pDevice, ETextureType::SINGLE, L"../../Resources/Textures/Skybox%d.dds",1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
 		return E_FAIL;
 	}
 #pragma endregion
 	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
+	CStreamHandler::Load_PassData_Resource(L"PathInfo");
+	CStreamHandler::Load_PassData_Ui(L"Ui");
 
 	return S_OK;
 }
