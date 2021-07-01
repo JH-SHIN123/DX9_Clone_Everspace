@@ -332,19 +332,90 @@ void CMeshTool::OnBnClickedButton_InitTransform()
 	}
 
 	pPlayerTransform->Set_Position({ 0.f,0.f,0.f });
+	pPlayerTransform->Set_Rotate({ 0.f,0.f,0.f });
 	pPlayerTransform->Set_Scale({ 1.f, 1.f, 1.f });
 }
 
 
 void CMeshTool::OnBnClickedButton_Save()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString meshName = L"";
+	CString meshFullName = L"Component_CustomMesh_";
+	m_EditMeshName.GetWindowTextW(meshName);
+
+	if (meshName == L"") {
+		return;
+	}
+	meshFullName += meshName;
+
+	g_IsMainViewInvalidate = false;
+
+	CFileDialog Dlg(FALSE,// 반대로 TRUE라면? 불러오기
+		L"mesh", L"*.mesh",
+		OFN_OVERWRITEPROMPT, L"Data File(*.mesh) | *.mesh||");
+
+	TCHAR szBuf[MAX_PATH] = L"";
+	GetCurrentDirectory(MAX_PATH, szBuf);
+	PathRemoveFileSpec(szBuf);
+	PathRemoveFileSpec(szBuf);
+	lstrcat(szBuf, L"\\Resources\\Data");
+	Dlg.m_ofn.lpstrInitialDir = szBuf;
+
+	if (Dlg.DoModal())
+	{
+		CString strPath = Dlg.GetPathName();
+		HANDLE hFile = CreateFile(strPath.GetString(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+		if (INVALID_HANDLE_VALUE == hFile)
+			return;
+
+		DWORD dwByte = 0;
+		//WriteFile(hFile, pTile, sizeof(TILE), &dwByte, nullptr);
+		
+		CloseHandle(hFile);
+	}
+
+	g_IsMainViewInvalidate = true;
 }
 
 
 void CMeshTool::OnBnClickedButton_Load()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	g_IsMainViewInvalidate = false;
+
+	CFileDialog Dlg(TRUE,// 반대로 TRUE라면? 불러오기
+		L"mesh", L"*.mesh",
+		OFN_OVERWRITEPROMPT, L"Data File(*.mesh) | *.mesh||");
+
+	TCHAR szBuf[MAX_PATH] = L"";
+	GetCurrentDirectory(MAX_PATH, szBuf);
+	PathRemoveFileSpec(szBuf);
+	PathRemoveFileSpec(szBuf);
+	lstrcat(szBuf, L"\\Resources\\Data");
+	Dlg.m_ofn.lpstrInitialDir = szBuf;
+
+	if (Dlg.DoModal())
+	{
+		CString strPath = Dlg.GetPathName();
+		HANDLE hFile = CreateFile(strPath.GetString(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+		if (INVALID_HANDLE_VALUE == hFile)
+			return;
+
+		DWORD dwByte = 0;
+		while (true)
+		{
+			//ReadFile(hFile, pTile, sizeof(TILE), &dwByte, nullptr);
+
+			if (0 == dwByte)
+			{
+				//Safe_Delete(pTile);
+				break;
+			}
+		}
+
+		CloseHandle(hFile);
+	}
+
+	g_IsMainViewInvalidate = true;
 }
 
 

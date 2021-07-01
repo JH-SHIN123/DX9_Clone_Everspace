@@ -73,7 +73,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
-	TransformDesc.vScale = { 0.5f,0.5f,0.5f };
+	TransformDesc.vScale = { 1.f,1.f,1.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
