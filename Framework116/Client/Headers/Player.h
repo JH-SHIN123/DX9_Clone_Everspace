@@ -19,7 +19,8 @@ public:
 	virtual _uint Render_GameObject() override;
 
 private:
-	_uint Movement(_float fDeltaTime);
+	void	KeyProcess(_float fDeltaTime);
+	_uint	Movement(_float fDeltaTime);
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pDevice);
@@ -32,10 +33,8 @@ private:
 	CCollideSphere*	m_pCollide = nullptr;
 	CController* m_pController = nullptr;
 
-private:
-	POINT m_tCurCursorPos = { 0,0 };
-	POINT m_tPrevCursorPos = { 0,0 };
-
+	//CCamera* m_pCam = nullptr;
+	//_float m_fCameraDist = 5.f;
 };
 
 #define __PLAYER_H__
