@@ -184,6 +184,7 @@ HRESULT CStreamHandler::Load_PassData_Resource(const wstring & wstrFilePath)
 	{
 		TCHAR szFilePath[MAX_PATH] = L"";
 		TCHAR szPrototypeTag[MAX_PATH] = L"";
+
 		TCHAR szType[MAX_PATH] = L"";
 		TCHAR szCount[MAX_PATH] = L"";
 
