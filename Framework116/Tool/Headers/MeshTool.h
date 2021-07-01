@@ -27,7 +27,6 @@ public:
 public:
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	virtual BOOL OnInitDialog();
-	virtual INT_PTR DoModal();
 	afx_msg void OnLbnSelchangeList_SelectContent();
 	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
 
@@ -57,4 +56,10 @@ public:
 	afx_msg void OnBnClickedButton_Delete();
 	afx_msg void OnBnClickedButton_Clear();
 	afx_msg void OnLbnSelchangeList_SelectContent_InstalledMeshList();
+
+public:
+	afx_msg void OnBnClickedButton_InitTransform();
+	afx_msg void OnBnClickedButton_Save();
+	afx_msg void OnBnClickedButton_Load();
+	CEdit m_EditMeshName;
 };

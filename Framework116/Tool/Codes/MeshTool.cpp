@@ -39,6 +39,7 @@ void CMeshTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT9, m_Edit_ScaleY);
 	DDX_Control(pDX, IDC_EDIT10, m_Edit_ScaleZ);
 	DDX_Control(pDX, IDC_LIST2, m_Listbox_InstalledMesh);
+	DDX_Control(pDX, IDC_EDIT1, m_EditMeshName);
 }
 
 void CMeshTool::OnShowWindow(BOOL bShow, UINT nStatus)
@@ -70,13 +71,6 @@ BOOL CMeshTool::OnInitDialog()
 	return TRUE; 
 }
 
-
-INT_PTR CMeshTool::DoModal()
-{
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-
-	return CDialog::DoModal();
-}
 
 void CMeshTool::OnLbnSelchangeList_SelectContent_InstalledMeshList()
 {
@@ -329,6 +323,30 @@ void CMeshTool::OnBnClickedButton_Clear()
 	m_Listbox_InstalledMesh.ResetContent();
 }
 
+void CMeshTool::OnBnClickedButton_InitTransform()
+{
+	CTransform* pPlayerTransform = (CTransform*)CManagement::Get_Instance()->Get_Component(L"Layer_Player", L"Com_Transform");
+	if (pPlayerTransform == nullptr) {
+		PRINT_LOG(L"Warning", L"pPlayerTransform is nullptr");
+		return;
+	}
+
+	pPlayerTransform->Set_Position({ 0.f,0.f,0.f });
+	pPlayerTransform->Set_Scale({ 1.f, 1.f, 1.f });
+}
+
+
+void CMeshTool::OnBnClickedButton_Save()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CMeshTool::OnBnClickedButton_Load()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
 
 BEGIN_MESSAGE_MAP(CMeshTool, CDialog)
 	ON_WM_SHOWWINDOW()
@@ -341,6 +359,9 @@ BEGIN_MESSAGE_MAP(CMeshTool, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON5, &CMeshTool::OnBnClickedButton_Delete)
 	ON_BN_CLICKED(IDC_BUTTON6, &CMeshTool::OnBnClickedButton_Clear)
 	ON_LBN_SELCHANGE(IDC_LIST2, &CMeshTool::OnLbnSelchangeList_SelectContent_InstalledMeshList)
+	ON_BN_CLICKED(IDC_BUTTON7, &CMeshTool::OnBnClickedButton_InitTransform)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMeshTool::OnBnClickedButton_Save)
+	ON_BN_CLICKED(IDC_BUTTON3, &CMeshTool::OnBnClickedButton_Load)
 END_MESSAGE_MAP()
 
 

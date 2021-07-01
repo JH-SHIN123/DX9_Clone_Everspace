@@ -48,5 +48,19 @@ typedef struct tagPassingData_UI {
 	_float4x4 matWorld;
 }PASSDATA_UI;
 
+//typedef struct tagSubset {
+//	geotype
+//	TRANSFORM_DESC tTransformDesc;
+//};
+
+typedef struct tagPassingData_Mesh {
+#ifdef _AFX
+	CString wstrMeshPrototypeTag;
+#else 
+	wstring wstrMeshPrototypeTag;
+#endif // _AFX
+	//vector<>
+}PASSDATA_MESH;
+
 #define __PROTOCOL_H__
 #endif

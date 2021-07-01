@@ -14,10 +14,10 @@ CCustomMesh::CCustomMesh(const CCustomMesh& other) :
 
 void CCustomMesh::Add_GeometryMesh(const CGeometryMesh* pGeometryMesh)
 {
-	if (nullptr == pGeometryMesh) return;
+	//if (nullptr == pGeometryMesh) return;
 
-	m_vecGeoMesh.emplace_back(pGeometryMesh);
-	Safe_AddRef(pGeometryMesh);
+	//m_vecGeoMesh.emplace_back(pGeometryMesh);
+	//Safe_AddRef(pGeometryMesh);
 }
 
 HRESULT CCustomMesh::Ready_Component_Prototype()
@@ -36,12 +36,12 @@ HRESULT CCustomMesh::Ready_Component(void* pArg)
 
 _uint CCustomMesh::Render_Mesh()
 {
-	m_pDevice->SetTexture(0, nullptr);
+	//m_pDevice->SetTexture(0, nullptr);
 
-	for (auto& p : m_vecGeoMesh) {
-		// SetWorldMatrix
-		p->Render_Mesh();
-	}
+	//for (auto& p : m_vecGeoMesh) {
+	//	// SetWorldMatrix
+	//	p->Render_Mesh();
+	//}
 
 	return _uint();
 }
@@ -72,9 +72,9 @@ CComponent* CCustomMesh::Clone(void* pArg)
 
 void CCustomMesh::Free()
 {
-	for (auto& p : m_vecGeoMesh) {
-		Safe_Release(p);
-	}
+	//for (auto& p : m_vecGeoMesh) {
+	//	Safe_Release(p);
+	//}
 
 	CComponent::Free();
 }

@@ -28,7 +28,7 @@ public:
 	virtual void Free() override;
 
 private:
-	vector<class CGeometryMesh*> m_vecGeoMesh;
+	//vector<class CGeometryMesh*> m_vecGeoMesh;
 	// Transform
 };
 
