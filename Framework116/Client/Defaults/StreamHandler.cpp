@@ -204,12 +204,8 @@ HRESULT CStreamHandler::Load_PassData_UI(const wstring& wstrFilePath, const _boo
 			UiDesc.wstrTexturePrototypeTag = szTexturePrototypeTag;
 
 	
-			EResourceType eResourceType = EResourceType::End;
-			if (_isStatic)
-				eResourceType = EResourceType::Static;
-			else
-				eResourceType = EResourceType::NonStatic;
-
+			EResourceType eResourceType = (EResourceType)(!_isStatic);
+			
 			if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
 				eResourceType, L"GameObject_UI"
 				, L"Layer_UI", &UiDesc)))
@@ -275,16 +271,16 @@ HRESULT CStreamHandler::Load_PassData_Resource(const wstring& wstrFilePath, cons
 			wstrTag += pPathInfo.wstrPrototypeTag;
 			EResourceType eResourceType = (EResourceType)(!_isStatic);
 			
-				if (FAILED(CManagement::Get_Instance()->Add_Component_Prototype(
-						eResourceType, wstrTag,
-						CTexture::Create(CManagement::Get_Instance()->Get_Device()
-						, eType, pPathInfo.wstrFilePath.c_str()
-							,pPathInfo.dwTextureCount))))
-					{
-						wstring Err = L"Failed To Add " + wstrTag;
-						PRINT_LOG(L"Error", Err.c_str());
-						return E_FAIL;
-					}
+			if (FAILED(CManagement::Get_Instance()->Add_Component_Prototype(
+			eResourceType, wstrTag,
+			CTexture::Create(CManagement::Get_Instance()->Get_Device()
+			, eType, pPathInfo.wstrFilePath.c_str()
+			,pPathInfo.dwTextureCount))))
+				{
+					wstring Err = L"Failed To Add " + wstrTag;
+					PRINT_LOG(L"Error", Err.c_str());
+					return E_FAIL;
+				}
 		
 		}
 
