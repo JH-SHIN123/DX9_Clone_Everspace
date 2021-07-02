@@ -165,9 +165,10 @@ _uint CPlayer_Bullet::Movement(_float fDeltaTime)
 	matWorld._32 = vPlayerLook.y;
 	matWorld._33 = vPlayerLook.z;
 
-
-	//RotateY 가 이상해용.
+	_float3 vPlayerRotate = m_pPlayerTransform->Get_TransformDesc().vRotate;
+	m_pTransform->Set_Rotate(vPlayerRotate);
 	m_pTransform->Set_WorldMatrix(matWorld);
+
 	m_pTransform->Go_Straight(fDeltaTime);
 	
 
