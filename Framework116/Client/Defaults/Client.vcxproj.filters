@@ -132,6 +132,9 @@
     <ClInclude Include="..\Headers\Boss_Monster.h">
       <Filter>02.GameObject\07.Boss_Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Bullet_EnergyBall.h">
+      <Filter>02.GameObject\08.Bullet\00.EnergyBall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -181,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Boss_Monster.cpp">
       <Filter>02.GameObject\07.Boss_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Bullet_EnergyBall.cpp">
+      <Filter>02.GameObject\08.Bullet\00.EnergyBall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

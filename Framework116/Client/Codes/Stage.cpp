@@ -238,9 +238,36 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 		L"GameObject_Boss_Monster",
 		LayerTag)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Skybox In Layer");
+		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
 		return E_FAIL;
 	}
+
+	//TRANSFORM_DESC* pTransformDesc = new TRANSFORM_DESC;
+	//pTransformDesc
+
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Bullet_EnergyBall",
+	//	L"Layer_Bullet_EnergyBall")))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
+	//	return E_FAIL;
+	//}
+
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Bullet_EnergyBall",
+	//	L"Layer_Boss_Monster_Has_A_EnergyBall_RIGHT")))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
+	//	return E_FAIL;
+	//}
+
+
+
+
+	
+
 	return S_OK;
 }
 

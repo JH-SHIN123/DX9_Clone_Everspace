@@ -1,15 +1,15 @@
 #pragma once
-#ifndef __BOSS_MONSTER_H__
+#ifndef __BULLET_ENERGYBALL_H__
 
 #include "GameObject.h"
 
 USING(Engine)
-class CBoss_Monster final : public CGameObject
+class CBullet_EnergyBall final : public CGameObject
 {
 public:
-	explicit CBoss_Monster(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData);
-	explicit CBoss_Monster(const CBoss_Monster& other);
-	virtual ~CBoss_Monster() = default;
+	explicit CBullet_EnergyBall(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData);
+	explicit CBullet_EnergyBall(const CBullet_EnergyBall& other);
+	virtual ~CBullet_EnergyBall() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -23,25 +23,25 @@ private:
 	_uint Fire_Triger(_float fDeltaTime);
 
 public:
-	static CBoss_Monster* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
+	static CBullet_EnergyBall* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
-
-public:
-	HRESULT Add_InLayer_MyParts();
 
 private:
 	CVIBuffer_CubeTexture*  m_pCube = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
-	CTransform* m_pTargetTransform = nullptr;
-	
-	//CTransform* m_pGunTranform[2] = { nullptr };
 
-	_float m_fCoolTime = 0.f;
+	CTransform* m_pTargetTransform = nullptr;
+	//CTransform* m_pParentTransform = nullptr;
+
+	_float m_fTrackingTime = 1.f;
+	_bool m_IsTracking = false;
+	_float m_fLiveTime = 10.f;
+
 
 };
 
-#define __BOSS_MONSTER_H__
+#define __BULLET_ENERGYBALL_H__
 #endif

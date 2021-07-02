@@ -1,30 +1,29 @@
 #include "stdafx.h"
-#include "..\Headers\Boss_Monster.h"
-#include "Bullet_EnergyBall.h"
+#include "..\Headers\Bullet_EnergyBall.h"
 
-CBoss_Monster::CBoss_Monster(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
+CBullet_EnergyBall::CBullet_EnergyBall(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 	: CGameObject(pDevice)
 {
 	m_pPassData = pData;
 }
 
-CBoss_Monster::CBoss_Monster(const CBoss_Monster & other)
+CBullet_EnergyBall::CBullet_EnergyBall(const CBullet_EnergyBall & other)
 	: CGameObject(other)
-	, m_fCoolTime(other.m_fCoolTime)
+	, m_fTrackingTime(other.m_fTrackingTime)
+	, m_IsTracking(other.m_IsTracking)
+	, m_fLiveTime(other.m_fLiveTime)
 {
 }
 
-HRESULT CBoss_Monster::Ready_GameObject_Prototype()
+HRESULT CBullet_EnergyBall::Ready_GameObject_Prototype()
 {
 	CGameObject::Ready_GameObject_Prototype();
 
 	return S_OK;
 }
 
-HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
+HRESULT CBullet_EnergyBall::Ready_GameObject(void * pArg/* = nullptr*/)
 {
-	Add_InLayer_MyParts();
-
 	CGameObject::Ready_GameObject(pArg);
 
 	// For.Com_VIBuffer
@@ -50,11 +49,12 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// For.Com_Transform
+
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = _float3(10.f, 3.f, 20.f);
-	TransformDesc.fSpeedPerSec = 2.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(10.f);
-	TransformDesc.vScale = { 5.f,5.f,15.f };
+	TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;//_float3(10.f, 3.f, 20.f);
+	TransformDesc.fSpeedPerSec = 5.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(20.f);
+	TransformDesc.vScale = { 1.f, 1.f, 1.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -92,13 +92,11 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	//m_pGunTranform[0] = (CTransform*)m_pManagement->Get_Component(L"Layer_Boss_Monster_Has_A_EnergyBall_LEFT", L"Com_Transform");
-	//Safe_AddRef(m_pGunTranform[0]);
-	//m_pGunTranform[1] = (CTransform*)m_pManagement->Get_Component(L"Layer_Boss_Monster_Has_A_EnergyBall_RIGHT", L"Com_Transform");
-	//Safe_AddRef(m_pGunTranform[1]);
-	//if (nullptr == m_pGunTranform[0] || nullptr == m_pGunTranform[1])
+	//m_pParentTransform = (CTransform*)m_pManagement->Get_Component(L"GameObject_Boss_Monster", L"Com_Transform");
+	//Safe_AddRef(m_pParentTransform);
+	//if (nullptr == m_pParentTransform)
 	//{
-	//	PRINT_LOG(L"Error", L"m_pGunTranform is nullptr");
+	//	PRINT_LOG(L"Error", L"m_pParentTransform is nullptr");
 	//	return E_FAIL;
 	//}
 
@@ -107,21 +105,17 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 	return S_OK;
 }
 
-_uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
+_uint CBullet_EnergyBall::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
-
 	Movement(fDeltaTime);
-	Fire_Triger(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().vPosition);
-
-
 	return NO_EVENT;
 }
 
-_uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
+_uint CBullet_EnergyBall::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CGameObject::LateUpdate_GameObject(fDeltaTime);
 
@@ -131,7 +125,7 @@ _uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
 	return _uint();
 }
 
-_uint CBoss_Monster::Render_GameObject()
+_uint CBullet_EnergyBall::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
@@ -146,8 +140,27 @@ _uint CBoss_Monster::Render_GameObject()
 	return _uint();
 }
 
-_uint CBoss_Monster::Movement(_float fDeltaTime)
+_uint CBullet_EnergyBall::Movement(_float fDeltaTime)
 {
+	m_pTransform->Go_Straight(fDeltaTime);
+
+	m_fLiveTime -= fDeltaTime;
+
+	if (m_fLiveTime <= 0.f)
+	{
+		return DEAD_OBJECT;
+	}
+
+	if (m_IsTracking == false)
+	{
+		m_fTrackingTime -= fDeltaTime;
+
+		if (m_fTrackingTime <= 0.f)
+			m_IsTracking = true;
+
+		return NO_EVENT;
+	}
+	
 	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
 	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
 
@@ -174,51 +187,28 @@ _uint CBoss_Monster::Movement(_float fDeltaTime)
 
 	if (fRight < fLeft)
 	{
-		//if(fCeta < fRadianMax)
-		m_pTransform->RotateY(-fDeltaTime);
-		//m_pGunTranform[0]->RotateY(-fDeltaTime);
-		//m_pGunTranform[1]->RotateY(-fDeltaTime);
-
+		if(fCeta < fRadianMax)
+			m_pTransform->RotateY(-fDeltaTime);
 	}
 	else
 	{
-		//if (fCeta < fRadianMax)
-		m_pTransform->RotateY(fDeltaTime);
-		//m_pGunTranform[0]->RotateY(-fDeltaTime);
-		//m_pGunTranform[1]->RotateY(-fDeltaTime);
-
+		if (fCeta < fRadianMax)
+			m_pTransform->RotateY(fDeltaTime);
 	}
 	
-	m_pTransform->Go_Straight(fDeltaTime);
 
 
 	return _uint();
 }
 
-_uint CBoss_Monster::Fire_Triger(_float fDeltaTime)
+_uint CBullet_EnergyBall::Fire_Triger(_float fDeltaTime)
 {
-	m_fCoolTime += fDeltaTime;
-
-	if (m_fCoolTime >= 2.f)
-	{
-		m_fCoolTime = 0.f;
-
-		if (FAILED(m_pManagement->Add_GameObject_InLayer(
-			EResourceType::NonStatic,
-			L"GameObject_Bullet_EnergyBall",
-			L"Layer_Bullet_EnergyBall", m_pTransform)))
-		{
-			PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
-			return E_FAIL;
-		}
-	}
-
 	return _uint();
 }
 
-CBoss_Monster * CBoss_Monster::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)
+CBullet_EnergyBall * CBullet_EnergyBall::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)
 {
-	CBoss_Monster* pInstance = new CBoss_Monster(pDevice, pData);
+	CBullet_EnergyBall* pInstance = new CBullet_EnergyBall(pDevice, pData);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Boss_Monster");
@@ -228,9 +218,9 @@ CBoss_Monster * CBoss_Monster::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT
 	return pInstance;
 }
 
-CGameObject * CBoss_Monster::Clone(void * pArg/* = nullptr*/)
+CGameObject * CBullet_EnergyBall::Clone(void * pArg/* = nullptr*/)
 {
-	CBoss_Monster* pClone = new CBoss_Monster(*this); /* 복사 생성자 호출 */
+	CBullet_EnergyBall* pClone = new CBullet_EnergyBall(*this); /* 복사 생성자 호출 */
 	if (FAILED(pClone->Ready_GameObject(pArg)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Clone Boss_Monster");
@@ -240,7 +230,7 @@ CGameObject * CBoss_Monster::Clone(void * pArg/* = nullptr*/)
 	return pClone;
 }
 
-void CBoss_Monster::Free()
+void CBullet_EnergyBall::Free()
 {
 	Safe_Release(m_pTargetTransform);
 
@@ -250,12 +240,4 @@ void CBoss_Monster::Free()
 	Safe_Release(m_pCollide);
 
 	CGameObject::Free();
-}
-
-HRESULT CBoss_Monster::Add_InLayer_MyParts()
-{
-
-
-
-	return S_OK;
 }
