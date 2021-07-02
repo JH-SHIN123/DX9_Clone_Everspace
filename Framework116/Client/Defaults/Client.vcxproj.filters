@@ -64,6 +64,12 @@
     <Filter Include="02.GameObject\07.Boss_Monster">
       <UniqueIdentifier>{88b50869-9c1a-4425-ae6e-f5919ea9d218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\08.Bullet">
+      <UniqueIdentifier>{dddd415c-d79f-4cda-8a24-608ab1a97737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\00.EnergyBall">
+      <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

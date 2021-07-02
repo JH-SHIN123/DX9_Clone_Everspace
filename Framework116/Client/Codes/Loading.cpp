@@ -281,6 +281,15 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_TestCube");
 		return E_FAIL;
 	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_EnergyBall",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/EnergyBall%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_EnergyBall");
+		return E_FAIL;
+	}
 #pragma endregion
 
 	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");

@@ -133,8 +133,6 @@ _uint CBoss_Monster::Movement(_float fDeltaTime)
 	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
 	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
 
-
-	//_float3 vMyRight = m_pTransform->Get_State(EState::Right);
 	_float3 vTargetDir = vTargetPos - vMyPos;
 	D3DXVec3Normalize(&vTargetDir, &vTargetDir);
 
