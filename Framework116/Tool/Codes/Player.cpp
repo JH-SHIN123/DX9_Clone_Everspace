@@ -130,8 +130,13 @@ _uint CPlayer::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 
+	if (m_bRenderWire)
+		m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
 	if(m_pMesh)
 		m_pMesh->Render_Mesh();
+
+	m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
 	return _uint();
 }

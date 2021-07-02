@@ -59,6 +59,16 @@ void CCollideTool::OnShowWindow(BOOL bShow, UINT nStatus)
 		m_Listbox_Mesh.ResetContent();
 		m_Listbox_Mesh.AddString(L"Component_Mesh_BigShip");
 		m_Listbox_Mesh.AddString(L"Component_GeoMesh_Torus");
+
+		// 플레이어 Bounding Sphere
+		CPlayer* pPlayer = (CPlayer*)CManagement::Get_Instance()->Get_GameObject(L"Layer_Player");
+		if (pPlayer == nullptr) {
+			PRINT_LOG(L"Warning", L"CPlayer is nullptr");
+			return;
+		}
+
+		pPlayer->ChangeMesh(L"Component_GeoMesh_Sphere");
+		pPlayer->m_bRenderWire = true;
 	}
 }
 

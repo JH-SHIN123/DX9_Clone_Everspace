@@ -259,15 +259,15 @@ HRESULT CMainView::Ready_StaticResources()
 		return E_FAIL;
 	}
 
-	///* For.Component_GeoMesh_Sphere */
-	//if (FAILED(m_pManagement->Add_Component_Prototype(
-	//	EResourceType::Static,
-	//	L"Component_GeoMesh_Sphere",
-	//	CGeoMesh_Sphere::Create(m_pDevice))))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Sphere");
-	//	return E_FAIL;
-	//}
+	/* For.Component_GeoMesh_Sphere */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Sphere",
+		CGeoMesh_Sphere::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Sphere");
+		return E_FAIL;
+	}
 
 	/* For.Component_GeoMesh_Cylinder */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
@@ -279,15 +279,15 @@ HRESULT CMainView::Ready_StaticResources()
 		return E_FAIL;
 	}
 
-	///* For.Component_GeoMesh_Torus */
-	//if (FAILED(m_pManagement->Add_Component_Prototype(
-	//	EResourceType::Static,
-	//	L"Component_GeoMesh_Torus",
-	//	CGeoMesh_Torus::Create(m_pDevice, 10,100))))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Torus");
-	//	return E_FAIL;
-	//}
+	/* For.Component_GeoMesh_Torus */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Torus",
+		CGeoMesh_Torus::Create(m_pDevice, 100,1000))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Torus");
+		return E_FAIL;
+	}
 
 	/* For.Component_CollideSphere */
 	if (FAILED(m_pManagement->Add_Component_Prototype(

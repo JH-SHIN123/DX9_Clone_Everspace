@@ -68,7 +68,7 @@ HRESULT CAxis::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vScale = { 0.5f,0.5f,0.5f };
+	TransformDesc.vScale = { 1.f,1.f,1.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -107,6 +107,7 @@ _uint CAxis::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	
+	m_pDevice->SetTexture(0, nullptr);
 	if (m_pMesh)
 		m_pMesh->Render_Mesh();
 

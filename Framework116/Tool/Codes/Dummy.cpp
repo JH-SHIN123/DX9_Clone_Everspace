@@ -110,6 +110,7 @@ _uint CDummy::Render_GameObject()
         m_pDevice->SetMaterial(&mat);
     }
 
+    m_pDevice->SetTexture(0, nullptr);
     if (m_pMesh)
         m_pMesh->Render_Mesh();
 
