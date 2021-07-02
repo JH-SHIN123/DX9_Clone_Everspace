@@ -15,6 +15,7 @@ CGeoMesh_Cube::CGeoMesh_Cube(const CGeoMesh_Cube& other) :
 HRESULT CGeoMesh_Cube::Ready_Component_Prototype()
 {
 	CGeoMesh::Ready_Component_Prototype();
+	m_eGeoType = EGeoMeshType::Cube;
 
 	// 1Unit = 1m
 	if (FAILED(D3DXCreateBox(m_pDevice, 100.f, 100.f, 100.f, &m_pMesh, nullptr))) {

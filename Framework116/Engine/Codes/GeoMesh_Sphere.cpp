@@ -15,6 +15,7 @@ CGeoMesh_Sphere::CGeoMesh_Sphere(const CGeoMesh_Sphere& other) :
 HRESULT CGeoMesh_Sphere::Ready_Component_Prototype()
 {
 	CGeoMesh::Ready_Component_Prototype();
+	m_eGeoType = EGeoMeshType::Sphere;
 
 	// 1Unit = 1m
 	if (FAILED(D3DXCreateSphere(m_pDevice, 100.f, 10, 10, &m_pMesh, nullptr))) {

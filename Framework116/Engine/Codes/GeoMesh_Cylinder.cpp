@@ -16,6 +16,7 @@ CGeoMesh_Cylinder::CGeoMesh_Cylinder(const CGeoMesh_Cylinder& other) :
 HRESULT CGeoMesh_Cylinder::Ready_Component_Prototype()
 {
 	CGeoMesh::Ready_Component_Prototype();
+	m_eGeoType = EGeoMeshType::Cylinder;
 
 	// 1Unit = 1m
 	if (FAILED(D3DXCreateCylinder(m_pDevice, m_fRadius1, m_fRadius2, m_fLength,10,10, &m_pMesh, nullptr))) {
