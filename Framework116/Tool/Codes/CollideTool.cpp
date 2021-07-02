@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Management.h"
 #include "Dummy.h"
+#include "Axis.h"
 // CCollideTool 대화 상자
 
 IMPLEMENT_DYNAMIC(CCollideTool, CDialog)
@@ -40,12 +41,32 @@ void CCollideTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TEXT, m_Text_MeshName);
 }
 
+void CCollideTool::OnShowWindow(BOOL bShow, UINT nStatus)
+{
+	CDialog::OnShowWindow(bShow, nStatus);
+
+	// Dummy Clone 다 삭제
+	if (TRUE == bShow)
+	{
+		const list<class CGameObject*>* dummyList = CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Dummy");
+		if (nullptr != dummyList) {
+			for (auto& p : *dummyList)
+				p->Set_IsDead(true);
+		}
+
+		// 배치되어있는 메시 리스트 추가
+		// Component_Mesh_BigShip
+		// Component_GeoMesh_Torus
+		m_Listbox_Mesh.ResetContent();
+		m_Listbox_Mesh.AddString(L"Component_Mesh_BigShip");
+		m_Listbox_Mesh.AddString(L"Component_GeoMesh_Torus");
+	}
+}
+
+
 BOOL CCollideTool::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
-	// Dummy Clone 다 삭제
-	// 배치되어있는 메시 리스트 추가
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -90,16 +111,13 @@ void CCollideTool::OnLbnSelchangeList_MeshList()
 	CString strContent = L"";
 	m_Listbox_Mesh.GetText(iCurSel, strContent);
 
-	CPlayer* pPlayer = (CPlayer*)CManagement::Get_Instance()->Get_GameObject(L"Layer_Player");
-	if (pPlayer == nullptr) {
-		PRINT_LOG(L"Warning", L"Player is nullptr");
+	CAxis* pAxis = (CAxis*)CManagement::Get_Instance()->Get_GameObject(L"Layer_Axis");
+	if (pAxis == nullptr) {
+		PRINT_LOG(L"Warning", L"CAxis is nullptr");
 		return;
 	}
 
-	//if (strContent == L"박스")
-	//{
-	//	pPlayer->ChangeMesh(L"Component_GeoMesh_Cube");
-	//}
+	pAxis->ChangeMesh(strContent.GetString());
 }
 
 
@@ -198,34 +216,49 @@ void CCollideTool::OnBnClickedButton_Load()
 
 void CCollideTool::OnEnChangeEdit_ScaleX()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialog::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
+	CTransform* pPlayerTransform = (CTransform*)CManagement::Get_Instance()->Get_Component(L"Layer_Player", L"Com_Transform");
+	if (pPlayerTransform == nullptr) {
+		PRINT_LOG(L"Warning", L"pPlayerTransform is nullptr");
+		return;
+	}
 
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strScaleX;
+	m_Edit_ScaleX.GetWindowTextW(strScaleX);
+
+	float fScaleX = _ttof(strScaleX);
+	pPlayerTransform->Set_ScaleX(fScaleX);
 }
 
 
 void CCollideTool::OnEnChangeEdit_ScaleY()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialog::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
+	CTransform* pPlayerTransform = (CTransform*)CManagement::Get_Instance()->Get_Component(L"Layer_Player", L"Com_Transform");
+	if (pPlayerTransform == nullptr) {
+		PRINT_LOG(L"Warning", L"pPlayerTransform is nullptr");
+		return;
+	}
 
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strScaleY;
+	m_Edit_ScaleY.GetWindowTextW(strScaleY);
+
+	float fScaleY = _ttof(strScaleY);
+	pPlayerTransform->Set_ScaleY(fScaleY);
 }
 
 
 void CCollideTool::OnEnChangeEdit_ScaleZ()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialog::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
+	CTransform* pPlayerTransform = (CTransform*)CManagement::Get_Instance()->Get_Component(L"Layer_Player", L"Com_Transform");
+	if (pPlayerTransform == nullptr) {
+		PRINT_LOG(L"Warning", L"pPlayerTransform is nullptr");
+		return;
+	}
 
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strScaleZ;
+	m_Edit_ScaleZ.GetWindowTextW(strScaleZ);
+
+	float fScaleZ = _ttof(strScaleZ);
+	pPlayerTransform->Set_ScaleZ(fScaleZ);
 }
 
 
@@ -241,6 +274,7 @@ BEGIN_MESSAGE_MAP(CCollideTool, CDialog)
 	ON_EN_CHANGE(IDC_EDIT8, &CCollideTool::OnEnChangeEdit_ScaleX)
 	ON_EN_CHANGE(IDC_EDIT9, &CCollideTool::OnEnChangeEdit_ScaleY)
 	ON_EN_CHANGE(IDC_EDIT10, &CCollideTool::OnEnChangeEdit_ScaleZ)
+	ON_WM_SHOWWINDOW()
 END_MESSAGE_MAP()
 
 

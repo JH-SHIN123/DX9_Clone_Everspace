@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "..\Headers\Axis.h"
+#include "Mesh.h"
 
 CAxis::CAxis(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -9,6 +10,38 @@ CAxis::CAxis(LPDIRECT3DDEVICE9 pDevice)
 CAxis::CAxis(const CAxis & other)
 	: CGameObject(other)
 {
+}
+
+HRESULT CAxis::ChangeMesh(const wstring& wstrMeshPrototypeTag)
+{
+	// 기존꺼 m_pMesh 레퍼런스 카운팅 반납
+	Safe_Release(m_pMesh);
+
+	// 메시 교체
+	auto iter_find = m_Components.find(L"Com_Mesh");
+	if (m_Components.end() != iter_find)
+	{
+		// 실질적 메모리 해제 (클론삭제)
+		Safe_Release(iter_find->second);
+
+		// 새로운거로 변경
+		CComponent* pClone = (CComponent*)m_pManagement->Clone_Component(EResourceType::Static, wstrMeshPrototypeTag);
+		if (nullptr == pClone)
+		{
+			PRINT_LOG(L"Error", L"Failed to Change Mesh");
+			return E_FAIL;
+		}
+
+		// 원본데이터(m_Components) 포인터지정
+		iter_find->second = pClone;
+
+		m_pMesh = (CMesh*)pClone;
+		Safe_AddRef(pClone);
+
+		m_wstrMeshPrototypeTag = wstrMeshPrototypeTag;
+	}
+
+	return S_OK;
 }
 
 HRESULT CAxis::Ready_GameObject_Prototype()
@@ -73,7 +106,9 @@ _uint CAxis::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pMesh->Render_Mesh();
+	
+	if (m_pMesh)
+		m_pMesh->Render_Mesh();
 
 	return _uint();
 }

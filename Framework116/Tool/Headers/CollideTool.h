@@ -55,4 +55,5 @@ public:
 	afx_msg void OnEnChangeEdit_ScaleX();
 	afx_msg void OnEnChangeEdit_ScaleY();
 	afx_msg void OnEnChangeEdit_ScaleZ();
+	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 };

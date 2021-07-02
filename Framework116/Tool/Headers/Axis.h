@@ -12,6 +12,10 @@ public:
 	virtual ~CAxis() = default;
 
 public:
+	HRESULT ChangeMesh(const wstring& wstrMeshPrototypeTag);
+	const wstring& Get_MeshPrototypeTag() const { return m_wstrMeshPrototypeTag; }
+
+public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
 	virtual HRESULT Ready_GameObject(void * pArg = nullptr) override;
 	virtual _uint Update_GameObject(_float fDeltaTime) override;
@@ -29,6 +33,8 @@ public:
 private:
 	CMesh*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
+	wstring m_wstrMeshPrototypeTag = L"";
+
 };
 
 #define __AXIS_H__
