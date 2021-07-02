@@ -7,5 +7,8 @@ extern HWND g_hWnd;
 #define WINCX 800
 #define WINCY 600
 
+#define WEAPON_MACHINEGUN 100
+#define WEAPON_LAZER 200
+
 #define __CLIENT_DEFINE_H__
 #endif

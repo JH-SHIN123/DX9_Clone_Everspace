@@ -148,12 +148,12 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	// Weapon Change
 	if (m_pController->Key_Down(KEY_1))
 	{
-
+		m_iWeapon = WEAPON_MACHINEGUN;
 	}
 
 	if (m_pController->Key_Down(KEY_2))
 	{
-
+		m_iWeapon = WEAPON_LAZER;
 	}
 
 	if (m_pController->Key_Down(KEY_3))
@@ -181,24 +181,31 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 	if (m_pController->Key_Pressing(KEY_LBUTTON))
 	{
-		m_fMachinegunDelay += fDeltaTime;
-		if (m_fMachinegunDelay > 0.1f)
+		if (m_iWeapon == WEAPON_MACHINEGUN)
 		{
-			if (m_IsLeft)
-				m_IsLeft = false;
-			else
-				m_IsLeft = true;
-
-			if (FAILED(m_pManagement->Add_GameObject_InLayer(
-				EResourceType::Static,
-				L"GameObject_Player_Bullet",
-				L"Layer_Player_Bullet",
-				(void*)m_IsLeft)))
+			m_fMachinegunDelay += fDeltaTime;
+			if (m_fMachinegunDelay > 0.1f)
 			{
-				PRINT_LOG(L"Error", L"Failed To Add Player_Bullet In Layer");
-				return;
+				if (m_IsLeft)
+					m_IsLeft = false;
+				else
+					m_IsLeft = true;
+
+				if (FAILED(m_pManagement->Add_GameObject_InLayer(
+					EResourceType::Static,
+					L"GameObject_Player_Bullet",
+					L"Layer_Player_Bullet",
+					(void*)m_IsLeft)))
+				{
+					PRINT_LOG(L"Error", L"Failed To Add Player_Bullet In Layer");
+					return;
+				}
+				m_fMachinegunDelay = 0.f;
 			}
-			m_fMachinegunDelay = 0.f;
+		}
+		else if (m_iWeapon == WEAPON_LAZER)
+		{
+
 		}
 	}
 }

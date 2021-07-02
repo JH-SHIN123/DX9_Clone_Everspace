@@ -5,6 +5,7 @@
 #include "MainCam.h"
 #include "UI.h"
 #include "Player_Bullet.h"
+#include "Player_Lazer.h"
 
 #include "StreamHandler.h"
 
@@ -110,6 +111,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_Player_Lazer */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_Player_Lazer",
+		CPlayer_Lazer::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Player_Lazer");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 #pragma region Components
@@ -208,6 +219,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		EResourceType::Static,
 		L"Component_Texture_Player_Bullet",
 		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Player_Bullet%d.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Player_Lazer */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Texture_Player_Lazer",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Player_Lazer%d.dds", 1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet");
 		return E_FAIL;
