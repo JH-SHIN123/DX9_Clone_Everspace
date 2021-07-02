@@ -118,6 +118,15 @@
     <Filter Include="01.Utilities\04.Component\06.BezierCurve">
       <UniqueIdentifier>{ae496e1d-e83f-42ce-a0d3-d3291bdaf342}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utilities\04.Component\03.Mesh\00.ModelMesh">
+      <UniqueIdentifier>{eff63647-f668-4461-b3e3-4d4af5466bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utilities\04.Component\03.Mesh\01.GeoMesh">
+      <UniqueIdentifier>{139942a4-0179-4a37-a195-e5b83314493c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utilities\04.Component\03.Mesh\02.CustomMesh">
+      <UniqueIdentifier>{128f1b1e-6c0d-4119-87ab-a0986330e54d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Management.h">
@@ -237,6 +246,9 @@
     <ClInclude Include="..\Headers\SpriteTexture.h">
       <Filter>01.Utilities\04.Component\02.Texture\SpriteTexture</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\ModelMesh.h">
+      <Filter>01.Utilities\04.Component\03.Mesh\00.ModelMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Management.cpp">
@@ -337,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\SpriteTexture.cpp">
       <Filter>01.Utilities\04.Component\02.Texture\SpriteTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\ModelMesh.cpp">
+      <Filter>01.Utilities\04.Component\03.Mesh\00.ModelMesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

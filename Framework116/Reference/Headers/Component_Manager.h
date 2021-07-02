@@ -10,9 +10,10 @@
 #include "VIBuffer_CubeTexture.h"
 #include "Transform.h"
 #include "Texture.h"
-#include "Mesh.h"
 #include "CollideSphere.h"
 #include "Controller.h"
+#include "Mesh.h"
+#include "ModelMesh.h"
 
 BEGIN(Engine)
 class CComponent_Manager : public CBase
