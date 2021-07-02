@@ -38,7 +38,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform Test
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.fSpeedPerSec = 45.f;
-	TransformDesc.vPosition = _float3(0.f, 3.f, 0.f);
+	TransformDesc.vPosition = _float3(0.f, 0.f, 0.f);
 	TransformDesc.fSpeedPerSec = 25.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
 	TransformDesc.vScale = { 0.01f,0.01f,0.01f };
@@ -144,6 +144,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (GetAsyncKeyState('A') & 0x8000)
 		m_pTransform->Go_Side(-fDeltaTime);
 
+
 	// Weapon Change
 	if (m_pController->Key_Down(KEY_1))
 	{
@@ -166,17 +167,6 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		DestroyWindow(g_hWnd);
 	}
 
-
-	//// Rotate (쿼터니언 회전 보류)
-	//if (GetAsyncKeyState('Q') & 0x8000)
-	//{
-	//	m_pTransform->RotateZ(fDeltaTime);
-	//}
-
-	//if (GetAsyncKeyState('E') & 0x8000)
-	//{
-	//	m_pTransform->RotateZ(-fDeltaTime);
-	//}
 
 
 	// TEST //

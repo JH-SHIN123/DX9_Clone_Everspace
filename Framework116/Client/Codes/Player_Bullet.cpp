@@ -48,7 +48,7 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 2400.f;
+	TransformDesc.fSpeedPerSec = 800.f;
 	TransformDesc.vScale = { 0.5f, 0.5f, 10.f };
 
 	if (FAILED(CGameObject::Add_Component(
@@ -93,18 +93,16 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
 	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
 
-	_float3 vSide = (vPlayerRight - vPlayerPos);
-	_float fDis = D3DXVec3Length(&vSide);
-
-	//???
+	
 	if ((_bool)pArg == true)
-		vPlayerPos.x -= 10.f;
+		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 300.f);
 	else
-		vPlayerPos.x += 10.f;
+		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 300.f);
 
-	m_pTransform->Set_Position(vPlayerPos);
+	m_pTransform->Set_Position(m_vMuzzlePos);
 
-
+	m_vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
+	D3DXVec3Normalize(&m_vPlayerLook, &m_vPlayerLook);
 
 
 
@@ -158,15 +156,17 @@ _uint CPlayer_Bullet::Movement(_float fDeltaTime)
 	_float4x4 matWorld;
 	matWorld = m_pPlayerTransform->Get_TransformDesc().matWorld;
 
-	_float3 vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
-	D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
 
-	matWorld._31 = vPlayerLook.x;
-	matWorld._32 = vPlayerLook.y;
-	matWorld._33 = vPlayerLook.z;
+	matWorld._31 = m_vPlayerLook.x;
+	matWorld._32 = m_vPlayerLook.y;
+	matWorld._33 = m_vPlayerLook.z;
 
-	_float3 vPlayerRotate = m_pPlayerTransform->Get_TransformDesc().vRotate;
-	m_pTransform->Set_Rotate(vPlayerRotate);
+	if (m_IsFirst)
+	{
+		_float3 vPlayerRotate = m_pPlayerTransform->Get_TransformDesc().vRotate;
+		m_pTransform->Set_Rotate(vPlayerRotate);
+		m_IsFirst = false;
+	}
 	m_pTransform->Set_WorldMatrix(matWorld);
 
 	m_pTransform->Go_Straight(fDeltaTime);

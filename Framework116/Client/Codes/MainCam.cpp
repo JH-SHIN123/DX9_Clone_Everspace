@@ -161,6 +161,7 @@ _uint CMainCam::KeyInput(_float fDeltaTime)
 		if(!(m_fDistanceFromTarget < 10.f))
 		m_fDistanceFromTarget -= 5.f * fDeltaTime;
 	}
+	
 
 
 	return _uint();

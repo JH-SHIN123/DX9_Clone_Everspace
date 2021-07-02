@@ -39,6 +39,9 @@ private:
 private:
 	_float m_fLifeTime = 0.f;
 	_bool m_IsLeft = true;
+	_float3 m_vMuzzlePos = {};
+	_float3 m_vPlayerLook = {};
+	_bool m_IsFirst = true;
 
 };
 
