@@ -1,4 +1,4 @@
-#include "..\Headers\GeoMesh_Torus.h"
+#include "GeoMesh_Torus.h"
 
 USING(Engine)
 
