@@ -11,6 +11,7 @@ CBoss_Monster::CBoss_Monster(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 CBoss_Monster::CBoss_Monster(const CBoss_Monster & other)
 	: CGameObject(other)
 	, m_fCoolTime(other.m_fCoolTime)
+	, m_IsLeftFire(other.m_IsLeftFire)
 {
 }
 
@@ -111,7 +112,7 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
 
-	Movement(fDeltaTime);
+	//Movement(fDeltaTime);
 	Fire_Triger(fDeltaTime);
 
 	m_pTransform->Update_Transform();
@@ -204,7 +205,29 @@ _uint CBoss_Monster::Fire_Triger(_float fDeltaTime)
 		m_fCoolTime = 0.f;
 
 		TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
-		pArg->vPosition = m_pTransform->Get_State(EState::Position);
+		_float3 vPos = m_pTransform->Get_State(EState::Position);
+		_float3 vUp = m_pTransform->Get_State(EState::Up);
+		_float3 vLook = m_pTransform->Get_State(EState::Look);
+
+		_float3 vRight, vLeft;
+
+		D3DXVec3Normalize(&vLook, &vLook);
+		D3DXVec3Normalize(&vUp, &vUp);
+
+		D3DXVec3Cross(&vRight, &vUp, &vLook);
+		D3DXVec3Normalize(&vRight, &vRight);
+
+		vPos += vLook * 2.f;
+
+		if (m_IsLeftFire == true)
+			vPos -= vRight * 4.f;
+
+		if (m_IsLeftFire == false)
+			vPos += vRight * 4.f;
+
+		m_IsLeftFire = !m_IsLeftFire;
+
+		pArg->vPosition = vPos;
 		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(

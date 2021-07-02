@@ -40,6 +40,7 @@ private:
 	//CTransform* m_pGunTranform[2] = { nullptr };
 
 	_float m_fCoolTime = 0.f;
+	_bool m_IsLeftFire = false; // 
 
 };
 
