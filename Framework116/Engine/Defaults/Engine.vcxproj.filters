@@ -264,6 +264,18 @@
     <ClInclude Include="..\Headers\GeoMesh.h">
       <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\GeoMesh_Cube.h">
+      <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\GeoMesh_Cylinder.h">
+      <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh\Cylinder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\GeoMesh_Sphere.h">
+      <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\GeoMesh_Torus.h">
+      <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh\Torus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Management.cpp">
@@ -370,6 +382,18 @@
     </ClCompile>
     <ClCompile Include="..\Codes\GeoMesh.cpp">
       <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GeoMesh_Cube.cpp">
+      <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GeoMesh_Cylinder.cpp">
+      <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh\Cylinder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GeoMesh_Sphere.cpp">
+      <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GeoMesh_Torus.cpp">
+      <Filter>01.Utilities\04.Component\03.Mesh\01.GeoMesh\Torus</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
