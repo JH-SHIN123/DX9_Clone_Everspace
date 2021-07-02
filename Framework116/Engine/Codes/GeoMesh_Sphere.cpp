@@ -1,4 +1,4 @@
-#include "..\Headers\GeoMesh_Sphere.h"
+#include "GeoMesh_Sphere.h"
 
 USING(Engine)
 
