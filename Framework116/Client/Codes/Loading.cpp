@@ -14,6 +14,7 @@
 #include "LaserSystem.h"
 #include "Boss_Monster.h"
 #include "Bullet_EnergyBall.h"
+#include "Bullet_Laser.h"
 #pragma endregion
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
@@ -310,6 +311,16 @@ HRESULT CLoading::Ready_BossAndOthers()
 		PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall");
 		return E_FAIL;
 	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Bullet_Laser",
+		CBullet_Laser::Create(m_pDevice, nullptr))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Bullet_Laser");
+		return E_FAIL;
+	}
+
 
 	return S_OK;
 }

@@ -36,9 +36,10 @@ private:
 	CTransform* m_pTargetTransform = nullptr;
 	//CTransform* m_pParentTransform = nullptr;
 
-	_float m_fTrackingTime = 1.f;
+	//_float m_fTrackingTime = 1.f;
 	_bool m_IsTracking = false;
 	_float m_fLiveTime = 10.f;
+	_float3 m_vMoveDir = {};
 
 
 };

@@ -228,14 +228,25 @@ _uint CBoss_Monster::Fire_Triger(_float fDeltaTime)
 		m_IsLeftFire = !m_IsLeftFire;
 
 		pArg->vPosition = vPos;
-		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
+		//pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
+
+		//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		//	EResourceType::NonStatic,
+		//	L"GameObject_Bullet_EnergyBall",
+		//	L"Layer_Bullet_EnergyBall", pArg)))
+		//{
+		//	PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
+		//	return E_FAIL;
+		//}
+
+		pArg->vPosition = m_pTransform->Get_State(EState::Position) + (vUp * 2.f);
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::NonStatic,
-			L"GameObject_Bullet_EnergyBall",
-			L"Layer_Bullet_EnergyBall", pArg)))
+			L"GameObject_Boss_Monster",
+			L"Layer_Bullet_Laser", pArg)))
 		{
-			PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
+			PRINT_LOG(L"Error", L"Failed To Add Bullet_Laser In Layer");
 			return E_FAIL;
 		}
 	}
