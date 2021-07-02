@@ -233,7 +233,7 @@
     <ClCompile Include="..\Codes\MainView.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
     <ClCompile Include="..\Codes\Skybox.cpp" />
-    <ClCompile Include="..\Headers\MESHTOOL.CPP" />
+    <ClCompile Include="..\HEADERS\COLLIDETOOL.CPP" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
