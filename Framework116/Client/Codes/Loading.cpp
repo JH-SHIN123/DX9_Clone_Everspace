@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "..\Headers\Loading.h"
 
@@ -259,6 +260,6 @@ HRESULT CLoading::Ready_StageResources()
 	}
 #pragma endregion
 	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
-
+	CStreamHandler::Load_PassData_Resource(L"../../Resources/Data/PathInfo.txt");
 	return S_OK;
 }

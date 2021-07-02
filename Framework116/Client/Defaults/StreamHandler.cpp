@@ -173,179 +173,203 @@ HRESULT CStreamHandler::Load_PassData_Map(const wstring& wstrFilePath)
 
 HRESULT CStreamHandler::Load_PassData_Ui(const wstring& wstrFilePath)
 {
-	//wifstream fin;
-	//wstring strPassFileName = L"../../Resources/Data/";
-	//strPassFileName += wstrFilePath;
-	//strPassFileName += L".txt";
-	//fin.open(strPassFileName);
+	wifstream fin;
+	fin.open(wstrFilePath);
 
-	//if (!fin.fail())
-	//{
-	//	TCHAR szTexturePrototypeTag[MAX_PATH] = L"";
-	//	TCHAR szPosX[MAX_PATH] = L"";
-	//	TCHAR szPosY[MAX_PATH] = L"";
-	//	TCHAR szScaleX[MAX_PATH] = L"";
-	//	TCHAR szScaleY[MAX_PATH] = L"";
+	if (!fin.fail())
+	{
+		TCHAR szTexturePrototypeTag[MAX_PATH] = L"";
+		TCHAR szPosX[MAX_PATH] = L"";
+		TCHAR szPosY[MAX_PATH] = L"";
+		TCHAR szScaleX[MAX_PATH] = L"";
+		TCHAR szScaleY[MAX_PATH] = L"";
 
-	//	while (true)
-	//	{
-	//		fin.getline(szTexturePrototypeTag, MAX_PATH, L'|');
-	//		fin.getline(szPosX, MAX_PATH, L'|');
-	//		fin.getline(szPosY, MAX_PATH, L'|');
-	//		fin.getline(szScaleX, MAX_PATH, L'|');
-	//		fin.getline(szScaleY, MAX_PATH);
+		while (true)
+		{
+			fin.getline(szTexturePrototypeTag, MAX_PATH, L'|');
+			fin.getline(szPosX, MAX_PATH, L'|');
+			fin.getline(szPosY, MAX_PATH, L'|');
+			fin.getline(szScaleX, MAX_PATH, L'|');
+			fin.getline(szScaleY, MAX_PATH);
 
-	//		if (fin.eof())
-	//			break;
-	//		// ï¿½Úµï¿½ ï¿½ï¿½î¾²ï¿½â³ª, ï¿½Ö¼ï¿½, ï¿½Ô¼ï¿½ï¿½ÎºÐ¸ï¿½ ï¿½ï¿½ï¿½ï¿½! (ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+			if (fin.eof())
+				break;
+			UI_DESC UiDesc;
+			//Ui Pos,Scale
+			_float PosX = _ttof(szPosX);
+			_float PosY = _ttof(szPosY);
+			_float ScaleX = _ttof(szScaleX);
+			_float ScaleY = _ttof(szScaleY);
+			UiDesc.tTransformDesc.vPosition = { PosX,PosY,0 };
+			UiDesc.tTransformDesc.vScale = { ScaleX,ScaleY,0.f };
+			//È®ÀåÀÚ ±¸ÇÏ±â
+			wstring strType = szTexturePrototypeTag;
+			int  i = 0;
+			while (true)
+			{
+				if (strType[i] == '.')
+					break;
+				i++;
+			}
+			strType.erase(0, i);
 
-	//		// ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½Å© ï¿½ï¿½ï¿½Ø°ï¿½ ï¿½ÈµÈ»ï¿½ï¿½ï¿½ï¿½ï¿½
-	//		// ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½
-	//		CUI* pUi = CUI::Create(CManagement::Get_Instance()->Get_Device());
-	//		TRANSFORM_DESC UiTrans;
-	//		_float PosX = _ttof(szPosX);
-	//		_float PosY = _ttof(szPosY);
-	//		_float ScaleX = _ttof(szScaleX);
-	//		_float ScaleY = _ttof(szScaleY);
-	//		UiTrans.vPosition = { PosX,PosY,0 };
-	//		UiTrans.vScale = { ScaleX,ScaleY,0.f };
-	//		UI_DESC UiDesc;
-	//		UiDesc.wstrTexturePrototypeTag = szTexturePrototypeTag;
-	//		wstring strObjectName = szTexturePrototypeTag;
-	//		L"Component_Texture_";
-	//		strObjectName.erase(0, 18);
-	//		UiDesc.tTransformDesc = UiTrans;
-	//		wstring strProtoTypeTag = L"GameObject_" + strObjectName;
-	//		pUi->Ready_GameObject(&UiDesc);
-	//		//////////////////////////////////////////////////////////////////////////
+			//Ui Object Index
+			wstring strObjectIndex = szTexturePrototypeTag;
+			strObjectIndex.erase(0, 18);
+			
+			//ÀÎµ¦½º ¹øÈ£ ±¸ÇÏ±â
+			i = 0;
+			for (; i < strObjectIndex.size(); i++)
+			{
+				if (isdigit(strObjectIndex[i]))
+					break;
+			}
+			//Ui ÇÁ·ÎÅäÅ¸ÀÔÅÂ±×
+			TCHAR szObjectKey[32] = L"";
+			for (int j = 0; j < i; j++)
+			{
+				szObjectKey[j] = strObjectIndex[j];
+			}
+			//¿ÀºêÁ§Æ® ÇÁ·ÎÅäÅ¸ÀÔ ÁØºñ³¡
+			wstring wstrTag = L"Component_Texture_";
+			wstrTag += szObjectKey;
+			wstrTag += L"%d";
+			wstrTag += strType;
+			UiDesc.wstrTexturePrototypeTag = wstrTag;
 
-	//		if (FAILED(CManagement::Get_Instance()->Add_GameObject_Prototype(EResourceType::NonStatic, szTexturePrototypeTag, pUi)))
-	//		{
-	//			PRINT_LOG(L"Error", L"Add_GameObject_Prototype Ui Failed");
-	//			Safe_Release(pUi);
-	//			return E_FAIL;
-	//		}
+			//ÆÄÀÏ ÀÌ¸§ Á¦°Å
+			strObjectIndex.erase(0, i);
+			//ÆÄÀÏ È®ÀåÀÚ Á¦°Å
+			strObjectIndex.erase(1, 4);
+			//ÀÎµ¦½º
+			DWORD dwIndex = _ttoi(strObjectIndex.c_str());
+			//Ui ObjectPrototypeTag
+			wstring strProtoTypeTag = L"GameObject_" + wstring(szObjectKey);
+			strProtoTypeTag += L"%d";
+			strProtoTypeTag += strType;
 
-	//		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(EResourceType::NonStatic, szTexturePrototypeTag
-	//			, L"Layer_Ui", &UiDesc)))
-	//		{
-	//			PRINT_LOG(L"Error", L"Add_GameObject_InLayerTool_Failed");
-	//			Safe_Release(pUi);
-	//			return E_FAIL;
-	//		}
-	//	}
-	//}
+			//////////////////////////////////////////////////////////////////////////
+			if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+				EResourceType::Static, L"GameObject_UI"
+				, L"Layer_Ui", &UiDesc)))
+			{
+				PRINT_LOG(L"Error", L"Add_GameObject_InLayerTool_Failed");
+				return E_FAIL;
+			}
+		}
+	}
+
 
 	return S_OK;
 }
 
 HRESULT CStreamHandler::Load_PassData_Resource(const wstring& wstrFilePath)
 {
-	//// ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
-	//// ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ Ç®ï¿½ï¿½ ï¿½Þ´Â°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	//wifstream fin;
-	//wstring strPassFileName = L"../../Resources/Data/";
-	//strPassFileName += wstrFilePath;
-	//strPassFileName += L".txt";
-	//fin.open(strPassFileName);
+	
+	wifstream fin;
+	fin.open(wstrFilePath);
 
-	//if (!fin.fail())
-	//{
-	//	TCHAR szFilePath[MAX_PATH] = L"";
-	//	TCHAR szPrototypeTag[MAX_PATH] = L"";
+	wstring strDataType = wstrFilePath;
+	int i = 0;
+	for (int  j=0; j < strDataType.size();j++)
+	{
+		if (strDataType[j] == '/')
+			i = j;
+	}
+	strDataType.erase(0, i+1);
+	i = 0;
+	for (; i <strDataType.size();i++ )
+	{
+		if (strDataType[i] == '.')
+			break;
+	}
+	strDataType.erase(i, strDataType.size());
+	if (!fin.fail())
+	{
+		TCHAR szFilePath[MAX_PATH] = L"";
+		TCHAR szPrototypeTag[MAX_PATH] = L"";
 
-	//	TCHAR szType[MAX_PATH] = L"";
-	//	TCHAR szCount[MAX_PATH] = L"";
+		TCHAR szType[MAX_PATH] = L"";
+		TCHAR szCount[MAX_PATH] = L"";
 
-	//	while (true)
-	//	{
-	//		fin.getline(szFilePath, MAX_PATH, L'|');
-	//		fin.getline(szPrototypeTag, MAX_PATH, L'|');
-	//		fin.getline(szType, MAX_PATH, L'|');
-	//		fin.getline(szCount, MAX_PATH);
+		while (true)
+		{
+			fin.getline(szFilePath, MAX_PATH, L'|');
+			fin.getline(szPrototypeTag, MAX_PATH, L'|');
+			fin.getline(szType, MAX_PATH, L'|');
+			fin.getline(szCount, MAX_PATH);
 
-	//		if (fin.eof())
-	//			break;
+			if (fin.eof())
+				break;
 
-	//		PASSDATA_RESOURCE pPathInfo;
-	//		pPathInfo.wstrFilePath = szFilePath;
-	//		pPathInfo.wstrPrototypeTag = szPrototypeTag;
+			PASSDATA_RESOURCE pPathInfo;
+			pPathInfo.wstrFilePath = szFilePath;
+			pPathInfo.wstrPrototypeTag = szPrototypeTag;
 
-	//		// ï¿½Ø½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½È¸ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Çµï¿½î¼­ ï¿½×·ï¿½)
-	//		// Texture Type
-	//		ETextureType eType = ETextureType::SINGLE;
-	//		if (!lstrcmp(szType, L"SINGLE"))
-	//			pPathInfo.dwResourceType = (DWORD)ETextureType::SINGLE;
-	//		else if (!lstrcmp(szType, L"MULTI"))
-	//			pPathInfo.dwResourceType = (DWORD)ETextureType::MULTI;
-	//		else if (!lstrcmp(szType, L"CUBE"))
-	//			pPathInfo.dwResourceType = (DWORD)ETextureType::Cube;
+			// Texture Type
+			ETextureType eType;
+			if (!lstrcmp(szType, L"SINGLE"))
+				pPathInfo.dwResourceType = (DWORD)ETextureType::Normal;
+			else if (!lstrcmp(szType, L"MULTI"))
+				pPathInfo.dwResourceType = (DWORD)ETextureType::Normal;
+			else if (!lstrcmp(szType, L"CUBE"))
+				pPathInfo.dwResourceType = (DWORD)ETextureType::Cube;
 
-	//		// Texture Count
-	//		pPathInfo.dwTextureCount = _ttoi(szCount);
+			// Texture Count
+			pPathInfo.dwTextureCount = _ttoi(szCount);
 
-	//		TCHAR szType[32] = L"";
-	//		switch (pPathInfo.dwResourceType)
-	//		{
-	//		case (DWORD)ETextureType::Cube:
-	//			eType = ETextureType::Cube;
-	//			swprintf_s(szType, L".dds");
-	//			break;
-	//		case (DWORD)ETextureType::SINGLE:
-	//			eType = ETextureType::SINGLE;
-	//			swprintf_s(szType, L".png");
-	//			break;
-	//		case(DWORD)ETextureType::MULTI:
-	//			eType = ETextureType::MULTI;
-	//			swprintf_s(szType, L".png");
-	//			break;
-	//		}
+			TCHAR szType[32] = L"";
+			switch (pPathInfo.dwResourceType)
+			{
+			case (DWORD)ETextureType::Cube:
+				eType = ETextureType::Cube;
+				swprintf_s(szType, L".dds");
+				break;
+			case (DWORD)ETextureType::Normal:
+				eType = ETextureType::Normal;
+				swprintf_s(szType, L".png");
+				break;
+			}
 
-	//		// ï¿½ï¿½Æ¼ï¿½Ø½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½Ãºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-	//		wstring wstrTag = L"Component_Texture_";
-	//		wstrTag += pPathInfo.wstrPrototypeTag;
-	//		wstrTag += L"%d";
-	//		wstrTag += szType;
-	//		TCHAR szTagBuf[MAX_PATH] = {};
-	//		TCHAR szPathBuf[MAX_PATH] = {};
-	//		for (int i = 0; i < pPathInfo.dwTextureCount; i++)
-	//		{
-	//			swprintf_s(szTagBuf, wstrTag.c_str(), i);
-	//			swprintf_s(szPathBuf, pPathInfo.wstrFilePath.c_str(), i);
-	//			if (wstrFilePath == L"Static")
-	//			{
-	//				// 1ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½Ø½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¹ï¿½ï¿½ï¿½
-	//				if (FAILED(CManagement::Get_Instance()->Add_Component_Prototype(
-	//					EResourceType::Static, szTagBuf,
-	//					CTexture::Create(CManagement::Get_Instance()->Get_Device()
-	//						, eType, szPathBuf))))
-	//				{
-	//					wstring Err = L"Failed To Add " + wstrTag;
-	//					PRINT_LOG(L"Error", Err.c_str());
-	//					return E_FAIL;
-	//				}
-	//			}
-	//			else
-	//			{
+			// ¸ÖÆ¼ÅØ½ºÃÄ »ç¿ëÇÏ´Â ±¸Á¶ ´Ù½Ãº¸°í ¿À±â
+			wstring wstrTag = L"Component_Texture_";
+			wstrTag += pPathInfo.wstrPrototypeTag;
+			wstrTag += L"%d";
+			wstrTag += szType;
+			if (strDataType == L"Static")
+			{
+					if (FAILED(CManagement::Get_Instance()->Add_Component_Prototype(
+						EResourceType::Static, wstrTag,
+						CTexture::Create(CManagement::Get_Instance()->Get_Device()
+						, eType, pPathInfo.wstrFilePath.c_str()
+							,pPathInfo.dwTextureCount))))
+					{
+						wstring Err = L"Failed To Add " + wstrTag;
+						PRINT_LOG(L"Error", Err.c_str());
+						return E_FAIL;
+					}
+			}
+			else
+			{
+				if (FAILED(CManagement::Get_Instance()->Add_Component_Prototype(
+					EResourceType::NonStatic, wstrTag,
+					CTexture::Create(CManagement::Get_Instance()->Get_Device()
+							, eType, pPathInfo.wstrFilePath.c_str()
+							, pPathInfo.dwTextureCount))))
+				{
+						wstring Err = L"Failed To Add " + wstrTag;
+						PRINT_LOG(L"Error", Err.c_str());
+						return E_FAIL;
+				}
+			}
+		}
 
-	//				if (FAILED(CManagement::Get_Instance()->Add_Component_Prototype(
-	//					EResourceType::NonStatic, szTagBuf,
-	//					CTexture::Create(CManagement::Get_Instance()->Get_Device()
-	//						, eType, szPathBuf))))
-	//				{
-	//					wstring Err = L"Failed To Add " + wstrTag;
-	//					PRINT_LOG(L"Error", Err.c_str());
-	//					return E_FAIL;
-	//				}
-	//			}
-	//		}
-	//	}
-
-	//}
-	//fin.close();
-
+	}
+	fin.close();
 	return S_OK;
 }
+
+
 
 HRESULT CStreamHandler::Add_GameObject_Prototype(const wstring& wstrClassName, const PASSDATA_OBJECT* tPassDataObject)
 {

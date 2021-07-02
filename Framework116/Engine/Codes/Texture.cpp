@@ -46,10 +46,7 @@ HRESULT CTexture::Ready_Component_Prototype()
 
 		switch (m_eType)
 		{
-		case Engine::ETextureType::SINGLE:
-			hr = D3DXCreateTextureFromFile(m_pDevice, szFullPath, (LPDIRECT3DTEXTURE9*)&pTexture);
-			break;
-		case Engine::ETextureType::MULTI:
+		case Engine::ETextureType::Normal:
 			hr = D3DXCreateTextureFromFile(m_pDevice, szFullPath, (LPDIRECT3DTEXTURE9*)&pTexture);
 			break;
 		case Engine::ETextureType::Cube:
