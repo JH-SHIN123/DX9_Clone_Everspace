@@ -2,9 +2,10 @@
 #include "..\Headers\Player.h"
 #include "Collision.h"
 
-CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
+CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
 	: CGameObject(pDevice)
 {
+	m_pPassData = pPassData;
 }
 
 CPlayer::CPlayer(const CPlayer & other)
@@ -26,7 +27,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Mesh_BigShip",
+		m_pPassData->vecPrototypeTag_Mesh[0],
 		L"Com_Mesh",
 		(CComponent**)&m_pMesh)))
 	{
@@ -34,15 +35,17 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	// For.Com_Transform
+	// For.Com_Transform Test
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
+	TransformDesc.fSpeedPerSec = 45.f;
+	TransformDesc.vPosition = _float3(0.f, 3.f, 0.f);
+	TransformDesc.fSpeedPerSec = 25.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
 	TransformDesc.vScale = { 0.01f,0.01f,0.01f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Transform",
+		m_pPassData->vecPrototypeTag_Mesh[1],
 		L"Com_Transform",
 		(CComponent**)&m_pTransform,
 		&TransformDesc)))
@@ -50,14 +53,14 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
 	}
-	
+
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
 	BoundingSphere.fRadius = 5.f;
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_CollideSphere",
+		m_pPassData->vecPrototypeTag_Mesh[2],
 		L"Com_CollideSphere",
 		(CComponent**)&m_pCollide,
 		&BoundingSphere,
@@ -70,7 +73,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Controller
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Controller",
+		m_pPassData->vecPrototypeTag_Mesh[3],
 		L"Com_Controller",
 		(CComponent**)&m_pController)))
 	{
@@ -109,9 +112,9 @@ _uint CPlayer::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pMesh->Render_Mesh();
-	
+
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	/*m_pCollide->Render_Collide();*/
 #endif
 
 	return _uint();
@@ -126,34 +129,57 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
 		m_pTransform->Go_Straight(fDeltaTime);
+
+		// Booster
+		if (m_pController->Key_Pressing(KEY_SPACE))
+			m_pTransform->Go_Straight(fDeltaTime * 0.8f);
 	}
 
 	if (GetAsyncKeyState('S') & 0x8000)
-	{
 		m_pTransform->Go_Straight(-fDeltaTime);
-	}
 
 	if (GetAsyncKeyState('D') & 0x8000)
-	{
 		m_pTransform->Go_Side(fDeltaTime);
-	}
 
 	if (GetAsyncKeyState('A') & 0x8000)
-	{
 		m_pTransform->Go_Side(-fDeltaTime);
+
+	// Weapon Change
+	if (m_pController->Key_Down(KEY_1))
+	{
+
 	}
 
-	//// Rotate
+	if (m_pController->Key_Down(KEY_2))
+	{
+
+	}
+
+	if (m_pController->Key_Down(KEY_3))
+	{
+
+	}
+
+	// 마우스 고정시켜서 끄기 불편해서.. ESC키 쓰세용
+	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+	{
+		DestroyWindow(g_hWnd);
+	}
+
+
+	//// Rotate (쿼터니언 회전 보류)
 	//if (GetAsyncKeyState('Q') & 0x8000)
 	//{
-	//	m_pTransform->RotateY(-fDeltaTime);
+	//	m_pTransform->RotateZ(fDeltaTime);
 	//}
 
 	//if (GetAsyncKeyState('E') & 0x8000)
 	//{
-	//	m_pTransform->RotateY(fDeltaTime);
+	//	m_pTransform->RotateZ(-fDeltaTime);
 	//}
 
+
+	// TEST //
 	if (m_pController->Key_Down(KEY_LBUTTON))
 	{
 		float fDist_Monster = 0.f;
@@ -162,19 +188,46 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			PRINT_LOG(L"", L"Pick!");
 		}
 	}
+
+
 }
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
+
+	// 화면 가둬줄 가상의 네모
+
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	_float3 vMouse = { (_float)pt.x,(_float)pt.y,0.f };
-	_float3 vScreenCenter = { WINCX / 2.f,WINCY / 2.f,0.f };
-	_float3 vGap = vMouse - vScreenCenter;
+	RECT rc;
+	POINT p1, p2;
+
+	GetClientRect(g_hWnd, &rc);
+
+	p1.x = rc.left + 100;
+	p1.y = rc.top + 100;
+	p2.x = rc.right - 100;
+	p2.y = rc.bottom - 100;
+
+	ClientToScreen(g_hWnd, &p1);
+	ClientToScreen(g_hWnd, &p2);
+
+	rc.left = p1.x;
+	rc.top = p1.y;
+	rc.right = p2.x;
+	rc.bottom = p2.y;
+
+	ClipCursor(&rc);
 	
-	_float fSpeed = D3DXVec3Length(&vGap);
+
+
+	_float3 vMouse = { (_float)pt.x, (_float)pt.y, 0.f };
+	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
+	_float3 vGap = vMouse - vScreenCenter;
+
+	_float fSpeed = D3DXVec3Length(&vGap) * 0.5f;
 	D3DXVec3Normalize(&vGap, &vGap);
 	_float fNewRotX = vGap.y;
 	_bool bRotYDir = false; // true면 위쪽 회전, false면 밑에 회전
@@ -184,25 +237,32 @@ _uint CPlayer::Movement(_float fDeltaTime)
 		bRotYDir = true;
 
 	_float fRotX = m_pTransform->Get_TransformDesc().vRotate.x;
+	
+	//90도 넘을때 반전되는 문제 ->
 
 	if (fRotX >= -D3DXToRadian(90.f) && !bRotYDir)
 		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
-	else if (fRotX < D3DXToRadian(65.f) && bRotYDir)
+	else if (fRotX < D3DXToRadian(55.f) && bRotYDir)
 	{
 		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
 	}
 
 	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed);
-	POINT ptMouse = { WINCX >> 1, WINCY >> 1 };
-	ClientToScreen(g_hWnd, &ptMouse);
-	SetCursorPos(ptMouse.x, ptMouse.y);
+
+	
+	
+	//POINT ptMouse = { WINCX >> 1, WINCY >> 1 }; // 400 / 300
+	//ClientToScreen(g_hWnd, &ptMouse);
+	//	SetCursorPos(ptMouse.x, ptMouse.y);
+
+	// 범위 정해줘야함. 100 ~ WINCX - 100 , 100 ~ WINCY;
 
 	return _uint();
 }
 
-CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
+CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
 {
-	CPlayer* pInstance = new CPlayer(pDevice);
+	CPlayer* pInstance = new CPlayer(pDevice, pPassData);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Player");

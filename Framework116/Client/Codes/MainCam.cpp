@@ -94,9 +94,9 @@ _uint CMainCam::Movement(_float fDeltaTime)
 	//이동이 있을시만 계산
 	if (vPreAim != vCurAim)
 	{
-		D3DXQUATERNION QuatP = { vPreAim.x,vPreAim.y ,vPreAim.z ,0.f }
+		D3DXQUATERNION QuatP = { vPreAim.x,vPreAim.y ,vPreAim.z , 0.f }
 			//w는 스칼라.축이니 0으로 주자
-		, QuatQ = { vCurAim.x,vCurAim.y,vCurAim.z,0.f };
+		, QuatQ = { vCurAim.x ,vCurAim.y,vCurAim.z,0.f };
 		D3DXQuaternionSlerp(&QuatQ, &QuatP, &QuatQ, 0.001f/*민감도*/);
 		//QuatQ에 두 사원수의 구면 선형보간,민감도가 커지면 카메라 회전이 많이 됨.
 		vCurAim = { QuatQ.x,QuatQ.y,
@@ -113,8 +113,9 @@ _uint CMainCam::Movement(_float fDeltaTime)
 	D3DXVec3Cross(&vCamDist, &vPlayerLook, &vPlayerRight);
 	m_CameraDesc.vEye += vCamDist * m_fDistanceFromTarget;
 
-	///* 바라볼 위치 */
-	//m_CameraDesc.vAt = vPlayerPos;
+	/* 바라볼 위치 */
+	vPlayerPos.y += 10.f;
+	m_CameraDesc.vAt = vPlayerPos;
 
 	return _uint();
 }
@@ -137,6 +138,28 @@ _uint CMainCam::KeyInput(_float fDeltaTime)
 	{
 		m_fCamAngle += D3DXToRadian(90.f) * -fDeltaTime;
 	}
+	// 일반이동 카메라 연출
+	if (GetAsyncKeyState(L'W') & 0x8000)
+	{
+		if(m_fDistanceFromTarget < 11.f)
+			m_fDistanceFromTarget += 9.f * fDeltaTime;
+	}
+
+	// 부스터 카메라 연출
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	{
+		_float OriginDis = 10.f;
+
+		if (!(m_fDistanceFromTarget > OriginDis + 2.f))
+			m_fDistanceFromTarget += 8.f * fDeltaTime;	
+	}
+	if (!(GetAsyncKeyState(VK_SPACE) & 0x8000))
+	{
+		_float OriginDis = 10.f;
+		if(!(m_fDistanceFromTarget < 10.f))
+		m_fDistanceFromTarget -= 5.f * fDeltaTime;
+	}
+
 
 	return _uint();
 }

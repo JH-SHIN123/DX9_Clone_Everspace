@@ -5,6 +5,7 @@
 #include "MainCam.h"
 #include "UI.h"
 
+
 CMainApp::CMainApp()
 	: m_pManagement(CManagement::Get_Instance())
 {
@@ -62,14 +63,10 @@ HRESULT CMainApp::Ready_StaticResources()
 {
 #pragma region GameObjects
 	/* For.GameObject_Player */
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::Static,
-		L"GameObject_Player",
-		CPlayer::Create(m_pDevice))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Player");
-		return E_FAIL;
-	}
+	CStreamHandler::Load_PassData_Object(
+		L"../../Resources/PrototypeData/StaticPlayer.object"
+		, EResourceType::Static);
+
 
 	/* For.GameObject_MainCam */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -158,7 +155,7 @@ HRESULT CMainApp::Ready_StaticResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
 		L"Component_Mesh_BigShip",
-		CMesh::Create(m_pDevice,L"../../Resources/Models/ship.X", L"../../Resources/Textures/"))))
+		CModelMesh::Create(m_pDevice,L"../../Resources/Models/ship.X", L"../../Resources/Textures/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
@@ -168,7 +165,7 @@ HRESULT CMainApp::Ready_StaticResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
 		L"Component_Mesh_Axis",
-		CMesh::Create(m_pDevice, L"../../Resources/Models/axis.X", L"../../Resources/Textures/"))))
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/axis.X", L"../../Resources/Textures/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Axis");
 		return E_FAIL;
