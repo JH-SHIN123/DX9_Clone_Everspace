@@ -141,6 +141,9 @@
     <ClInclude Include="..\Headers\Player_Bullet.h">
       <Filter>02.GameObject\08.Bullet\00.Player_Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Player_Lazer.h">
+      <Filter>02.GameObject\08.Bullet\01.Player_Lazer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -193,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_Bullet.cpp">
       <Filter>02.GameObject\08.Bullet\00.Player_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Lazer.cpp">
+      <Filter>02.GameObject\08.Bullet\01.Player_Lazer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

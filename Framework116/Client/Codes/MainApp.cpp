@@ -223,15 +223,23 @@ HRESULT CMainApp::Ready_StaticResources()
 		return E_FAIL;
 	}
 
-	/* For.Component_Texture_Player_Lazer */
+	/* For.Component_GeoMesh_Player_Lazer */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
-		L"Component_Texture_Player_Lazer",
-		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Player_Lazer%d.dds", 1))))
+		L"Component_GeoMesh_Player_Lazer",
+		CGeoMesh_Cylinder::Create(m_pDevice, 0.5f, 0.5f, 5.f))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet");
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Player_Lazer");
 		return E_FAIL;
 	}
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Texture_Player_Lazer",
+	//	CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Player_Lazer%d.dds", 1))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet");
+	//	return E_FAIL;
+	//}
 #pragma endregion
 
 	return S_OK;

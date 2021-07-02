@@ -27,7 +27,7 @@ HRESULT CPlayer_Lazer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_VIBuffer_CubeTexture",
+		L"Component_GeoMesh_Player_Lazer",
 		L"Com_VIBuffer",
 		(CComponent**)&m_pVIBuffer)))
 	{
@@ -36,20 +36,20 @@ HRESULT CPlayer_Lazer::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_Texture_Player_Lazer",
-		L"Com_Texture",
-		(CComponent**)&m_pTexture)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
-		return E_FAIL;
-	}
+	//if (FAILED(CGameObject::Add_Component(
+	//	EResourceType::Static,
+	//	L"Component_Texture_Player_Lazer",
+	//	L"Com_Texture",
+	//	(CComponent**)&m_pTexture)))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
+	//	return E_FAIL;
+	//}
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.fSpeedPerSec = 0.f;
-	TransformDesc.vScale = { 0.5f, 0.5f, 1000.f };
+	TransformDesc.vScale = { 0.5f, 0.5f, 41.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -89,22 +89,10 @@ HRESULT CPlayer_Lazer::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	// TESTÁß!!
-	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
-	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
-
-	
 	if ((_bool)pArg == true)
-		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 300.f);
+		m_IsLeft = true;
 	else
-		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 300.f);
-
-	m_pTransform->Set_Position(m_vMuzzlePos);
-
-	m_vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
-	D3DXVec3Normalize(&m_vPlayerLook, &m_vPlayerLook);
-
-
+		m_IsLeft = false;
 
 	return S_OK;
 }
@@ -116,9 +104,11 @@ _uint CPlayer_Lazer::Update_GameObject(_float fDeltaTime)
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().vPosition);
 
-	m_fLifeTime += fDeltaTime;
-
-	if (m_fLifeTime >= 1.f)
+	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	{
+		return NO_EVENT;
+	}
+	else
 		return DEAD_OBJECT;
 	
 	return NO_EVENT;
@@ -140,8 +130,8 @@ _uint CPlayer_Lazer::Render_GameObject()
 
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(0);
-	m_pVIBuffer->Render_VIBuffer();
+	//m_pTexture->Set_Texture(0);
+	m_pVIBuffer->Render_Mesh();
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 #ifdef _DEBUG // Render Collide
@@ -153,6 +143,19 @@ _uint CPlayer_Lazer::Render_GameObject()
 
 _uint CPlayer_Lazer::Movement(_float fDeltaTime)
 {
+	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
+	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
+
+	if (m_IsLeft)
+		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 200.f) + m_pPlayerTransform->Get_State(EState::Look) * 10000.f;
+	else
+		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 200.f) + m_pPlayerTransform->Get_State(EState::Look) * 10000.f;
+
+	m_pTransform->Set_Position(m_vMuzzlePos);
+
+	m_vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
+	D3DXVec3Normalize(&m_vPlayerLook, &m_vPlayerLook);
+
 	_float4x4 matWorld;
 	matWorld = m_pPlayerTransform->Get_TransformDesc().matWorld;
 
@@ -165,7 +168,7 @@ _uint CPlayer_Lazer::Movement(_float fDeltaTime)
 	{
 		_float3 vPlayerRotate = m_pPlayerTransform->Get_TransformDesc().vRotate;
 		m_pTransform->Set_Rotate(vPlayerRotate);
-		m_IsFirst = false;
+		m_IsFirst = true;
 	}
 	m_pTransform->Set_WorldMatrix(matWorld);
 
@@ -207,7 +210,7 @@ void CPlayer_Lazer::Free()
 	Safe_Release(m_pPlayerTransform);
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
-	Safe_Release(m_pTexture);
+	//Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);
 
 	CGameObject::Free();

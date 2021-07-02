@@ -4,12 +4,12 @@
 #include "GameObject.h"
 
 USING(Engine)
-class CPlayer_Bullet final : public CGameObject
+class CPlayer_Lazer final : public CGameObject
 {
 public:
-	explicit CPlayer_Bullet(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData);
-	explicit CPlayer_Bullet(const CPlayer_Bullet& other);
-	virtual ~CPlayer_Bullet() = default;
+	explicit CPlayer_Lazer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData);
+	explicit CPlayer_Lazer(const CPlayer_Lazer& other);
+	virtual ~CPlayer_Lazer() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -22,14 +22,14 @@ private:
 	_uint Movement(_float fDeltaTime);
 
 public:
-	static CPlayer_Bullet* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
+	static CPlayer_Lazer* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
 private:
-	CVIBuffer_CubeTexture*  m_pVIBuffer = nullptr;
+	CGeoMesh_Cylinder*  m_pVIBuffer = nullptr;
 	CTransform* m_pTransform = nullptr;
-	CTexture*	m_pTexture = nullptr;
+	//CTexture*	m_pTexture = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
 
 private:

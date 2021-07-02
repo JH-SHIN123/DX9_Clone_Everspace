@@ -205,7 +205,34 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		}
 		else if (m_iWeapon == WEAPON_LAZER)
 		{
-
+			if (!m_IsLazer)
+			{
+				if (FAILED(m_pManagement->Add_GameObject_InLayer(
+					EResourceType::Static,
+					L"GameObject_Player_Lazer",
+					L"Layer_Player_Lazer",
+					(void*)true)))
+				{
+					PRINT_LOG(L"Error", L"Failed To Add Player_Lazer In Layer");
+					return;
+				}
+				if (FAILED(m_pManagement->Add_GameObject_InLayer(
+					EResourceType::Static,
+					L"GameObject_Player_Lazer",
+					L"Layer_Player_Lazer",
+					(void*)false)))
+				{
+					PRINT_LOG(L"Error", L"Failed To Add Player_Lazer In Layer");
+					return;
+				}
+			}
+			if (m_pManagement->Get_GameObjectList(L"Layer_Player_Lazer")->size() == 2)
+			{
+				m_IsLazer = true;
+			}
+			else
+				m_IsLazer = false;
+			
 		}
 	}
 }
