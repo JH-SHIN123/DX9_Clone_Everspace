@@ -130,7 +130,7 @@ _uint CPlayer::Render_GameObject()
 	m_pMesh->Render_Mesh();
 
 #ifdef _DEBUG // Render Collide
-	/*m_pCollide->Render_Collide();*/
+	m_pCollide->Render_Collide();
 #endif
 
 	return _uint();
@@ -160,7 +160,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (GetAsyncKeyState('A') & 0x8000)
 		m_pTransform->Go_Side(-fDeltaTime);
 
-	// Weapon Change
+	// Weapon Change / Skills (OverDrive, Shield)
 	if (m_pController->Key_Down(KEY_1))
 	{
 		m_pManagement->Get_GameObjectList(L"Layer_HUD_Weapon")->front()->Set_IsDead(TRUE);
@@ -218,22 +218,24 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		}
 	}
 
+	if (m_pController->Key_Down(KEY_F2))
+	{
+		//반짝이게 하는 Effect How?
+		m_fOverDrive = 2.f;
+		m_bOverDrive = true;
+	}
 	if (m_pController->Key_Down(KEY_F3))
 	{
-
+		// 실드활성화.
 	}
 
-	// 마우스 고정시켜서 끄기 불편해서.. ESC키 쓰세용
-	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
-		DestroyWindow(g_hWnd);
-
-
+	//공격
 	if (m_pController->Key_Pressing(KEY_LBUTTON))
 	{
 		if (m_iWeapon == WEAPON_MACHINEGUN)
 		{
-			m_fMachinegunDelay += fDeltaTime;
-			if (m_fMachinegunDelay > 0.1f)
+			m_fMachinegunFireDelay += fDeltaTime * m_fOverDrive;
+			if (m_fMachinegunFireDelay > 0.1f)
 			{
 				if (m_IsLeft)
 					m_IsLeft = false;
@@ -249,7 +251,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 					PRINT_LOG(L"Error", L"Failed To Add Player_Bullet In Layer");
 					return;
 				}
-				m_fMachinegunDelay = 0.f;
+				m_fMachinegunFireDelay = 0.f;
 			}
 		}
 		else if (m_iWeapon == WEAPON_LAZER)
@@ -313,6 +315,21 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	//	}
 	//}
 
+	// 마우스 고정시켜서 끄기 불편해서.. ESC키 쓰세용
+	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+		DestroyWindow(g_hWnd);
+
+	//오버드라이브 타이머
+	if (m_bOverDrive)
+	{
+		m_fOverDriveTime -= fDeltaTime;
+		// 타이머가 0초가 되면 오버드라이브 꺼지고 연사속도 다시 정상으로.
+		if (m_fOverDriveTime <= 0)
+		{
+			m_bOverDrive = false;
+			m_fOverDrive = 1.f;
+		}
+	}
 }
 
 _uint CPlayer::Movement(_float fDeltaTime)
@@ -343,8 +360,6 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	rc.bottom = p2.y;
 
 	ClipCursor(&rc);
-	
-
 
 	_float3 vMouse = { (_float)pt.x, (_float)pt.y, 0.f };
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
@@ -361,8 +376,6 @@ _uint CPlayer::Movement(_float fDeltaTime)
 
 	_float fRotX = m_pTransform->Get_TransformDesc().vRotate.x;
 	
-	//90도 넘을때 반전되는 문제 ->
-
 	if (fRotX >= -D3DXToRadian(90.f) && !bRotYDir)
 		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
 	else if (fRotX < D3DXToRadian(55.f) && bRotYDir)

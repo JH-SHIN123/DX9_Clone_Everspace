@@ -361,6 +361,16 @@ HRESULT CLoading::Ready_HUD_Resources()
 		return E_FAIL;
 	}
 
+	/* For.Component_Texture_Shield_Battery_HUD */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Shield_Battery_HUD",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Shield_Battery%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Shield_Battery_HUD");
+		return E_FAIL;
+	}
+
 	/* For.Component_Texture_HUD_Boarder */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,

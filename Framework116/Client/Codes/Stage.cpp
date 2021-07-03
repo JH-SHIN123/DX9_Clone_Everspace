@@ -299,7 +299,7 @@ HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_Gatling)))
 		return E_FAIL;
 
-	// Weapon Missile -> 플레이어로 통합. 이 자리에 오버드라이브 넣어야징ㅋ.
+	// Skill OverDrive
 
 	UI_DESC OverdriveHUD;
 	OverdriveHUD.tTransformDesc.vPosition = { -10.f, 250.f, 0.f };
@@ -308,14 +308,29 @@ HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &OverdriveHUD)))
 		return E_FAIL;
 
-	UI_DESC HUD_Boarder_Missile;
-	HUD_Boarder_Missile.tTransformDesc.vPosition = { -10.f, 250.f, 0.f };
-	HUD_Boarder_Missile.tTransformDesc.vScale = { 90.f, 55.f, 0.f };
-	HUD_Boarder_Missile.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
-	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_Missile)))
+	UI_DESC HUD_Boarder_OverDrive;
+	HUD_Boarder_OverDrive.tTransformDesc.vPosition = { -10.f, 250.f, 0.f };
+	HUD_Boarder_OverDrive.tTransformDesc.vScale = { 90.f, 55.f, 0.f };
+	HUD_Boarder_OverDrive.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_OverDrive)))
 		return E_FAIL;
 
-	// Skill OverDrive
+	
+
+	// Skill Shield
+	UI_DESC HUD_Shield_Battery;
+	HUD_Shield_Battery.tTransformDesc.vPosition = { 120.f, 250.f, 0.f };
+	HUD_Shield_Battery.tTransformDesc.vScale = { 50.f, 45.f, 0.f };
+	HUD_Shield_Battery.wstrTexturePrototypeTag = L"Component_Texture_Shield_Battery_HUD";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Shield_Battery)))
+		return E_FAIL;
+
+	UI_DESC HUD_Boarder_Shield;
+	HUD_Boarder_Shield.tTransformDesc.vPosition = { 120.f, 250.f, 0.f };
+	HUD_Boarder_Shield.tTransformDesc.vScale = { 90.f, 55.f, 0.f };
+	HUD_Boarder_Shield.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_Shield)))
+		return E_FAIL;
 
 	// Player Status (Shield, HP)
 
