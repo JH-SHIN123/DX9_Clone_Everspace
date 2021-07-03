@@ -81,7 +81,7 @@ bool CCollision::IntersectSphereToSphere(const BOUNDING_SPHERE& pBounds1, const 
 	float fDist = 0.f;
 	_float3 vDiff;
 
-	vDiff = pBounds1.vCenter - pBounds2.vCenter;
+	vDiff = pBounds1.Get_Position() - pBounds2.Get_Position();
 	fDist = D3DXVec3Length(&vDiff);
 
 	if (fDist <= (pBounds1.fRadius * vDstScaleRate + pBounds2.fRadius * vSrcScaleRate))

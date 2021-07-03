@@ -10,15 +10,9 @@ CCollideSphere::CCollideSphere(LPDIRECT3DDEVICE9 pDevice)
 CCollideSphere::CCollideSphere(const CCollideSphere& other)
 	: CCollide(other),
 	m_pSphere(other.m_pSphere),
-	m_tBoundingSphere(other.m_tBoundingSphere),
 	m_tMaterial(other.m_tMaterial)
 {
 	Safe_AddRef(m_pSphere);
-}
-
-const BOUNDING_SPHERE& CCollideSphere::Get_BoundingSphere() const
-{
-	return m_tBoundingSphere;
 }
 
 HRESULT CCollideSphere::Ready_Component_Prototype()
