@@ -293,6 +293,15 @@ HRESULT CStreamHandler::Load_PassData_Resource(const wstring& wstrFilePath, cons
 	return S_OK;
 }
 
+HRESULT CStreamHandler::Load_PassData_Collide(const wstring& wstrFilePath)
+{
+	HANDLE hFile = CreateFile(wstrFilePath.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (INVALID_HANDLE_VALUE == hFile)
+		return;
+
+	return S_OK;
+}
+
 
 
 HRESULT CStreamHandler::Add_GameObject_Prototype(const wstring& wstrClassName, PASSDATA_OBJECT* pPassDataObject, EResourceType eType)
