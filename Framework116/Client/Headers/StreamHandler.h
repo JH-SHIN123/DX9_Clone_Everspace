@@ -15,7 +15,7 @@ public:
 	static HRESULT Load_PassData_Map(const wstring& wstrFilePath);
 	static HRESULT Load_PassData_UI(const wstring& wstrFilePath, const _bool _isStatic);
 	static HRESULT Load_PassData_Resource(const wstring& wstrFilePath, const _bool _isStatic);
-	static HRESULT Load_PassData_Collide(const wstring& wstrFilePath, const wstring& wstrMeshPrototypeTag, PASSDATA_COLLIDE& OutPassData);
+	static HRESULT Load_PassData_Collide(const wstring& wstrFileName, const wstring& wstrMeshPrototypeTag, PASSDATA_COLLIDE& OutPassData);
 
 private:
 	static HRESULT Add_GameObject_Prototype(const wstring& wstrClassName, PASSDATA_OBJECT* pPassDataObject, EResourceType eType);

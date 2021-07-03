@@ -26,9 +26,10 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	CGameObject::Ready_GameObject(pArg);
 
 	// For.Com_VIBuffer
+	wstring meshTag = L"Component_Mesh_BigShip";
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Mesh_BigShip",
+		meshTag,
 		L"Com_Mesh",
 		(CComponent**)&m_pMesh)))
 	{
@@ -67,21 +68,24 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// For.Com_Collide
-	BOUNDING_SPHERE BoundingSphere;
-	BoundingSphere.fRadius = 5.f;
+	PASSDATA_COLLIDE tCollide;
+	CStreamHandler::Load_PassData_Collide(L"BigShip", meshTag, tCollide);
 
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_CollideSphere",
-		L"Com_CollideSphere",
-		(CComponent**)&m_pCollide,
-		&BoundingSphere,
-		true)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
-		return E_FAIL;
+	m_Collides.reserve(tCollide.vecBoundingSphere.size());
+	int i = 0;
+	for (auto& bounds : tCollide.vecBoundingSphere) {
+		if (FAILED(CGameObject::Add_Component(
+			EResourceType::Static,
+			L"Component_CollideSphere",
+			L"Com_CollideSphere" + to_wstring(i++),
+			nullptr,
+			&bounds,
+			true)))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
+			return E_FAIL;
+		}
 	}
-
 
 	return S_OK;
 }
@@ -94,7 +98,9 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
-	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().vPosition);
+
+	for (auto& collide : m_Collides) 
+		collide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	return NO_EVENT;
 }
 
@@ -116,7 +122,8 @@ _uint CPlayer::Render_GameObject()
 	m_pMesh->Render_Mesh();
 
 #ifdef _DEBUG // Render Collide
-	/*m_pCollide->Render_Collide();*/
+	for (auto& collide : m_Collides)
+		collide->Render_Collide();
 #endif
 
 	return _uint();
@@ -277,8 +284,6 @@ _uint CPlayer::Movement(_float fDeltaTime)
 
 	ClipCursor(&rc);
 	
-
-
 	_float3 vMouse = { (_float)pt.x, (_float)pt.y, 0.f };
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
 	_float3 vGap = vMouse - vScreenCenter;
@@ -337,7 +342,6 @@ void CPlayer::Free()
 {
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
-	Safe_Release(m_pCollide);
 	Safe_Release(m_pController);
 
 	CGameObject::Free();

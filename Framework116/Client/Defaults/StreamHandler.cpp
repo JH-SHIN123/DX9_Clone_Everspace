@@ -293,8 +293,12 @@ HRESULT CStreamHandler::Load_PassData_Resource(const wstring& wstrFilePath, cons
 	return S_OK;
 }
 
-HRESULT CStreamHandler::Load_PassData_Collide(const wstring& wstrFilePath, const wstring& wstrMeshPrototypeTag, PASSDATA_COLLIDE& OutPassData)
+HRESULT CStreamHandler::Load_PassData_Collide(const wstring& wstrFileName, const wstring& wstrMeshPrototypeTag, PASSDATA_COLLIDE& OutPassData)
 {
+	wstring wstrFilePath = L"../../Resources/Data/";
+	wstrFilePath += wstrFileName;
+	wstrFilePath += L".collide";
+
 	HANDLE hFile = CreateFile(wstrFilePath.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (INVALID_HANDLE_VALUE == hFile) {
 		PRINT_LOG(L"Error", L"Failed to CreateFile Collide");
