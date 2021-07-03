@@ -43,6 +43,7 @@ private:
 	_bool m_IsLeft = false;
 
 
+	// enum 사용 권장
 	//무기 1번 : 기관총, 2번 : 레이저
 	_int m_iWeapon = 1;
 	_bool m_IsLazer = false;

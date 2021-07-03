@@ -28,7 +28,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		m_pPassData->vecPrototypeTag_Mesh[0],
+		L"Component_Mesh_BigShip",
 		L"Com_Mesh",
 		(CComponent**)&m_pMesh)))
 	{
@@ -46,12 +46,23 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		m_pPassData->vecPrototypeTag_Mesh[1],
+		L"Component_Transform",
 		L"Com_Transform",
 		(CComponent**)&m_pTransform,
 		&TransformDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
+		return E_FAIL;
+	}
+
+	// For.Com_Controller
+	if (FAILED(CGameObject::Add_Component(
+		EResourceType::Static,
+		L"Component_Controller",
+		L"Com_Controller",
+		(CComponent**)&m_pController)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Controller");
 		return E_FAIL;
 	}
 
@@ -61,7 +72,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		m_pPassData->vecPrototypeTag_Mesh[2],
+		L"Component_CollideSphere",
 		L"Com_CollideSphere",
 		(CComponent**)&m_pCollide,
 		&BoundingSphere,
@@ -71,16 +82,6 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	// For.Com_Controller
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		m_pPassData->vecPrototypeTag_Mesh[3],
-		L"Com_Controller",
-		(CComponent**)&m_pController)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Controller");
-		return E_FAIL;
-	}
 
 	return S_OK;
 }
