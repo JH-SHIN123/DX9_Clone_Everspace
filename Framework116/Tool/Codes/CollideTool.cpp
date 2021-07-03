@@ -115,7 +115,7 @@ HRESULT CCollideTool::Add_Layer_Dummy(const PASSDATA_COLLIDE& tPassData)
 {
 
 	DUMMY_DESC tDummyDesc;
-	tDummyDesc.wstrMeshPrototypeTag = tPassData.wstrMeshPrototypeTag;
+	tDummyDesc.wstrMeshPrototypeTag = L"Component_GeoMesh_Sphere";
 
 	for (auto& p : tPassData.vecBoundingSphere) {
 		int installedCount = m_Listbox_Collide.GetCount();
