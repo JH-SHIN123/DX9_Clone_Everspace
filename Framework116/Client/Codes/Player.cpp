@@ -67,7 +67,6 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-<<<<<<< HEAD
 	// 최초 무기(기관총) HUD 생성.
 	UI_DESC MachinegunHUD;
 	MachinegunHUD.tTransformDesc.vPosition = { -400.f, 435.f, 0.f };
@@ -81,7 +80,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	{
 		PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
 		return E_FAIL;
-=======
+	}
 	// For.Com_Collide
 	PASSDATA_COLLIDE tCollide;
 	CStreamHandler::Load_PassData_Collide(L"BigShip", meshTag, tCollide);
@@ -100,7 +99,6 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 			PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 			return E_FAIL;
 		}
->>>>>>> f541d56e130551ac5774d4b9ec15129aaa163368
 	}
 
 	return S_OK;
