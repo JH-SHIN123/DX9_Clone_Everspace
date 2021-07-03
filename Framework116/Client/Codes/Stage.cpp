@@ -95,7 +95,7 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
 
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Boss_Monster");
 
 	return _uint();
 }

@@ -50,7 +50,7 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 	TransformDesc.vPosition = _float3(10.f, 3.f, 20.f);
 	TransformDesc.fSpeedPerSec = 2.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(10.f);
-	TransformDesc.vScale = { 5.f,5.f,15.f };
+	TransformDesc.vScale = { 5.f,5.f,5.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,

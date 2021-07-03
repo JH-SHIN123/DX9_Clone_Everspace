@@ -22,7 +22,25 @@ void CCollisionHandler::Collision_SphereToSphere(const wstring& wstrDstLayerTag,
 			const vector<class CCollide*>* srcCollides = src->Get_Collides();
 			if (nullptr == srcCollides) continue;
 
-			if (Check_Collides(dstCollides, srcCollides)) 
+			//
+			CTransform* pDstTransform = (CTransform*)dst->Get_Component(L"Com_Transform");
+			CTransform* pSrcTransform = (CTransform*)src->Get_Component(L"Com_Transform");
+
+			if (nullptr == pDstTransform || nullptr == pSrcTransform) continue;
+
+			float fDstScaleRate = 0.f;
+			fDstScaleRate += pDstTransform->Get_TransformDesc().vScale.x;
+			fDstScaleRate += pDstTransform->Get_TransformDesc().vScale.y;
+			fDstScaleRate += pDstTransform->Get_TransformDesc().vScale.z;
+			fDstScaleRate /= 3.f;
+
+			float fSrcScaleRate = 0.f;
+			fSrcScaleRate += pSrcTransform->Get_TransformDesc().vScale.x;
+			fSrcScaleRate += pSrcTransform->Get_TransformDesc().vScale.y;
+			fSrcScaleRate += pSrcTransform->Get_TransformDesc().vScale.z;
+			fSrcScaleRate /= 3.f;
+
+			if (Check_Collides(dstCollides, srcCollides, fDstScaleRate, fSrcScaleRate))
 			{
 				// Ãæµ¹ OK
 				int i = 0;
@@ -32,7 +50,8 @@ void CCollisionHandler::Collision_SphereToSphere(const wstring& wstrDstLayerTag,
 	}
 }
 
-bool CCollisionHandler::Check_Collides(const vector<class CCollide*>* pDstCollides, const vector<class CCollide*>* pSrcCollides)
+bool CCollisionHandler::Check_Collides(const vector<class CCollide*>* pDstCollides, const vector<class CCollide*>* pSrcCollides,
+	const _float vDstScaleRate, const _float vSrcScaleRate)
 {
 	for (auto& dst : *pDstCollides) 
 	{
@@ -40,7 +59,7 @@ bool CCollisionHandler::Check_Collides(const vector<class CCollide*>* pDstCollid
 		for (auto& src : *pSrcCollides)
 		{
 			if (nullptr == src) continue;
-			if (CCollision::IntersectSphereToSphere(dst->Get_BoundingSphere(), src->Get_BoundingSphere()))
+			if (CCollision::IntersectSphereToSphere(dst->Get_BoundingSphere(), src->Get_BoundingSphere(), vDstScaleRate, vSrcScaleRate))
 				return true;
 		}
 	}
