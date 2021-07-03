@@ -34,7 +34,7 @@ private:
 	CCollideSphere* m_pCollide = nullptr;
 
 private:
-	//CTransform* m_pTargetTransform = nullptr;
+	CTransform* m_pTargetTransform = nullptr;
 	CTransform* m_pPlayerTransform = nullptr;
 
 private:

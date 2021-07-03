@@ -127,7 +127,7 @@ _uint CPlayer_Missile::Update_GameObject(_float fDeltaTime)
 
 	m_fLifeTime += fDeltaTime;
 
-	if (m_fLifeTime >= 3.f)
+	if (m_fLifeTime >= 6.f)
 		return DEAD_OBJECT;
 	
 	return NO_EVENT;
@@ -188,6 +188,13 @@ _uint CPlayer_Missile::Movement(_float fDeltaTime)
 
 _uint CPlayer_Missile::Searching_Target(_float fDeltaTime)
 {
+	m_pTargetTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Player", L"Com_Transform");
+	Safe_AddRef(m_pTargetTransform);
+	if (nullptr == m_pTargetTransform)
+	{
+		PRINT_LOG(L"Error", L"m_pTargetTransform is nullptr");
+		return E_FAIL;
+	}
 	return _uint();
 }
 
