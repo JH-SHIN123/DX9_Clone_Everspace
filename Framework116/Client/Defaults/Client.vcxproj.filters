@@ -79,6 +79,9 @@
     <Filter Include="02.GameObject\08.Bullet\02.EMP_Bomb\Bullet_EMP_Bomb_Explotion">
       <UniqueIdentifier>{eea6f620-9d2d-4616-ba21-63ddd79ec6fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\00.Boss_Addon">
+      <UniqueIdentifier>{bfb875ea-b2a7-4d4a-bbed-0a6495b857a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

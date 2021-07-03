@@ -21,7 +21,7 @@ public:
 private:
 	_uint Movement(_float fDeltaTime);
 	_uint Fire_Triger(_float fDeltaTime);
-	_uint Move_Dir();
+	_uint Move_Dir(_float fDeltaTime);
 
 public:
 	static CBullet_EMP_Bomb* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
@@ -39,10 +39,11 @@ private:
 
 	//_float m_fTrackingTime = 1.f;
 	//_bool m_IsTracking = false;
-	_float m_fExplosionTime = 3.f;
+	_float m_fExplosionTime = 4.f;
 	_float m_fExplosionRadius = 1.f;
 	_float3 m_vMoveDir = {};
 	_bool m_IsTracking = false;
+	_bool m_IsExplosion = false;
 
 
 };

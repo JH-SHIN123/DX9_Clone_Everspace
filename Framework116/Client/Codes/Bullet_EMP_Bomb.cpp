@@ -10,6 +10,9 @@ CBullet_EMP_Bomb::CBullet_EMP_Bomb(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* p
 CBullet_EMP_Bomb::CBullet_EMP_Bomb(const CBullet_EMP_Bomb & other)
 	: CGameObject(other)
 	, m_fExplosionTime(other.m_fExplosionTime)
+	, m_fExplosionRadius(other.m_fExplosionRadius)
+	, m_IsExplosion(other.m_IsExplosion)
+	, m_IsTracking(other.m_IsTracking)
 {
 }
 
@@ -51,8 +54,8 @@ HRESULT CBullet_EMP_Bomb::Ready_GameObject(void * pArg/* = nullptr*/)
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;//_float3(10.f, 3.f, 20.f);
 	TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
-	TransformDesc.fSpeedPerSec = 15.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
+	TransformDesc.fSpeedPerSec = 40.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(10.f);
 	TransformDesc.vScale = { 1.f, 1.f, 1.f };
 
 	if (FAILED(CGameObject::Add_Component(
@@ -141,24 +144,22 @@ _uint CBullet_EMP_Bomb::Render_GameObject()
 
 _uint CBullet_EMP_Bomb::Movement(_float fDeltaTime)
 {
-	Move_Dir();
+	Move_Dir(fDeltaTime);
 
 
 	if (m_fExplosionTime <= 0.f)
 	{
 		if (m_fExplosionRadius <= 1.05f)
 		{
-			m_fExplosionRadius *= 1.001f;
+			m_IsExplosion = true;
+			m_fExplosionRadius *= 1.0015f;
 			m_pCollide->Resize_Shpere(m_fExplosionRadius);
 		}
 
 	}
 
 	else
-	{
 		m_fExplosionTime -= fDeltaTime;
-		m_pTransform->Go_Dir(m_vMoveDir, fDeltaTime);
-	}
 
 
 
@@ -171,9 +172,9 @@ _uint CBullet_EMP_Bomb::Fire_Triger(_float fDeltaTime)
 	return _uint();
 }
 
-_uint CBullet_EMP_Bomb::Move_Dir()
+_uint CBullet_EMP_Bomb::Move_Dir(_float fDeltaTime)
 {
-	if (m_IsTracking == false)
+	if (m_IsExplosion == false)
 	{
 		m_pTransform->Update_Transform();
 
@@ -181,7 +182,10 @@ _uint CBullet_EMP_Bomb::Move_Dir()
 		_float3 vMyPos = m_pTransform->Get_State(EState::Position);
 		m_vMoveDir = vTargetPos - vMyPos;
 		D3DXVec3Normalize(&m_vMoveDir, &m_vMoveDir);
-		m_IsTracking = true;
+
+		m_pTransform->Go_Dir(m_vMoveDir, fDeltaTime);
+
+	//	m_IsTracking = true;
 	}
 
 	return _uint();
