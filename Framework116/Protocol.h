@@ -69,5 +69,15 @@ typedef struct tagPassingData_Mesh {
 	//vector<>
 }PASSDATA_MESH;
 
+typedef struct tagPassingData_Collide {
+#ifdef _AFX
+	CString wstrMeshPrototypeTag;
+#else 
+	wstring wstrMeshPrototypeTag;
+#endif // _AFX
+
+	vector<BOUNDING_SPHERE> vecBoundingSphere;
+}PASSDATA_COLLIDE;
+
 #define __PROTOCOL_H__
 #endif
