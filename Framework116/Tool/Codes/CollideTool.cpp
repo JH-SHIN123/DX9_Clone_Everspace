@@ -167,52 +167,121 @@ void CCollideTool::OnBnClickedButton_Install()
 
 	wstring objIndex = to_wstring(m_Listbox_Collide.GetCount());
 	wstring meshTag = pPlayer->Get_MeshPrototypeTag();
+	objIndex += meshTag;
 
-	//if (meshTag == L"Component_GeoMesh_Cube")
-	//{
-	//	meshTag = L"박스";
-	//}
-	//else if (meshTag == L"Component_GeoMesh_Cylinder")
-	//{
-	//	meshTag = L"실린더";
-	//}
-	//else if (meshTag == L"Component_GeoMesh_Sphere")
-	//{
-	//	meshTag = L"스피어";
-	//}
-	//else if (meshTag == L"Component_GeoMesh_Torus")
-	//{
-	//	meshTag = L"토러스";
-	//}
-
-	//objIndex += L"/";
-	//objIndex += meshTag;
-
-	//// Add ListBox
-	//m_Listbox_InstalledMesh.AddString(objIndex.c_str());
+	// Add ListBox
+	m_Listbox_Collide.AddString(objIndex.c_str());
 }
 
 
 void CCollideTool::OnBnClickedButton_Delete()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int iSelect = m_Listbox_Collide.GetCurSel();
+	if (iSelect == -1) return;
+
+	const list<class CGameObject*>* dummyList = CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Dummy");
+	if (nullptr == dummyList) return;
+
+	CGameObject* pDummy = nullptr;
+	for (auto& p : *dummyList)
+	{
+		if (p->Get_ListBoxIndex() == iSelect) {
+			p->Set_IsDead(true);
+			break;
+		}
+	}
+
+	// 인덱스 / 리스트박스 리셋
+	m_Listbox_Collide.ResetContent();
+
+	int iIndex = 0;
+	for (auto& p : *dummyList)
+	{
+		if (p->Get_IsDead())
+			continue;
+
+		wstring objIndex = to_wstring(iIndex);
+		CDummy* pDummy = (CDummy*)(p);
+		if (nullptr == pDummy) continue;
+		wstring meshTag = pDummy->Get_MeshPrototypeTag();
+
+		objIndex += L"/";
+		objIndex += meshTag;
+
+		p->Set_ListBoxIndex(iIndex);
+		m_Listbox_Collide.AddString(objIndex.c_str());
+
+		++iIndex;
+	}
 }
 
 
 void CCollideTool::OnBnClickedButton_Clear()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	const list<class CGameObject*>* dummyList = CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Dummy");
+	if (nullptr == dummyList) return;
+
+	for (auto& p : *dummyList)
+	{
+		if (p) p->Set_IsDead(true);
+	}
+
+	m_Listbox_Collide.ResetContent();
 }
 
 
 void CCollideTool::OnBnClickedButton_InitTransform()
 {
+	CTransform* pPlayerTransform = (CTransform*)CManagement::Get_Instance()->Get_Component(L"Layer_Player", L"Com_Transform");
+	if (pPlayerTransform == nullptr) {
+		PRINT_LOG(L"Warning", L"pPlayerTransform is nullptr");
+		return;
+	}
+
+	pPlayerTransform->Set_Position({ 0.f,0.f,0.f });
+	pPlayerTransform->Set_Rotate({ 0.f,0.f,0.f });
+	pPlayerTransform->Set_Scale({ 1.f, 1.f, 1.f });
 }
 
 
 void CCollideTool::OnBnClickedButton_Save()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//CString meshName = L"";
+	//CString meshFullName = L"Component_CustomMesh_";
+	//m_EditMeshName.GetWindowTextW(meshName);
+
+	//if (meshName == L"") {
+	//	return;
+	//}
+	//meshFullName += meshName;
+
+	//g_IsMainViewInvalidate = false;
+
+	//CFileDialog Dlg(FALSE,// 반대로 TRUE라면? 불러오기
+	//	L"mesh", L"*.mesh",
+	//	OFN_OVERWRITEPROMPT, L"Data File(*.mesh) | *.mesh||");
+
+	//TCHAR szBuf[MAX_PATH] = L"";
+	//GetCurrentDirectory(MAX_PATH, szBuf);
+	//PathRemoveFileSpec(szBuf);
+	//PathRemoveFileSpec(szBuf);
+	//lstrcat(szBuf, L"\\Resources\\Data");
+	//Dlg.m_ofn.lpstrInitialDir = szBuf;
+
+	//if (Dlg.DoModal())
+	//{
+	//	CString strPath = Dlg.GetPathName();
+	//	HANDLE hFile = CreateFile(strPath.GetString(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	//	if (INVALID_HANDLE_VALUE == hFile)
+	//		return;
+
+	//	DWORD dwByte = 0;
+	//	//WriteFile(hFile, pTile, sizeof(TILE), &dwByte, nullptr);
+
+	//	CloseHandle(hFile);
+	//}
+
+	//g_IsMainViewInvalidate = true;
 }
 
 
