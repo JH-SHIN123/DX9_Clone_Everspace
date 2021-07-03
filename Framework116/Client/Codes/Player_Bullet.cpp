@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\Player_Bullet.h"
 #include "Player.h"
+#include "Pipeline.h"
+#include "MainCam.h"
 
 CPlayer_Bullet::CPlayer_Bullet(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 	: CGameObject(pDevice)
@@ -49,7 +51,7 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.fSpeedPerSec = 800.f;
-	TransformDesc.vScale = { 0.5f, 0.5f, 10.f };
+	TransformDesc.vScale = { 0.5f, 0.5f, 0.5f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -95,13 +97,41 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	
 	if ((_bool)pArg == true)
-		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 300.f);
+		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 500.f);
 	else
-		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 300.f);
+		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 500.f);
 
 	m_pTransform->Set_Position(m_vMuzzlePos);
 
-	m_vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
+	POINT ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+
+	/* 뷰포트 -> 투영스페이스 */
+	_float3 vMouse = _float3(0.f, 0.f, 0.f);
+	vMouse.x = ptMouse.x / (WINCX * 0.5f) - 1.f;
+	vMouse.y = 1.f - ptMouse.y / (WINCY * 0.5f);
+
+	/* 투영스페이스 -> 뷰스페이스 */
+	_float4x4 matProj;
+	m_pDevice->GetTransform(D3DTS_PROJECTION, &matProj);
+	D3DXMatrixInverse(&matProj, 0, &matProj);
+	D3DXVec3TransformCoord(&vMouse, &vMouse, &matProj);
+
+	/* 뷰스페이스 상에서 광선의 출발점과 방향을 구해준다. */
+	_float3 vRayPos = _float3(0.f, 0.f, 0.f);
+	_float3 vRayDir = vMouse - vRayPos;
+
+	/* 뷰스페이스 -> 월드스페이스 */
+	_float4x4 matView;
+	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixInverse(&matView, 0, &matView);
+	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
+	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
+	D3DXVec3Normalize(&vRayDir, &vRayDir);
+
+
+	m_vPlayerLook = vRayDir;
 	D3DXVec3Normalize(&m_vPlayerLook, &m_vPlayerLook);
 
 

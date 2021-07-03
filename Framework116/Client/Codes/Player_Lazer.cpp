@@ -49,7 +49,7 @@ HRESULT CPlayer_Lazer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.fSpeedPerSec = 0.f;
-	TransformDesc.vScale = { 0.5f, 0.5f, 41.f };
+	TransformDesc.vScale = { 0.3f, 0.3f, 81.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -66,6 +66,7 @@ HRESULT CPlayer_Lazer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
 	BoundingSphere.fRadius = 1.f;
+	
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -118,7 +119,7 @@ _uint CPlayer_Lazer::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CGameObject::LateUpdate_GameObject(fDeltaTime);
 
-	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
+	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::Alpha, this)))
 		return UPDATE_ERROR;
 
 	return _uint();
@@ -135,7 +136,7 @@ _uint CPlayer_Lazer::Render_GameObject()
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 #ifdef _DEBUG // Render Collide
-	//m_pCollide->Render_Collide();
+	m_pCollide->Render_Collide();
 #endif
 
 	return _uint();
@@ -147,9 +148,9 @@ _uint CPlayer_Lazer::Movement(_float fDeltaTime)
 	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
 
 	if (m_IsLeft)
-		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 200.f) + m_pPlayerTransform->Get_State(EState::Look) * 10000.f;
+		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 200.f) + m_pPlayerTransform->Get_State(EState::Look) * 20000.f - m_pPlayerTransform->Get_State(EState::Up) * 30.f;
 	else
-		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 200.f) + m_pPlayerTransform->Get_State(EState::Look) * 10000.f;
+		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 200.f) + m_pPlayerTransform->Get_State(EState::Look) * 20000.f - m_pPlayerTransform->Get_State(EState::Up) * 30.f;
 
 	m_pTransform->Set_Position(m_vMuzzlePos);
 
@@ -164,19 +165,11 @@ _uint CPlayer_Lazer::Movement(_float fDeltaTime)
 	matWorld._32 = m_vPlayerLook.y;
 	matWorld._33 = m_vPlayerLook.z;
 
-	if (m_IsFirst)
-	{
-		_float3 vPlayerRotate = m_pPlayerTransform->Get_TransformDesc().vRotate;
-		m_pTransform->Set_Rotate(vPlayerRotate);
-		m_IsFirst = true;
-	}
+
+	_float3 vPlayerRotate = m_pPlayerTransform->Get_TransformDesc().vRotate;
+	m_pTransform->Set_Rotate(vPlayerRotate);
+
 	m_pTransform->Set_WorldMatrix(matWorld);
-
-	m_pTransform->Go_Straight(fDeltaTime);
-	
-
-
-
 
 	return _uint();
 }

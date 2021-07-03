@@ -31,12 +31,16 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 		return E_FAIL;
 
+	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
+		return E_FAIL;
+
 	UI_DESC uiDesc;
 	uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
 	uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
 	uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
 	if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
 		return E_FAIL;
+
 
 	// 우주에서 태양광을 표현하기 위해선
 	// 포인트라이트 혹은 스포트라이트가 더 어울릴듯
@@ -241,6 +245,38 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 		PRINT_LOG(L"Error", L"Failed To Add Skybox In Layer");
 		return E_FAIL;
 	}
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
+{
+	// Cursor
+	//POINT	pt = {};
+	//GetCursorPos(&pt);
+	//ScreenToClient(g_hWnd, &pt);
+	//ShowCursor(FALSE);
+
+	//UI_DESC uiCrosshair;
+	//uiCrosshair.tTransformDesc.vPosition = { (float)pt.x / 2.f , (float)pt.y / 2.f , 0.f };
+	//uiCrosshair.tTransformDesc.vScale = { 150.f, 150.f, 0.f };
+	//uiCrosshair.wstrTexturePrototypeTag = L"Component_Texture_Crosshair";
+
+	//if (FAILED(Add_Layer_UI(L"Layer_UI", &uiCrosshair)))
+	//	return E_FAIL;
+	
+	// 크로스헤어는 계속 위치 바껴야 되서 못쓸듯 ㅜㅜ
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Crosshair",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Crosshair In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+
 	return S_OK;
 }
 

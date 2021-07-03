@@ -13,6 +13,7 @@
 #include "ExplosionSystem.h"
 #include "LaserSystem.h"
 #include "Boss_Monster.h"
+#include "Crosshair.h"
 #pragma endregion
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
@@ -207,6 +208,16 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/*  HUD Crosshair ÀÔ´Ï´Ù */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Crosshair",
+		CCrosshair::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Crosshair");
+		return E_FAIL;
+	}
+
 
 #pragma endregion
 
@@ -239,6 +250,16 @@ HRESULT CLoading::Ready_StageResources()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Terrain/Terrain%d.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Terrain");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Crosshair */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Crosshair",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Crosshair%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Crosshair");
 		return E_FAIL;
 	}
 

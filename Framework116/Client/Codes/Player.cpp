@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Player.h"
 #include "Collision.h"
+#include "Pipeline.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
 	: CGameObject(pDevice)
@@ -144,7 +145,6 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (GetAsyncKeyState('A') & 0x8000)
 		m_pTransform->Go_Side(-fDeltaTime);
 
-
 	// Weapon Change
 	if (m_pController->Key_Down(KEY_1))
 	{
@@ -156,18 +156,11 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		m_iWeapon = WEAPON_LAZER;
 	}
 
-	if (m_pController->Key_Down(KEY_3))
-	{
-
-	}
-
 	// 마우스 고정시켜서 끄기 불편해서.. ESC키 쓰세용
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 	{
 		DestroyWindow(g_hWnd);
 	}
-
-
 
 	// TEST //
 	//if (m_pController->Key_Down(KEY_LBUTTON))
@@ -235,6 +228,10 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			
 		}
 	}
+
+
+
+
 }
 
 _uint CPlayer::Movement(_float fDeltaTime)
@@ -272,7 +269,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
 	_float3 vGap = vMouse - vScreenCenter;
 
-	_float fSpeed = D3DXVec3Length(&vGap) * 0.5f;
+	_float fSpeed = D3DXVec3Length(&vGap) * 0.2f;
 	D3DXVec3Normalize(&vGap, &vGap);
 	_float fNewRotX = vGap.y;
 	_bool bRotYDir = false; // true면 위쪽 회전, false면 밑에 회전
@@ -293,14 +290,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	}
 
 	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed);
-
 	
-	
-	//POINT ptMouse = { WINCX >> 1, WINCY >> 1 }; // 400 / 300
-	//ClientToScreen(g_hWnd, &ptMouse);
-	//	SetCursorPos(ptMouse.x, ptMouse.y);
-
-	// 범위 정해줘야함. 100 ~ WINCX - 100 , 100 ~ WINCY;
 
 	return _uint();
 }
