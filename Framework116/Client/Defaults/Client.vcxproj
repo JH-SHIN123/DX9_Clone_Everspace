@@ -165,6 +165,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Boss_Monster.h" />
+    <ClInclude Include="..\Headers\Bullet_EMP_Bomb.h" />
+    <ClInclude Include="..\Headers\Bullet_EnergyBall.h" />
+    <ClInclude Include="..\Headers\Bullet_Laser.h" />
     <ClInclude Include="..\Headers\Client_Define.h" />
     <ClInclude Include="..\Headers\Client_Enum.h" />
     <ClInclude Include="..\Headers\CollisionHandler.h" />
@@ -193,6 +196,9 @@
   <ItemGroup>
     <ClCompile Include="..\Codes\Boss_Monster.cpp" />
     <ClCompile Include="..\Codes\CollisionHandler.cpp" />
+    <ClCompile Include="..\Codes\Bullet_EMP_Bomb.cpp" />
+    <ClCompile Include="..\Codes\Bullet_EnergyBall.cpp" />
+    <ClCompile Include="..\Codes\Bullet_Laser.cpp" />
     <ClCompile Include="..\Codes\Crosshair.cpp" />
     <ClCompile Include="..\Codes\ExplosionSystem.cpp" />
     <ClCompile Include="..\Codes\Grass.cpp" />

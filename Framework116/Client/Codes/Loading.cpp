@@ -14,6 +14,9 @@
 #include "ExplosionSystem.h"
 #include "LaserSystem.h"
 #include "Boss_Monster.h"
+#include "Bullet_EnergyBall.h"
+#include "Bullet_Laser.h"
+#include "Bullet_EMP_Bomb.h"
 #include "Crosshair.h"
 #pragma endregion
 
@@ -198,16 +201,9 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* 임시 보스 몬스터 입니다. */
+	Ready_BossAndOthers();
 
-	/* 임시 Boss_Monster 입니다 */
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_Boss_Monster",
-		CBoss_Monster::Create(m_pDevice, nullptr))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_LaserSystem");
-		return E_FAIL;
-	}
 
 	/*  HUD Crosshair 입니다 */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -308,6 +304,27 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_EnergyBall",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/EnergyBall%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_EnergyBall");
+		return E_FAIL;
+	}
+	Ready_HUD_Resources();
+
+#pragma endregion
+
+	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
+
+
+
+	return S_OK;
+}
+
+HRESULT CLoading::Ready_HUD_Resources()
+{
 	/* For.Component_Texture_Machinegun_HUD */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -328,6 +345,36 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.Component_Texture_Laser_HUD */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Laser_HUD",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Laser%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Laser_HUD");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Overdrive_HUD */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Overdrive_HUD",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Overdrive%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Overdrive_HUD");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Shield_Battery_HUD */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Shield_Battery_HUD",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Shield_Battery%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Shield_Battery_HUD");
+		return E_FAIL;
+	}
+
 	/* For.Component_Texture_HUD_Boarder */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -338,11 +385,88 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-#pragma endregion
+	/* For.Component_Texture_HUD_Shield */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HUD_Shield",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HUD_Shield.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_Shield");
+		return E_FAIL;
+	}
 
-	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
+	/* For.Component_Texture_HUD_Hp */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HUD_Hp",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HUD_Hp.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_Hp");
+		return E_FAIL;
+	}
 
+	/* For.Component_Texture_HUD_Out_Bar */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HUD_Out_Bar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HUD_Out_Bar.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_Out_Bar");
+		return E_FAIL;
+	}
 
+	/* For.Component_Texture_HUD_In_Bar */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HUD_In_Bar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HUD_In_Bar.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_In_Bar");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CLoading::Ready_BossAndOthers()
+{
+	// boss
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Boss_Monster",
+		CBoss_Monster::Create(m_pDevice, nullptr))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_LaserSystem");
+		return E_FAIL;
+	}
+
+	// others
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Bullet_EnergyBall",
+		CBullet_EnergyBall::Create(m_pDevice, nullptr))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Bullet_Laser",
+		CBullet_Laser::Create(m_pDevice, nullptr))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Bullet_Laser");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Bullet_EMP_Bomb",
+		CBullet_EMP_Bomb::Create(m_pDevice, nullptr))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Bullet_EMP_Bomb");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
