@@ -10,10 +10,16 @@ CBoss_Monster::CBoss_Monster(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 
 CBoss_Monster::CBoss_Monster(const CBoss_Monster & other)
 	: CGameObject(other)
+	, m_eActionMode(other.m_eActionMode)
+	, m_IsSpecialAction(other.m_IsSpecialAction)
+	, m_IsLeftFire(other.m_IsLeftFire)
 	, m_fEnergyBall_CoolTime(other.m_fEnergyBall_CoolTime)
 	, m_fLaser_CoolTime(other.m_fLaser_CoolTime)
-	, m_IsLeftFire(other.m_IsLeftFire)
+	, m_fEmpBomb_CoolTime(other.m_fEmpBomb_CoolTime)
 {
+	//, m_fDetectionRange_Near(other.m_fDetectionRange_Near)
+	//, m_fDetectionRange_Middle(other.m_fDetectionRange_Middle)
+	//, m_fDetectionRange_Far(other.m_fDetectionRange_Far)
 	
 }
 
@@ -114,10 +120,13 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
 
-	Movement(fDeltaTime);
-	Fire_Triger(fDeltaTime);
-	Fire_Laser(fDeltaTime);
-	Fire_EMP(fDeltaTime);
+	Move_AI(fDeltaTime);
+	Attack_AI(fDeltaTime);
+
+	//Movement(fDeltaTime);
+	//Fire_Triger(fDeltaTime);
+	//Fire_Laser(fDeltaTime);
+	//Fire_EMP(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().vPosition);
@@ -197,6 +206,21 @@ _uint CBoss_Monster::Movement(_float fDeltaTime)
 	m_pTransform->Go_Straight(fDeltaTime);
 
 
+	return _uint();
+}
+
+_uint CBoss_Monster::Move_Near(_float fDeltaTime)
+{
+	return _uint();
+}
+
+_uint CBoss_Monster::Move_Middle(_float fDeltaTime)
+{
+	return _uint();
+}
+
+_uint CBoss_Monster::Move_Far(_float fDeltaTime)
+{
 	return _uint();
 }
 
@@ -320,6 +344,61 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 	
 
 
+	return _uint();
+}
+
+_uint CBoss_Monster::Move_AI(_float fDeltaTime)
+{
+	_float fDis = fabs(D3DXVec3Length(&m_pTargetTransform->Get_State(EState::Position))
+		- D3DXVec3Length(&m_pTransform->Get_State(EState::Position)));
+
+
+	if (fDis < BOSSRANGE_NEAR)
+		m_eActionMode = Near;
+
+	else if (BOSSRANGE_NEAR < fDis && fDis < BOSSRANGE_MIDDLE)
+		m_eActionMode = Middle;
+
+
+	else if (BOSSRANGE_MIDDLE < fDis && fDis < BOSSRANGE_FAR)
+		m_eActionMode = Far;
+
+	else
+		m_eActionMode = End;
+
+	if (m_IsSpecialAction == true)
+		m_eActionMode = SpecialAction;
+
+
+	switch (m_eActionMode)
+	{
+	case CBoss_Monster::Near:
+		Move_Near(fDeltaTime);
+		break;
+
+	case CBoss_Monster::Middle:
+		Move_Middle(fDeltaTime);
+		break;
+
+	case CBoss_Monster::Far:
+		Move_Far(fDeltaTime);
+		break;
+
+	case CBoss_Monster::SpecialAction:
+		break;
+
+	default:
+		return UPDATE_ERROR;
+		break;
+	}
+
+
+
+	return _uint();
+}
+
+_uint CBoss_Monster::Attack_AI(_float fDeltaTime)
+{
 	return _uint();
 }
 
