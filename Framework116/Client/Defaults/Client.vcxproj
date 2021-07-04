@@ -179,6 +179,7 @@
     <ClInclude Include="..\Headers\Lobby.h" />
     <ClInclude Include="..\Headers\LobbyCam.h" />
     <ClInclude Include="..\Headers\LobbyModel.h" />
+    <ClInclude Include="..\Headers\LobbyUI.h" />
     <ClInclude Include="..\Headers\Logo.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\MainCam.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="..\Codes\Lobby.cpp" />
     <ClCompile Include="..\Codes\LobbyCam.cpp" />
     <ClCompile Include="..\Codes\LobbyModel.cpp" />
+    <ClCompile Include="..\Codes\LobbyUI.cpp" />
     <ClCompile Include="..\Codes\Logo.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\MainCam.cpp" />

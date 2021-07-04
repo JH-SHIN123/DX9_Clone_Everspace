@@ -21,7 +21,6 @@ public:
 private:
 	void	KeyProcess(_float fDeltaTime);
 	_uint	Movement(_float fDeltaTime);
-	HRESULT	Load_Model(wstring wstrObjectPrototypePath);
 public:
 	static CLobbyModel* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
@@ -30,9 +29,7 @@ public:
 private:
 	CMesh*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
-	CCollideSphere*	m_pCollide = nullptr;
 	CController* m_pController = nullptr;
-	class CPlayer* m_pPlayer;
 };
 
 #define __LOBBYMODEL_H__

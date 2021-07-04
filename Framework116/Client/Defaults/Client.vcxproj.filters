@@ -115,6 +115,9 @@
     <Filter Include="02.GameObject\02.Camera\01.LobbyCam">
       <UniqueIdentifier>{1bd7f9af-fb40-4ba5-960e-212922241cb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI">
+      <UniqueIdentifier>{b7681a85-fa55-4dd9-907a-83021c34d3a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -210,6 +213,9 @@
     <ClInclude Include="..\Headers\LobbyCam.h">
       <Filter>02.GameObject\02.Camera\01.LobbyCam</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\LobbyUI.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -292,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\LobbyCam.cpp">
       <Filter>02.GameObject\02.Camera\01.LobbyCam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\LobbyUI.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

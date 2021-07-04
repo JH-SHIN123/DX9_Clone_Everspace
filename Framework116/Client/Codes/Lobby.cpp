@@ -46,7 +46,7 @@ _uint CLobby::Update_Scene(_float fDeltaTime)
 _uint CLobby::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
-
+	
 	return _uint();
 }
 
@@ -120,7 +120,7 @@ HRESULT CLobby::Add_Layer_Skybox(const wstring& LayerTag)
 HRESULT CLobby::Add_Layer_UI(const wstring& LayerTag)
 {
 	
-	if (FAILED(CStreamHandler::Load_PassData_UI(L"../../Resources/Data/Lobby_Ui.txt", TRUE)))
+	if (FAILED(CStreamHandler::Load_PassData_UI(L"../../Resources/Data/Lobby_Ui.txt", FALSE)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Load UI In Layer");
 		return E_FAIL;

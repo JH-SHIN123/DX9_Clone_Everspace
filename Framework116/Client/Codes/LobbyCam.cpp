@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\LobbyCam.h"
-
+#include"Pipeline.h"
 CLobbyCam::CLobbyCam(LPDIRECT3DDEVICE9 pDevice)
 	: CCamera(pDevice)
 {
@@ -61,60 +61,15 @@ _uint CLobbyCam::Render_GameObject()
 
 _uint CLobbyCam::OffSet(_float fDeltaTime)
 {
-	static _bool bIsStart = false;
-	if (bIsStart)
-		return TRUE;
 
-	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
-
-	/* 파란 벡터 */
-	_float3 vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
-	D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
-
-	/* 보라색 벡터 */
-	//vPlayerLook *= -m_fDistanceFromTarget;
-	//////////////////////////////////////////
-
-	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
-	D3DXVec3Normalize(&vPlayerRight, &vPlayerRight);
-
-	_float4x4 matRot;
-	D3DXMatrixRotationAxis(&matRot, &vPlayerRight, m_fCamAngle);
-	D3DXVec3TransformNormal(&vPlayerLook, &vPlayerLook, &matRot);
-
-	/* 초록 벡터 */
-	//m_CameraDesc.vEye = vPlayerPos + vPlayerLook;
-	m_CameraDesc.vEye = vPlayerPos + (vPlayerLook) * -m_fDistanceFromTarget * 2.f;
-
-	/* 바라볼 위치 */
-	//한 프레임전의 에임
-	_float3 vPreAim = m_CameraDesc.vAt;
-	//이번에 바뀔 에임 
-	_float3 vCurAim = vPlayerPos - (vPlayerLook) * -m_fDistanceFromTarget * 2.f;
-
-	D3DXVec3Normalize(&vPreAim, &vPreAim);
-	D3DXVec3Normalize(&vCurAim, &vCurAim);
-
-	//이동이 있을시만 계산
-	if (vPreAim != vCurAim)
-	{
-		D3DXQUATERNION QuatP = { vPreAim.x,vPreAim.y ,vPreAim.z , 0.f }
-			//w는 스칼라.축이니 0으로 주자
-		, QuatQ = { vCurAim.x ,vCurAim.y,vCurAim.z,0.f };
-		D3DXQuaternionSlerp(&QuatQ, &QuatP, &QuatQ, 0.001f/*민감도*/);
-		//QuatQ에 두 사원수의 구면 선형보간,민감도가 커지면 카메라 회전이 많이 됨.
-		vCurAim = { QuatQ.x,QuatQ.y,
-			QuatQ.z };
-	}
-
-	//위치
-	vCurAim += vPlayerPos;
-	m_CameraDesc.vAt = vCurAim;
-
-	m_fCamAngle = 0.f;
-	
-	bIsStart = true;
-	return TRUE;
+	m_fDistanceFromTarget = 10.f;
+	m_CameraDesc.vAt = m_pPlayerTransform->Get_TransformDesc().vPosition;
+	_float3 vEye = m_CameraDesc.vAt;
+	vEye.x += m_fDistanceFromTarget;
+	vEye.y += m_fDistanceFromTarget/2.f;
+	vEye.z += m_fDistanceFromTarget;
+	m_CameraDesc.vEye = vEye;
+	return 0;
 }
 
 CLobbyCam * CLobbyCam::Create(LPDIRECT3DDEVICE9 pDevice)

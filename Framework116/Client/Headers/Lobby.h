@@ -23,6 +23,7 @@ public:
 
 	HRESULT Add_Layer_UI(const wstring & LayerTag);
 
+
 public:
 	static CLobby* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual void Free() override;
