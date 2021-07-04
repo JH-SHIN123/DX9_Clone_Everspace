@@ -22,9 +22,12 @@ public:
 	void Set_DistanceFromTarget(_float fDist) { m_fDistanceFromTarget = fDist; }
 	void Set_CamAngle(_float fRadian) { m_fCamAngle = fRadian; }
 
-	// 1인칭 카메라 Test
+	// 1인칭 카메라 1차 Test 실패 ㅋㅋ
 	_uint FPSMovement(_float fDeltaTime);
 	_uint SetCameraFPS(_float fDeltaTime);
+
+	// 카메라 쉐이킹
+	_uint CameraShakingStart(_float fDeltaTime);
 
 private:
 	_uint Movement(_float fDeltaTime);

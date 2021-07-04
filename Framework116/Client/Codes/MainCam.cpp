@@ -167,6 +167,7 @@ _uint CMainCam::Movement(_float fDeltaTime)
 
 _uint CMainCam::KeyInput(_float fDeltaTime)
 {
+
 	if (!m_IsFPS)
 	{
 		if (GetAsyncKeyState(VK_ADD) & 0x8000)
@@ -220,6 +221,11 @@ _uint CMainCam::KeyInput(_float fDeltaTime)
 			m_IsFPS = false;
 	}
 	
+	// 카메라 쉐이킹
+	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	{
+		CameraShakingStart(fDeltaTime);
+	}
 
 
 	return _uint();
@@ -265,3 +271,13 @@ _uint CMainCam::SetCameraFPS(_float fDeltaTime)
 {
 	return _uint();
 }
+
+_uint CMainCam::CameraShakingStart(_float fDeltaTime)
+{
+	_float3 Shake = { (_float)(rand() % 10), (_float)(rand() % 10), 0.f };
+
+	m_CameraDesc.vEye += Shake * fDeltaTime * 5.f;
+
+	return _uint();
+}
+
