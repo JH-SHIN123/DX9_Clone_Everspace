@@ -165,6 +165,17 @@ _uint CTransform::RotateZ(_float fDeltaTime)
 	return _uint();
 }
 
+_uint CTransform::RotateAxis(_float3 vAxis, _float fDeltaTime)
+{
+	_float4x4 matWorld, matRot;
+	D3DXMatrixRotationAxis(&matRot, &vAxis, 51.f);
+	
+	matWorld = m_TransformDesc.matWorld * matRot;
+	Set_WorldMatrix(matWorld);
+
+	return _uint();
+}
+
 _uint CTransform::Scale(const _float3& _vScale)
 {
 	m_TransformDesc.vScale += _vScale;

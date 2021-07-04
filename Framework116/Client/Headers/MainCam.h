@@ -21,8 +21,10 @@ public:
 public:
 	void Set_DistanceFromTarget(_float fDist) { m_fDistanceFromTarget = fDist; }
 	void Set_CamAngle(_float fRadian) { m_fCamAngle = fRadian; }
-	// 1인칭 카메라
-	void SetCameraFPS(_float fDeltaTime);
+
+	// 1인칭 카메라 Test
+	_uint FPSMovement(_float fDeltaTime);
+	_uint SetCameraFPS(_float fDeltaTime);
 
 private:
 	_uint Movement(_float fDeltaTime);

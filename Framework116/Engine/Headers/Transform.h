@@ -64,6 +64,7 @@ public:
 	_uint RotateX(_float fDeltaTime);
 	_uint RotateY(_float fDeltaTime);
 	_uint RotateZ(_float fDeltaTime);
+	_uint RotateAxis(_float3 vAxis, _float fDeltaTime);
 
 	_uint Scale(const _float3& _vScale);
 

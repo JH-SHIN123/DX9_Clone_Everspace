@@ -46,7 +46,6 @@ _uint CMainCam::Update_GameObject(_float fDeltaTime)
 	else
 	{
 		SetCameraFPS(fDeltaTime);
-		Movement(fDeltaTime);
 		KeyInput(fDeltaTime);
 	}
 	return NO_EVENT;
@@ -193,6 +192,7 @@ _uint CMainCam::KeyInput(_float fDeltaTime)
 		}
 	}
 
+	// 시점 변경 
 	if (GetAsyncKeyState(L'V') & 0x8000)
 	{
 		if (!m_IsFPS)
@@ -240,22 +240,12 @@ void CMainCam::Free()
 	CCamera::Free();
 }
 
-void CMainCam::SetCameraFPS(_float fDeltaTime)
+_uint CMainCam::FPSMovement(_float fDeltaTime)
 {
+	return _uint();
+}
 
-	m_fDistanceFromTarget = -2.f;
-	D3DXVECTOR3   vPlayerLook, vPlayerPos;
-	D3DXMATRIXA16  matRot;
-
-	vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
-
-	vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
-	D3DXMatrixRotationY(&matRot, m_pPlayerTransform->Get_TransformDesc().vRotate.y);
-	D3DXVec3TransformCoord(&vPlayerLook, &vPlayerLook, &matRot);
-	m_CameraDesc.vEye = vPlayerPos + (vPlayerLook) * -m_fDistanceFromTarget * 2.f;   // 카메라의 위치는 캐릭터 위치 + 보정
-	m_CameraDesc.vAt = vPlayerLook; // 카메라가 보는 시점 .
-	
-	//D3DXMatrixLookAtLH(&m_CameraDesc.matView, &m_CameraDesc.vEye, &m_CameraDesc.vAt, &m_CameraDesc.vUp);
-	//m_pDevice->SetTransform(D3DTS_VIEW, &m_CameraDesc.matView);
-
+_uint CMainCam::SetCameraFPS(_float fDeltaTime)
+{
+	return _uint();
 }

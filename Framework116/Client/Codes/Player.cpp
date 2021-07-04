@@ -353,10 +353,10 @@ _uint CPlayer::Movement(_float fDeltaTime)
 
 	GetClientRect(g_hWnd, &rc);
 
-	p1.x = rc.left + 100;
-	p1.y = rc.top + 100;
-	p2.x = rc.right - 100;
-	p2.y = rc.bottom - 100;
+	p1.x = rc.left + 600;
+	p1.y = rc.top + 300;
+	p2.x = rc.right - 600;
+	p2.y = rc.bottom - 300;
 
 	ClientToScreen(g_hWnd, &p1);
 	ClientToScreen(g_hWnd, &p2);
@@ -384,14 +384,17 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	_float fRotX = m_pTransform->Get_TransformDesc().vRotate.x;
 	
 	if (fRotX >= -D3DXToRadian(90.f) && !bRotYDir)
-		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
+		m_pTransform->RotateX(D3DXToRadian(vGap.y * 2.f) * fDeltaTime * fSpeed);
 	else if (fRotX < D3DXToRadian(55.f) && bRotYDir)
 	{
-		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
+		m_pTransform->RotateX(D3DXToRadian(vGap.y * 2.f) * fDeltaTime * fSpeed);
 	}
-
-	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed);
 	
+	m_pTransform->RotateY(D3DXToRadian(vGap.x * 5.f) * fDeltaTime * fSpeed);
+
+	/*_float3 Axis;
+	D3DXVec3Cross(&Axis, &m_pTransform->Get_State(EState::Look), &m_pTransform->Get_State(EState::Right));
+	m_pTransform->RotateAxis(Axis, fDeltaTime);*/
 
 	return _uint();
 }
