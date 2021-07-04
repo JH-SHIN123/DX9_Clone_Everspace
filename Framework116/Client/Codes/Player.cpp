@@ -40,7 +40,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform Test
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.fSpeedPerSec = 45.f;
-	TransformDesc.vPosition = _float3(0.f, 0.f, 0.f);
+	TransformDesc.vPosition = _float3(50.f, 0.f, 0.f);
 	TransformDesc.fSpeedPerSec = 25.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
 	TransformDesc.vScale = { 1.f,1.f,1.f };
@@ -391,7 +391,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 		m_pTransform->RotateX(D3DXToRadian(vGap.y ) * fDeltaTime * fSpeed);
 	}
 	
-	m_pTransform->RotateY(D3DXToRadian(vGap.x ) * fDeltaTime * fSpeed);
+	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed);
 
 	//_float3 Axis, vLook, vRight;
 	//vLook = m_pTransform->Get_State(EState::Look);
