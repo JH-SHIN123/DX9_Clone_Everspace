@@ -384,17 +384,24 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	_float fRotX = m_pTransform->Get_TransformDesc().vRotate.x;
 	
 	if (fRotX >= -D3DXToRadian(90.f) && !bRotYDir)
-		m_pTransform->RotateX(D3DXToRadian(vGap.y * 2.f) * fDeltaTime * fSpeed);
+		m_pTransform->RotateX(D3DXToRadian(vGap.y ) * fDeltaTime * fSpeed);
 	else if (fRotX < D3DXToRadian(55.f) && bRotYDir)
 	{
-		m_pTransform->RotateX(D3DXToRadian(vGap.y * 2.f) * fDeltaTime * fSpeed);
+		m_pTransform->RotateX(D3DXToRadian(vGap.y ) * fDeltaTime * fSpeed);
 	}
 	
-	m_pTransform->RotateY(D3DXToRadian(vGap.x * 5.f) * fDeltaTime * fSpeed);
+	m_pTransform->RotateY(D3DXToRadian(vGap.x ) * fDeltaTime * fSpeed);
 
-	/*_float3 Axis;
-	D3DXVec3Cross(&Axis, &m_pTransform->Get_State(EState::Look), &m_pTransform->Get_State(EState::Right));
-	m_pTransform->RotateAxis(Axis, fDeltaTime);*/
+	//_float3 Axis, vLook, vRight;
+	//vLook = m_pTransform->Get_State(EState::Look);
+	//vRight = m_pTransform->Get_State(EState::Right);
+
+	//D3DXVec3Normalize(&vLook, &vLook);
+	//D3DXVec3Normalize(&vRight, &vRight);
+
+	//D3DXVec3Cross(&Axis, &vLook, &vRight);
+	//D3DXVec3Normalize(&Axis, &Axis);
+	//m_pTransform->RotateAxis(Axis, fDeltaTime);
 
 	return _uint();
 }

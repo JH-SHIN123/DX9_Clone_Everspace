@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\MainCam.h"
+#include "Pipeline.h"
 
 CMainCam::CMainCam(LPDIRECT3DDEVICE9 pDevice)
 	: CCamera(pDevice)
@@ -89,7 +90,7 @@ _uint CMainCam::Movement(_float fDeltaTime)
 	/* 초록 벡터 */
 	//m_CameraDesc.vEye = vPlayerPos + vPlayerLook;
 	m_CameraDesc.vEye = vPlayerPos + (vPlayerLook) * -m_fDistanceFromTarget * 2.f;
-
+	
 	/* 바라볼 위치 */
 	//한 프레임전의 에임
 	_float3 vPreAim = m_CameraDesc.vAt;
@@ -144,7 +145,22 @@ _uint CMainCam::Movement(_float fDeltaTime)
 	vPlayerPos.y += 10.f;
 	m_CameraDesc.vAt = vPlayerPos - (vPlayerLook) * -m_fDistanceFromTarget * 2.f * fDeltaTime;
 	
+	//TEST
+	//RAY ray;
+	//_float3 vLook;
+	//CPipeline::CreatePickingRay(ray, g_hWnd, WINCX, WINCY, m_pDevice);
+	///* 뷰스페이스 -> 월드스페이스 */
+	//_float4x4 matView;
+	//m_pDevice->GetTransform(D3DTS_VIEW, &matView);
+	//D3DXMatrixInverse(&matView, 0, &matView);
+	//D3DXVec3TransformCoord(&ray.vPos, &ray.vPos, &matView);
+	//D3DXVec3TransformNormal(&ray.vDirection, &ray.vDirection, &matView);
+	//D3DXVec3Normalize(&ray.vDirection, &ray.vDirection);
 
+	//vLook = ray.vDirection;
+	//D3DXVec3Normalize(&vLook, &vLook);
+
+	//m_CameraDesc.vAt = vPlayerPos + vLook;
 
 	return _uint();
 }
