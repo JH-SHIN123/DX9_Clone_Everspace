@@ -21,6 +21,8 @@ public:
 public:
 	void Set_DistanceFromTarget(_float fDist) { m_fDistanceFromTarget = fDist; }
 	void Set_CamAngle(_float fRadian) { m_fCamAngle = fRadian; }
+	// 1ÀÎÄª Ä«¸Þ¶ó
+	void SetCameraFPS(_float fDeltaTime);
 
 private:
 	_uint Movement(_float fDeltaTime);
@@ -35,6 +37,9 @@ private:
 	CTransform* m_pPlayerTransform = nullptr;
 	_float m_fDistanceFromTarget = 10.f;
 	_float m_fCamAngle = D3DXToRadian(45.f);
+
+private:
+	_bool m_IsFPS = false;
 };
 
 #define __MAINCAM_H__

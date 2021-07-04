@@ -38,9 +38,17 @@ HRESULT CMainCam::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CMainCam::Update_GameObject(_float fDeltaTime)
 {
 	CCamera::Update_GameObject(fDeltaTime);
-	Movement(fDeltaTime);
-	KeyInput(fDeltaTime);
-
+	if (!m_IsFPS)
+	{
+		Movement(fDeltaTime);
+		KeyInput(fDeltaTime);
+	}
+	else
+	{
+		SetCameraFPS(fDeltaTime);
+		Movement(fDeltaTime);
+		KeyInput(fDeltaTime);
+	}
 	return NO_EVENT;
 }
 
@@ -57,6 +65,7 @@ _uint CMainCam::Render_GameObject()
 
 	return _uint();
 }
+
 
 _uint CMainCam::Movement(_float fDeltaTime)
 {
@@ -143,42 +152,56 @@ _uint CMainCam::Movement(_float fDeltaTime)
 
 _uint CMainCam::KeyInput(_float fDeltaTime)
 {
-	if (GetAsyncKeyState(VK_ADD) & 0x8000)
+	if (!m_IsFPS)
 	{
-		m_fDistanceFromTarget -= 10.f * fDeltaTime;
-	}
-	if (GetAsyncKeyState(VK_SUBTRACT) & 0x8000)
-	{
-		m_fDistanceFromTarget += 10.f * fDeltaTime;
-	}
-	if (GetAsyncKeyState(VK_NUMPAD8) & 0x8000)
-	{
-		m_fCamAngle += D3DXToRadian(90.f) * fDeltaTime;
-	}
-	if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000)
-	{
-		m_fCamAngle += D3DXToRadian(90.f) * -fDeltaTime;
-	}
-	// 일반이동 카메라 연출
-	if (GetAsyncKeyState(L'W') & 0x8000)
-	{
-		if(m_fDistanceFromTarget < 11.f)
-			m_fDistanceFromTarget += 9.f * fDeltaTime;
+		if (GetAsyncKeyState(VK_ADD) & 0x8000)
+		{
+			m_fDistanceFromTarget -= 10.f * fDeltaTime;
+		}
+		if (GetAsyncKeyState(VK_SUBTRACT) & 0x8000)
+		{
+			m_fDistanceFromTarget += 10.f * fDeltaTime;
+		}
+		if (GetAsyncKeyState(VK_NUMPAD8) & 0x8000)
+		{
+			m_fCamAngle += D3DXToRadian(90.f) * fDeltaTime;
+		}
+		if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000)
+		{
+			m_fCamAngle += D3DXToRadian(90.f) * -fDeltaTime;
+		}
+		// 일반이동 카메라 연출
+		if (GetAsyncKeyState(L'W') & 0x8000)
+		{
+			if (m_fDistanceFromTarget < 11.f)
+				m_fDistanceFromTarget += 9.f * fDeltaTime;
+		}
+
+		// 부스터 카메라 연출
+		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+		{
+			_float OriginDis = 10.f;
+
+			if (!(m_fDistanceFromTarget > OriginDis + 2.f))
+				m_fDistanceFromTarget += 8.f * fDeltaTime;
+		}
+		if (!(GetAsyncKeyState(VK_SPACE) & 0x8000))
+		{
+			_float OriginDis = 10.f;
+			if (!(m_fDistanceFromTarget < 10.f))
+				m_fDistanceFromTarget -= 5.f * fDeltaTime;
+		}
 	}
 
-	// 부스터 카메라 연출
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	if (GetAsyncKeyState(L'V') & 0x8000)
 	{
-		_float OriginDis = 10.f;
-
-		if (!(m_fDistanceFromTarget > OriginDis + 2.f))
-			m_fDistanceFromTarget += 8.f * fDeltaTime;	
+		if (!m_IsFPS)
+			m_IsFPS = true;
 	}
-	if (!(GetAsyncKeyState(VK_SPACE) & 0x8000))
+	if (GetAsyncKeyState(L'B') & 0x8000)
 	{
-		_float OriginDis = 10.f;
-		if(!(m_fDistanceFromTarget < 10.f))
-		m_fDistanceFromTarget -= 5.f * fDeltaTime;
+		if (m_IsFPS)
+			m_IsFPS = false;
 	}
 	
 
@@ -215,4 +238,24 @@ void CMainCam::Free()
 	Safe_Release(m_pPlayerTransform);
 
 	CCamera::Free();
+}
+
+void CMainCam::SetCameraFPS(_float fDeltaTime)
+{
+
+	m_fDistanceFromTarget = -2.f;
+	D3DXVECTOR3   vPlayerLook, vPlayerPos;
+	D3DXMATRIXA16  matRot;
+
+	vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
+
+	vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
+	D3DXMatrixRotationY(&matRot, m_pPlayerTransform->Get_TransformDesc().vRotate.y);
+	D3DXVec3TransformCoord(&vPlayerLook, &vPlayerLook, &matRot);
+	m_CameraDesc.vEye = vPlayerPos + (vPlayerLook) * -m_fDistanceFromTarget * 2.f;   // 카메라의 위치는 캐릭터 위치 + 보정
+	m_CameraDesc.vAt = vPlayerLook; // 카메라가 보는 시점 .
+	
+	//D3DXMatrixLookAtLH(&m_CameraDesc.matView, &m_CameraDesc.vEye, &m_CameraDesc.vAt, &m_CameraDesc.vUp);
+	//m_pDevice->SetTransform(D3DTS_VIEW, &m_CameraDesc.matView);
+
 }
