@@ -64,8 +64,16 @@
     <Filter Include="02.GameObject\07.Boss_Monster">
       <UniqueIdentifier>{88b50869-9c1a-4425-ae6e-f5919ea9d218}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="01.Scene\02.Lobby">
       <UniqueIdentifier>{8a9fe7b0-2dfd-4099-bf5d-dc29ad9f32a6}</UniqueIdentifier>
+=======
+    <Filter Include="02.GameObject\08.Bullet">
+      <UniqueIdentifier>{dddd415c-d79f-4cda-8a24-608ab1a97737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\00.Boss_Addon">
+      <UniqueIdentifier>{bfb875ea-b2a7-4d4a-bbed-0a6495b857a7}</UniqueIdentifier>
+>>>>>>> origin/main
     </Filter>
     <Filter Include="02.GameObject\02.Camera\01.LobbyCam">
       <UniqueIdentifier>{1eacbcfc-9a2f-4e83-84e4-fd0c20331049}</UniqueIdentifier>
@@ -73,8 +81,40 @@
     <Filter Include="01.Scene\02.Lobby\00.LobbyModel">
       <UniqueIdentifier>{ac04ead6-94a1-4433-884c-6ee3eb8a1592}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="01.Scene\02.Lobby\01.LobbyUI">
       <UniqueIdentifier>{9bfe35a5-cd60-4b10-b13b-0dd9920f1ce2}</UniqueIdentifier>
+=======
+    <Filter Include="02.GameObject\08.Bullet\02.Player_Missile">
+      <UniqueIdentifier>{dff417bd-e330-43c0-b8a0-558cadf4c97a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD">
+      <UniqueIdentifier>{b5258aa2-1843-44fe-9cb2-0404d0b7aa33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\00.Crosshair">
+      <UniqueIdentifier>{ad13f66b-199e-47bb-a198-9eb9f3aec96b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utilities\01.Collision">
+      <UniqueIdentifier>{ab97317d-a971-4291-8903-d4121dc9d1de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\01.Weapons">
+      <UniqueIdentifier>{fe21133b-9cea-4b43-a588-c27d7b949fb0}</UniqueIdentifier>
+>>>>>>> origin/main
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss">
+      <UniqueIdentifier>{8ac5797a-a195-456d-a81a-0db08aed7682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss\02.EMP_Bomb">
+      <UniqueIdentifier>{478d85d1-2c7c-48a4-9e74-aa8aae3cb2c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss\02.EMP_Bomb\Bullet_EMP_Bomb_Explotion">
+      <UniqueIdentifier>{eea6f620-9d2d-4616-ba21-63ddd79ec6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss\01.Laser">
+      <UniqueIdentifier>{20ac20a6-4343-4b16-a3bc-f8a01dc5f730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss\00.EnergyBall">
+      <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -135,11 +175,25 @@
     <ClInclude Include="..\Headers\StreamHandler.h">
       <Filter>97.Utilities\00.Stream</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Bullet_EnergyBall.h">
+      <Filter>02.GameObject\08.Bullet\02.Boss\00.EnergyBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Bullet_Laser.h">
+      <Filter>02.GameObject\08.Bullet\02.Boss\01.Laser</Filter>
+    </ClInclude>
     <ClInclude Include="..\Headers\Boss_Monster.h">
       <Filter>02.GameObject\07.Boss_Monster</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\Headers\Lobby.h">
       <Filter>01.Scene\02.Lobby</Filter>
+=======
+    <ClInclude Include="..\Headers\Bullet_EMP_Bomb.h">
+      <Filter>02.GameObject\08.Bullet\02.Boss\02.EMP_Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Bullet.h">
+      <Filter>02.GameObject\08.Bullet\00.Player_Bullet</Filter>
+>>>>>>> origin/main
     </ClInclude>
     <ClInclude Include="..\Headers\LobbyCam.h">
       <Filter>02.GameObject\02.Camera\01.LobbyCam</Filter>
@@ -147,10 +201,16 @@
     <ClInclude Include="..\Headers\LobbyModel.h">
       <Filter>01.Scene\02.Lobby\00.LobbyModel</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\Headers\Crosshair.h" />
     <ClInclude Include="..\Headers\Player_Bullet.h" />
     <ClInclude Include="..\Headers\Player_Lazer.h" />
     <ClInclude Include="..\Headers\Player_Missile.h" />
+=======
+    <ClInclude Include="..\Headers\CollisionHandler.h">
+      <Filter>97.Utilities\01.Collision</Filter>
+    </ClInclude>
+>>>>>>> origin/main
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -195,14 +255,28 @@
     <ClCompile Include="..\Codes\LaserSystem.cpp">
       <Filter>02.GameObject\06.Particle\Lazer</Filter>
     </ClCompile>
-    <ClCompile Include="StreamHandler.cpp">
-      <Filter>97.Utilities\00.Stream</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Boss_Monster.cpp">
       <Filter>02.GameObject\07.Boss_Monster</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\Codes\Lobby.cpp">
       <Filter>01.Scene\02.Lobby</Filter>
+=======
+    <ClCompile Include="..\Codes\Bullet_EnergyBall.cpp">
+      <Filter>02.GameObject\08.Bullet\02.Boss\00.EnergyBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Bullet_Laser.cpp">
+      <Filter>02.GameObject\08.Bullet\02.Boss\01.Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Bullet_EMP_Bomb.cpp">
+      <Filter>02.GameObject\08.Bullet\02.Boss\02.EMP_Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Bullet.cpp">
+      <Filter>02.GameObject\08.Bullet\00.Player_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Lazer.cpp">
+      <Filter>02.GameObject\08.Bullet\01.Player_Lazer</Filter>
+>>>>>>> origin/main
     </ClCompile>
     <ClCompile Include="..\Codes\LobbyCam.cpp">
       <Filter>02.GameObject\02.Camera\01.LobbyCam</Filter>
@@ -210,10 +284,19 @@
     <ClCompile Include="..\Codes\LobbyModel.cpp">
       <Filter>01.Scene\02.Lobby\00.LobbyModel</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\Codes\Crosshair.cpp" />
     <ClCompile Include="..\Codes\Player_Bullet.cpp" />
     <ClCompile Include="..\Codes\Player_Lazer.cpp" />
     <ClCompile Include="..\Codes\Player_Missile.cpp" />
+=======
+    <ClCompile Include="..\Codes\CollisionHandler.cpp">
+      <Filter>97.Utilities\01.Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\StreamHandler.cpp">
+      <Filter>97.Utilities\00.Stream</Filter>
+    </ClCompile>
+>>>>>>> origin/main
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
