@@ -22,7 +22,8 @@ HRESULT CStage::Ready_Scene()
 	// 전역조명 : Directional Light
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(125, 125, 125);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(125, 125, 125);
 	lightDesc.iLightIndex = 0;
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
@@ -91,7 +92,7 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
 
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Boss_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
 
 	return _uint();
 }
