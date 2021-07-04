@@ -136,8 +136,8 @@ _uint CPlayer::Render_GameObject()
 	m_pMesh->Render_Mesh();
 
 #ifdef _DEBUG // Render Collide
-	for (auto& collide : m_Collides)
-		collide->Render_Collide();
+	//for (auto& collide : m_Collides)
+	//	collide->Render_Collide();
 #endif
 
 	return _uint();
@@ -366,7 +366,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	rc.right = p2.x;
 	rc.bottom = p2.y;
 
-	//ClipCursor(&rc);
+	ClipCursor(&rc);
 	
 	_float3 vMouse = { (_float)pt.x, (_float)pt.y, 0.f };
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
