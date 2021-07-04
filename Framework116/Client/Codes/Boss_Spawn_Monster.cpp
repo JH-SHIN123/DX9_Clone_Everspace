@@ -111,7 +111,7 @@ _uint CBoss_Spawn_Monster::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(1);
+	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer(); 
 	// Test
 

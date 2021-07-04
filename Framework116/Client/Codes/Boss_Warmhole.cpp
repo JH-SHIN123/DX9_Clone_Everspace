@@ -25,7 +25,7 @@ HRESULT CBoss_Warmhole::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_VIBuffer_CubeTexture",
+		L"Component_VIBuffer_RectTexture",
 		L"Com_VIBuffer",
 		(CComponent**)&m_pVIBuffer)))
 	{
@@ -46,7 +46,7 @@ HRESULT CBoss_Warmhole::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = _float3(0.5f, 0.f, 0.5f);	
+	TransformDesc.vPosition = _float3(0.5f, 5.f, 0.5f);	
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -89,7 +89,10 @@ HRESULT CBoss_Warmhole::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CBoss_Warmhole::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
-	Movement(fDeltaTime);
+	//Movement(fDeltaTime);
+
+	Spin(fDeltaTime);
+	Spawn_Monster(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	//m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
@@ -103,6 +106,9 @@ _uint CBoss_Warmhole::LateUpdate_GameObject(_float fDeltaTime)
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
 		return UPDATE_ERROR;
 
+	Billboard(fDeltaTime);
+
+
 	return _uint();
 }
 
@@ -111,7 +117,7 @@ _uint CBoss_Warmhole::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(1);
+	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer(); 
 	// Test
 
@@ -131,6 +137,44 @@ _uint CBoss_Warmhole::Movement(_float fDeltaTime)
 	//	m_pTransform->Set_Position(vOutPos);
 	//}	
 
+	return _uint();
+}
+
+_uint CBoss_Warmhole::Billboard(_float fDeltaTime)
+{
+	_float4x4 matView;
+	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
+
+	_float4x4 matBill;
+	D3DXMatrixIdentity(&matBill);
+
+	// x
+	matBill._22 = matView._22;
+	matBill._23 = matView._23;
+	matBill._32 = matView._32;
+	matBill._33 = matView._33;
+
+	// y
+	matBill._11 = matView._11;
+	matBill._13 = matView._13;
+	matBill._31 = matView._31;
+	matBill._33 = matView._33;
+
+	D3DXMatrixInverse(&matBill, 0, &matBill);
+	_float4x4 matWorld = m_pTransform->Get_TransformDesc().matWorld;
+
+	m_pTransform->Set_WorldMatrix(matBill * matWorld);
+
+	return _uint();
+}
+
+_uint CBoss_Warmhole::Spin(_float fDeltaTime)
+{
+	return _uint();
+}
+
+_uint CBoss_Warmhole::Spawn_Monster(_float fDeltaTime)
+{
 	return _uint();
 }
 

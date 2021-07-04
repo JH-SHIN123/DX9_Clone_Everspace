@@ -18,6 +18,7 @@
 #include "Bullet_Laser.h"
 #include "Bullet_EMP_Bomb.h"
 #include "Crosshair.h"
+#include "Boss_Warmhole.h"
 #pragma endregion
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
@@ -474,6 +475,15 @@ HRESULT CLoading::Ready_BossAndOthers()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Billboard_Warmhole%d.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Billboard_Warmhole");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Boss_Warmhole",
+		CBoss_Warmhole::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Boss_Warmhole");
 		return E_FAIL;
 	}
 
