@@ -51,9 +51,9 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 200.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(360.f);
-	TransformDesc.vScale = { 1.f, 1.f, 1.f };
+	TransformDesc.fSpeedPerSec = 50.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
+	TransformDesc.vScale = { 0.1f, 0.1f, 0.3f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -134,16 +134,24 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CPlayer_Missile::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
-	Movement(fDeltaTime);
+	// 발사되자 마자 유도안되게.
+	m_fBeforeHoming += fDeltaTime;
 
+	if (m_fBeforeHoming < 1.f)
+		Movement(fDeltaTime);
+	else
+	{
+		m_fAddSpeed += 15.f;
+		m_fRotateSpeed += D3DXToRadian(15.f);
+		m_pTransform->Set_SpeedPerSec(m_fAddSpeed);
+		m_pTransform->Set_RotatePerSec(m_fRotateSpeed);
+		Homing(fDeltaTime);
+	}
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
-
-	m_fLifeTime += fDeltaTime;
-
-	if (m_fLifeTime >= 15.f)
-		return DEAD_OBJECT;
 	
+	
+
 	return NO_EVENT;
 }
 
@@ -175,6 +183,12 @@ _uint CPlayer_Missile::Render_GameObject()
 }
 
 _uint CPlayer_Missile::Movement(_float fDeltaTime)
+{
+	m_pTransform->Go_Straight(fDeltaTime);
+	return _uint();
+}
+
+_uint CPlayer_Missile::Homing(_float fDeltaTime)
 {
 	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
 	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
@@ -227,12 +241,6 @@ _uint CPlayer_Missile::Movement(_float fDeltaTime)
 	}
 
 	m_pTransform->Go_Straight(fDeltaTime);
-	return _uint();
-}
-
-_uint CPlayer_Missile::Searching_Target(_float fDeltaTime)
-{
-
 	return _uint();
 }
 

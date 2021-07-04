@@ -305,7 +305,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 				
 			}
 			if (m_pManagement->Get_GameObjectList(L"Layer_Player_Missile")->size() == 1)
-				m_IsMissile = false;
+				m_IsMissile = true;
 			else
 				m_IsMissile = false;
 		}

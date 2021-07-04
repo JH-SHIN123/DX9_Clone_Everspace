@@ -46,6 +46,9 @@ public:
 	void Set_ScaleY(const _float fScaleY);
 	void Set_ScaleZ(const _float fScaleZ);
 
+	void Set_SpeedPerSec(const _float fSpeedPerSec);
+	void Set_RotatePerSec(const _float fRotatePerSec);
+
 	void Set_WorldMatrix(const _float4x4& NewWorld);
 
 public:

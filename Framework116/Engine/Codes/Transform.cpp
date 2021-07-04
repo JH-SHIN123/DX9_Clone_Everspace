@@ -69,6 +69,16 @@ void CTransform::Set_ScaleZ(const _float fScaleZ)
 	m_TransformDesc.vScale.z = fScaleZ;
 }
 
+void CTransform::Set_SpeedPerSec(const _float fSpeedPerSec)
+{
+	m_TransformDesc.fSpeedPerSec = fSpeedPerSec;
+}
+
+void CTransform::Set_RotatePerSec(const _float fRotatePerSec)
+{
+	m_TransformDesc.fRotatePerSec = fRotatePerSec;
+}
+
 void CTransform::Set_WorldMatrix(const _float4x4 & NewWorld)
 {
 	m_TransformDesc.matWorld = NewWorld;
