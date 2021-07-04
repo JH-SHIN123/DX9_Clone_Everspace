@@ -324,11 +324,7 @@ HRESULT CLoading::Ready_StageResources()
 HRESULT CLoading::Ready_LobbyResources()
 {
 	m_pManagement->Clear_NonStatic_Resources();
-
-
 #pragma region GameObjects
-	
-	
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Lobby_Model",

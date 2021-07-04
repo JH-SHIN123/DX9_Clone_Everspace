@@ -74,7 +74,9 @@ _uint CManagement::Update_Game()
 		return iEvent;
 
 	m_pDevice_Manager->Render_Begin();
+
 	m_pRenderer->Render_GameObject();
+
 	m_pDevice_Manager->Render_End();
 
 	return iEvent;
@@ -103,6 +105,18 @@ LPDIRECT3DDEVICE9 CManagement::Get_Device() const
 
 	return m_pDevice_Manager->Get_Device();
 }
+
+LPD3DXFONT CManagement::Get_Font() const
+{
+	if (nullptr == m_pDevice_Manager)
+	{
+		PRINT_LOG(L"Error", L"Device Manager is nullptr");
+		return nullptr;
+	}
+
+	return m_pDevice_Manager->Get_Font();
+}
+
 
 _float CManagement::Get_DeltaTime() const
 {

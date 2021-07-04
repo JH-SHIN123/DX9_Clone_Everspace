@@ -147,6 +147,10 @@
     <ClInclude Include="..\Headers\LobbyModel.h">
       <Filter>01.Scene\02.Lobby\00.LobbyModel</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Crosshair.h" />
+    <ClInclude Include="..\Headers\Player_Bullet.h" />
+    <ClInclude Include="..\Headers\Player_Lazer.h" />
+    <ClInclude Include="..\Headers\Player_Missile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -206,6 +210,10 @@
     <ClCompile Include="..\Codes\LobbyModel.cpp">
       <Filter>01.Scene\02.Lobby\00.LobbyModel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Crosshair.cpp" />
+    <ClCompile Include="..\Codes\Player_Bullet.cpp" />
+    <ClCompile Include="..\Codes\Player_Lazer.cpp" />
+    <ClCompile Include="..\Codes\Player_Missile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

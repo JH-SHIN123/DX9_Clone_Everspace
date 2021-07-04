@@ -136,6 +136,13 @@ _uint CPlayer::Render_GameObject()
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pMesh->Render_Mesh();
 
+	wstring str = L"±ÛÂ¥";
+	RECT rc;
+	GetClientRect(g_hWnd, &rc);
+	m_pManagement->Get_Font()->DrawText(NULL
+		, str.c_str(), -1
+		, &rc, DT_CENTER, D3DXCOLOR(1, 0, 0, 1));
+
 #ifdef _DEBUG // Render Collide
 	for (auto& collide : m_Collides)
 		collide->Render_Collide();
@@ -367,7 +374,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	rc.right = p2.x;
 	rc.bottom = p2.y;
 
-	ClipCursor(&rc);
+	//ClipCursor(&rc);
 	
 	_float3 vMouse = { (_float)pt.x, (_float)pt.y, 0.f };
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
