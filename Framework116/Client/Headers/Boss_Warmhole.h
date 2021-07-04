@@ -39,6 +39,7 @@ private:
 private:
 	_float m_fOpenTime = 10.f;
 	_float m_fSpawnTime = 3.f;
+	_float3 m_vScale = { 5.f,5.f,5.f };
 
 };
 

@@ -46,7 +46,8 @@ HRESULT CBoss_Warmhole::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = _float3(0.5f, 5.f, 0.5f);	
+	TransformDesc.vPosition = _float3(0.5f, 5.f, 0.5f);
+	TransformDesc.vScale = { 5.f,5.f,5.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -103,7 +104,7 @@ _uint CBoss_Warmhole::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CGameObject::LateUpdate_GameObject(fDeltaTime);
 
-	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
+	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::Alpha, this)))
 		return UPDATE_ERROR;
 
 	Billboard(fDeltaTime);
@@ -117,6 +118,7 @@ _uint CBoss_Warmhole::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
+
 	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer(); 
 	// Test
@@ -143,27 +145,47 @@ _uint CBoss_Warmhole::Movement(_float fDeltaTime)
 _uint CBoss_Warmhole::Billboard(_float fDeltaTime)
 {
 	_float4x4 matView;
+	D3DXMatrixIdentity(&matView);
 	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
+	ZeroMemory(&matView._41, sizeof(_float3));
+	D3DXMatrixInverse(&matView,0 ,&matView);
 
-	_float4x4 matBill;
-	D3DXMatrixIdentity(&matBill);
+	_float3 vBillPos = m_pTransform->Get_State(EState::Position);
 
-	// x
-	matBill._22 = matView._22;
-	matBill._23 = matView._23;
-	matBill._32 = matView._32;
-	matBill._33 = matView._33;
+	_float fScale[3];
+	fScale[0] = m_pTransform->Get_State(EState::Right).x;
+	fScale[1] = m_pTransform->Get_State(EState::Up).y;
+	fScale[2] = m_pTransform->Get_State(EState::Look).z;
 
-	// y
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
+	memcpy(&matView._41, &vBillPos, sizeof(_float3));
 
-	D3DXMatrixInverse(&matBill, 0, &matBill);
-	_float4x4 matWorld = m_pTransform->Get_TransformDesc().matWorld;
+	for (_uint i = 0; i < 3; ++i)
+	{
+		for (_uint j = 0; j < 4; ++j)
+			matView(i, j) *= fScale[i];
+	}
 
-	m_pTransform->Set_WorldMatrix(matBill * matWorld);
+	//m_pDevice->SetTransform(D3DTS_WORLD, &matView);
+	m_pTransform->Set_WorldMatrix(matView);
+
+	//_float4x4 matBill;
+	//D3DXMatrixIdentity(&matBill);
+	//// y
+	//matBill._11 = matView._11;
+	//matBill._13 = matView._13;
+	//matBill._31 = matView._31;
+	//matBill._33 = matView._33;
+
+	////// x
+	//matBill._22 = matView._22;
+	//matBill._23 = matView._33;
+	//matBill._32 = matView._32;
+	////matBill._33 = matView._33;
+
+	//D3DXMatrixInverse(&matBill, 0, &matBill);
+	//_float4x4 matWorld = m_pTransform->Get_TransformDesc().matWorld;
+
+	//m_pTransform->Set_WorldMatrix(matBill * matWorld);
 
 	return _uint();
 }
