@@ -29,16 +29,23 @@ private: // Update 함수에 쓸 최상위 함수
 	_uint Move_AI(_float fDeltaTime);
 	_uint Attack_AI(_float fDeltaTime);
 
-private:
+private: // Move_AI
 	_uint Movement(_float fDeltaTime);
 	_uint Move_Near(_float fDeltaTime);
 	_uint Move_Middle(_float fDeltaTime);
 	_uint Move_Far(_float fDeltaTime);
-
+	
+private: // Attack_AI
 	_uint Fire_Triger(_float fDeltaTime);
 	_uint Fire_Laser(_float fDeltaTime);
 	_uint Fire_EMP(_float fDeltaTime);
+	_uint Spawn_Monster(_float fDeltaTime);
+	_uint Spawn_Wormhole(_float fDeltaTime);
 
+private: // Move_Mode
+	void RotateMy_X(_float fDeltaTime);
+	void RotateMy_Y(_float fDeltaTime);
+	void RotateMy_Z(_float fDeltaTime);
 
 public:
 	static CBoss_Monster* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);

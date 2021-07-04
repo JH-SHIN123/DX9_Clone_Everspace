@@ -182,45 +182,41 @@ _uint CBoss_Monster::Movement(_float fDeltaTime)
 	_float fLeft = D3DXVec3Dot(&vTargetDir, &vMyLeft);
 
 	if (fRight < fLeft)
-	{
-		//if(fCeta < fRadianMax)
 		m_pTransform->RotateY(-fDeltaTime);
-		//m_pGunTranform[0]->RotateY(-fDeltaTime);
-		//m_pGunTranform[1]->RotateY(-fDeltaTime);
 
-	}
 	else
-	{
-		//if (fCeta < fRadianMax)
 		m_pTransform->RotateY(fDeltaTime);
-		//m_pGunTranform[0]->RotateY(-fDeltaTime);
-		//m_pGunTranform[1]->RotateY(-fDeltaTime);
 
-	}
 
 	m_pTransform->Go_Straight(fDeltaTime);
-
 
 	return _uint();
 }
 
 _uint CBoss_Monster::Move_Near(_float fDeltaTime)
 {
-	Fire_Triger(fDeltaTime);
+	//Fire_Triger(fDeltaTime);
+
 
 	return _uint();
 }
 
 _uint CBoss_Monster::Move_Middle(_float fDeltaTime)
 {
-	Fire_Laser(fDeltaTime);
+	//Fire_Laser(fDeltaTime);
+
+
 
 	return _uint();
 }
 
 _uint CBoss_Monster::Move_Far(_float fDeltaTime)
 {
-	Fire_EMP(fDeltaTime);
+	RotateMy_Y(fDeltaTime);
+	RotateMy_X(fDeltaTime);
+
+	m_pTransform->Go_Straight(fDeltaTime);
+
 
 	return _uint();
 }
@@ -337,6 +333,18 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 	return _uint();
 }
 
+_uint CBoss_Monster::Spawn_Monster(_float fDeltaTime)
+{
+
+
+	return _uint();
+}
+
+_uint CBoss_Monster::Spawn_Wormhole(_float fDeltaTime)
+{
+	return _uint();
+}
+
 _uint CBoss_Monster::Move_AI(_float fDeltaTime)
 {
 	_float fDis = fabs(D3DXVec3Length(&m_pTargetTransform->Get_State(EState::Position))
@@ -388,7 +396,96 @@ _uint CBoss_Monster::Move_AI(_float fDeltaTime)
 
 _uint CBoss_Monster::Attack_AI(_float fDeltaTime)
 {
+	switch (m_eActionMode)
+	{
+	case CBoss_Monster::Near:
+		Fire_Triger(fDeltaTime);
+		break;
+	case CBoss_Monster::Middle:
+		Fire_Laser(fDeltaTime);
+		break;
+	case CBoss_Monster::Far:
+		Fire_EMP(fDeltaTime);
+		Fire_Laser(fDeltaTime);
+		break;
+	case CBoss_Monster::SpecialAction:
+		break;
+	default:
+		return UPDATE_ERROR;
+	}
 	return _uint();
+}
+
+void CBoss_Monster::RotateMy_X(_float fDeltaTime)
+{
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vTargetDir = vTargetPos - vMyPos;
+
+	_float3 vMyLook = m_pTransform->Get_State(EState::Look);
+	_float3 vMyRight = m_pTransform->Get_State(EState::Right);
+
+	_float3 vMyUp, vMyDown;
+	D3DXVec3Cross(&vMyUp, &vMyLook, &vMyRight);
+	D3DXVec3Cross(&vMyDown, &vMyRight, &vMyLook);
+
+	D3DXVec3Normalize(&vMyUp, &vMyUp);
+	D3DXVec3Normalize(&vMyDown, &vMyDown);
+
+	_float fUpScala = D3DXVec3Dot(&vTargetDir, &vMyUp);
+	_float fDownScala = D3DXVec3Dot(&vTargetDir, &vMyDown);
+
+	_float fCeta = D3DXVec3Dot(&vTargetDir, &vMyLook);
+	_float fRadianMax = D3DXToRadian(95.f);
+	_float fRadianMin = D3DXToRadian(85.f);
+
+
+	if (fUpScala < fDownScala)
+		m_pTransform->RotateX(fDeltaTime);
+
+	else
+		m_pTransform->RotateX(-fDeltaTime);
+}
+
+void CBoss_Monster::RotateMy_Y(_float fDeltaTime)
+{
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vTargetDir = vTargetPos - vMyPos;
+	D3DXVec3Normalize(&vTargetDir, &vTargetDir);
+
+	_float3 vMyLook = m_pTransform->Get_State(EState::Look);
+	_float3 vMyUp = m_pTransform->Get_State(EState::Up);
+	D3DXVec3Normalize(&vMyLook, &vMyLook);
+
+	_float fCeta = D3DXVec3Dot(&vTargetDir, &vMyLook);
+	_float fRadianMax = D3DXToRadian(95.f);
+	_float fRadianMin = D3DXToRadian(85.f);
+
+	_float3 vMyRight, vMyLeft;
+	D3DXVec3Cross(&vMyRight, &vMyUp, &vMyLook);
+	D3DXVec3Cross(&vMyLeft, &vMyLook, &vMyUp);
+
+	D3DXVec3Normalize(&vMyRight, &vMyRight);
+	D3DXVec3Normalize(&vMyLeft, &vMyLeft);
+
+	_float fRight = D3DXVec3Dot(&vTargetDir, &vMyRight);
+	_float fLeft = D3DXVec3Dot(&vTargetDir, &vMyLeft);
+
+	//if (fCeta < fRadianMin)
+	//{
+		if (fRight < fLeft)
+			m_pTransform->RotateY(-fDeltaTime);
+
+		else
+			m_pTransform->RotateY(fDeltaTime);
+	//}
+}
+
+void CBoss_Monster::RotateMy_Z(_float fDeltaTime)
+{
 }
 
 CBoss_Monster * CBoss_Monster::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)

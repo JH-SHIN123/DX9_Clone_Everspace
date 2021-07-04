@@ -103,6 +103,12 @@
     <Filter Include="02.GameObject\08.Bullet\02.Boss\00.EnergyBall">
       <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster">
+      <UniqueIdentifier>{e78bf798-cc12-47ff-a895-e53d09a29172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\02.Boss_Warmhole">
+      <UniqueIdentifier>{23952399-75ac-4693-abdf-417bc1b3013f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -186,6 +192,12 @@
     <ClInclude Include="..\Headers\Player_Missile.h">
       <Filter>02.GameObject\08.Bullet\02.Player_Missile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Boss_Spawn_Monster.h">
+      <Filter>02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Boss_Warmhole.h">
+      <Filter>02.GameObject\07.Boss_Monster\02.Boss_Warmhole</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -256,6 +268,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_Missile.cpp">
       <Filter>02.GameObject\08.Bullet\02.Player_Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Boss_Spawn_Monster.cpp">
+      <Filter>02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Boss_Warmhole.cpp">
+      <Filter>02.GameObject\07.Boss_Monster\02.Boss_Warmhole</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
