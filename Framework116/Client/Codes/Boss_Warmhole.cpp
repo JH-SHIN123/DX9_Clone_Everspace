@@ -8,6 +8,8 @@ CBoss_Warmhole::CBoss_Warmhole(LPDIRECT3DDEVICE9 pDevice)
 
 CBoss_Warmhole::CBoss_Warmhole(const CBoss_Warmhole & other)
 	: CGameObject(other)
+	, m_fOpenTime(other.m_fOpenTime)
+	, m_fSpawnTime(other.m_fSpawnTime)
 {
 }
 
@@ -47,6 +49,7 @@ HRESULT CBoss_Warmhole::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.vPosition = _float3(0.5f, 5.f, 0.5f);
+	TransformDesc.fRotatePerSec = D3DXToRadian(-50.f);
 	TransformDesc.vScale = { 5.f,5.f,5.f };
 
 	if (FAILED(CGameObject::Add_Component(
@@ -92,7 +95,6 @@ _uint CBoss_Warmhole::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);	
 	//Movement(fDeltaTime);
 
-	Spin(fDeltaTime);
 	Spawn_Monster(fDeltaTime);
 
 	m_pTransform->Update_Transform();
@@ -107,6 +109,7 @@ _uint CBoss_Warmhole::LateUpdate_GameObject(_float fDeltaTime)
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::Alpha, this)))
 		return UPDATE_ERROR;
 
+	Spin(fDeltaTime);
 	Billboard(fDeltaTime);
 
 
@@ -192,6 +195,8 @@ _uint CBoss_Warmhole::Billboard(_float fDeltaTime)
 
 _uint CBoss_Warmhole::Spin(_float fDeltaTime)
 {
+	m_pTransform->RotateZ(fDeltaTime);
+
 	return _uint();
 }
 

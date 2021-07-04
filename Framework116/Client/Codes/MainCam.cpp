@@ -172,7 +172,7 @@ _uint CMainCam::KeyInput(_float fDeltaTime)
 		_float OriginDis = 10.f;
 
 		if (!(m_fDistanceFromTarget > OriginDis + 2.f))
-			m_fDistanceFromTarget += 8.f * fDeltaTime;	
+			m_fDistanceFromTarget += 8.f * fDeltaTime;
 	}
 	if (!(GetAsyncKeyState(VK_SPACE) & 0x8000))
 	{
