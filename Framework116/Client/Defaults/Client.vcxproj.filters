@@ -106,6 +106,9 @@
     <Filter Include="02.GameObject\08.Bullet\02.Boss\00.EnergyBall">
       <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\10.Light">
+      <UniqueIdentifier>{4acff7f4-351c-47ee-9dc5-f2e5de6d3e4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -192,6 +195,9 @@
     <ClInclude Include="..\Headers\CollisionHandler.h">
       <Filter>97.Utilities\01.Collision</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\PointLight.h">
+      <Filter>02.GameObject\10.Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -265,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\StreamHandler.cpp">
       <Filter>97.Utilities\00.Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\PointLight.cpp">
+      <Filter>02.GameObject\10.Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

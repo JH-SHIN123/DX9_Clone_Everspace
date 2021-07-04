@@ -13,8 +13,8 @@ HRESULT CStage::Ready_Scene()
 
 	::SetWindowText(g_hWnd, L"Stage");
 
-	if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
@@ -22,8 +22,8 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
@@ -47,19 +47,19 @@ HRESULT CStage::Ready_Scene()
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
 	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_ARGB(255, 255, 255, 255);
 	lightDesc.iLightIndex = 0;
 	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
 		return E_FAIL;
 
-	PARTICLESYSTEM_DESC pSystemDesc;
-	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	pSystemDesc.iNumParticles = 500;
-	pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-	pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
-	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
-	if (FAILED(Add_Layer_ExplosionSystem(L"Layer_ExplosionSystem", &pSystemDesc)))
-		return E_FAIL;
+	//PARTICLESYSTEM_DESC pSystemDesc;
+	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
+	//pSystemDesc.iNumParticles = 500;
+	//pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
+	//pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
+	//pSystemDesc.tResetAttribute.fLifeTime = 2.f;
+	//if (FAILED(Add_Layer_ExplosionSystem(L"Layer_ExplosionSystem", &pSystemDesc)))
+	//	return E_FAIL;
 
 	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
 	//pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
@@ -74,19 +74,6 @@ HRESULT CStage::Ready_Scene()
 _uint CStage::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
-
-	if (GetAsyncKeyState(L'O') & 0x8000)
-	{
-		PARTICLESYSTEM_DESC pSystemDesc;
-		pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-		pSystemDesc.iNumParticles = 500;
-		pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-		pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
-		pSystemDesc.tResetAttribute.fLifeTime = 2.f;
-		if (FAILED(Add_Layer_ExplosionSystem(L"Layer_Particle_Explosion", &pSystemDesc)))
-			return E_FAIL;
-
-	}
 
 	return _uint();
 }

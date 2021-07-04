@@ -66,15 +66,12 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 
 
 	// For.Com_Collide
-	BOUNDING_SPHERE BoundingSphere;
-	BoundingSphere.fRadius = 1.f;
-
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		L"Component_CollideSphere",
 		L"Com_CollideSphere",
 		(CComponent**)&m_pCollide,
-		&BoundingSphere,
+		nullptr,
 		true)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
@@ -134,7 +131,11 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 	m_vPlayerLook = vRayDir;
 	D3DXVec3Normalize(&m_vPlayerLook, &m_vPlayerLook);
 
-
+	// Material Setting
+	m_tMaterial.Diffuse.r = m_tMaterial.Ambient.r = m_tMaterial.Specular.r = m_tMaterial.Emissive.r = 1.f;
+	m_tMaterial.Diffuse.g = m_tMaterial.Ambient.g = m_tMaterial.Specular.g = m_tMaterial.Emissive.g = 0.f;
+	m_tMaterial.Diffuse.b = m_tMaterial.Ambient.b = m_tMaterial.Specular.b = m_tMaterial.Emissive.b = 0.f;
+	m_tMaterial.Diffuse.a = m_tMaterial.Ambient.a = m_tMaterial.Specular.a = m_tMaterial.Emissive.a = 1.f;
 
 	return S_OK;
 }
@@ -148,7 +149,7 @@ _uint CPlayer_Bullet::Update_GameObject(_float fDeltaTime)
 
 	m_fLifeTime += fDeltaTime;
 
-	if (m_fLifeTime >= 1.f)
+	if (m_fLifeTime >= 2.f)
 		return DEAD_OBJECT;
 	
 	return NO_EVENT;
@@ -168,14 +169,14 @@ _uint CPlayer_Bullet::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
-	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	//m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer();
-	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	//m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();
@@ -200,9 +201,6 @@ _uint CPlayer_Bullet::Movement(_float fDeltaTime)
 
 	m_pTransform->Go_Straight(fDeltaTime);
 	
-
-
-
 
 	return _uint();
 }

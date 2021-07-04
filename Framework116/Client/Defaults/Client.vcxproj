@@ -184,6 +184,7 @@
     <ClInclude Include="..\Headers\Player_Bullet.h" />
     <ClInclude Include="..\Headers\Player_Lazer.h" />
     <ClInclude Include="..\Headers\Player_Missile.h" />
+    <ClInclude Include="..\Headers\PointLight.h" />
     <ClInclude Include="..\Headers\Skybox.h" />
     <ClInclude Include="..\Headers\Stage.h" />
     <ClInclude Include="..\Headers\StreamHandler.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="..\Codes\Player_Bullet.cpp" />
     <ClCompile Include="..\Codes\Player_Lazer.cpp" />
     <ClCompile Include="..\Codes\Player_Missile.cpp" />
+    <ClCompile Include="..\Codes\PointLight.cpp" />
     <ClCompile Include="..\Codes\Skybox.cpp" />
     <ClCompile Include="..\Codes\Stage.cpp" />
     <ClCompile Include="..\Codes\StreamHandler.cpp" />
