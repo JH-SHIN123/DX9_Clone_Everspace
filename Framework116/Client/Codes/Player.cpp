@@ -109,10 +109,14 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	KeyProcess(fDeltaTime);
+
+	// 
 	Movement(fDeltaTime);
 
-	m_pTransform->Update_Transform();
+	// 월드행렬 업데이트
+	m_pTransform->Update_Transform_Quaternion();
 
+	// 충돌박스 업데이트
 	for (auto& collide : m_Collides) 
 		collide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	return NO_EVENT;
@@ -342,9 +346,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
-
 	// 화면 가둬줄 가상의 네모
-
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
@@ -373,36 +375,12 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
 	_float3 vGap = vMouse - vScreenCenter;
 
-	_float fSpeed = D3DXVec3Length(&vGap) * 0.2f;
+	// 0.2f : 민감도
+	_float fSpeed = D3DXVec3Length(&vGap) * 0.02f;
 	D3DXVec3Normalize(&vGap, &vGap);
-	_float fNewRotX = vGap.y;
-	_bool bRotYDir = false; // true면 위쪽 회전, false면 밑에 회전
-	if (fNewRotX < 0.f)
-		bRotYDir = false;
-	else if (fNewRotX > 0.f)
-		bRotYDir = true;
 
-	_float fRotX = m_pTransform->Get_TransformDesc().vRotate.x;
-	
-	if (fRotX >= -D3DXToRadian(90.f) && !bRotYDir)
-		m_pTransform->RotateX(D3DXToRadian(vGap.y ) * fDeltaTime * fSpeed);
-	else if (fRotX < D3DXToRadian(55.f) && bRotYDir)
-	{
-		m_pTransform->RotateX(D3DXToRadian(vGap.y ) * fDeltaTime * fSpeed);
-	}
-	
+	m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
 	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed);
-
-	//_float3 Axis, vLook, vRight;
-	//vLook = m_pTransform->Get_State(EState::Look);
-	//vRight = m_pTransform->Get_State(EState::Right);
-
-	//D3DXVec3Normalize(&vLook, &vLook);
-	//D3DXVec3Normalize(&vRight, &vRight);
-
-	//D3DXVec3Cross(&Axis, &vLook, &vRight);
-	//D3DXVec3Normalize(&Axis, &Axis);
-	//m_pTransform->RotateAxis(Axis, fDeltaTime);
 
 	return _uint();
 }

@@ -40,8 +40,11 @@ public:
 
 private:
 	CTransform* m_pPlayerTransform = nullptr;
-	_float m_fDistanceFromTarget = 10.f;
-	_float m_fCamAngle = D3DXToRadian(45.f);
+	_float m_fDistanceFromTarget = 20.f;
+	_float m_fCamAngle = 15.f;
+
+private:
+	D3DXQUATERNION m_qCameraRot;
 
 private:
 	_bool m_IsFPS = false;

@@ -47,7 +47,7 @@ HRESULT CSkybox::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vScale = _float3(5.f, 5.f, 5.f);
+	TransformDesc.vScale = _float3(50.f, 50.f, 50.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
