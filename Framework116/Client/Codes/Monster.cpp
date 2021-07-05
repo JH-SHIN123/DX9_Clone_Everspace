@@ -47,9 +47,7 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.vPosition = _float3(0.5f, 0.f, 0.5f);	
-	TransformDesc.fSpeedPerSec = 2.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(10.f);
-	TransformDesc.vScale = { 20.f,20.f,20.f };
+	TransformDesc.vScale = _float3(5.f, 5.f, 5.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -143,8 +141,6 @@ _uint CMonster::Researching(_float fDeltaTime)
 {
 	// if 범위보다 벗어났다. -> Create Pos로 돌아가기
 
-	// 이동 -> 회전
-
 
 	return _uint();
 }
@@ -193,6 +189,7 @@ CGameObject * CMonster::Clone(void * pArg/* = nullptr*/)
 
 void CMonster::Free()
 {
+	Safe_Release(m_pTerrainBuffer);
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);

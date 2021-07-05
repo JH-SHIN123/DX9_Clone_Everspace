@@ -45,6 +45,7 @@ private:
 	CVIBuffer*  m_pVIBuffer = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
+	CVIBuffer_TerrainTexture* m_pTerrainBuffer = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
 };
 

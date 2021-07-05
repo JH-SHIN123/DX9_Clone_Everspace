@@ -1,15 +1,15 @@
 #pragma once
-#ifndef __CROSSHAIR_H__
+#ifndef __LOCKON_H__
 
 #include "GameObject.h"
 
 USING(Engine)
-class CCrosshair final : public CGameObject
+class CLockOn final : public CGameObject
 {
 public:
-	explicit CCrosshair(LPDIRECT3DDEVICE9 pDevice);
-	explicit CCrosshair(const CCrosshair& other);
-	virtual ~CCrosshair() = default;
+	explicit CLockOn(LPDIRECT3DDEVICE9 pDevice);
+	explicit CLockOn(const CLockOn& other);
+	virtual ~CLockOn() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -20,10 +20,9 @@ public:
 
 private:
 	_uint Movement(_float fDeltaTime);
-	_uint Searching_Target(_float fDeltaTime);
 
 public:
-	static CCrosshair* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CLockOn* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
@@ -32,11 +31,15 @@ private:
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
 
-	// Lock On Test
-	CCollideSphere* m_pBossMonsterCollide = nullptr;
-	_bool m_IsBossLockOn = false;
-	_bool m_IsDistOn = false;
+private:
+	_bool m_IsLockOn = false;
+	_float4x4 m_Matview;
+
+	// Lock On Target
+	CCollideSphere* m_pTargetCollide = nullptr;
+	wstring* m_pTargetLayerTag = {};
+	wstring m_wstrLayerTag = {};
 };
 
-#define __CROSSHAIR_H__
+#define __LOCKON_H__
 #endif
