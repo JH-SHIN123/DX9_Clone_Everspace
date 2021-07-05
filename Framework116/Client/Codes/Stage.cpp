@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Stage.h"
 #include "Camera.h"
+#include "StreamHandler.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
@@ -10,6 +11,8 @@ CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 HRESULT CStage::Ready_Scene()
 {
 	CScene::Ready_Scene();
+
+	CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/Stage1.mapInfo");
 
 	::SetWindowText(g_hWnd, L"Stage");
 
