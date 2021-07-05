@@ -24,7 +24,8 @@ public: /* For.Loading Thread */
 	HRESULT Ready_StageResources();
 	HRESULT Ready_BossAndOthers();
 	HRESULT Ready_HUD_Resources();
-	
+	HRESULT Ready_Stage1();
+
 
 private:
 	ESceneType m_eNextSceneID = ESceneType::None;

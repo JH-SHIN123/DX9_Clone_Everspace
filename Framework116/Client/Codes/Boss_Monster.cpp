@@ -121,7 +121,7 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	Move_AI(fDeltaTime);
-	//Attack_AI(fDeltaTime);
+	Attack_AI(fDeltaTime);
 
 	//Spawn_Monster(fDeltaTime);
 
@@ -436,7 +436,8 @@ _uint CBoss_Monster::Attack_AI(_float fDeltaTime)
 		break;
 	case CBoss_Monster::Middle:
 		Fire_Laser(fDeltaTime);
-		Spawn_Monster(fDeltaTime);
+		Fire_Triger(fDeltaTime);
+		//Spawn_Monster(fDeltaTime);
 		break;
 	case CBoss_Monster::Far:
 		Fire_EMP(fDeltaTime);

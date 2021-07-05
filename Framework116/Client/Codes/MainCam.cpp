@@ -106,14 +106,11 @@ _uint CMainCam::Movement(_float fDeltaTime)
 _uint CMainCam::KeyInput(_float fDeltaTime)
 {
 
-<<<<<<< HEAD
-		if (!(m_fDistanceFromTarget > OriginDis + 2.f))
-			m_fDistanceFromTarget += 8.f * fDeltaTime;
-	}
-	if (!(GetAsyncKeyState(VK_SPACE) & 0x8000))
-=======
+
+	//if (!(GetAsyncKeyState(VK_SPACE) & 0x8000))
+
+
 	if (!m_IsFPS)
->>>>>>> main
 	{
 		//if (GetAsyncKeyState(VK_ADD) & 0x8000)
 		//{

@@ -121,6 +121,12 @@
     <Filter Include="02.GameObject\11.Planet">
       <UniqueIdentifier>{f435df69-1741-4cc0-8f4a-5f13a9c0d719}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\12.TargetMonster%28과녁%29">
+      <UniqueIdentifier>{ec3f8199-67e4-4bae-bdc8-a8e07ff027cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\13.Ring">
+      <UniqueIdentifier>{8ad1be28-6814-4d28-a03d-cf98acfa6bb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -216,6 +222,12 @@
     <ClInclude Include="..\Headers\PlayerLight.h">
       <Filter>02.GameObject\10.Light\PlayerLight</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Ring.h">
+      <Filter>02.GameObject\13.Ring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\TargetMonster.h">
+      <Filter>02.GameObject\12.TargetMonster%28과녁%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -298,6 +310,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\PlayerLight.cpp">
       <Filter>02.GameObject\10.Light\PlayerLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Ring.cpp">
+      <Filter>02.GameObject\13.Ring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\TargetMonster.cpp">
+      <Filter>02.GameObject\12.TargetMonster%28과녁%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

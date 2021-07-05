@@ -187,9 +187,11 @@
     <ClInclude Include="..\Headers\Player_Bullet.h" />
     <ClInclude Include="..\Headers\Player_Lazer.h" />
     <ClInclude Include="..\Headers\Player_Missile.h" />
+    <ClInclude Include="..\Headers\Ring.h" />
     <ClInclude Include="..\Headers\Skybox.h" />
     <ClInclude Include="..\Headers\Stage.h" />
     <ClInclude Include="..\Headers\StreamHandler.h" />
+    <ClInclude Include="..\Headers\TargetMonster.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -218,9 +220,11 @@
     <ClCompile Include="..\Codes\Player_Bullet.cpp" />
     <ClCompile Include="..\Codes\Player_Lazer.cpp" />
     <ClCompile Include="..\Codes\Player_Missile.cpp" />
+    <ClCompile Include="..\Codes\Ring.cpp" />
     <ClCompile Include="..\Codes\Skybox.cpp" />
     <ClCompile Include="..\Codes\Stage.cpp" />
     <ClCompile Include="..\Codes\StreamHandler.cpp" />
+    <ClCompile Include="..\Codes\TargetMonster.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

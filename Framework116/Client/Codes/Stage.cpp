@@ -47,11 +47,18 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
+
+	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
+		return E_FAIL;
+
+	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
+		return E_FAIL;
+
 
 	//UI_DESC uiDesc;
 	//uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
@@ -93,6 +100,9 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 	CScene::LateUpdate_Scene(fDeltaTime);
 
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
+
+	// Ring
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
 
 	return _uint();
 }
@@ -280,7 +290,35 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 	}
 
 
-	
+
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Ring(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_TargetMonster(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_TargetMonster",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
