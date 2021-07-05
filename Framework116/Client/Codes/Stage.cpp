@@ -37,10 +37,6 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 	//	return E_FAIL;
 
-
-	if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
-		return E_FAIL;
-
 	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 		return E_FAIL;
 

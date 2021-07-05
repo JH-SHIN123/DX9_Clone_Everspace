@@ -62,7 +62,6 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
 	BoundingSphere.fRadius = 1.f;
@@ -79,13 +78,20 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
+	// Init
+	m_eNextState = State::Research;
+	m_vCreatePosition = TransformDesc.vPosition;
+	m_vResearchRange = { 50.f,50.f,50.f };
+
 	return S_OK;
 }
 
 _uint CMonster::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
+	
 	Movement(fDeltaTime);
+	StateCheck();
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
@@ -120,8 +126,40 @@ _uint CMonster::Render_GameObject()
 
 _uint CMonster::Movement(_float fDeltaTime)
 {
+	if (m_eCurState = State::Research) {
+		Research(fDeltaTime);
+	}
+	
 
 	return _uint();
+}
+
+_uint CMonster::Research(_float fDeltaTime)
+{
+	// if 범위보다 벗어났다. -> Create Pos로 돌아가기
+
+	// 이동 -> 회전
+
+
+	return _uint();
+}
+
+void CMonster::StateCheck()
+{
+	if (m_eCurState != m_eNextState) {
+		switch (m_eNextState)
+		{
+		case State::Research:
+			break;
+		case State::Warning:
+			break;
+		case State::Attack:
+			break;
+		case State::Die:
+			break;
+		}
+		m_eCurState = m_eNextState;
+	}
 }
 
 CMonster * CMonster::Create(LPDIRECT3DDEVICE9 pDevice)
