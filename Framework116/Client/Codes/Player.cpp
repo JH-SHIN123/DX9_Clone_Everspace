@@ -39,10 +39,9 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform Test
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 45.f;
-	TransformDesc.vPosition = _float3(0.f, 0.f, 0.f);
+	TransformDesc.vPosition = _float3(50.f, 0.f, 0.f);
 	TransformDesc.fSpeedPerSec = 25.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
+	TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
 	TransformDesc.vScale = { 1.f,1.f,1.f };
 
 	if (FAILED(CGameObject::Add_Component(
@@ -109,10 +108,14 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	KeyProcess(fDeltaTime);
+
+	// 
 	Movement(fDeltaTime);
 
-	m_pTransform->Update_Transform();
+	// 월드행렬 업데이트
+	m_pTransform->Update_Transform_Quaternion();
 
+	// 충돌박스 업데이트
 	for (auto& collide : m_Collides) 
 		collide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	return NO_EVENT;
@@ -136,8 +139,8 @@ _uint CPlayer::Render_GameObject()
 	m_pMesh->Render_Mesh();
 
 #ifdef _DEBUG // Render Collide
-	for (auto& collide : m_Collides)
-		collide->Render_Collide();
+	//for (auto& collide : m_Collides)
+	//	collide->Render_Collide();
 #endif
 
 	return _uint();
@@ -167,6 +170,11 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (GetAsyncKeyState('A') & 0x8000)
 		m_pTransform->Go_Side(-fDeltaTime);
 
+	if (GetAsyncKeyState('Q') & 0x8000)
+		m_pTransform->RotateZ(-fDeltaTime );
+	if (GetAsyncKeyState('E') & 0x8000)
+		m_pTransform->RotateZ(fDeltaTime);
+
 	// Weapon Change / Skills (OverDrive, Shield)
 	if (m_pController->Key_Down(KEY_1))
 	{
@@ -186,7 +194,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			return;
 		}
 	}
-	if (m_pController->Key_Down(KEY_2))
+	else if (m_pController->Key_Down(KEY_2))
 	{
 		// 이전 무기 HUD 삭제
 		m_pManagement->Get_GameObjectList(L"Layer_HUD_Weapon")->front()->Set_IsDead(TRUE);
@@ -205,7 +213,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			return;
 		}
 	}
-	if (m_pController->Key_Down(KEY_3))
+	else if (m_pController->Key_Down(KEY_3))
 	{
 		// 이전 무기 HUD 삭제
 		m_pManagement->Get_GameObjectList(L"Layer_HUD_Weapon")->front()->Set_IsDead(TRUE);
@@ -311,16 +319,17 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		}
 	}
 
+	if (m_pController->Key_Pressing(KEY_LBUTTON))
+	{
+		float fDist_Monster = 0.f;
 
-	// TEST //
-	//if (m_pController->Key_Down(KEY_LBUTTON))
-	//{
-	//	float fDist_Monster = 0.f;
-	//	if (CCollision::PickingObject(fDist_Monster, g_hWnd, WINCX, WINCY, m_pDevice,
-	//		m_pManagement->Get_GameObjectList(L"Layer_Monster"))) {
-	//		PRINT_LOG(L"", L"Pick!");
-	//	}
-	//}
+		if (CCollision::PickingObject(fDist_Monster, g_hWnd, WINCX, WINCY, m_pDevice,
+			m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")))
+		{
+			wstring wstrDist = to_wstring(fDist_Monster);
+			PRINT_LOG(wstrDist.c_str(), L"Pick!");
+		}
+	}
 
 	// 마우스 고정시켜서 끄기 불편해서.. ESC키 쓰세용
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
@@ -341,9 +350,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
-
 	// 화면 가둬줄 가상의 네모
-
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
@@ -353,10 +360,10 @@ _uint CPlayer::Movement(_float fDeltaTime)
 
 	GetClientRect(g_hWnd, &rc);
 
-	p1.x = rc.left + 100;
-	p1.y = rc.top + 100;
-	p2.x = rc.right - 100;
-	p2.y = rc.bottom - 100;
+	p1.x = rc.left + 600;
+	p1.y = rc.top + 300;
+	p2.x = rc.right - 600;
+	p2.y = rc.bottom - 300;
 
 	ClientToScreen(g_hWnd, &p1);
 	ClientToScreen(g_hWnd, &p2);
@@ -372,26 +379,12 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
 	_float3 vGap = vMouse - vScreenCenter;
 
-	_float fSpeed = D3DXVec3Length(&vGap) * 0.2f;
+	// 0.15f 플레이어가 얼만큼 더 회전할건지
+	_float fSpeed = D3DXVec3Length(&vGap) * 0.15f;
 	D3DXVec3Normalize(&vGap, &vGap);
-	_float fNewRotX = vGap.y;
-	_bool bRotYDir = false; // true면 위쪽 회전, false면 밑에 회전
-	if (fNewRotX < 0.f)
-		bRotYDir = false;
-	else if (fNewRotX > 0.f)
-		bRotYDir = true;
 
-	_float fRotX = m_pTransform->Get_TransformDesc().vRotate.x;
-	
-	if (fRotX >= -D3DXToRadian(90.f) && !bRotYDir)
-		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
-	else if (fRotX < D3DXToRadian(55.f) && bRotYDir)
-	{
-		m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed);
-	}
-
-	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed);
-	
+	m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed * 2.f);
+	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed * 0.6f);
 
 	return _uint();
 }

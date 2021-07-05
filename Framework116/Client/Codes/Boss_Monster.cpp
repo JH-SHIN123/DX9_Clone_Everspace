@@ -65,6 +65,7 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 	TransformDesc.fRotatePerSec = D3DXToRadian(10.f);
 	TransformDesc.vScale = { 10.f,10.f,30.f };
 
+
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		L"Component_Transform",
@@ -75,7 +76,6 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
 	}
-	// asdasd
 
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
@@ -383,7 +383,7 @@ _uint CBoss_Monster::Move_AI(_float fDeltaTime)
 	_float fDis = fabs(D3DXVec3Length(&m_pTargetTransform->Get_State(EState::Position))
 		- D3DXVec3Length(&m_pTransform->Get_State(EState::Position)));
 
-
+	//
 	if (fDis < BOSSRANGE_NEAR)
 		m_eActionMode = Near;
 
