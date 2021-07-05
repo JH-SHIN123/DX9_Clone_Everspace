@@ -26,6 +26,7 @@ public: /* For.General */
 
 public: /* For.Device Manager */
 	LPDIRECT3DDEVICE9 Get_Device() const;
+	LPD3DXFONT		  Get_Font()const;
 
 public: /* For.Time Manager */
 	_float Get_DeltaTime() const;
