@@ -45,3 +45,33 @@ HRESULT CEffectHandler::Add_Layer_Effect_Explosion(const _float3& _vPos, const _
 
 	return S_OK;
 }
+
+HRESULT CEffectHandler::Add_Layer_Effect_Bullet( CGameObject* pTarget, const _float _fSize, CGameObject** ppGameObject)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Smoke";
+	pSystemDesc.iNumParticles = 5;
+	pSystemDesc.tResetAttribute.fParticleSize = 1.5f * _fSize;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 5.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.04f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.5f;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+	pSystemDesc.pTarget = pTarget;
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_FollowSystem",
+		L"Layer_FollowSystem",
+		(void*)&pSystemDesc,
+		(CGameObject**)ppGameObject)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Follow In Layer");
+	}
+
+	CGameObject* pGameObject = *ppGameObject;
+	Safe_Release(pGameObject);
+
+	return S_OK;
+}

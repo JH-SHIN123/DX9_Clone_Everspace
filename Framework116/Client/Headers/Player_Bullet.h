@@ -36,6 +36,7 @@ private:
 private:
 	//CTransform* m_pTargetTransform = nullptr;
 	CTransform* m_pPlayerTransform = nullptr;
+	CGameObject* m_pBulletParticle = nullptr;
 
 private:
 	_float m_fLifeTime = 0.f;

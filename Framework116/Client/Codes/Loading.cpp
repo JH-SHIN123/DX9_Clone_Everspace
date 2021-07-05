@@ -18,6 +18,7 @@
 #include "Bullet_Laser.h"
 #include "Bullet_EMP_Bomb.h"
 #include "Crosshair.h"
+#include "FollowSystem.h"
 #pragma endregion
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
@@ -317,13 +318,23 @@ HRESULT CLoading::Ready_StageEffect()
 		return E_FAIL;
 	}
 
-	/* For.GameObject_Particle_Laser */
+	/* For.GameObject_LaserSystem */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_LaserSystem",
 		CLaserSystem::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_LaserSystem");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_FollowSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_FollowSystem",
+		CFollowSystem::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_FollowSystem");
 		return E_FAIL;
 	}
 #pragma endregion

@@ -213,6 +213,9 @@
     <ClInclude Include="..\Headers\EffectHandler.h">
       <Filter>97.Utilities\02.Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\FollowSystem.h">
+      <Filter>02.GameObject\06.Particle\Follow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -292,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\EffectHandler.cpp">
       <Filter>97.Utilities\02.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\FollowSystem.cpp">
+      <Filter>02.GameObject\06.Particle\Follow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

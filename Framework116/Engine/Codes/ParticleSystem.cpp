@@ -105,6 +105,12 @@ HRESULT CParticleSystem::Ready_GameObject(void* pArg)
 			m_wstrTexturePrototypeTag = psDescPtr->wstrTexturePrototypeTag;
 			m_iNumParticles = psDescPtr->iNumParticles;
 			m_tResetAttribute = psDescPtr->tResetAttribute;
+
+			if (psDescPtr->pTarget)
+			{
+				m_pTarget = psDescPtr->pTarget;
+				Safe_AddRef(m_pTarget);
+			}
 		}
 	}
 
@@ -261,6 +267,7 @@ void CParticleSystem::Free()
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	//Safe_Release(m_pCollide);
+	Safe_Release(m_pTarget);
 
 	m_listParticles.clear();
 

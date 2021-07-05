@@ -138,6 +138,8 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 	m_tMaterial.Diffuse.b = m_tMaterial.Ambient.b = m_tMaterial.Specular.b = m_tMaterial.Emissive.b = 0.f;
 	m_tMaterial.Diffuse.a = m_tMaterial.Ambient.a = m_tMaterial.Specular.a = m_tMaterial.Emissive.a = 1.f;
 
+	CEffectHandler::Add_Layer_Effect_Bullet(this, 1.f, &m_pBulletParticle);
+
 	return S_OK;
 }
 
@@ -146,6 +148,11 @@ _uint CPlayer_Bullet::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	if (m_IsCollide) {
+		m_IsDead = true;
+
+		if (m_pBulletParticle)
+			m_pBulletParticle->Set_IsDead(true);
+
 		return DEAD_OBJECT;
 	}
 
@@ -155,8 +162,14 @@ _uint CPlayer_Bullet::Update_GameObject(_float fDeltaTime)
 
 	m_fLifeTime += fDeltaTime;
 
-	if (m_fLifeTime >= 2.f)
+	if (m_fLifeTime >= 2.f) {
+		m_IsDead = true;
+
+		if (m_pBulletParticle)
+			m_pBulletParticle->Set_IsDead(true);
+
 		return DEAD_OBJECT;
+	}
 	
 	return NO_EVENT;
 }
@@ -244,6 +257,9 @@ void CPlayer_Bullet::Free()
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);
+	
+	if (m_pBulletParticle)
+		m_pBulletParticle->Set_IsDead(true);
 
 	CGameObject::Free();
 }
