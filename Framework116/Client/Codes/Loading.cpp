@@ -506,6 +506,12 @@ HRESULT CLoading::Ready_HUD_Resources()
 	return S_OK;
 }
 
+HRESULT CLoading::Ready_Map_Effect_Resources()
+{
+
+	return S_OK;
+}
+
 HRESULT CLoading::Ready_BossAndOthers()
 {
 	// boss

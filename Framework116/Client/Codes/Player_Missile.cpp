@@ -152,7 +152,9 @@ _uint CPlayer_Missile::Update_GameObject(_float fDeltaTime)
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	
 	// 아직 충돌하면 사라지게하는거 안했음!!
-	//
+	m_fLifeTime += fDeltaTime;
+	if (m_fLifeTime > 4.f)
+		return DEAD_OBJECT;
 	return NO_EVENT;
 }
 

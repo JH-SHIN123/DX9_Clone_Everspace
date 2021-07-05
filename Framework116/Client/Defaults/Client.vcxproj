@@ -164,6 +164,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Headers\AlertArrow.h" />
     <ClInclude Include="..\Headers\Boss_Monster.h" />
     <ClInclude Include="..\Headers\Bullet_EMP_Bomb.h" />
     <ClInclude Include="..\Headers\Bullet_EnergyBall.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Codes\AlertArrow.cpp" />
     <ClCompile Include="..\Codes\Boss_Monster.cpp" />
     <ClCompile Include="..\Codes\CollisionHandler.cpp" />
     <ClCompile Include="..\Codes\Bullet_EMP_Bomb.cpp" />
