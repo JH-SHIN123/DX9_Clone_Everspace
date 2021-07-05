@@ -5,8 +5,8 @@ HRESULT CEffectHandler::Add_Layer_Effect_Explosion(const _float3& _vPos, const _
 {
 	PARTICLESYSTEM_DESC pSystemDesc;
 	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Fire";
-	pSystemDesc.iNumParticles = 100;
-	pSystemDesc.tResetAttribute.fParticleSize = 10.f * _fSize;
+	pSystemDesc.iNumParticles = 20;
+	pSystemDesc.tResetAttribute.fParticleSize = 20.f * _fSize;
 	pSystemDesc.tResetAttribute.fParticleSpeed = 30.f;
 	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.04f;
 	pSystemDesc.tResetAttribute.fLifeTime = 1.5f;
@@ -25,9 +25,9 @@ HRESULT CEffectHandler::Add_Layer_Effect_Explosion(const _float3& _vPos, const _
 	}
 
 	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Smoke";
-	pSystemDesc.iNumParticles = 50;
-	pSystemDesc.tResetAttribute.fParticleSize = 15.f * _fSize;
-	pSystemDesc.tResetAttribute.fParticleSpeed = 20.f;
+	pSystemDesc.iNumParticles = 20;
+	pSystemDesc.tResetAttribute.fParticleSize = 25.f * _fSize;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 15.f;
 	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.01f;
 	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
 	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 0.f,1.f };

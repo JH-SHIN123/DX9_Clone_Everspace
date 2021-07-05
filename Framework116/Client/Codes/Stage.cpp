@@ -49,24 +49,10 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-	//UI_DESC uiDesc;
-	//uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
-	//uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
-	//uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	//if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
-	//	return E_FAIL;
-
 
 	//PARTICLESYSTEM_DESC pSystemDesc;
 	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
 	//pSystemDesc.iNumParticles = 500;
-	//pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-	//pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
-	//pSystemDesc.tResetAttribute.fLifeTime = 2.f;
-	//if (FAILED(Add_Layer_ExplosionSystem(L"Layer_ExplosionSystem", &pSystemDesc)))
-	//	return E_FAIL;
-
-	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
 	//pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
 	//pSystemDesc.tResetAttribute.fParticleSpeed = 100.f;
 	//pSystemDesc.tResetAttribute.fLifeTime = 1.f;
