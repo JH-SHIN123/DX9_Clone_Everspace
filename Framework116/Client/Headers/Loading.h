@@ -24,6 +24,7 @@ public: /* For.Loading Thread */
 	HRESULT Ready_StageResources();
 	HRESULT Ready_BossAndOthers();
 	HRESULT Ready_HUD_Resources();
+	HRESULT Ready_Map_Effect_Resources();
 	
 
 private:
