@@ -127,6 +127,9 @@
     <Filter Include="02.GameObject\13.Ring">
       <UniqueIdentifier>{8ad1be28-6814-4d28-a03d-cf98acfa6bb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Utilities\02.Material">
+      <UniqueIdentifier>{30c21b7f-470d-46f1-83f3-a507c17cce1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -228,6 +231,9 @@
     <ClInclude Include="..\Headers\TargetMonster.h">
       <Filter>02.GameObject\12.TargetMonster%28과녁%29</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\MaterialHandler.h">
+      <Filter>97.Utilities\02.Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -316,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\TargetMonster.cpp">
       <Filter>02.GameObject\12.TargetMonster%28과녁%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\MaterialHandler.cpp">
+      <Filter>97.Utilities\02.Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

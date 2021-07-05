@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Ring.h"
 
-#include "Player.h"
+#include "MaterialHandler.h"
 
 CRing::CRing(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -13,13 +13,11 @@ CRing::CRing(const CRing & other)
 	: CGameObject(other)
 	, m_bHitRing(other.m_bHitRing)
 	, m_tMaterial(other.m_tMaterial)
+	, vColorRGBA(other.vColorRGBA)
 {
+	CMaterialHandler::Set_RGBA(0.4f, 0.2f, 0.5f, 0.f, &m_tMaterial);
 
-	m_tMaterial.Diffuse.r = m_tMaterial.Ambient.r = m_tMaterial.Specular.r = m_tMaterial.Emissive.r = 0.9f;
-	m_tMaterial.Diffuse.g = m_tMaterial.Ambient.g = m_tMaterial.Specular.g = m_tMaterial.Emissive.g = 0.2f;
-	m_tMaterial.Diffuse.b = m_tMaterial.Ambient.b = m_tMaterial.Specular.b = m_tMaterial.Emissive.b = 0.5f;
-	m_tMaterial.Diffuse.a = m_tMaterial.Ambient.a = m_tMaterial.Specular.a = m_tMaterial.Emissive.a = 0.f;
-	m_tMaterial.Power = 1000.f;
+	m_tMaterial.Power = 1.f;
 
 }
 
@@ -168,7 +166,7 @@ _bool CRing::CollideCheck()
 {
 	if (m_IsCollide == true)
 	{
-		
+		CMaterialHandler::Set_RGBA(vColorRGBA.x, vColorRGBA.y, vColorRGBA.z, vColorRGBA.w, &m_tMaterial);
 		
 	}
 
