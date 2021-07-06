@@ -351,6 +351,15 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Monster",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/monster.X", L"../../Resources/Textures/Monster/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Monster");
+	//	return E_FAIL;
+	//}
+
 	Ready_HUD_Resources();
 	Ready_StageEffect();
 #pragma endregion
@@ -628,11 +637,12 @@ HRESULT CLoading::Ready_Stage1()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_In_Bar");
 		return E_FAIL;
 	}
+
+	return S_OK;
 }
 
 HRESULT CLoading::Ready_Map_Effect_Resources()
 {
-
 
 	return S_OK;
 }
