@@ -60,9 +60,8 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
-		return E_FAIL;
-
+	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
+	//	return E_FAIL;
 
 	//UI_DESC uiDesc;
 	//uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
@@ -70,8 +69,6 @@ HRESULT CStage::Ready_Scene()
 	//uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
 	//if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
 	//	return E_FAIL;
-
-
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
@@ -289,17 +286,14 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 	//	return E_FAIL;
 	//}
 
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Boss_Warmhole",
-		L"Layer_Boss_Warmhole")))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
-		return E_FAIL;
-	}
-
-
-
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Boss_Warmhole",
+	//	L"Layer_Boss_Warmhole")))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+	//	return E_FAIL;
+	//}
 
 	return S_OK;
 }

@@ -121,7 +121,7 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	Move_AI(fDeltaTime);
-	Attack_AI(fDeltaTime);
+	//Attack_AI(fDeltaTime);
 
 	//Spawn_Monster(fDeltaTime);
 
