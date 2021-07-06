@@ -46,14 +46,14 @@ HRESULT CStage::Ready_Scene()
 	//	return E_FAIL;
 
 
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
-	//if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
-	//	return E_FAIL;
+	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
+		return E_FAIL;
 
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
