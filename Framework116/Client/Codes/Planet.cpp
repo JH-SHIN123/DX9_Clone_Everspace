@@ -16,6 +16,7 @@ CPlanet::CPlanet(const CPlanet & other)
 {
 }
 
+
 HRESULT CPlanet::Ready_GameObject_Prototype()
 {
 	CGameObject::Ready_GameObject_Prototype();
@@ -23,25 +24,25 @@ HRESULT CPlanet::Ready_GameObject_Prototype()
 	return S_OK;
 }
 
-HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
+HRESULT CPlanet::Ready_GameObject(void* pArg)
 {
 	CGameObject::Ready_GameObject(pArg);
 
-	// For.Com_VIBuffer
+	// For.Com_Geo_Sphere
 	if (FAILED(CGameObject::Add_Component(
-		EResourceType::NonStatic,
-		L"Component_GeoMesh_Planet",
-		L"Com_VIBuffer",
-		(CComponent**)&m_pMesh)))
+		EResourceType::Static,
+		L"Component_Mesh_Planet",
+		L"Com_GeoMesh",
+		(CComponent**)&m_pModelMesh)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_VIBuffer");
+		PRINT_LOG(L"Error", L"Failed To Add_Component Component_GeoMesh_Sphere");
 		return E_FAIL;
 	}
 
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
-		L"Component_Texture_Planet_Jupiter",
+		L"Component_Texture_Earth",
 		L"Com_Texture",
 		(CComponent**)&m_pTexture)))
 	{
@@ -51,8 +52,6 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = { 70.f, -20.f, 200.f };
-
 	if (pArg != nullptr)
 	{
 		TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
@@ -60,7 +59,8 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 	TransformDesc.fSpeedPerSec = 20.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);
-	TransformDesc.vScale = { 1.f, 1.f, 1.f };
+	TransformDesc.vPosition = _float3(200.f, 0.f, 200.f);
+	TransformDesc.vScale = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -73,18 +73,9 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	//m_pTerrainBuffer = (CVIBuffer_TerrainTexture*)m_pManagement->Get_Component(L"Layer_Terrain", L"Com_VIBuffer");
-	//Safe_AddRef(m_pTerrainBuffer);
-	//if (nullptr == m_pTerrainBuffer)
-	//{
-	//	PRINT_LOG(L"Error", L"m_pTerrainBuffer is nullptr");
-	//	return E_FAIL;
-	//}
-
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
-	BoundingSphere.fRadius = 1.f;
-
+	BoundingSphere.fRadius = 100.f;
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		L"Component_CollideSphere",
@@ -93,7 +84,21 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 		&BoundingSphere,
 		true)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Collide");
+		return E_FAIL;
+	}
+
+	LIGHT_DESC lightDesc;
+	lightDesc.eLightType = ELightType::PointLight;
+	lightDesc.tLightColor = D3DCOLOR_XRGB(180, 180, 180);
+	lightDesc.tTransformDesc.vPosition = TransformDesc.vPosition;
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_Light",
+		L"Layer_Light",
+		(void*)&lightDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Light In Layer");
 		return E_FAIL;
 	}
 
@@ -102,12 +107,11 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 
 _uint CPlanet::Update_GameObject(_float fDeltaTime)
 {
-	CGameObject::Update_GameObject(fDeltaTime);	
-	//Movement(fDeltaTime);
+	CGameObject::Update_GameObject(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
-	return NO_EVENT;
+	return _uint();
 }
 
 _uint CPlanet::LateUpdate_GameObject(_float fDeltaTime)
@@ -124,15 +128,17 @@ _uint CPlanet::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
+	m_pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(0);
-	m_pDevice->SetMaterial(&m_tMatrial);
-	m_pMesh->Render_Mesh();
-	// Test
+	m_pTexture->Set_Texture();
+	m_pModelMesh->Render_Mesh();
 
 #ifdef _DEBUG // Render Collide
 	m_pCollide->Render_Collide();
 #endif
+
+	m_pDevice->SetRenderState(D3DRS_LIGHTING, true);
+
 
 	return _uint();
 }
@@ -153,7 +159,8 @@ _uint CPlanet::Movement(_float fDeltaTime)
 	return _uint();
 }
 
-CPlanet * CPlanet::Create(LPDIRECT3DDEVICE9 pDevice)
+
+CPlanet* CPlanet::Create(LPDIRECT3DDEVICE9 pDevice)
 {
 	CPlanet* pInstance = new CPlanet(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
@@ -165,7 +172,7 @@ CPlanet * CPlanet::Create(LPDIRECT3DDEVICE9 pDevice)
 	return pInstance;
 }
 
-CGameObject * CPlanet::Clone(void * pArg/* = nullptr*/)
+CGameObject* CPlanet::Clone(void* pArg)
 {
 	CPlanet* pClone = new CPlanet(*this); /* 복사 생성자 호출 */
 	if (FAILED(pClone->Ready_GameObject(pArg)))
@@ -179,8 +186,8 @@ CGameObject * CPlanet::Clone(void * pArg/* = nullptr*/)
 
 void CPlanet::Free()
 {
-	//Safe_Release(m_pTerrainBuffer);
 	Safe_Release(m_pMesh);
+	Safe_Release(m_pModelMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);

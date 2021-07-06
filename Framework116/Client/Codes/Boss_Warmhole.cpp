@@ -98,7 +98,7 @@ _uint CBoss_Warmhole::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);	
 	//Movement(fDeltaTime);
 
-	Spawn_Monster(fDeltaTime);
+	//Spawn_Monster(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	//m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);

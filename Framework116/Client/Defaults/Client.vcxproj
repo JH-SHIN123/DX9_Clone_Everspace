@@ -183,6 +183,7 @@
     <ClInclude Include="..\Headers\Loading.h" />
     <ClInclude Include="..\Headers\LockOn.h" />
     <ClInclude Include="..\Headers\Logo.h" />
+    <ClInclude Include="..\Headers\EngineEffectSystem.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\MainCam.h" />
     <ClInclude Include="..\Headers\MaterialHandler.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\Headers\TargetMonster.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="..\Headers\TutorialUI.h" />
+    <ClInclude Include="..\Headers\WingBoost_System.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -224,6 +226,7 @@
     <ClCompile Include="..\Codes\Loading.cpp" />
     <ClCompile Include="..\Codes\LockOn.cpp" />
     <ClCompile Include="..\Codes\Logo.cpp" />
+    <ClCompile Include="..\Codes\EngineEffectSystem.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\MainCam.cpp" />
     <ClCompile Include="..\Codes\MaterialHandler.cpp" />
@@ -242,6 +245,7 @@
     <ClCompile Include="..\Codes\TargetMonster.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="..\Codes\TutorialUI.cpp" />
+    <ClCompile Include="..\Codes\WingBoost_System.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

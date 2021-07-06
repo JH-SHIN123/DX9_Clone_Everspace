@@ -23,10 +23,12 @@
 #include "Ring.h"
 #include "TargetMonster.h"
 #include "FollowSystem.h"
+#include "EngineEffectSystem.h"
 #include "LockOn.h"
 #include "Planet.h"
 #include "Meteor.h"
 #include "TutorialUI.h"
+#include "WingBoost_System.h"
 #pragma endregion
 
 
@@ -215,6 +217,15 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_Planet */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
+		CPlanet::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
+		return E_FAIL;
+	}
 
 #pragma endregion
 
@@ -323,6 +334,25 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.Component_Mesh_Earth */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Earth",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/Earth.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Planet",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/planet.X", L""))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+
 	Ready_HUD_Resources();
 	Ready_StageEffect();
 #pragma endregion
@@ -367,6 +397,26 @@ HRESULT CLoading::Ready_StageEffect()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_FollowSystem");
 		return E_FAIL;
 	}
+
+	/* For.GameObject_EngineEffectSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_EngineEffectSystem",
+		CEngineEffectSystem::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_EngineEffectSystem");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_WingBoostSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_WingBoostSystem",
+		CWingBoost_System::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_WingBoostSystem");
+		return E_FAIL;
+	}
 #pragma endregion
 
 #pragma region Components
@@ -396,15 +446,14 @@ HRESULT CLoading::Ready_StageEffect()
 		return E_FAIL;
 	}
 
-
-	//if (FAILED(m_pManagement->Add_Component_Prototype(
-	//	EResourceType::NonStatic,
-	//	L"Component_Texture_Glow",
-	//	CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/glow.png"))))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Glow");
-	//	return E_FAIL;
-	//}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Boost",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/boost.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Boost");
+		return E_FAIL;
+	}
 #pragma endregion
 
 	return S_OK;

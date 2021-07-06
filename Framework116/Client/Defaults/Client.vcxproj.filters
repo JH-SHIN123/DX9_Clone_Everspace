@@ -121,12 +121,6 @@
     <Filter Include="02.GameObject\09.HUD\02.LockOn">
       <UniqueIdentifier>{84e70570-19d0-4df2-9eda-52d39675beef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\00.Player\00.Player_Effect">
-      <UniqueIdentifier>{a3c4e740-b362-43b7-9514-e172b532eab9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\00.Player\00.Player_Effect\00.Booster_Effect">
-      <UniqueIdentifier>{961f04d2-7824-414d-9761-e6c8edff8e70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\09.HUD\03.AlertArrow">
       <UniqueIdentifier>{37c54f37-cdab-4b8c-8598-2ec500978762}</UniqueIdentifier>
     </Filter>
@@ -136,8 +130,8 @@
     <Filter Include="02.GameObject\06.Particle\Follow">
       <UniqueIdentifier>{6b4389f6-3af0-4db3-9bb6-db9bdb2c7186}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\12.TargetMonster%28과녁%29">
-      <UniqueIdentifier>{ec3f8199-67e4-4bae-bdc8-a8e07ff027cc}</UniqueIdentifier>
+    <Filter Include="02.GameObject\11.Planet">
+      <UniqueIdentifier>{a1e0a8f8-7504-484a-b609-b432df6b753f}</UniqueIdentifier>
     </Filter>
     <Filter Include="97.Utilities\02.Material">
       <UniqueIdentifier>{30c21b7f-470d-46f1-83f3-a507c17cce1b}</UniqueIdentifier>
@@ -156,6 +150,15 @@
     </Filter>
     <Filter Include="02.GameObject\09.HUD\05.MissionUI">
       <UniqueIdentifier>{078845c1-2258-4768-9ea8-37c058281276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12.TargetMonster">
+      <UniqueIdentifier>{ec3f8199-67e4-4bae-bdc8-a8e07ff027cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06.Particle\EngineBoost">
+      <UniqueIdentifier>{be95110a-b9c3-4575-9e9a-de07624eff64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06.Particle\WingBoost">
+      <UniqueIdentifier>{6840ecc0-5224-47b6-968b-27169f738624}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -256,7 +259,7 @@
       <Filter>02.GameObject\11.Ring</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\TargetMonster.h">
-      <Filter>02.GameObject\12.TargetMonster%28과녁%29</Filter>
+      <Filter>02.GameObject\12.TargetMonster</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\MaterialHandler.h">
       <Filter>97.Utilities\02.Material</Filter>
@@ -281,6 +284,15 @@
     </ClInclude>
     <ClInclude Include="..\Headers\TutorialUI.h">
       <Filter>02.GameObject\09.HUD\04.TutorialUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\EngineEffectSystem.h">
+      <Filter>02.GameObject\06.Particle\EngineBoost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\11.Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\WingBoost_System.h">
+      <Filter>02.GameObject\06.Particle\WingBoost</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -369,7 +381,7 @@
       <Filter>02.GameObject\11.Ring</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\TargetMonster.cpp">
-      <Filter>02.GameObject\12.TargetMonster%28과녁%29</Filter>
+      <Filter>02.GameObject\12.TargetMonster</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\MaterialHandler.cpp">
       <Filter>97.Utilities\02.Material</Filter>
@@ -394,6 +406,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\TutorialUI.cpp">
       <Filter>02.GameObject\09.HUD\04.TutorialUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\EngineEffectSystem.cpp">
+      <Filter>02.GameObject\06.Particle\EngineBoost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\11.Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\WingBoost_System.cpp">
+      <Filter>02.GameObject\06.Particle\WingBoost</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

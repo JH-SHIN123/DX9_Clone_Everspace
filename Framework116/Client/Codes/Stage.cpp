@@ -26,9 +26,8 @@ HRESULT CStage::Ready_Scene()
 	// 전역조명 : Directional Light
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	//lightDesc.tLightColor = D3DCOLOR_XRGB(125, 125, 125);
-	lightDesc.iLightIndex = 0;
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(85, 85, 85);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -46,8 +45,8 @@ HRESULT CStage::Ready_Scene()
 	//	return E_FAIL;
 
 
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
@@ -77,7 +76,14 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
 	//	return E_FAIL;
 
-
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
+		L"Layer_Planet")))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet In Layer");
+		return E_FAIL;
+	}
 
 	//PARTICLESYSTEM_DESC pSystemDesc;
 	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
@@ -265,38 +271,14 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 		return E_FAIL;
 	}
 
-	//TRANSFORM_DESC* pTransformDesc = new TRANSFORM_DESC;
-	//pTransformDesc
-
 	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
 	//	EResourceType::NonStatic,
-	//	L"GameObject_Bullet_EnergyBall",
-	//	L"Layer_Bullet_EnergyBall")))
+	//	L"GameObject_Boss_Warmhole",
+	//	L"Layer_Boss_Warmhole")))
 	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
+	//	PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
 	//	return E_FAIL;
 	//}
-
-	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
-	//	EResourceType::NonStatic,
-	//	L"GameObject_Bullet_EnergyBall",
-	//	L"Layer_Boss_Monster_Has_A_EnergyBall_RIGHT")))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
-	//	return E_FAIL;
-	//}
-
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Boss_Warmhole",
-		L"Layer_Boss_Warmhole")))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
-		return E_FAIL;
-	}
-
-
-
 
 	return S_OK;
 }
