@@ -21,6 +21,7 @@
 #include "FollowSystem.h"
 #include "EngineEffectSystem.h"
 #include "LockOn.h"
+#include "Planet.h"
 #pragma endregion
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
@@ -208,6 +209,15 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_Planet */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
+		CPlanet::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
+		return E_FAIL;
+	}
 
 #pragma endregion
 
@@ -313,6 +323,25 @@ HRESULT CLoading::Ready_StageResources()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/EnergyBall%d.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_EnergyBall");
+		return E_FAIL;
+	}
+
+	/* For.Component_Mesh_Earth */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Earth",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/Earth.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Planet",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/planet.X", L""))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
 

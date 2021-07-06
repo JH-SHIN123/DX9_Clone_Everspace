@@ -133,6 +133,9 @@
     <Filter Include="02.GameObject\06.Particle\EngineEffect">
       <UniqueIdentifier>{be95110a-b9c3-4575-9e9a-de07624eff64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\11.Planet">
+      <UniqueIdentifier>{a1e0a8f8-7504-484a-b609-b432df6b753f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -237,6 +240,9 @@
     <ClInclude Include="..\Headers\EngineEffectSystem.h">
       <Filter>02.GameObject\06.Particle\EngineEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\11.Planet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -328,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\EngineEffectSystem.cpp">
       <Filter>02.GameObject\06.Particle\EngineEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\11.Planet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,8 +23,7 @@ HRESULT CStage::Ready_Scene()
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
 	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	lightDesc.tLightColor = D3DCOLOR_XRGB(125, 125, 125);
-	lightDesc.iLightIndex = 0;
+	lightDesc.tLightColor = D3DCOLOR_XRGB(85, 85, 85);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -49,6 +48,15 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
+		L"Layer_Planet")))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet In Layer");
+		return E_FAIL;
+	}
 
 	//PARTICLESYSTEM_DESC pSystemDesc;
 	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
