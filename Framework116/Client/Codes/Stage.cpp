@@ -12,7 +12,7 @@ HRESULT CStage::Ready_Scene()
 {
 	CScene::Ready_Scene();
 
-	CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/Stage1.mapInfo");
+	//CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/Stage1.mapInfo");
 
 	::SetWindowText(g_hWnd, L"Stage");
 
