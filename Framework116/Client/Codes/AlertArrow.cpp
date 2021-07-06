@@ -80,6 +80,10 @@ _uint CAlertArrow::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);	
 	
 	Movement(fDeltaTime);	
+
+	if (m_IsDead == true)
+		return DEAD_OBJECT;
+
 	return m_pTransform->Update_Transform();
 }
 
@@ -99,56 +103,135 @@ _uint CAlertArrow::Render_GameObject()
 
 	_float3 vTargetPos = m_pTargetMonster->Get_Collides()->front()->Get_BoundingSphere().Get_Position();
 	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
-	_float3 vDir = vTargetPos - vPlayerPos;
+	_float3 vPlayerLook = m_pPlayerTransform->Get_State(EState::Look);
+	D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
 
+
+	////////////Å¸°ÙÀÇ 3dÁÂÇ¥¸¦ 2dÁÂÇ¥·Î/////////////////////
+	D3DVIEWPORT9 vp;
+	m_pDevice->GetViewport(&vp);
+	_float4x4 TestView, TestProj;
+	m_pDevice->GetTransform(D3DTS_VIEW, &TestView);
+	m_pDevice->GetTransform(D3DTS_PROJECTION, &TestProj);
+	_float4x4 matCombine = TestView * TestProj;
+	D3DXVec3TransformCoord(&vTargetPos, &vTargetPos, &matCombine);
+	vTargetPos.x += 1.f;
+	vTargetPos.y += 1.f;
+
+	vTargetPos.x = (vp.Width * (vTargetPos.x)) / 2.f + vp.X;
+	vTargetPos.y = (vp.Height * (2.f - vTargetPos.y) / 2.f + vp.Y);
+
+	_float3 ptTarget;
+	ptTarget.x = -1.f * (WINCX / 2) + vTargetPos.x;
+	ptTarget.y = 1.f * (WINCY / 2) + vTargetPos.y;
+	ptTarget.z = 0.f;
+	//////////////////ÇÃ·¹ÀÌ¾îÀÇ 3dÁÂÇ¥¸¦ 2dÁÂÇ¥·Î////////////////////////////
+	D3DVIEWPORT9 vp2;
+	m_pDevice->GetViewport(&vp2);
+	_float4x4 TestView2, TestProj2;
+	m_pDevice->GetTransform(D3DTS_VIEW, &TestView2);
+	m_pDevice->GetTransform(D3DTS_PROJECTION, &TestProj2);
+	_float4x4 matCombine2 = TestView2 * TestProj2;
+	D3DXVec3TransformCoord(&vPlayerPos, &vPlayerPos, &matCombine2);
+	vPlayerPos.x += 1.f;
+	vPlayerPos.y += 1.f;
+
+	vPlayerPos.x = (vp2.Width * (vPlayerPos.x)) / 2.f + vp2.X;
+	vPlayerPos.y = (vp2.Height * (2.f - vPlayerPos.y) / 2.f + vp2.Y);
+
+	_float3 ptPlayer;
+	ptPlayer.x = -1.f * (WINCX / 2) + vPlayerPos.x;
+	ptPlayer.y = 1.f * (WINCY / 2) + vPlayerPos.y;
+	ptPlayer.z = 0.f;
+	//////////////////////////////////////////////////////////////////
+
+	//////////////////ÇÃ·¹ÀÌ¾îLookÀÇ 3dÁÂÇ¥¸¦ 2dÁÂÇ¥·Î////////////////////////////
+	//D3DVIEWPORT9 vp3;
+	//m_pDevice->GetViewport(&vp3);
+	//_float4x4 TestView3, TestProj3;
+	//m_pDevice->GetTransform(D3DTS_VIEW, &TestView3);
+	//m_pDevice->GetTransform(D3DTS_PROJECTION, &TestProj3);
+	//_float4x4 matCombine3 = TestView3 * TestProj3;
+	//D3DXVec3TransformCoord(&vPlayerLook, &vPlayerLook, &matCombine2);
+	//vPlayerLook.x += 1.f;
+	//vPlayerLook.y += 1.f;
+
+	//vPlayerLook.x = (vp3.Width * (vPlayerLook.x)) / 2.f + vp3.X;
+	//vPlayerLook.y = (vp3.Height * (2.f - vPlayerLook.y) / 2.f + vp3.Y);
+
+	//_float3 ptPlayerLook;
+	//ptPlayerLook.x = vPlayerLook.x;
+	//ptPlayerLook.y = vPlayerLook.y;
+	//ptPlayerLook.z = 0.f;
+	////////////////////////////////////////////////////////////////////////////
+
+	_float3 vDir = ptTarget - ptPlayer;
+	_float3 vLook = {1.f, 0.f, 0.f};
+
+	D3DXVec3Normalize(&vDir, &vDir);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	_float v1v2 = D3DXVec3Dot(&vDir, &vLook);
+	_float fCeta = acosf(v1v2);
+
+	if (vDir.x > 0 && vDir.y < 0)
+	{
+		fCeta += D3DXToRadian(90.f);
+	}
+	if (vDir.y > 0)
+		fCeta = -1.f * fCeta/* + D3DXToRadian(180.f)*/;
+	//////////////////////////////////////////////////////////
 	_float4x4 matView;
 	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
 	D3DXMatrixIdentity(&matView);
+
 	
-	matView._11 = 100.f;
-	matView._22 = 100.f;
-	// µ¥Ä«¸£Æ® ÁÂÇ¥°è..
+	matView._11 = 50.f;
+	matView._22 = 50.f;
+
+	if (vDir.x > 0)
+	{
+		matView._41 = /*-(WINCX / 2.f) + */vDir.x * (WINCX / 4);
+		matView._42 = /*-(WINCY / 2.f) + */vDir.y * (WINCY / 4);
+	}
+	else
+	{
+		matView._41 = /*-(WINCX / 2.f) + */-vDir.x * (WINCX / 4);
+		matView._42 = /*-(WINCY / 2.f) + */-vDir.y * (WINCY / 4);
+	}
+	int i = 0;
+
+	//if (vDir.x > 0)
+	//{
+	//	matView._41 = (1.f * (WINCX / 2) + cosf(D3DXToDegree(fCeta)) * 1.f) / 2.f;
+	//	matView._42 = (1.f * (WINCY / 2) - sinf(D3DXToDegree(fCeta)) * 1.f) / 2.f;
+	//}
+	//else
+	//{
+	//	matView._41 = (1.f * (WINCX / 2) + cosf(D3DXToDegree(fCeta)) * 1.f) / -2.f ;
+	//	matView._42 = (1.f * (WINCY / 2) - sinf(D3DXToDegree(fCeta)) * 1.f) / -2.f ;
+	//}
+	//_float fX += cosf(m_fAngle * PI / 180.f) * m_fSpeed;
+	//_float fY -= sinf(m_fAngle * PI / 180.f) * m_fSpeed;
+	// µ¥Ä«¸£Æ® ÁÂÇ¥°è.. - WINCX /2, -WINCY / 2
 	// ¿À¸¥ÂÊ, ¿ÞÂÊ ±¸º°ÇØ¾ß´ï.
-	matView._41 = 0.f;
-	matView._42 = 0.f;
-	
-	_float3 v1 = m_pPlayerTransform->Get_State(EState::Look);
-	_float3 v2 = vDir; 
-	_float fCeta;
-	D3DXVec3Normalize(&v1, &v1);
-	D3DXVec3Normalize(&v2, &v2);
-	_float v1v2 = D3DXVec3Dot(&v1, &v2);
-
-	fCeta = acosf(v1v2);
 
 
-	_float TestDegree = D3DXToDegree(fCeta);
 	_float4x4 matRotate;
-	D3DXMatrixRotationZ(&matRotate,  (-fCeta));
+	D3DXMatrixRotationZ(&matRotate, (fCeta));
 	//
 	_float4x4 Test;
 	Test = matView * matRotate;
-
-
-	//_float4x4 matBill
-	//D3DXMatrixIdentity(&matBill);
-	//matBill = matView;
-	//matBill._41 = 0.f;
-	//matBill._42 = 0.f;
-	//matBill._43 = 0.f;
-	//D3DXMatrixInverse(&matBill, 0, &matBill);
 	
-	//_float4x4 newWorld;
-	//D3DXMatrixIdentity(&newWorld);
-	//newWorld = matWorld * matBill * matView;
+	//_float testdegree = D3DXToDegree(fCeta);
+	//wstring a = to_wstring(testdegree);
+	//PRINT_LOG(L"a", a.c_str());
 
-	//m_pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pDevice->SetTransform(D3DTS_VIEW, &Test);
 	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer();
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	//m_pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	//////////////////////////////////////////////////////
 
 	return _uint();
