@@ -75,6 +75,7 @@ private: // Wing Effect
 private: // AlertArrow ฐüทร
 	_uint Make_Arrow();
 	const list<class CGameObject*>* m_listCheckMonsters = nullptr;
+	_bool IsArrow = false;
 };
 
 #define __PLAYER_H__

@@ -1,15 +1,15 @@
 #pragma once
-#ifndef __ALERTARROW_H__
+#ifndef __METEOR_H__
 
 #include "GameObject.h"
 
 USING(Engine)
-class CAlertArrow final : public CGameObject
+class CMeteor final : public CGameObject
 {
 public:
-	explicit CAlertArrow(LPDIRECT3DDEVICE9 pDevice);
-	explicit CAlertArrow(const CAlertArrow& other);
-	virtual ~CAlertArrow() = default;
+	explicit CMeteor(LPDIRECT3DDEVICE9 pDevice);
+	explicit CMeteor(const CMeteor& other);
+	virtual ~CMeteor() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -22,18 +22,20 @@ private:
 	_uint Movement(_float fDeltaTime);
 
 public:
-	static CAlertArrow* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CMeteor* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
 private:
-	CVIBuffer*  m_pVIBuffer = nullptr;
-	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
+	CTransform* m_pTransform = nullptr;
+	CGeoMesh_Sphere*  m_pMesh = nullptr;
+	CCollideSphere* m_pCollide = nullptr;
 
-	CGameObject* m_pTargetMonster = nullptr;
-	CTransform* m_pPlayerTransform = nullptr;
+private:
+	_float m_fSpawnTime = 2.f;
+
 };
 
-#define __ALERTARROW_H__
+#define __METEOR_H__ 
 #endif

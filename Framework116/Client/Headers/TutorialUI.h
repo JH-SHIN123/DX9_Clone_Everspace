@@ -1,15 +1,15 @@
 #pragma once
-#ifndef __ALERTARROW_H__
+#ifndef __TUTORIALUI_H__
 
 #include "GameObject.h"
 
 USING(Engine)
-class CAlertArrow final : public CGameObject
+class CTutorialUI final : public CGameObject
 {
 public:
-	explicit CAlertArrow(LPDIRECT3DDEVICE9 pDevice);
-	explicit CAlertArrow(const CAlertArrow& other);
-	virtual ~CAlertArrow() = default;
+	explicit CTutorialUI(LPDIRECT3DDEVICE9 pDevice);
+	explicit CTutorialUI(const CTutorialUI& other);
+	virtual ~CTutorialUI() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -20,9 +20,10 @@ public:
 
 private:
 	_uint Movement(_float fDeltaTime);
+	_uint Search_Target(_float fDeltaTime);
 
 public:
-	static CAlertArrow* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CTutorialUI* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
@@ -31,9 +32,21 @@ private:
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
 
-	CGameObject* m_pTargetMonster = nullptr;
+private:
+	_bool m_IsLockOn = false;
+	_float4x4 m_Matview;
+
+	// Lock On Target
+	//CTransform* m_pTarget = nullptr;
+	wstring* m_pTargetLayerTag = {};
+	wstring m_wstrLayerTag = {};
+	_float m_fTargetDis = 0.f;
+	_float4x4 m_matDisWorld;
+
+	list<class CGameObject*> m_listTargetObject;
 	CTransform* m_pPlayerTransform = nullptr;
+	_float4 m_vSearchTagetDis[50];
 };
 
-#define __ALERTARROW_H__
+#define __TUTORIALUI_H__
 #endif

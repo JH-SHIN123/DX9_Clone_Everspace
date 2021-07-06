@@ -60,8 +60,14 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
 		return E_FAIL;
 
-	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
-	//	return E_FAIL;
+	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
+		return E_FAIL;
+
+	if (FAILED(Add_Layer_Planet(L"Layer_Planet")))
+		return E_FAIL;
+
+	if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
+		return E_FAIL;
 
 	//UI_DESC uiDesc;
 	//uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
@@ -265,27 +271,6 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 		return E_FAIL;
 	}
 
-	//TRANSFORM_DESC* pTransformDesc = new TRANSFORM_DESC;
-	//pTransformDesc
-
-	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
-	//	EResourceType::NonStatic,
-	//	L"GameObject_Bullet_EnergyBall",
-	//	L"Layer_Bullet_EnergyBall")))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
-	//	return E_FAIL;
-	//}
-
-	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
-	//	EResourceType::NonStatic,
-	//	L"GameObject_Bullet_EnergyBall",
-	//	L"Layer_Boss_Monster_Has_A_EnergyBall_RIGHT")))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
-	//	return E_FAIL;
-	//}
-
 	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
 	//	EResourceType::NonStatic,
 	//	L"GameObject_Boss_Warmhole",
@@ -300,6 +285,8 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 
 HRESULT CStage::Add_Layer_Ring(const wstring & LayerTag)
 {
+
+
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
 		L"GameObject_Ring",
@@ -309,6 +296,31 @@ HRESULT CStage::Add_Layer_Ring(const wstring & LayerTag)
 		return E_FAIL;
 	}
 
+	TRANSFORM_DESC* pData = new TRANSFORM_DESC;
+	pData->vPosition = { 50.f, 0.f, 50.f };
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		LayerTag, pData)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
+		return E_FAIL;
+	}
+
+
+	pData->vPosition = { 130.f, 0.f, 90.f };
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		LayerTag, pData)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
+		return E_FAIL;
+	}
+
+
 	return S_OK;
 }
 
@@ -317,6 +329,20 @@ HRESULT CStage::Add_Layer_TargetMonster(const wstring & LayerTag)
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
 		L"GameObject_TargetMonster",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Planet(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
 		LayerTag)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
@@ -455,6 +481,37 @@ HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
 	HUD_HP_OutBar.wstrTexturePrototypeTag = L"Component_Texture_HUD_Out_Bar";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_HP_OutBar)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_TutorialUI(const wstring & LayerTag)
+{
+	wstring TargetLayerTag = L"Layer_Ring";
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_TutorialUI",
+		LayerTag, &TargetLayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add TutorialUI In Layer");
+		return E_FAIL;
+	}
+
+	/*
+	#define WINCX 1920
+	#define WINCY 1080
+	*/
+
+	//UI_DESC HUD_TutorialUI;
+	//HUD_TutorialUI.tTransformDesc.vPosition = { -700.f, 424.f, 0.f };
+	//HUD_TutorialUI.tTransformDesc.vScale = { 262.f, 14.f, 0.f };
+	//HUD_TutorialUI.wstrTexturePrototypeTag = L"Component_Texture_Tutorial_Nevi";
+	//if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_TutorialUI)))
+	//	return E_FAIL;
+
+
+
 
 	return S_OK;
 }

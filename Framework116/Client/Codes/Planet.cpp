@@ -1,15 +1,17 @@
 #include "stdafx.h"
-#include "Planet.h"
+#include "..\Headers\Planet.h"
+#include "MaterialHandler.h"
 
 CPlanet::CPlanet(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
 }
 
-CPlanet::CPlanet(const CPlanet& other)
+CPlanet::CPlanet(const CPlanet & other)
 	: CGameObject(other)
 {
 }
+
 
 HRESULT CPlanet::Ready_GameObject_Prototype()
 {
@@ -48,6 +50,13 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.vPosition = _float3(200.f, 0.f, 200.f);
 	TransformDesc.vScale = _float3(1.f, 1.f, 1.f);
+	if (pArg != nullptr)
+	{
+		TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
+		TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
+	}
+	TransformDesc.fSpeedPerSec = 20.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -123,10 +132,29 @@ _uint CPlanet::Render_GameObject()
 #ifdef _DEBUG // Render Collide
 	m_pCollide->Render_Collide();
 #endif
+
 	m_pDevice->SetRenderState(D3DRS_LIGHTING, true);
+
 
 	return _uint();
 }
+
+_uint CPlanet::Movement(_float fDeltaTime)
+{
+	//_float3 vOutPos = m_pTransform->Get_State(EState::Position);
+	//if (true == m_pTerrainBuffer->Is_OnTerrain(&vOutPos))
+	//{
+	//	vOutPos.y += 0.5f;
+	//	m_pTransform->Set_Position(vOutPos);
+	//}	
+
+
+	m_pTransform->Go_Straight(fDeltaTime);
+
+
+	return _uint();
+}
+
 
 CPlanet* CPlanet::Create(LPDIRECT3DDEVICE9 pDevice)
 {
