@@ -25,13 +25,9 @@ public: /* For.Loading Thread */
 	HRESULT Ready_StageEffect();
 	HRESULT Ready_BossAndOthers();
 	HRESULT Ready_HUD_Resources();
-<<<<<<< HEAD
 	HRESULT Ready_Stage1();
-
-=======
 	HRESULT Ready_Map_Effect_Resources();
 	
->>>>>>> main
 
 private:
 	ESceneType m_eNextSceneID = ESceneType::None;

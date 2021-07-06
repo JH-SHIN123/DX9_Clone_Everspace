@@ -512,7 +512,6 @@ HRESULT CLoading::Ready_HUD_Resources()
 	return S_OK;
 }
 
-<<<<<<< HEAD
 HRESULT CLoading::Ready_Stage1()
 {
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -561,11 +560,11 @@ HRESULT CLoading::Ready_Stage1()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_In_Bar");
 		return E_FAIL;
 	}
+}
 
-=======
 HRESULT CLoading::Ready_Map_Effect_Resources()
 {
->>>>>>> main
+
 
 	return S_OK;
 }

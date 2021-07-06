@@ -41,13 +41,11 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 	//	return E_FAIL;
 
-<<<<<<< HEAD
 
 	//if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
 	//	return E_FAIL;
 
-=======
->>>>>>> main
+
 	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 		return E_FAIL;
 
@@ -60,7 +58,6 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-<<<<<<< HEAD
 	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
 		return E_FAIL;
 
@@ -76,8 +73,6 @@ HRESULT CStage::Ready_Scene()
 	//	return E_FAIL;
 
 
-=======
->>>>>>> main
 
 	//PARTICLESYSTEM_DESC pSystemDesc;
 	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
