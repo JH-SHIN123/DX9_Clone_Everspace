@@ -1,20 +1,15 @@
 #pragma once
-#ifndef __SKYBOX_H__
+#ifndef __TARGETMONSTER_H__
 
 #include "GameObject.h"
 
-/* 엔진에 있는 클래스를 전방선언할 때!! */
-BEGIN(Engine)
-class CCamera;
-END
-
 USING(Engine)
-class CSkybox final : public CGameObject
+class CTargetMonster final : public CGameObject
 {
-private:
-	explicit CSkybox(LPDIRECT3DDEVICE9 pDevice);
-	explicit CSkybox(const CSkybox& other);
-	virtual ~CSkybox() = default;
+public:
+	explicit CTargetMonster(LPDIRECT3DDEVICE9 pDevice);
+	explicit CTargetMonster(const CTargetMonster& other);
+	virtual ~CTargetMonster() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -25,23 +20,28 @@ public:
 
 private:
 	_uint Movement(_float fDeltaTime);
+	_bool Collide_Check(_float fDeltaTime);
 
 public:
-	static CSkybox* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CTargetMonster* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
 private:
-	CVIBuffer*  m_pVIBuffer = nullptr;
+	CTexture*	m_pTexture = nullptr;
 	CTransform* m_pTransform = nullptr;
-	CTexture*	m_pTexture = nullptr;	
-	CCamera* m_pCamera = nullptr;
+	CGeoMesh_Cylinder*  m_pGeoMesh = nullptr;
+	CCollideSphere* m_pCollide = nullptr;
 
 private:
+	_float m_fReviveTime = 5.f;
+	_float m_fColTime = 0.f;
+
+
 	D3DMATERIAL9 m_tMaterial;
 	_float4 vColorRGBA = { 0.8f, 0.f, 0.f, 0.f };
 
 };
 
-#define __SKYBOX_H__
+#define __TARGETMONSTER_H__ 
 #endif

@@ -27,6 +27,9 @@ private:
 	HRESULT Add_Layer_LaserSystem(const wstring& LayerTag, const PARTICLESYSTEM_DESC* pParticleSystemDesc);
 	HRESULT Add_Layer_Boss_Monster(const wstring& LayerTag);
 
+	HRESULT Add_Layer_Ring(const wstring& LayerTag);
+	HRESULT Add_Layer_TargetMonster(const wstring& LayerTag);
+
 	// HUD
 	HRESULT Add_Layer_HUD(const wstring& LayerTag);
 	

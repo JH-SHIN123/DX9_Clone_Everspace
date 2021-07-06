@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Stage.h"
 #include "Camera.h"
+#include "StreamHandler.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
@@ -11,6 +12,8 @@ HRESULT CStage::Ready_Scene()
 {
 	CScene::Ready_Scene();
 
+	//CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/Stage1.mapInfo");
+
 	::SetWindowText(g_hWnd, L"Stage");
 
 	if (FAILED(Add_Layer_Player(L"Layer_Player")))
@@ -19,6 +22,7 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
 
+	//
 	// 전역조명 : Directional Light
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
@@ -36,8 +40,13 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 	//	return E_FAIL;
 
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
-		return E_FAIL;
+
+	//if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
+	//	return E_FAIL;
+
+
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
@@ -47,6 +56,21 @@ HRESULT CStage::Ready_Scene()
 
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
+
+	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
+		return E_FAIL;
+
+	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
+		return E_FAIL;
+
+
+	//UI_DESC uiDesc;
+	//uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
+	//uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
+	//uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
+	//if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
+	//	return E_FAIL;
+
 
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
@@ -82,6 +106,12 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 	CScene::LateUpdate_Scene(fDeltaTime);
 
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
+
+	// Ring
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
+
+	// TargetMonster
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
 
 	return _uint();
 }
@@ -259,10 +289,45 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 	//	return E_FAIL;
 	//}
 
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Boss_Warmhole",
+		L"Layer_Boss_Warmhole")))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+		return E_FAIL;
+	}
 
 
 
-	
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Ring(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_TargetMonster(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_TargetMonster",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }

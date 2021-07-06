@@ -299,6 +299,7 @@ HRESULT CMainApp::Setup_DefaultSetting()
 	//
 	// Set lighting related render states.
 	//
+
 	m_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
 	m_pDevice->SetRenderState(D3DRS_SPECULARENABLE, false);
 

@@ -361,9 +361,31 @@ HRESULT CStreamHandler::Add_GameObject_Prototype(const wstring& wstrClassName, P
 
 HRESULT CStreamHandler::Add_GameObject_Layer(EResourceType eType, const wstring& PrototypeTag, void* pArg)
 {
-	if (PrototypeTag == L"") 
+	wstring wstrPrototypeTag = L"GameObject_" + PrototypeTag;
+
+	if (wstrPrototypeTag == L"")
 	{
-		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, PrototypeTag, L"Layer_Dummy", pArg))) {
+		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_Dummy", pArg))) {
+			wstring errMsg = L"Failed to Add Layer ";
+			errMsg += PrototypeTag;
+			PRINT_LOG(L"Error", errMsg.c_str());
+			return E_FAIL;
+		}
+	}
+
+	if (wstrPrototypeTag == L"GameObject_Ring")
+	{
+		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_Ring", pArg))) {
+			wstring errMsg = L"Failed to Add Layer ";
+			errMsg += PrototypeTag;
+			PRINT_LOG(L"Error", errMsg.c_str());
+			return E_FAIL;
+		}
+	}
+
+	if (wstrPrototypeTag == L"GameObject_TargetMonster")
+	{
+		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_TargetMonster", pArg))) {
 			wstring errMsg = L"Failed to Add Layer ";
 			errMsg += PrototypeTag;
 			PRINT_LOG(L"Error", errMsg.c_str());

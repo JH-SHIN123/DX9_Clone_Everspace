@@ -1,20 +1,15 @@
 #pragma once
-#ifndef __SKYBOX_H__
+#ifndef __BOSS_SPAWN_MONSTER_H__
 
 #include "GameObject.h"
 
-/* 엔진에 있는 클래스를 전방선언할 때!! */
-BEGIN(Engine)
-class CCamera;
-END
-
 USING(Engine)
-class CSkybox final : public CGameObject
+class CBoss_Spawn_Monster final : public CGameObject
 {
-private:
-	explicit CSkybox(LPDIRECT3DDEVICE9 pDevice);
-	explicit CSkybox(const CSkybox& other);
-	virtual ~CSkybox() = default;
+public:
+	explicit CBoss_Spawn_Monster(LPDIRECT3DDEVICE9 pDevice);
+	explicit CBoss_Spawn_Monster(const CBoss_Spawn_Monster& other);
+	virtual ~CBoss_Spawn_Monster() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -27,21 +22,21 @@ private:
 	_uint Movement(_float fDeltaTime);
 
 public:
-	static CSkybox* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CBoss_Spawn_Monster* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
 private:
-	CVIBuffer*  m_pVIBuffer = nullptr;
+	//CVIBuffer_TerrainTexture* m_pTerrainBuffer = nullptr;
+	CTexture*	m_pTexture = nullptr;
 	CTransform* m_pTransform = nullptr;
-	CTexture*	m_pTexture = nullptr;	
-	CCamera* m_pCamera = nullptr;
+	CVIBuffer*  m_pVIBuffer = nullptr;
+	CCollideSphere* m_pCollide = nullptr;
 
 private:
-	D3DMATERIAL9 m_tMaterial;
-	_float4 vColorRGBA = { 0.8f, 0.f, 0.f, 0.f };
+	_float m_fSpawnTime = 2.f;
 
 };
 
-#define __SKYBOX_H__
+#define __BOSS_SPAWN_MONSTER_H__ 
 #endif

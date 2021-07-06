@@ -106,6 +106,12 @@
     <Filter Include="02.GameObject\08.Bullet\02.Boss\00.EnergyBall">
       <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster">
+      <UniqueIdentifier>{e78bf798-cc12-47ff-a895-e53d09a29172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\02.Boss_Warmhole">
+      <UniqueIdentifier>{23952399-75ac-4693-abdf-417bc1b3013f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObject\10.Light">
       <UniqueIdentifier>{f91d63e9-2824-4c32-b284-5bf6f7ffb353}</UniqueIdentifier>
     </Filter>
@@ -135,6 +141,15 @@
     </Filter>
     <Filter Include="02.GameObject\11.Planet">
       <UniqueIdentifier>{a1e0a8f8-7504-484a-b609-b432df6b753f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12.TargetMonster%28과녁%29">
+      <UniqueIdentifier>{ec3f8199-67e4-4bae-bdc8-a8e07ff027cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\13.Ring">
+      <UniqueIdentifier>{8ad1be28-6814-4d28-a03d-cf98acfa6bb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utilities\02.Material">
+      <UniqueIdentifier>{30c21b7f-470d-46f1-83f3-a507c17cce1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -219,11 +234,26 @@
     <ClInclude Include="..\Headers\Player_Missile.h">
       <Filter>02.GameObject\08.Bullet\02.Player_Missile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Boss_Spawn_Monster.h">
+      <Filter>02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Boss_Warmhole.h">
+      <Filter>02.GameObject\07.Boss_Monster\02.Boss_Warmhole</Filter>
+    </ClInclude>
     <ClInclude Include="..\Headers\CollisionHandler.h">
       <Filter>97.Utilities\01.Collision</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\PlayerLight.h">
       <Filter>02.GameObject\10.Light\PlayerLight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Ring.h">
+      <Filter>02.GameObject\13.Ring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\TargetMonster.h">
+      <Filter>02.GameObject\12.TargetMonster%28과녁%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\MaterialHandler.h">
+      <Filter>97.Utilities\02.Material</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\EffectHandler.h">
       <Filter>97.Utilities\02.Effect</Filter>
@@ -311,6 +341,12 @@
     <ClCompile Include="..\Codes\Player_Missile.cpp">
       <Filter>02.GameObject\08.Bullet\02.Player_Missile</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Boss_Spawn_Monster.cpp">
+      <Filter>02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Boss_Warmhole.cpp">
+      <Filter>02.GameObject\07.Boss_Monster\02.Boss_Warmhole</Filter>
+    </ClCompile>
     <ClCompile Include="..\Codes\CollisionHandler.cpp">
       <Filter>97.Utilities\01.Collision</Filter>
     </ClCompile>
@@ -319,6 +355,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\PlayerLight.cpp">
       <Filter>02.GameObject\10.Light\PlayerLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Ring.cpp">
+      <Filter>02.GameObject\13.Ring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\TargetMonster.cpp">
+      <Filter>02.GameObject\12.TargetMonster%28과녁%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\MaterialHandler.cpp">
+      <Filter>97.Utilities\02.Material</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\EffectHandler.cpp">
       <Filter>97.Utilities\02.Effect</Filter>
