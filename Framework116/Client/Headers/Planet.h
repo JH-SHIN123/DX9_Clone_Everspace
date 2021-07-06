@@ -34,6 +34,8 @@ private:
 
 private:
 	_float m_fSpawnTime = 2.f;
+	D3DMATERIAL9 m_tMatrial;
+	_float4 m_vRGBA = { 1.f,1.f,1.f,1.f };
 
 };
 

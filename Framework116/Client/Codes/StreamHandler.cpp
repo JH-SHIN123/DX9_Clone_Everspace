@@ -152,7 +152,7 @@ HRESULT CStreamHandler::Load_PassData_Map(const wstring& wstrFilePath)
 
 	while (true)
 	{
-		ReadFile(hFile, &tPassDataMap.wstrPrototypeTag, sizeof(wstring), &dwByte, nullptr);
+		ReadFile(hFile, &tPassDataMap.wstrPrototypeTag, sizeof(TCHAR*), &dwByte, nullptr);
 		ReadFile(hFile, &tPassDataMap.matWorld, sizeof(D3DXMATRIX), &dwByte, nullptr);
 		ReadFile(hFile, &tPassDataMap.wstrCloneName, sizeof(wstring), &dwByte, nullptr);
 		ReadFile(hFile, &tPassDataMap.Rotate, sizeof(_float3), &dwByte, nullptr);

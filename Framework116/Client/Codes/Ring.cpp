@@ -57,9 +57,12 @@ HRESULT CRing::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
-	TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
-	//TransformDesc.vPosition = { 0.f,3.f,-30.f };
+	TransformDesc.vPosition = { 50.f,10.f,100.f };
+	if (pArg != nullptr)
+	{
+		TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
+		TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
+	}
 
 	TransformDesc.fSpeedPerSec = 20.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);

@@ -151,6 +151,12 @@
     <Filter Include="02.GameObject\14.Planet">
       <UniqueIdentifier>{1889675a-4ff8-49d4-885a-09ebe36839b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\09.HUD\04.TutorialUI">
+      <UniqueIdentifier>{5c3ac12f-e17d-41c7-8771-302f615e6d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\05.MissionUI">
+      <UniqueIdentifier>{078845c1-2258-4768-9ea8-37c058281276}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -273,6 +279,9 @@
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\TutorialUI.h">
+      <Filter>02.GameObject\09.HUD\04.TutorialUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -382,6 +391,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\14.Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\TutorialUI.cpp">
+      <Filter>02.GameObject\09.HUD\04.TutorialUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

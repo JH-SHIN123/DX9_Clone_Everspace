@@ -29,10 +29,14 @@ private:
 
 	HRESULT Add_Layer_Ring(const wstring& LayerTag);
 	HRESULT Add_Layer_TargetMonster(const wstring& LayerTag);
+	HRESULT Add_Layer_Planet(const wstring& LayerTag);
+
+
 
 	// HUD
 	HRESULT Add_Layer_HUD(const wstring& LayerTag);
-	
+	HRESULT Add_Layer_TutorialUI(const wstring& LayerTag);
+
 
 
 public:

@@ -1,13 +1,18 @@
 #include "stdafx.h"
 #include "..\Headers\Planet.h"
+#include "MaterialHandler.h"
 
 CPlanet::CPlanet(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
+	ZeroMemory(&m_tMatrial, sizeof(D3DMATERIAL9));
+
+	CMaterialHandler::Set_RGBA(m_vRGBA, &m_tMatrial);
 }
 
 CPlanet::CPlanet(const CPlanet & other)
 	: CGameObject(other)
+	, m_tMatrial(other.m_tMatrial)
 {
 }
 
@@ -24,8 +29,8 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_VIBuffer_CubeTexture",
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Planet",
 		L"Com_VIBuffer",
 		(CComponent**)&m_pMesh)))
 	{
@@ -36,7 +41,7 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
-		L"Component_Texture_Monster",
+		L"Component_Texture_Planet_Jupiter",
 		L"Com_Texture",
 		(CComponent**)&m_pTexture)))
 	{
@@ -46,11 +51,16 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
-	TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
+	TransformDesc.vPosition = { 70.f, -20.f, 200.f };
+
+	if (pArg != nullptr)
+	{
+		TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
+		TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
+	}
 	TransformDesc.fSpeedPerSec = 20.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);
-	TransformDesc.vScale = { 2.f, 2.f, 2.f };
+	TransformDesc.vScale = { 1.f, 1.f, 1.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -93,7 +103,7 @@ HRESULT CPlanet::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CPlanet::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
-	Movement(fDeltaTime);
+	//Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
@@ -116,6 +126,7 @@ _uint CPlanet::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pTexture->Set_Texture(0);
+	m_pDevice->SetMaterial(&m_tMatrial);
 	m_pMesh->Render_Mesh();
 	// Test
 

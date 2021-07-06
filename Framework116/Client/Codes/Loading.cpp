@@ -26,6 +26,7 @@
 #include "LockOn.h"
 #include "Planet.h"
 #include "Meteor.h"
+#include "TutorialUI.h"
 #pragma endregion
 
 
@@ -579,21 +580,43 @@ HRESULT CLoading::Ready_Stage1()
 	// 행성 매쉬
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
-		L"Component_GeoMesh_Ring",
+		L"Component_GeoMesh_Planet",
 		CGeoMesh_Sphere::Create(m_pDevice, 50.f)))) 
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Ring");
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Planet");
 		return E_FAIL;
 	}
 	// 행성 이미지
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Planet_Jupiter",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/jupitermap.png"))))
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/jupitermap.jpg"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Planet_Jupiter");
 		return E_FAIL;
 	}
+
+
+	// 고리 내비게이션
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_TutorialUI",
+		CTutorialUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_TutorialUI");
+		return E_FAIL;
+	}
+	// UI 이미지
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Tutorial_Nevi",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/IMG_HUD_Marker_Turret_Peripheral.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Planet_Jupiter");
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 HRESULT CLoading::Ready_Map_Effect_Resources()
