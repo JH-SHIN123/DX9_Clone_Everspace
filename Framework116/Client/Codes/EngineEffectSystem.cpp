@@ -53,9 +53,6 @@ HRESULT CEngineEffectSystem::Ready_GameObject(void* pArg)
 {
 	CParticleSystem::Ready_GameObject(pArg);
 
-	for (size_t i = 0; i < m_iNumParticles; ++i)
-		AddParticle_ParticleSystem();
-
 	return S_OK;
 }
 

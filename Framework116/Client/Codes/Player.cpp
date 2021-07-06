@@ -3,6 +3,7 @@
 #include "Collision.h"
 #include "Pipeline.h"
 #include "EngineEffectSystem.h"
+#include "WingBoost_System.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
 	: CGameObject(pDevice)
@@ -13,6 +14,45 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
 CPlayer::CPlayer(const CPlayer & other)
 	: CGameObject(other)
 {
+}
+
+void CPlayer::Update_Effect()
+{
+	// Engine-Boost Effect
+	if (m_pLeftEngineEffect) {
+		_float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
+		vEnginePos += m_pTransform->Get_State(EState::Right) * m_vLeftEngineOffset.x;
+		vEnginePos += m_pTransform->Get_State(EState::Up) * m_vLeftEngineOffset.y;
+		vEnginePos += m_pTransform->Get_State(EState::Look) * m_vLeftEngineOffset.z;
+		m_pLeftEngineEffect->Set_EngineOffset(vEnginePos);
+		m_pLeftEngineEffect->Set_IsBoost(m_IsBoost);
+	}
+	if (m_pRightEngineEffect) {
+		_float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
+		vEnginePos += m_pTransform->Get_State(EState::Right) * m_vRightEngineOffset.x;
+		vEnginePos += m_pTransform->Get_State(EState::Up) * m_vRightEngineOffset.y;
+		vEnginePos += m_pTransform->Get_State(EState::Look) * m_vRightEngineOffset.z;
+		m_pRightEngineEffect->Set_EngineOffset(vEnginePos);
+		m_pRightEngineEffect->Set_IsBoost(m_IsBoost);
+	}
+
+	// Wing-Boost Effect
+	if (m_pLeftWingBoost) {
+		_float3 vWingPos = m_pTransform->Get_TransformDesc().vPosition;
+		vWingPos += m_pTransform->Get_State(EState::Right) * m_vLeftWingOffset.x;
+		vWingPos += m_pTransform->Get_State(EState::Up) * m_vLeftWingOffset.y;
+		vWingPos += m_pTransform->Get_State(EState::Look) * m_vLeftWingOffset.z;
+		m_pLeftWingBoost->Set_WingOffset(vWingPos);
+		m_pLeftWingBoost->Set_IsBoost(m_IsBoost);
+	}
+	if (m_pRightWingBoost) {
+		_float3 vWingPos = m_pTransform->Get_TransformDesc().vPosition;
+		vWingPos += m_pTransform->Get_State(EState::Right) * m_vRightWingOffset.x;
+		vWingPos += m_pTransform->Get_State(EState::Up) * m_vRightWingOffset.y;
+		vWingPos += m_pTransform->Get_State(EState::Look) * m_vRightWingOffset.z;
+		m_pRightWingBoost->Set_WingOffset(vWingPos);
+		m_pRightWingBoost->Set_IsBoost(m_IsBoost);
+	}
 }
 
 HRESULT CPlayer::Ready_GameObject_Prototype()
@@ -102,14 +142,17 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		}
 	}
 
-	// Add Engine Effect
-	CEffectHandler::Add_Layer_Effect_Engine((CGameObject**)&m_pLeftEngineEffect);
+	// Add Engine-Boost Effect
+	CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pLeftEngineEffect);
 	m_vLeftEngineOffset = { -1.4f, 0.9f, -6.7f };
-
-
-	CEffectHandler::Add_Layer_Effect_Engine((CGameObject**)&m_pRightEngineEffect);
+	CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pRightEngineEffect);
 	m_vRightEngineOffset = { 1.4f, 0.9f, -6.7f };
 	
+	// Add Wing-Boost Effect
+	CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pLeftWingBoost);
+	m_vLeftWingOffset = { 0.f, 0.f, 0.f };
+	CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pRightWingBoost);
+	m_vRightWingOffset = { 0.f, 0.f, 0.f };
 
 	return S_OK;
 }
@@ -132,22 +175,8 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	for (auto& collide : m_Collides) 
 		collide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 
-	if (m_pLeftEngineEffect) {
-		_float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
-		vEnginePos += m_pTransform->Get_State(EState::Right) * m_vLeftEngineOffset.x;
-		vEnginePos += m_pTransform->Get_State(EState::Up) * m_vLeftEngineOffset.y;
-		vEnginePos += m_pTransform->Get_State(EState::Look) * m_vLeftEngineOffset.z;
-		m_pLeftEngineEffect->Set_EngineEffect(vEnginePos);
-		m_pLeftEngineEffect->Set_IsBoost(m_IsBoost);
-	}
-	if (m_pRightEngineEffect) {
-		_float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
-		vEnginePos += m_pTransform->Get_State(EState::Right) * m_vRightEngineOffset.x;
-		vEnginePos += m_pTransform->Get_State(EState::Up) * m_vRightEngineOffset.y;
-		vEnginePos += m_pTransform->Get_State(EState::Look) * m_vRightEngineOffset.z;
-		m_pRightEngineEffect->Set_EngineEffect(vEnginePos);
-		m_pRightEngineEffect->Set_IsBoost(m_IsBoost);
-	}
+	// (순서 중요!) 이펙트 업데이트
+	Update_Effect();
 
 	return NO_EVENT;
 }
@@ -448,10 +477,23 @@ CGameObject * CPlayer::Clone(void * pArg/* = nullptr*/)
 
 void CPlayer::Free()
 {
-	if (m_pLeftEngineEffect)
+	if (m_pLeftEngineEffect) {
 		m_pLeftEngineEffect->Set_IsDead(true);
-	if (m_pRightEngineEffect)
+		m_pLeftEngineEffect = nullptr;
+	}
+	if (m_pRightEngineEffect) {
 		m_pRightEngineEffect->Set_IsDead(true);
+		m_pRightEngineEffect = nullptr;
+	}
+
+	if (m_pLeftWingBoost) {
+		m_pLeftWingBoost->Set_IsDead(true);
+		m_pLeftWingBoost = nullptr;
+	}
+	if (m_pRightWingBoost) {
+		m_pRightWingBoost->Set_IsDead(true);
+		m_pLeftWingBoost = nullptr;
+	}
 
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);

@@ -26,6 +26,7 @@
 #include "EngineEffectSystem.h"
 #include "LockOn.h"
 #include "Planet.h"
+#include "WingBoost_System.h"
 #pragma endregion
 
 
@@ -404,6 +405,16 @@ HRESULT CLoading::Ready_StageEffect()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_EngineEffectSystem");
 		return E_FAIL;
 	}
+
+	/* For.GameObject_WingBoostSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_WingBoostSystem",
+		CWingBoost_System::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_WingBoostSystem");
+		return E_FAIL;
+	}
 #pragma endregion
 
 #pragma region Components
@@ -435,10 +446,10 @@ HRESULT CLoading::Ready_StageEffect()
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
-		L"Component_Texture_Glow",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/glow.png"))))
+		L"Component_Texture_Boost",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/boost.png"))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Glow");
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Boost");
 		return E_FAIL;
 	}
 #pragma endregion

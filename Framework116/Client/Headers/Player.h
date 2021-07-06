@@ -11,6 +11,9 @@ public:
 	explicit CPlayer(const CPlayer& other);
 	virtual ~CPlayer() = default;
 
+private:
+	void Update_Effect();
+
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
 	virtual HRESULT Ready_GameObject(void * pArg = nullptr) override;
@@ -57,11 +60,17 @@ private: // 플레이어가 사용하실 변수님들.
 	_bool m_IsLazer = false;
 	_bool m_IsMissile = false;
 
-private: // Engine 
+private: // Engine Effect
 	_float3 m_vLeftEngineOffset = { 0.f, 0.f, 0.f };
 	_float3 m_vRightEngineOffset = { 0.f, 0.f, 0.f };
 	class CEngineEffectSystem* m_pLeftEngineEffect = nullptr;
 	class CEngineEffectSystem* m_pRightEngineEffect = nullptr;
+
+private: // Wing Effect
+	_float3 m_vLeftWingOffset = { 0.f, 0.f, 0.f };
+	_float3 m_vRightWingOffset = { 0.f, 0.f, 0.f };
+	class CWingBoost_System* m_pLeftWingBoost = nullptr;
+	class CWingBoost_System* m_pRightWingBoost = nullptr;
 
 private: // AlertArrow 관련
 	_uint Make_Arrow();

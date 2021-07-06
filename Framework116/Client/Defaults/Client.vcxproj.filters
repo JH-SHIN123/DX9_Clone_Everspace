@@ -130,9 +130,6 @@
     <Filter Include="02.GameObject\06.Particle\Follow">
       <UniqueIdentifier>{6b4389f6-3af0-4db3-9bb6-db9bdb2c7186}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\06.Particle\EngineEffect">
-      <UniqueIdentifier>{be95110a-b9c3-4575-9e9a-de07624eff64}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\11.Planet">
       <UniqueIdentifier>{a1e0a8f8-7504-484a-b609-b432df6b753f}</UniqueIdentifier>
     </Filter>
@@ -144,6 +141,12 @@
     </Filter>
     <Filter Include="02.GameObject\12.TargetMonster">
       <UniqueIdentifier>{ec3f8199-67e4-4bae-bdc8-a8e07ff027cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06.Particle\EngineBoost">
+      <UniqueIdentifier>{be95110a-b9c3-4575-9e9a-de07624eff64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06.Particle\WingBoost">
+      <UniqueIdentifier>{6840ecc0-5224-47b6-968b-27169f738624}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,10 +265,13 @@
       <Filter>02.GameObject\09.HUD\03.AlertArrow</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\EngineEffectSystem.h">
-      <Filter>02.GameObject\06.Particle\EngineEffect</Filter>
+      <Filter>02.GameObject\06.Particle\EngineBoost</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\11.Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\WingBoost_System.h">
+      <Filter>02.GameObject\06.Particle\WingBoost</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -372,10 +378,13 @@
       <Filter>02.GameObject\09.HUD\03.AlertArrow</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\EngineEffectSystem.cpp">
-      <Filter>02.GameObject\06.Particle\EngineEffect</Filter>
+      <Filter>02.GameObject\06.Particle\EngineBoost</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\11.Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\WingBoost_System.cpp">
+      <Filter>02.GameObject\06.Particle\WingBoost</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
