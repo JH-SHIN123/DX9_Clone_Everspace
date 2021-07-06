@@ -5,14 +5,10 @@
 CPlanet::CPlanet(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	ZeroMemory(&m_tMatrial, sizeof(D3DMATERIAL9));
-
-	CMaterialHandler::Set_RGBA(m_vRGBA, &m_tMatrial);
 }
 
 CPlanet::CPlanet(const CPlanet & other)
 	: CGameObject(other)
-	, m_tMatrial(other.m_tMatrial)
 {
 }
 
@@ -186,7 +182,6 @@ CGameObject* CPlanet::Clone(void* pArg)
 
 void CPlanet::Free()
 {
-	Safe_Release(m_pMesh);
 	Safe_Release(m_pModelMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
