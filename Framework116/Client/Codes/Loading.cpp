@@ -18,15 +18,12 @@
 #include "Bullet_Laser.h"
 #include "Bullet_EMP_Bomb.h"
 #include "Crosshair.h"
-<<<<<<< HEAD
 #include "Boss_Warmhole.h"
 #include "Boss_Spawn_Monster.h"
 #include "Ring.h"
 #include "TargetMonster.h"
-=======
 #include "FollowSystem.h"
 #include "LockOn.h"
->>>>>>> main
 #pragma endregion
 
 
