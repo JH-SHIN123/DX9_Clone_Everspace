@@ -12,6 +12,7 @@ LPDIRECT3DDEVICE9 CDevice_Manager::Get_Device() const
 {
 	return m_pDevice;
 }
+<<<<<<< HEAD
 LPD3DXFONT CDevice_Manager::Get_Font() const
 {
 	return m_pFont; 
@@ -19,6 +20,14 @@ LPD3DXFONT CDevice_Manager::Get_Font() const
 
 //vp |= D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED; 이거 바꿔줘야함!!
 //vp |= D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED; 이거 바꿔줘야함!!
+=======
+
+LPD3DXFONT CDevice_Manager::Get_Font() const
+{
+	return m_pFont;
+}
+
+>>>>>>> origin/main
 void CDevice_Manager::Render_Begin()
 {
 	m_pDevice->Clear(
@@ -114,15 +123,23 @@ HRESULT CDevice_Manager::Ready_Graphic_Device(HWND hWnd, _uint iWinCX, _uint iWi
 		PRINT_LOG(L"Error", L"Failed to CreateDevice");
 		return E_FAIL;
 	}
+<<<<<<< HEAD
 
 	if (FAILED(D3DXCreateFont(m_pDevice, 20, 0, FW_BOLD, 0, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS
+=======
+	if (FAILED(D3DXCreateFont(m_pDevice, 20, 0, FW_BOLD, 0,
+		FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS
+>>>>>>> origin/main
 		, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, TEXT("궁서"), &m_pFont)))
 	{
 		PRINT_LOG(L"Error", L"m_pFont's Creation Failed");
 		return E_FAIL;
 	}
+<<<<<<< HEAD
 
 	
+=======
+>>>>>>> origin/main
 	return S_OK;
 }
 //vp |= D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED; 이거 바꿔줘야함!!
@@ -133,7 +150,11 @@ void CDevice_Manager::Free()
 	// 단 순서 주의. 이 순서대로 지워 져야 한다. 	
 	if (Safe_Release(m_pFont))
 	{
+<<<<<<< HEAD
 		PRINT_LOG(L"Warning", L"Failed To Release m_pFont");
+=======
+		PRINT_LOG(L"Warning", L"Failed To Release m_pDevice");
+>>>>>>> origin/main
 	}
 	if (Safe_Release(m_pDevice))
 	{

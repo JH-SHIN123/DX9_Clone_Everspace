@@ -89,7 +89,7 @@ HRESULT CPlayer_Lazer::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"m_pPlayerTransform is nullptr");
 		return E_FAIL;
 	}
-
+	
 	if ((_bool)pArg == true)
 		m_IsLeft = true;
 	else

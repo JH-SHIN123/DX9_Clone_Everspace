@@ -21,9 +21,22 @@
 #include "Bullet_Laser.h"
 #include "Bullet_EMP_Bomb.h"
 #include "Crosshair.h"
+<<<<<<< HEAD
 #include"LobbyUI.h"
 #include"GatchaBox.h"
+=======
+#include "Boss_Warmhole.h"
+#include "Boss_Spawn_Monster.h"
+#include "Ring.h"
+#include "TargetMonster.h"
+#include "FollowSystem.h"
+#include "EngineEffectSystem.h"
+#include "LockOn.h"
+#include "Planet.h"
+#include "WingBoost_System.h"
+>>>>>>> origin/main
 #pragma endregion
+
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
 	: CScene(pDevice)
@@ -51,7 +64,7 @@ HRESULT CLoading::Ready_Scene()
 
 _uint CLoading::Update_Scene(_float fDeltaTime)
 {
-	CScene::Update_Scene(fDeltaTime);	
+	CScene::Update_Scene(fDeltaTime);
 
 	if (m_IsFinished)
 	{
@@ -113,7 +126,7 @@ void CLoading::Free()
 
 	CScene::Free(); // 2.부모 리소스 정리
 
-	
+
 }
 
 unsigned CLoading::ThreadMain(void * pArg)
@@ -132,7 +145,7 @@ unsigned CLoading::ThreadMain(void * pArg)
 		break;
 	default:
 		break;
-	}	
+	}
 
 	if (FAILED(hr))
 	{
@@ -141,7 +154,7 @@ unsigned CLoading::ThreadMain(void * pArg)
 	}
 
 	pLoading->m_IsFinished = true;
-	LeaveCriticalSection(&pLoading->m_CriticalSection);	
+	LeaveCriticalSection(&pLoading->m_CriticalSection);
 
 	return NO_EVENT;
 }
@@ -191,26 +204,6 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-	/* For.GameObject_ExplosionSystem */
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_ExplosionSystem",
-		CExplosionSystem::Create(m_pDevice))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_ExplosionSystem");
-		return E_FAIL;
-	}
-
-	/* For.GameObject_Particle_Laser */
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_LaserSystem",
-		CLaserSystem::Create(m_pDevice))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_LaserSystem");
-		return E_FAIL;
-	}
-
 	/* 임시 보스 몬스터 입니다. */
 	Ready_BossAndOthers();
 
@@ -225,6 +218,25 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/*  HUD LockOn 입니다 */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LockOn",
+		CLockOn::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_LockOn");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Planet */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
+		CPlanet::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
+		return E_FAIL;
+	}
 
 #pragma endregion
 
@@ -270,6 +282,16 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.Component_Texture_LockOn */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_LockOn",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/LockOn%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_LockOn");
+		return E_FAIL;
+	}
+
 	/* For.Component_Texture_Monster */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -294,7 +316,7 @@ HRESULT CLoading::Ready_StageResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Skybox",
-		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds",1))))
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
 		return E_FAIL;
@@ -319,8 +341,28 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_EnergyBall");
 		return E_FAIL;
 	}
-	Ready_HUD_Resources();
 
+	/* For.Component_Mesh_Earth */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Earth",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/Earth.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Planet",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/planet.X", L""))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+
+	Ready_HUD_Resources();
+	Ready_StageEffect();
 #pragma endregion
 
 	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
@@ -340,6 +382,7 @@ HRESULT CLoading::Ready_LobbyResources()
 		return E_FAIL;
 	}
 
+<<<<<<< HEAD
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Lobby_Skybox",
@@ -370,6 +413,100 @@ HRESULT CLoading::Ready_LobbyResources()
 		CGatchaBox::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_GatchaBox");
+=======
+	Ready_Stage1();
+
+	return S_OK;
+}
+
+HRESULT CLoading::Ready_StageEffect()
+{
+#pragma region GameObjects
+	/* For.GameObject_ExplosionSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		CExplosionSystem::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_ExplosionSystem");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_LaserSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LaserSystem",
+		CLaserSystem::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_LaserSystem");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_FollowSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_FollowSystem",
+		CFollowSystem::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_FollowSystem");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_EngineEffectSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_EngineEffectSystem",
+		CEngineEffectSystem::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_EngineEffectSystem");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_WingBoostSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_WingBoostSystem",
+		CWingBoost_System::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_WingBoostSystem");
+		return E_FAIL;
+	}
+#pragma endregion
+
+#pragma region Components
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Fire",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/fire.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Fire");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Plasma",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/plasma.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Plasma");
+		return E_FAIL;
+	}
+	
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Smoke",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/smoke.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Smoke");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Boost",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/boost.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Boost");
+>>>>>>> origin/main
 		return E_FAIL;
 	}
 #pragma endregion
@@ -489,6 +626,63 @@ HRESULT CLoading::Ready_HUD_Resources()
 	return S_OK;
 }
 
+HRESULT CLoading::Ready_Stage1()
+{
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_TargetMonster",
+		CTargetMonster::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Cylinder",
+		CGeoMesh_Cylinder::Create(m_pDevice, 5.f, 5.f, 0.01f))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Player_Lazer");
+		return E_FAIL;
+	}
+
+
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		CRing::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Ring",
+		CGeoMesh_Torus::Create(m_pDevice, 1.f, 10.f)))) //도넛의 두께와 지름
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Player_Lazer");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Ring",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Player/Player1.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_In_Bar");
+		return E_FAIL;
+	}
+}
+
+HRESULT CLoading::Ready_Map_Effect_Resources()
+{
+
+
+	return S_OK;
+}
+
 HRESULT CLoading::Ready_BossAndOthers()
 {
 	// boss
@@ -529,6 +723,35 @@ HRESULT CLoading::Ready_BossAndOthers()
 		return E_FAIL;
 	}
 
+<<<<<<< HEAD
+=======
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Billboard_Warmhole",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Billboard_Warmhole%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Billboard_Warmhole");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Boss_Warmhole",
+		CBoss_Warmhole::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Boss_Warmhole");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Boss_Spawn_Monster",
+		CBoss_Spawn_Monster::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Boss_Spawn_Monster");
+		return E_FAIL;
+	}
+>>>>>>> origin/main
 
 	return S_OK;
 }

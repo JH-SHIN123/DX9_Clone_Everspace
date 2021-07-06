@@ -43,8 +43,9 @@ void CCollisionHandler::Collision_SphereToSphere(const wstring& wstrDstLayerTag,
 			if (Check_Collides(dstCollides, srcCollides, fDstScaleRate, fSrcScaleRate))
 			{
 				// Ãæµ¹ OK
-				int i = 0;
-				return;
+				dst->Set_IsCollide(true);
+				src->Set_IsCollide(true);
+				break;
 			}
 		}
 	}

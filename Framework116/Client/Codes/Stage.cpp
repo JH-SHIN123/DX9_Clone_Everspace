@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Stage.h"
 #include "Camera.h"
+#include "StreamHandler.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
@@ -11,10 +12,9 @@ HRESULT CStage::Ready_Scene()
 {
 	CScene::Ready_Scene();
 
-	::SetWindowText(g_hWnd, L"Stage");
+	//CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/Stage1.mapInfo");
 
-	if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
-		return E_FAIL;
+	::SetWindowText(g_hWnd, L"Stage");
 
 	if (FAILED(Add_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
@@ -22,8 +22,31 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//
+	// 전역조명 : Directional Light
+	LIGHT_DESC lightDesc;
+	lightDesc.eLightType = ELightType::Directional;
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(85, 85, 85);
+	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
+
+	// 행성조명 : Point Light
+
+	// 플레이어 조명 : Sport Light
+	//lightDesc.eLightType = ELightType::SpotLight;
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(125, 125, 125);
+	//lightDesc.iLightIndex = 0;
+	//if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
+	//	return E_FAIL;
+
+
+	//if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
+	//	return E_FAIL;
+
+
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
@@ -34,6 +57,12 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
+	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
+		return E_FAIL;
+
+	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
+	//	return E_FAIL;
+
 	//UI_DESC uiDesc;
 	//uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
 	//uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
@@ -41,27 +70,18 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
 	//	return E_FAIL;
 
-
-	// 우주에서 태양광을 표현하기 위해선
-	// 포인트라이트 혹은 스포트라이트가 더 어울릴듯
-	LIGHT_DESC lightDesc;
-	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	lightDesc.iLightIndex = 0;
-	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
+		L"Layer_Planet")))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet In Layer");
 		return E_FAIL;
+	}
 
-	PARTICLESYSTEM_DESC pSystemDesc;
-	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	pSystemDesc.iNumParticles = 500;
-	pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-	pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
-	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
-	if (FAILED(Add_Layer_ExplosionSystem(L"Layer_ExplosionSystem", &pSystemDesc)))
-		return E_FAIL;
-
+	//PARTICLESYSTEM_DESC pSystemDesc;
 	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
+	//pSystemDesc.iNumParticles = 500;
 	//pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
 	//pSystemDesc.tResetAttribute.fParticleSpeed = 100.f;
 	//pSystemDesc.tResetAttribute.fLifeTime = 1.f;
@@ -75,19 +95,6 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
 
-	if (GetAsyncKeyState(L'O') & 0x8000)
-	{
-		PARTICLESYSTEM_DESC pSystemDesc;
-		pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-		pSystemDesc.iNumParticles = 500;
-		pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-		pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
-		pSystemDesc.tResetAttribute.fLifeTime = 2.f;
-		if (FAILED(Add_Layer_ExplosionSystem(L"Layer_Particle_Explosion", &pSystemDesc)))
-			return E_FAIL;
-
-	}
-
 	return _uint();
 }
 
@@ -96,7 +103,13 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 	CScene::LateUpdate_Scene(fDeltaTime);
 	
 
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Boss_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
+
+	// Ring
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
+
+	// TargetMonster
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
 
 	return _uint();
 }
@@ -201,11 +214,11 @@ HRESULT CStage::Add_Layer_Light(const wstring& LayerTag, const LIGHT_DESC* pLigh
 {
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
-		L"GameObject_DirectionalLight",
+		L"GameObject_Light",
 		LayerTag,
 		(void*)pLightDesc)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Directional Light In Layer");
+		PRINT_LOG(L"Error", L"Failed To Add Light In Layer");
 		return E_FAIL;
 	}
 
@@ -274,10 +287,42 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 	//	return E_FAIL;
 	//}
 
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Boss_Warmhole",
+	//	L"Layer_Boss_Warmhole")))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+	//	return E_FAIL;
+	//}
 
+	return S_OK;
+}
 
+HRESULT CStage::Add_Layer_Ring(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
+		return E_FAIL;
+	}
 
-	
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_TargetMonster(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_TargetMonster",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -323,7 +368,7 @@ HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
 	// Weapon Gatling -> 테두리 빼고 플레이어로 통합.
 
 	UI_DESC HUD_Boarder_Gatling;
-	HUD_Boarder_Gatling.tTransformDesc.vPosition = { -400.f, 435.f, 0.f };
+	HUD_Boarder_Gatling.tTransformDesc.vPosition = { -300.f, 435.f, 0.f };
 	HUD_Boarder_Gatling.tTransformDesc.vScale = { 201.f, 123.f, 0.f };
 	HUD_Boarder_Gatling.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_Gatling)))
@@ -332,14 +377,14 @@ HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
 	// Skill OverDrive
 
 	UI_DESC OverdriveHUD;
-	OverdriveHUD.tTransformDesc.vPosition = { -120.f, 435.f, 0.f };
+	OverdriveHUD.tTransformDesc.vPosition = { -20.f, 435.f, 0.f };
 	OverdriveHUD.tTransformDesc.vScale = { 130.f, 90.f, 0.f };
 	OverdriveHUD.wstrTexturePrototypeTag = L"Component_Texture_Overdrive_HUD";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &OverdriveHUD)))
 		return E_FAIL;
 
 	UI_DESC HUD_Boarder_OverDrive;
-	HUD_Boarder_OverDrive.tTransformDesc.vPosition = { -120.f, 435.f, 0.f };
+	HUD_Boarder_OverDrive.tTransformDesc.vPosition = { -20.f, 435.f, 0.f };
 	HUD_Boarder_OverDrive.tTransformDesc.vScale = { 201.f, 123.f, 0.f };
 	HUD_Boarder_OverDrive.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_OverDrive)))
@@ -347,14 +392,14 @@ HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
 
 	// Skill Shield
 	UI_DESC HUD_Shield_Battery;
-	HUD_Shield_Battery.tTransformDesc.vPosition = { 160.f, 435.f, 0.f };
+	HUD_Shield_Battery.tTransformDesc.vPosition = { 260.f, 435.f, 0.f };
 	HUD_Shield_Battery.tTransformDesc.vScale = { 130.f, 90.f, 0.f };
 	HUD_Shield_Battery.wstrTexturePrototypeTag = L"Component_Texture_Shield_Battery_HUD";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Shield_Battery)))
 		return E_FAIL;
 
 	UI_DESC HUD_Boarder_Shield;
-	HUD_Boarder_Shield.tTransformDesc.vPosition = { 160.f, 435.f, 0.f };
+	HUD_Boarder_Shield.tTransformDesc.vPosition = { 260.f, 435.f, 0.f };
 	HUD_Boarder_Shield.tTransformDesc.vScale = { 201.f, 123.f, 0.f };
 	HUD_Boarder_Shield.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_Shield)))

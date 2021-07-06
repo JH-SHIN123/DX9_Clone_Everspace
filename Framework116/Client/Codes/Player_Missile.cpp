@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Pipeline.h"
 #include "MainCam.h"
+#include "Collision.h"
 
 CPlayer_Missile::CPlayer_Missile(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 	: CGameObject(pDevice)
@@ -50,8 +51,9 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 200.f;
-	TransformDesc.vScale = { 1.f, 1.f, 1.f };
+	TransformDesc.fSpeedPerSec = 50.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
+	TransformDesc.vScale = { 0.3f, 0.3f, 0.2f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -91,11 +93,22 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
+	// 유도할 타겟.
+	m_pTargetTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Boss_Monster", L"Com_Transform");
+	Safe_AddRef(m_pTargetTransform);
+	if (nullptr == m_pTargetTransform)
+	{
+		PRINT_LOG(L"Error", L"m_pTargetTransform is nullptr");
+		return E_FAIL;
+	}
+
 	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
 	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
+	_float3 vPlayerRotate = m_pPlayerTransform->Get_TransformDesc().vRotate;
 
 	m_vMuzzlePos = vPlayerPos;
 	m_pTransform->Set_Position(m_vMuzzlePos);
+	m_pTransform->Set_Rotate(vPlayerRotate);
 
 	RAY ray;
 	CPipeline::CreatePickingRay(ray, g_hWnd, WINCX, WINCY, m_pDevice);
@@ -113,7 +126,8 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 	D3DXVec3Normalize(&m_vPlayerLook, &m_vPlayerLook);
 
 
-
+	// Add Effect
+	CEffectHandler::Add_Layer_Effect_Missile_Smoke(this, &m_pBulletParticle);
 
 	return S_OK;
 }
@@ -121,20 +135,49 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CPlayer_Missile::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
-	Movement(fDeltaTime);
+	// 발사되자 마자 유도안되게.
+	m_fBeforeHoming += fDeltaTime;
+
+	if (m_fBeforeHoming < 1.f)
+		Movement(fDeltaTime);
+	else
+	{
+		m_fAddSpeed += 0.01f;
+		m_fRotateSpeed += D3DXToRadian(15.f);
+		m_pTransform->Set_SpeedPerSec(m_fAddSpeed);
+		m_pTransform->Set_RotatePerSec(m_fRotateSpeed);
+		Homing(fDeltaTime);
+	}
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
-
-	m_fLifeTime += fDeltaTime;
-
-	if (m_fLifeTime >= 3.f)
-		return DEAD_OBJECT;
 	
+	// 아직 충돌하면 사라지게하는거 안했음!!
+	m_fLifeTime += fDeltaTime;
+	if (m_fLifeTime > 4.f)
+		return DEAD_OBJECT;
 	return NO_EVENT;
 }
 
 _uint CPlayer_Missile::LateUpdate_GameObject(_float fDeltaTime)
 {
+	if (m_IsCollide) {
+		m_IsDead = true;
+
+		if (m_pBulletParticle)
+			m_pBulletParticle->Set_IsDead(true);
+
+		return DEAD_OBJECT;
+	}
+
+	if (m_fLifeTime >= 2.f) {
+		m_IsDead = true;
+
+		if (m_pBulletParticle)
+			m_pBulletParticle->Set_IsDead(true);
+
+		return DEAD_OBJECT;
+	}
+
 	CGameObject::LateUpdate_GameObject(fDeltaTime);
 
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
@@ -162,32 +205,60 @@ _uint CPlayer_Missile::Render_GameObject()
 
 _uint CPlayer_Missile::Movement(_float fDeltaTime)
 {
-	_float4x4 matWorld;
-	matWorld = m_pPlayerTransform->Get_TransformDesc().matWorld;
+	m_pTransform->Go_Straight(fDeltaTime);
+	return _uint();
+}
 
-	matWorld._31 = m_vPlayerLook.x;
-	matWorld._32 = m_vPlayerLook.y;
-	matWorld._33 = m_vPlayerLook.z;
+_uint CPlayer_Missile::Homing(_float fDeltaTime)
+{
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
 
-	if (m_IsFirst)
-	{
-		_float3 vPlayerRotate = m_pPlayerTransform->Get_TransformDesc().vRotate;
-		m_pTransform->Set_Rotate(vPlayerRotate);
-		m_IsFirst = false;
-	}
-	m_pTransform->Set_WorldMatrix(matWorld);
+	_float3 vTargetDir = vTargetPos - vMyPos;
+	D3DXVec3Normalize(&vTargetDir, &vTargetDir);
+
+	_float3 vMyLook = m_pTransform->Get_State(EState::Look);
+	_float3 vMyUp = m_pTransform->Get_State(EState::Up);
+	D3DXVec3Normalize(&vMyLook, &vMyLook);
+
+	_float fCeta = D3DXVec3Dot(&vTargetDir, &vMyLook);
+	_float fRadianMax = D3DXToRadian(95.f);
+	_float fRadianMin = D3DXToRadian(85.f);
+
+	_float3 vMyRight, vMyLeft, vMissileUp, vMissileDown;
+	D3DXVec3Cross(&vMyRight, &vMyUp, &vMyLook);
+	D3DXVec3Cross(&vMyLeft, &vMyLook, &vMyUp);
+	D3DXVec3Cross(&vMissileUp, &vMyRight, &vMyLook);
+	D3DXVec3Cross(&vMissileDown, &vMyLook, &vMyRight);
+
+	D3DXVec3Normalize(&vMyRight, &vMyRight);
+	D3DXVec3Normalize(&vMyLeft, &vMyLeft);
+	D3DXVec3Normalize(&vMissileUp, &vMissileUp);
+	D3DXVec3Normalize(&vMissileDown, &vMissileDown);
+
+	_float fRight = D3DXVec3Dot(&vTargetDir, &vMyRight);
+	_float fLeft = D3DXVec3Dot(&vTargetDir, &vMyLeft);
+	_float fUp = D3DXVec3Dot(&vTargetDir, &vMissileUp);
+	_float fDown = D3DXVec3Dot(&vTargetDir, &vMissileDown);
+
+
+	if (fRight < fLeft)
+		m_pTransform->RotateY(-fDeltaTime);
+	else
+		m_pTransform->RotateY(fDeltaTime);
+
+	if (fUp < fDown)
+		m_pTransform->RotateX(-fDeltaTime);
+	else
+		m_pTransform->RotateX(fDeltaTime);
 
 	m_pTransform->Go_Straight(fDeltaTime);
-	
-
-
-
-
 	return _uint();
 }
 
 _uint CPlayer_Missile::Searching_Target(_float fDeltaTime)
 {
+
 	return _uint();
 }
 
@@ -217,11 +288,15 @@ CGameObject * CPlayer_Missile::Clone(void * pArg/* = nullptr*/)
 
 void CPlayer_Missile::Free()
 {
+	Safe_Release(m_pTargetTransform);
 	Safe_Release(m_pPlayerTransform);
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);
+
+	if (m_pBulletParticle)
+		m_pBulletParticle->Set_IsDead(true);
 
 	CGameObject::Free();
 }

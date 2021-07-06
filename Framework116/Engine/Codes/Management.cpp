@@ -105,6 +105,16 @@ LPDIRECT3DDEVICE9 CManagement::Get_Device() const
 
 	return m_pDevice_Manager->Get_Device();
 }
+LPD3DXFONT CManagement::Get_Font() const
+{
+	if (nullptr == m_pDevice_Manager)
+	{
+		PRINT_LOG(L"Error", L"Device Manager is nullptr");
+		return nullptr;
+	}
+
+	return m_pDevice_Manager->Get_Font();
+}
 
 LPD3DXFONT CManagement::Get_Font() const
 {
@@ -225,7 +235,7 @@ const CComponent * CManagement::Get_Component(const wstring & LayerTag, const ws
 
 HRESULT CManagement::Add_GameObject_Prototype(
 	EResourceType eType, 
-	const wstring & PrototypeTag, 
+	const TCHAR* PrototypeTag,
 	CGameObject * pPrototype)
 {
 	if (nullptr == m_pGameObject_Manager)
@@ -241,7 +251,8 @@ HRESULT CManagement::Add_GameObject_InLayer(
 	EResourceType eType, 
 	const wstring & PrototypeTag, 
 	const wstring & LayerTag, 
-	void * pArg)
+	void * pArg,
+	CGameObject** ppGameObject)
 {
 	if (nullptr == m_pGameObject_Manager)
 	{
@@ -249,7 +260,7 @@ HRESULT CManagement::Add_GameObject_InLayer(
 		return E_FAIL;
 	}
 
-	return m_pGameObject_Manager->Add_GameObject_InLayer(eType, PrototypeTag, LayerTag, pArg);
+	return m_pGameObject_Manager->Add_GameObject_InLayer(eType, PrototypeTag, LayerTag, pArg, ppGameObject);
 }
 
 HRESULT CManagement::Add_GameObject_InLayer_Tool(EResourceType eType, const wstring& PrototypeTag, const wstring& LayerTag, const int _iListboxIndex, void* pArg)

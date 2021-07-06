@@ -20,6 +20,7 @@ public:
 
 private:
 	_uint Movement(_float fDeltaTime);
+	_uint Homing(_float fDeltaTime);
 	_uint Searching_Target(_float fDeltaTime);
 
 public:
@@ -34,7 +35,7 @@ private:
 	CCollideSphere* m_pCollide = nullptr;
 
 private:
-	//CTransform* m_pTargetTransform = nullptr;
+	CTransform* m_pTargetTransform = nullptr;
 	CTransform* m_pPlayerTransform = nullptr;
 
 private:
@@ -43,6 +44,12 @@ private:
 	_float3 m_vMuzzlePos = {};
 	_float3 m_vPlayerLook = {};
 	_bool m_IsFirst = true;
+	CGameObject* m_pBulletParticle = nullptr;
+
+private:
+	_float m_fBeforeHoming = 0.f;
+	_float m_fAddSpeed = 50.f;
+	_float m_fRotateSpeed = D3DXToRadian(120.f);
 
 };
 

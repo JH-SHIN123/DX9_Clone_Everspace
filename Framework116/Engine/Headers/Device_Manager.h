@@ -21,7 +21,12 @@ private:
 
 public:
 	LPDIRECT3DDEVICE9 Get_Device() const;
+<<<<<<< HEAD
 	LPD3DXFONT Get_Font()const;
+=======
+	LPD3DXFONT		  Get_Font()const;
+
+>>>>>>> origin/main
 public:
 	//virtual void Func() final; /* virtual 함수에 final 키워드가 붙어있으면 더이상 자식이 오버라이딩 할 수 없다.  */
 	void Render_Begin();
