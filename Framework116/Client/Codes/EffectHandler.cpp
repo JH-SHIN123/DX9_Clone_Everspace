@@ -81,6 +81,36 @@ HRESULT CEffectHandler::Add_Layer_Effect_Missile_Smoke( CGameObject* pTarget, CG
 	return S_OK;
 }
 
+HRESULT CEffectHandler::Add_Layer_Effect_Bullet(CGameObject* pTarget, CGameObject** ppGameObject)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Smoke";
+	pSystemDesc.iNumParticles = 2;
+	pSystemDesc.tResetAttribute.fParticleSize = 1.2f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 5.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.4f;
+	pSystemDesc.tResetAttribute.fLifeTime = 0.2f;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 0.f,0.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 0.8f,0.8f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+	pSystemDesc.pTarget = pTarget;
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_FollowSystem",
+		L"Layer_FollowSystem",
+		(void*)&pSystemDesc,
+		(CGameObject**)ppGameObject)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Follow In Layer");
+	}
+
+	CGameObject* pGameObject = *ppGameObject;
+	Safe_Release(pGameObject);
+
+	return S_OK;
+}
+
 HRESULT CEffectHandler::Add_Layer_Effect_EngineBoost(CGameObject** ppGameObject)
 {
 	PARTICLESYSTEM_DESC pSystemDesc;
@@ -120,11 +150,11 @@ HRESULT CEffectHandler::Add_Layer_Effect_WingBoost(CGameObject** ppGameObject)
 	pSystemDesc.iNumParticles = 2;
 	pSystemDesc.tResetAttribute.fParticleSize = 0.6f;
 	pSystemDesc.tResetAttribute.fParticleSpeed = 0.01f;
-	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.003f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.0001f;
 	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
-	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 0.25f,0.25f };
-	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 0.25f,0.25f };
-	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 0.25f,0.25f };
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 0.05f,0.05f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 0.05f,0.05f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 0.05f,0.05f };
 
 	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
 		EResourceType::NonStatic,

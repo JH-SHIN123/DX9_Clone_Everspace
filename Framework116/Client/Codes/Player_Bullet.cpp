@@ -78,15 +78,16 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	// TESTÁß!!
+	// Offset ÁöÁ¤
 	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
 	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
-
+	_float3 vPlayerUp = m_pPlayerTransform->Get_State(EState::Up);
 	
 	if ((_bool)pArg == true)
-		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 5.f);
+		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 8.2f);
 	else
-		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 5.f);
+		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 8.2f);
+	m_vMuzzlePos += (vPlayerUp * - 5.2f);
 
 	m_pTransform->Set_Position(m_vMuzzlePos);
 
@@ -117,16 +118,17 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
 	D3DXVec3Normalize(&vRayDir, &vRayDir);
 
-
 	m_vPlayerLook = vRayDir;
 	D3DXVec3Normalize(&m_vPlayerLook, &m_vPlayerLook);
 
 	// Material Setting
-	m_tMaterial.Diffuse.r = m_tMaterial.Ambient.r = m_tMaterial.Specular.r = m_tMaterial.Emissive.r = 1.f;
-	m_tMaterial.Diffuse.g = m_tMaterial.Ambient.g = m_tMaterial.Specular.g = m_tMaterial.Emissive.g = 1.f;
+	m_tMaterial.Diffuse.r = m_tMaterial.Ambient.r = m_tMaterial.Specular.r = m_tMaterial.Emissive.r = 0.f;
+	m_tMaterial.Diffuse.g = m_tMaterial.Ambient.g = m_tMaterial.Specular.g = m_tMaterial.Emissive.g = 0.f;
 	m_tMaterial.Diffuse.b = m_tMaterial.Ambient.b = m_tMaterial.Specular.b = m_tMaterial.Emissive.b = 1.f;
 	m_tMaterial.Diffuse.a = m_tMaterial.Ambient.a = m_tMaterial.Specular.a = m_tMaterial.Emissive.a = 1.f;
 
+	// Add Effect
+	CEffectHandler::Add_Layer_Effect_Bullet(this, &m_pBulletParticle);
 
 	return S_OK;
 }
@@ -135,35 +137,39 @@ _uint CPlayer_Bullet::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
 
-	if (m_IsCollide) {
-		m_IsDead = true;
-
-		//if (m_pBulletParticle)
-		//	m_pBulletParticle->Set_IsDead(true);
-
-		return DEAD_OBJECT;
-	}
-
 	Movement(fDeltaTime);
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 
 	m_fLifeTime += fDeltaTime;
 
-	if (m_fLifeTime >= 2.f) {
-		m_IsDead = true;
-
-		//if (m_pBulletParticle)
-		//	m_pBulletParticle->Set_IsDead(true);
-
-		return DEAD_OBJECT;
-	}
-	
 	return NO_EVENT;
 }
 
 _uint CPlayer_Bullet::LateUpdate_GameObject(_float fDeltaTime)
 {
+	if (m_IsCollide) {
+		m_IsDead = true;
+
+		if (m_pBulletParticle) {
+			m_pBulletParticle->Set_IsDead(true);
+			m_pBulletParticle = nullptr;
+		}
+
+		return DEAD_OBJECT;
+	}
+
+	if (m_fLifeTime >= 2.f) {
+		m_IsDead = true;
+
+		if (m_pBulletParticle) {
+			m_pBulletParticle->Set_IsDead(true);
+			m_pBulletParticle = nullptr;
+		}
+
+		return DEAD_OBJECT;
+	}
+
 	CGameObject::LateUpdate_GameObject(fDeltaTime);
 
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
@@ -176,11 +182,9 @@ _uint CPlayer_Bullet::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
-	//m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pDevice->SetMaterial(&m_tMaterial);
 	m_pVIBuffer->Render_VIBuffer();
-	//m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 
 #ifdef _DEBUG // Render Collide
@@ -243,9 +247,11 @@ void CPlayer_Bullet::Free()
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pCollide);
-	//
-	//if (m_pBulletParticle)
-	//	m_pBulletParticle->Set_IsDead(true);
+
+	if (m_pBulletParticle) {
+		m_pBulletParticle->Set_IsDead(true);
+		m_pBulletParticle = nullptr;
+	}
 
 	CGameObject::Free();
 }

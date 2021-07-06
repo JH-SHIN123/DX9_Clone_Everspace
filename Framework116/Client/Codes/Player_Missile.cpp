@@ -163,8 +163,10 @@ _uint CPlayer_Missile::LateUpdate_GameObject(_float fDeltaTime)
 	if (m_IsCollide) {
 		m_IsDead = true;
 
-		if (m_pBulletParticle)
+		if (m_pBulletParticle) {
 			m_pBulletParticle->Set_IsDead(true);
+			m_pBulletParticle = nullptr;
+		}
 
 		return DEAD_OBJECT;
 	}
@@ -172,8 +174,10 @@ _uint CPlayer_Missile::LateUpdate_GameObject(_float fDeltaTime)
 	if (m_fLifeTime >= 2.f) {
 		m_IsDead = true;
 
-		if (m_pBulletParticle)
+		if (m_pBulletParticle) {
 			m_pBulletParticle->Set_IsDead(true);
+			m_pBulletParticle = nullptr;
+		}
 
 		return DEAD_OBJECT;
 	}
@@ -295,8 +299,11 @@ void CPlayer_Missile::Free()
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);
 
-	if (m_pBulletParticle)
+	if (m_pBulletParticle) {
 		m_pBulletParticle->Set_IsDead(true);
+		m_pBulletParticle = nullptr;
+	}
+
 
 	CGameObject::Free();
 }

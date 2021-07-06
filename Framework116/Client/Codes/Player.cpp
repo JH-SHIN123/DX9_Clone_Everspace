@@ -321,7 +321,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		if (m_iWeapon == WEAPON_MACHINEGUN)
 		{
 			m_fMachinegunFireDelay += fDeltaTime * m_fOverDrive;
-			if (m_fMachinegunFireDelay > 0.1f)
+			if (m_fMachinegunFireDelay > 0.15f)
 			{
 				if (m_IsLeft)
 					m_IsLeft = false;
