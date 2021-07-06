@@ -24,6 +24,8 @@
 #include "TargetMonster.h"
 #include "FollowSystem.h"
 #include "LockOn.h"
+#include "Planet.h"
+#include "Meteor.h"
 #pragma endregion
 
 
@@ -514,6 +516,7 @@ HRESULT CLoading::Ready_HUD_Resources()
 
 HRESULT CLoading::Ready_Stage1()
 {
+	// 과녁
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_TargetMonster",
@@ -523,6 +526,7 @@ HRESULT CLoading::Ready_Stage1()
 		return E_FAIL;
 	}
 
+	// 과녁매쉬
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_GeoMesh_Cylinder",
@@ -533,7 +537,7 @@ HRESULT CLoading::Ready_Stage1()
 	}
 
 
-
+	// 고리
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Ring",
@@ -543,6 +547,7 @@ HRESULT CLoading::Ready_Stage1()
 		return E_FAIL;
 	}
 
+	// 고리매쉬
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_GeoMesh_Ring",
@@ -552,12 +557,41 @@ HRESULT CLoading::Ready_Stage1()
 		return E_FAIL;
 	}
 
+	// 테스트용 이미지
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Ring",
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Player/Player1.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_In_Bar");
+		return E_FAIL;
+	}
+
+	// 행성
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
+		CPlanet::Create(m_pDevice)))) 
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
+		return E_FAIL;
+	}
+	// 행성 매쉬
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Ring",
+		CGeoMesh_Sphere::Create(m_pDevice, 50.f)))) 
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Ring");
+		return E_FAIL;
+	}
+	// 행성 이미지
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Planet_Jupiter",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/jupitermap.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Planet_Jupiter");
 		return E_FAIL;
 	}
 }
