@@ -451,14 +451,19 @@ _uint CPlayer::Make_Arrow()
 		_float v2Length = D3DXVec3Length(&v2);
 		fCeta = acosf(v1v2 / (v1Length * v2Length));
 
+		_bool IsArrowLeft;
+		_bool IsArrowUp;
 		_float fDegree = D3DXToDegree(fCeta);
 
 		if (fabs(fDegree) > 90.f)
 		{
-			//wstring abc = to_wstring(fDegree);
-			//PRINT_LOG(L"", abc.c_str());
-			m_pManagement->Add_GameObject_InLayer(EResourceType::Static, L"GameObject_AlertArrow", L"Layer_AlertArrow", (void*)(*iter));
-			++m_iCount;
+			if (IsArrow == false)
+			{
+				//wstring abc = to_wstring(fDegree);
+				//PRINT_LOG(L"", abc.c_str());
+				m_pManagement->Add_GameObject_InLayer(EResourceType::Static, L"GameObject_AlertArrow", L"Layer_AlertArrow", (void*)(*iter));
+				IsArrow = true;
+			}
 		}
 	}
 
