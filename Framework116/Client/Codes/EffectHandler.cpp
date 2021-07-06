@@ -46,9 +46,62 @@ HRESULT CEffectHandler::Add_Layer_Effect_Explosion(const _float3& _vPos, const _
 	return S_OK;
 }
 
+HRESULT CEffectHandler::Add_Layer_Effect_Bullet_Explosion(const _float3& _vPos)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Plasma";
+	pSystemDesc.iNumParticles = 5;
+	pSystemDesc.tResetAttribute.fParticleSize = 1.5f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 2.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.05f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+	pSystemDesc.tTransformDesc.vPosition = _vPos;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
+	}
+
+	return S_OK;
+}
+
 HRESULT CEffectHandler::Add_Layer_Effect_Missile_Head(CGameObject* pTarget, CGameObject** ppGameObject)
 {
-	return E_NOTIMPL;
+	// Normal
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Spark";
+	pSystemDesc.iNumParticles = 1;
+	pSystemDesc.tResetAttribute.fParticleSize = 2.f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 3.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.1f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 0.28f,0.28f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 0.28f,0.28f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 0.28f,0.28f };
+	pSystemDesc.pTarget = pTarget;
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_FollowSystem",
+		L"Layer_FollowSystem",
+		(void*)&pSystemDesc,
+		(CGameObject**)ppGameObject)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Follow In Layer");
+	}
+
+	CGameObject* pGameObject = *ppGameObject;
+	Safe_Release(pGameObject);
+
+	return S_OK;
 }
 
 HRESULT CEffectHandler::Add_Layer_Effect_Missile_Smoke( CGameObject* pTarget, CGameObject** ppGameObject)
@@ -77,6 +130,32 @@ HRESULT CEffectHandler::Add_Layer_Effect_Missile_Smoke( CGameObject* pTarget, CG
 
 	CGameObject* pGameObject = *ppGameObject;
 	Safe_Release(pGameObject);
+
+	return S_OK;
+}
+
+HRESULT CEffectHandler::Add_Layer_Effect_Missile_Explosion(const _float3& _vPos)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Spark";
+	pSystemDesc.iNumParticles = 10;
+	pSystemDesc.tResetAttribute.fParticleSize = 8.f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 15.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.05f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+	pSystemDesc.tTransformDesc.vPosition = _vPos;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 0.6f,0.6f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 0.6f,0.6f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 0.6f,0.6f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
+	}
 
 	return S_OK;
 }

@@ -14,8 +14,10 @@ public:
 	
 	static HRESULT Add_Layer_Effect_Missile_Head(class CGameObject* pTarget, class CGameObject** ppGameObject = nullptr);
 	static HRESULT Add_Layer_Effect_Missile_Smoke(class CGameObject* pTarget, class CGameObject** ppGameObject = nullptr);
+	static HRESULT Add_Layer_Effect_Missile_Explosion(const _float3& _vPos);
 	static HRESULT Add_Layer_Effect_Bullet(class CGameObject* pTarget, class CGameObject** ppGameObject = nullptr);
-	
+	static HRESULT Add_Layer_Effect_Bullet_Explosion(const _float3& _vPos);
+
 	static HRESULT Add_Layer_Effect_EngineBoost(class CGameObject** ppGameObject = nullptr);
 	static HRESULT Add_Layer_Effect_WingBoost(class CGameObject** ppGameObject = nullptr);
 
