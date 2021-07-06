@@ -146,6 +146,7 @@ _uint CPlayer::Render_GameObject()
 	m_pManagement->Get_Font()->DrawText(NULL
 		, str.c_str(), -1
 		, &rc, DT_CENTER, D3DXCOLOR(255, 0, 0, 255));
+
 #ifdef _DEBUG // Render Collide
 	//for (auto& collide : m_Collides)
 	//	collide->Render_Collide();
