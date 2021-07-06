@@ -2,6 +2,7 @@
 #include "..\Headers\Player.h"
 #include "Collision.h"
 #include "Pipeline.h"
+#include "EngineEffectSystem.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
 	: CGameObject(pDevice)
@@ -101,6 +102,15 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		}
 	}
 
+	// Add Engine Effect
+	CEffectHandler::Add_Layer_Effect_Engine((CGameObject**)&m_pLeftEngineEffect);
+	m_vLeftEngineOffset = { -1.4f, 0.9f, -6.7f };
+
+
+	CEffectHandler::Add_Layer_Effect_Engine((CGameObject**)&m_pRightEngineEffect);
+	m_vRightEngineOffset = { 1.4f, 0.9f, -6.7f };
+	
+
 	return S_OK;
 }
 
@@ -120,6 +130,22 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	// 충돌박스 업데이트
 	for (auto& collide : m_Collides) 
 		collide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
+
+	if (m_pLeftEngineEffect) {
+		_float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
+		vEnginePos += m_pTransform->Get_State(EState::Right) * m_vLeftEngineOffset.x;
+		vEnginePos += m_pTransform->Get_State(EState::Up) * m_vLeftEngineOffset.y;
+		vEnginePos += m_pTransform->Get_State(EState::Look) * m_vLeftEngineOffset.z;
+		m_pLeftEngineEffect->Set_EngineEffect(vEnginePos);
+	}
+	if (m_pRightEngineEffect) {
+		_float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
+		vEnginePos += m_pTransform->Get_State(EState::Right) * m_vRightEngineOffset.x;
+		vEnginePos += m_pTransform->Get_State(EState::Up) * m_vRightEngineOffset.y;
+		vEnginePos += m_pTransform->Get_State(EState::Look) * m_vRightEngineOffset.z;
+		m_pRightEngineEffect->Set_EngineEffect(vEnginePos);
+	}
+
 	return NO_EVENT;
 }
 
@@ -420,6 +446,11 @@ CGameObject * CPlayer::Clone(void * pArg/* = nullptr*/)
 
 void CPlayer::Free()
 {
+	if (m_pLeftEngineEffect)
+		m_pLeftEngineEffect->Set_IsDead(true);
+	if (m_pRightEngineEffect)
+		m_pRightEngineEffect->Set_IsDead(true);
+
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pController);

@@ -19,6 +19,7 @@
 #include "Bullet_EMP_Bomb.h"
 #include "Crosshair.h"
 #include "FollowSystem.h"
+#include "EngineEffectSystem.h"
 #include "LockOn.h"
 #pragma endregion
 
@@ -358,6 +359,16 @@ HRESULT CLoading::Ready_StageEffect()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_FollowSystem");
 		return E_FAIL;
 	}
+
+	/* For.GameObject_EngineEffectSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_EngineEffectSystem",
+		CEngineEffectSystem::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_EngineEffectSystem");
+		return E_FAIL;
+	}
 #pragma endregion
 
 #pragma region Components
@@ -387,15 +398,14 @@ HRESULT CLoading::Ready_StageEffect()
 		return E_FAIL;
 	}
 
-
-	//if (FAILED(m_pManagement->Add_Component_Prototype(
-	//	EResourceType::NonStatic,
-	//	L"Component_Texture_Glow",
-	//	CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/glow.png"))))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Glow");
-	//	return E_FAIL;
-	//}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Glow",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/glow.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Glow");
+		return E_FAIL;
+	}
 #pragma endregion
 
 	return S_OK;

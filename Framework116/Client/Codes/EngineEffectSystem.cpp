@@ -1,27 +1,24 @@
 #include "stdafx.h"
-#include "FollowSystem.h"
+#include "EngineEffectSystem.h"
 #include "Pipeline.h"
+#include "Player.h"
 
-CFollowSystem::CFollowSystem(LPDIRECT3DDEVICE9 pDevice)
+CEngineEffectSystem::CEngineEffectSystem(LPDIRECT3DDEVICE9 pDevice)
 	: CParticleSystem(pDevice)
 {
 }
 
-CFollowSystem::CFollowSystem(const CFollowSystem& other)
+CEngineEffectSystem::CEngineEffectSystem(const CEngineEffectSystem& other)
 	: CParticleSystem(other)
 {
 }
 
-void CFollowSystem::ResetParticle_ParticleSystem(PARTICLE_ATTRIBUTE& attribute)
+void CEngineEffectSystem::ResetParticle_ParticleSystem(PARTICLE_ATTRIBUTE& attribute)
 {
-	if (nullptr == m_pTarget) return;
-
-	CTransform* pTransform = (CTransform*)m_pTarget->Get_Component(L"Com_Transform");
+	if (nullptr == m_pTransform) return;
 
 	attribute.isAlive = true;
-
-	// target pos, target direction
-	attribute.vPos = pTransform->Get_State(EState::Position);
+	attribute.vPos = m_vEngineOffset;
 
 	_float3 min = _float3(-1.0f, -1.0f, -1.0f);
 	_float3 max = _float3(1.0f, 1.0f, 1.0f);
@@ -45,21 +42,24 @@ void CFollowSystem::ResetParticle_ParticleSystem(PARTICLE_ATTRIBUTE& attribute)
 	attribute.fLifeTime = m_tResetAttribute.fLifeTime;
 }
 
-HRESULT CFollowSystem::Ready_GameObject_Prototype()
+HRESULT CEngineEffectSystem::Ready_GameObject_Prototype()
 {
 	CParticleSystem::Ready_GameObject_Prototype();
 
 	return S_OK;
 }
 
-HRESULT CFollowSystem::Ready_GameObject(void* pArg)
+HRESULT CEngineEffectSystem::Ready_GameObject(void* pArg)
 {
 	CParticleSystem::Ready_GameObject(pArg);
+
+	for (size_t i = 0; i < m_iNumParticles; ++i)
+		AddParticle_ParticleSystem();
 
 	return S_OK;
 }
 
-_uint CFollowSystem::Update_GameObject(_float fDeltaTime)
+_uint CEngineEffectSystem::Update_GameObject(_float fDeltaTime)
 {
 	CParticleSystem::Update_GameObject(fDeltaTime);
 
@@ -88,12 +88,15 @@ _uint CFollowSystem::Update_GameObject(_float fDeltaTime)
 	}
 	RemoveDeadParticle_ParticleSystem();
 
-	return  m_pTransform->Update_Transform();
+	return m_pTransform->Update_Transform();
 }
 
-_uint CFollowSystem::LateUpdate_GameObject(_float fDeltaTime)
+_uint CEngineEffectSystem::LateUpdate_GameObject(_float fDeltaTime)
 {
-	if (m_IsDead) return DEAD_OBJECT;
+	if (IsDead_ParticleSystem()) {
+		m_IsDead = true;
+		return DEAD_OBJECT;
+	}
 
 	CParticleSystem::LateUpdate_GameObject(fDeltaTime);
 
@@ -103,7 +106,7 @@ _uint CFollowSystem::LateUpdate_GameObject(_float fDeltaTime)
 	return _uint();
 }
 
-_uint CFollowSystem::Render_GameObject()
+_uint CEngineEffectSystem::Render_GameObject()
 {
 	m_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
 	m_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
@@ -119,9 +122,9 @@ _uint CFollowSystem::Render_GameObject()
 	return _uint();
 }
 
-CFollowSystem* CFollowSystem::Create(LPDIRECT3DDEVICE9 pDevice)
+CEngineEffectSystem* CEngineEffectSystem::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	CFollowSystem* pInstance = new CFollowSystem(pDevice);
+	CEngineEffectSystem* pInstance = new CEngineEffectSystem(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Player");
@@ -131,9 +134,9 @@ CFollowSystem* CFollowSystem::Create(LPDIRECT3DDEVICE9 pDevice)
 	return pInstance;
 }
 
-CGameObject* CFollowSystem::Clone(void* pArg)
+CGameObject* CEngineEffectSystem::Clone(void* pArg)
 {
-	CFollowSystem* pClone = new CFollowSystem(*this); /* 복사 생성자 호출 */
+	CEngineEffectSystem* pClone = new CEngineEffectSystem(*this); /* 복사 생성자 호출 */
 	if (FAILED(pClone->Ready_GameObject(pArg)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Clone Player");
@@ -143,7 +146,7 @@ CGameObject* CFollowSystem::Clone(void* pArg)
 	return pClone;
 }
 
-void CFollowSystem::Free()
+void CEngineEffectSystem::Free()
 {
 	CParticleSystem::Free();
 }

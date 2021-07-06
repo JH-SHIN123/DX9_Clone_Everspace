@@ -56,9 +56,14 @@ private:
 	_bool m_IsLazer = false;
 	_bool m_IsMissile = false;
 
+private: // Engine
 	// Effect
 	_bool m_IsBoost = false;
 
+	_float3 m_vLeftEngineOffset = { 0.f, 0.f, 0.f };
+	_float3 m_vRightEngineOffset = { 0.f, 0.f, 0.f };
+	class CEngineEffectSystem* m_pLeftEngineEffect = nullptr;
+	class CEngineEffectSystem* m_pRightEngineEffect = nullptr;
 
 	// AlertArrow ฐüทร
 private:

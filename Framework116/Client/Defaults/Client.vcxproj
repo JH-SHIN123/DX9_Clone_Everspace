@@ -181,6 +181,7 @@
     <ClInclude Include="..\Headers\Loading.h" />
     <ClInclude Include="..\Headers\LockOn.h" />
     <ClInclude Include="..\Headers\Logo.h" />
+    <ClInclude Include="..\Headers\EngineEffectSystem.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\MainCam.h" />
     <ClInclude Include="..\Headers\Monster.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="..\Codes\Loading.cpp" />
     <ClCompile Include="..\Codes\LockOn.cpp" />
     <ClCompile Include="..\Codes\Logo.cpp" />
+    <ClCompile Include="..\Codes\EngineEffectSystem.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\MainCam.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />

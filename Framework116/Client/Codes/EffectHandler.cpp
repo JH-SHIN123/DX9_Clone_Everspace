@@ -80,3 +80,37 @@ HRESULT CEffectHandler::Add_Layer_Effect_Missile_Smoke( CGameObject* pTarget, CG
 
 	return S_OK;
 }
+
+HRESULT CEffectHandler::Add_Layer_Effect_Engine(CGameObject** ppGameObject)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Glow";
+	pSystemDesc.iNumParticles = 1;
+	pSystemDesc.tResetAttribute.fParticleSize = 0.7f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 2.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.2f;
+	pSystemDesc.tResetAttribute.fLifeTime = 0.5f;
+
+	// Normal
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 0.08f,0.08f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 0.08f,0.08f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 0.08f,0.08f };
+
+	// Boost시값 증가시키기
+
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_EngineEffectSystem",
+		L"Layer_EngineEffectSystem",
+		(void*)&pSystemDesc,
+		(CGameObject**)ppGameObject)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle LoopExplosion In Layer");
+	}
+
+	CGameObject* pGameObject = *ppGameObject;
+	Safe_Release(pGameObject);
+
+	return S_OK;
+}
