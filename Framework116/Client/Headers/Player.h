@@ -25,6 +25,7 @@ private:
 	void	KeyProcess(_float fDeltaTime);
 	_uint	Movement(_float fDeltaTime);
 	void	TimeOperation(const _float fDeltaTime);
+	void	Increase_Stamina(const _float fDeltaTime);
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData);
@@ -79,6 +80,15 @@ private: // AlertArrow 관련
 
 private: // HP, 스태미너 관련
 	class CHP_Bar* m_pHp_Bar = nullptr;
+	_float m_fHpLength = 256.f;
+
+
+	class CStamina_Bar* m_pStamina_Bar = nullptr;
+	_float m_fStamina = 100.f;
+	_float m_fFullStamina = 100.f;
+	_float m_fStaminaLength = 256.f;
+	_bool m_IsStaminaShrink = false;
+	_float m_fStaminaIncreaseDelay = 0.f;
 };
 
 #define __PLAYER_H__

@@ -160,6 +160,9 @@
     <Filter Include="02.GameObject\15.Asteroid">
       <UniqueIdentifier>{0f2d898c-4c85-4d14-8e5e-62e0a5845a28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\09.HUD\07.Stamina_Bar">
+      <UniqueIdentifier>{d26afb06-6587-4612-8786-de21ca95aa86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -295,6 +298,9 @@
     <ClInclude Include="..\Headers\Asteroid.h">
       <Filter>02.GameObject\15.Asteroid</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Stamina_Bar.h">
+      <Filter>02.GameObject\09.HUD\07.Stamina_Bar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -417,6 +423,9 @@
     <ClCompile Include="..\Codes\Planet.cpp" />
     <ClCompile Include="..\Codes\Asteroid.cpp">
       <Filter>02.GameObject\15.Asteroid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Stamina_Bar.cpp">
+      <Filter>02.GameObject\09.HUD\07.Stamina_Bar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

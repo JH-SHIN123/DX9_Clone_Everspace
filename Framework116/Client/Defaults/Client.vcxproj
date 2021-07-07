@@ -199,6 +199,7 @@
     <ClInclude Include="..\Headers\Ring.h" />
     <ClInclude Include="..\Headers\Skybox.h" />
     <ClInclude Include="..\Headers\Stage.h" />
+    <ClInclude Include="..\Headers\Stamina_Bar.h" />
     <ClInclude Include="..\Headers\StreamHandler.h" />
     <ClInclude Include="..\Headers\TargetMonster.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="..\Codes\Ring.cpp" />
     <ClCompile Include="..\Codes\Skybox.cpp" />
     <ClCompile Include="..\Codes\Stage.cpp" />
+    <ClCompile Include="..\Codes\Stamina_Bar.cpp" />
     <ClCompile Include="..\Codes\StreamHandler.cpp" />
     <ClCompile Include="..\Codes\TargetMonster.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />

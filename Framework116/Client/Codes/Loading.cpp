@@ -30,6 +30,7 @@
 #include "TutorialUI.h"
 #include "WingBoost_System.h"
 #include "HP_Bar.h"
+#include "Stamina_Bar.h"
 #include "Asteroid.h"
 #pragma endregion
 
@@ -239,6 +240,17 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_HP_Bar");
 		return E_FAIL;
 	}
+
+	/* For.GameObject_Stamina_Bar */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Stamina_Bar",
+		CStamina_Bar::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Stamina_Bar");
+		return E_FAIL;
+	}
+
 	/* For.GameObject_Planet */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -646,6 +658,16 @@ HRESULT CLoading::Ready_HUD_Resources()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HP/HP_Bar%d.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HP_Bar");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Stamina_Bar */ 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Stamina_Bar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HP/Stamina_Bar%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Stamina_Bar");
 		return E_FAIL;
 	}
 
