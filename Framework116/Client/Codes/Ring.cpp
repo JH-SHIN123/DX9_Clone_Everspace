@@ -8,9 +8,9 @@ CRing::CRing(LPDIRECT3DDEVICE9 pDevice)
 {
 	ZeroMemory(&m_tMaterial, sizeof(D3DMATERIAL9));
 
-	CMaterialHandler::Set_RGBA(0.4f, 0.2f, 0.5f, 0.f, &m_tMaterial);
+	CMaterialHandler::Set_RGBA(0.1f, 0.4f, 0.4f, 0.7f, &m_tMaterial);
 
-	m_tMaterial.Power = 1.f;
+	m_tMaterial.Power = 10.f;
 }
 
 CRing::CRing(const CRing & other)

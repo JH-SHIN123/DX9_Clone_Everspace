@@ -66,28 +66,31 @@ HRESULT CAsteroid::Ready_GameObject(void* pArg)
 		return E_FAIL;
 	}
 
-	// For.Com_Collide
-	BOUNDING_SPHERE BoundingSphere;
-	if (pDesc->tTransformDesc.vScale.x <= 2.f)
-		BoundingSphere.fRadius = 4.5f;
-	else if (pDesc->tTransformDesc.vScale.x <= 5.f)
-		BoundingSphere.fRadius = 5.f;
+	if (false == m_bDontMove) {
+		// For.Com_Collide
+		BOUNDING_SPHERE BoundingSphere;
+		if (pDesc->tTransformDesc.vScale.x <= 2.f)
+			BoundingSphere.fRadius = 4.5f;
+		else if (pDesc->tTransformDesc.vScale.x <= 5.f)
+			BoundingSphere.fRadius = 5.f;
 
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_CollideSphere",
-		L"Com_CollideSphere",
-		(CComponent**)&m_pCollide,
-		&BoundingSphere,
-		true)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
-		return E_FAIL;
+		if (FAILED(CGameObject::Add_Component(
+			EResourceType::Static,
+			L"Component_CollideSphere",
+			L"Com_CollideSphere",
+			(CComponent**)&m_pCollide,
+			&BoundingSphere,
+			true)))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
+			return E_FAIL;
+		}
+
+		m_vRandomRotateDir.x = (float)(rand() % 2);
+		m_vRandomRotateDir.y = (float)(rand() % 2);
+		m_vRandomRotateDir.z = (float)(rand() % 2);
+
 	}
-
-	m_vRandomRotateDir.x = (float)(rand() % 2);
-	m_vRandomRotateDir.y = (float)(rand() % 2);
-	m_vRandomRotateDir.z = (float)(rand() % 2);
 
 	return S_OK;
 }
@@ -100,7 +103,8 @@ _uint CAsteroid::Update_GameObject(_float fDeltaTime)
 	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
-	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
+	if (false == m_bDontMove)
+		m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	return NO_EVENT;
 }
 
