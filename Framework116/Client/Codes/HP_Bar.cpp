@@ -47,14 +47,10 @@ _uint CHP_Bar::Update_GameObject(_float fDeltaTime)
 
 _uint CHP_Bar::LateUpdate_GameObject(_float fDeltaTime)
 {
-
-	if (m_pTransform->Get_TransformDesc().vScale.x <= 0.f)
-	{
-		m_listCheckMonsters->front()->Set_IsDead(TRUE);
-		m_IsDead = true;
-	}
-
 	CUI::LateUpdate_GameObject(fDeltaTime);
+
+	if (m_IsDead)
+		return DEAD_OBJECT;
 
 	return _uint();
 }
@@ -66,9 +62,9 @@ _uint CHP_Bar::Render_GameObject()
 	return _uint();
 }
 
-void CHP_Bar::Set_Scale(_float _fDamage)
+void CHP_Bar::Set_ScaleX(_float _fDamage)
 {
-	m_pTransform->Set_ScaleX(m_pTransform->Get_TransformDesc().vScale.x - _fDamage);
+	m_pTransform->Set_ScaleX(m_pTransform->Get_TransformDesc().vScale.x + _fDamage);
 }
 
 _uint CHP_Bar::Movement(_float fDeltaTime)
@@ -78,11 +74,12 @@ _uint CHP_Bar::Movement(_float fDeltaTime)
 
 _uint CHP_Bar::Adjust_Pos(_float fDeltaTime)
 {
-	// 일단 보스만. HP바 만들때 아규먼트 하나 더 넘겨야할까? hp_bar 만든애가 누군지 알아야대서??
 
-	m_listCheckMonsters = m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster");
-	_float3 vTargetPos = m_listCheckMonsters->front()->Get_Collides()->front()->Get_BoundingSphere().Get_Position();
-
+	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() != 0)
+	{
+		m_listCheckMonsters = m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster");
+		vTargetPos = m_listCheckMonsters->front()->Get_Collides()->front()->Get_BoundingSphere().Get_Position();
+	}
 	//////////////////3d좌표를 2d좌표로////////////////////////////
 	D3DVIEWPORT9 vp2;
 	m_pDevice->GetViewport(&vp2);

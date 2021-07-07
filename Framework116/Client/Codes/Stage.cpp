@@ -2,6 +2,7 @@
 #include "..\Headers\Stage.h"
 #include "Camera.h"
 #include "StreamHandler.h"
+#include "Asteroid.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
@@ -27,7 +28,7 @@ HRESULT CStage::Ready_Scene()
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
 	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	lightDesc.tLightColor = D3DCOLOR_XRGB(85, 85, 85);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(160, 160, 160);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -40,10 +41,8 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 	//	return E_FAIL;
 
-
 	//if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
 	//	return E_FAIL;
-
 
 	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 	//	return E_FAIL;
@@ -69,30 +68,21 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
 		return E_FAIL;
 
-	//UI_DESC uiDesc;
-	//uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
-	//uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
-	//uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	//if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
-	//	return E_FAIL;
 
+	// TEST Component_Mesh_Rock_Generic_001
+	ASTEROID_DESC pDesc;
+	pDesc.pMeshTag = L"Component_Mesh_Rock_Generic_001";
+	pDesc.tTransformDesc.vPosition = { 0.f,0.f,0.f };
+	pDesc.tTransformDesc.vScale = { 5.f,5.f,5.f };
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
-		L"GameObject_Planet",
-		L"Layer_Planet")))
+		L"GameObject_Asteroid",
+		L"Layer_Asteroid",
+		(void*)&pDesc)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet In Layer");
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid In Layer");
 		return E_FAIL;
 	}
-
-	//PARTICLESYSTEM_DESC pSystemDesc;
-	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	//pSystemDesc.iNumParticles = 500;
-	//pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-	//pSystemDesc.tResetAttribute.fParticleSpeed = 100.f;
-	//pSystemDesc.tResetAttribute.fLifeTime = 1.f;
-	//if (FAILED(Add_Layer_LaserSystem(L"Layer_LaserSystem", &pSystemDesc)))
-	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -113,6 +103,7 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 
 	// Monster
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
 
 	// Ring
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");

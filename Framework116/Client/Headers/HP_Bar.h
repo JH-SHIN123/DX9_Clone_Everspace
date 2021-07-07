@@ -19,7 +19,8 @@ public:
 	virtual _uint Render_GameObject() override;
 
 public:
-	void Set_Scale(_float _fDamage);
+	// ÇÇ±ð´Â¿ëµµ!
+	void Set_ScaleX(_float _fDamage);
 
 private:
 	_uint Movement(_float fDeltaTime);
@@ -32,6 +33,7 @@ public:
 
 private:
 	const list<class CGameObject*>* m_listCheckMonsters = nullptr;
+	_float3 vTargetPos = {};
 
 	
 };

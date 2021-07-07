@@ -61,7 +61,7 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = _float3(100.f, 3.f, 50.f);
+	TransformDesc.vPosition = _float3(900.f, 3.f, 50.f);
 	TransformDesc.fSpeedPerSec = 2.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(10.f);
 	TransformDesc.vScale = { 10.f,10.f,30.f };
@@ -146,10 +146,18 @@ _uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
 		return UPDATE_ERROR;
 
-	if (m_IsCollide) {
+	if (m_fHp <= 0.f)
+	{
 		CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_State(EState::Position), 1.f);
+		m_IsDead = true;
+		m_pHp_Bar->Set_IsDead(TRUE);
+		return DEAD_OBJECT;
+	}
+	if (m_IsCollide) {
+		//CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_State(EState::Position), 1.f);
 		// 여기 데미지 넣어야함.
-		m_pHp_Bar->Set_Scale(2.f);
+ 		m_pHp_Bar->Set_ScaleX(-100.f / 10);
+		m_fHp -= 100.f;
 		m_IsCollide = false;
 	}
 
@@ -545,7 +553,7 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 	_float3 vDir = vMonsterPos - vPlayerPos;
 	_float fDist = D3DXVec3Length(&vDir);
 
-	if (fDist < 40.f)
+	if (fDist < 300.f)
 	{
 		if (m_IsHPBar == false)
 		{
@@ -568,7 +576,7 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 			ptBoss.y = 1.f * (WINCY / 2) + vMonsterPos.y;
 			ptBoss.z = 0.f;
 			//////////////////////////////////////////////////////////////////
-			// 감지범위에 들어오게 되면 HP_Bar 생성
+			// 감지범위에 들어오게 되면 HP_Bar 생성!
 			
 			CGameObject* pGameObject = nullptr;
 

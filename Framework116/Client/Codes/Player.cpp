@@ -150,9 +150,10 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	
 	// Add Wing-Boost Effect
 	CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pLeftWingBoost);
-	m_vLeftWingOffset = { 0.f, 0.f, 0.f };
+	m_vLeftWingOffset = { -8.2f, -1.5f, -2.f };
 	CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pRightWingBoost);
-	m_vRightWingOffset = { 0.f, 0.f, 0.f };
+	m_vRightWingOffset = { 8.2f, -1.5f, -2.f };
+
 
 	return S_OK;
 }
@@ -321,7 +322,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		if (m_iWeapon == WEAPON_MACHINEGUN)
 		{
 			m_fMachinegunFireDelay += fDeltaTime * m_fOverDrive;
-			if (m_fMachinegunFireDelay > 0.1f)
+			if (m_fMachinegunFireDelay > 0.15f)
 			{
 				if (m_IsLeft)
 					m_IsLeft = false;
