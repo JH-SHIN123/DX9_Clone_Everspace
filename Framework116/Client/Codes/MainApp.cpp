@@ -174,6 +174,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		return E_FAIL;
 	}
 
+	/* For.Component_VIBuffer_RectTexture_HP_Bar */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_VIBuffer_RectTexture_HP_Bar",
+		CVIBuffer_RectTexture_HP_Bar::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_RectTexture_HP_Bar");
+		return E_FAIL;
+	}
+
 	/* For.Component_VIBuffer_CubeTexture */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,

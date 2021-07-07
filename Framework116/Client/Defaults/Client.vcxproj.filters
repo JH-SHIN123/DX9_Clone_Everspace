@@ -157,6 +157,9 @@
     <Filter Include="02.GameObject\06.Particle\WingBoost">
       <UniqueIdentifier>{6840ecc0-5224-47b6-968b-27169f738624}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\09.HUD\06.HP_Bar">
+      <UniqueIdentifier>{6948385c-e68c-422e-8994-985f535d4a7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -291,6 +294,9 @@
     <ClInclude Include="..\Headers\WingBoost_System.h">
       <Filter>02.GameObject\06.Particle\WingBoost</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\HP_Bar.h">
+      <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -412,6 +418,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\WingBoost_System.cpp">
       <Filter>02.GameObject\06.Particle\WingBoost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\HP_Bar.cpp">
+      <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

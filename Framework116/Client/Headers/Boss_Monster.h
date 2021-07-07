@@ -47,6 +47,9 @@ private: // Move_Mode
 	void RotateMy_Y(_float fDeltaTime);
 	void RotateMy_Z(_float fDeltaTime);
 
+private: // Add_HP_Bar
+	_uint Add_Hp_Bar(_float fDeltaTime);
+
 public:
 	static CBoss_Monster* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
@@ -87,6 +90,9 @@ private: /* Skills */
 
 	// Spawn Monster
 	_float m_fSpawnCoolTime = 0.f;
+
+	// HP Bar.. 추가할건데 추가해도 되나용?
+	_bool m_IsHPBar = false;
 };
 
 #define __BOSS_MONSTER_H__
