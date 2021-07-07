@@ -104,16 +104,17 @@ _uint CHP_Bar::Render_GameObject()
 	ptTargetPos.x = -1.f * (WINCX / 2) + TargetCollidePos.x;
 	ptTargetPos.y = 1.f * (WINCY / 2) + TargetCollidePos.y;
 	ptTargetPos.z = 0.f;
-
-	_float4x4 matView;
-	D3DXMatrixIdentity(&matView);
-	matView._11 = 350.f;
-	matView._22 = 350.f;
-	matView._41 = (_float)ptTargetPos.x;
-	matView._42 = (_float)ptTargetPos.y;
+	
+	m_pTransform->Set_Position(ptTargetPos);
+	//_float4x4 matView;
+	//D3DXMatrixIdentity(&matView);
+	//matView._11 = 350.f;
+	//matView._22 = 350.f;
+	//matView._41 = (_float)ptTargetPos.x;
+	//matView._42 = (_float)ptTargetPos.y;
 
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pDevice->SetTransform(D3DTS_WORLD, &matView);
+	//m_pDevice->SetTransform(D3DTS_WORLD, &matView);
 	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer();
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
