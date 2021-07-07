@@ -173,7 +173,6 @@
     <ClCompile Include="..\Codes\Dummy.cpp">
       <Filter>03.GameObject\04.Dummy</Filter>
     </ClCompile>
-    <ClCompile Include="..\HEADERS\COLLIDETOOL.CPP" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Toolbar.bmp">

@@ -234,16 +234,6 @@ HRESULT CMainView::Ready_StaticResources()
 		return E_FAIL;
 	}
 
-	/* For.Component_Mesh_BigShip */
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::Static,
-		L"Component_Mesh_BigShip",
-		CModelMesh::Create(m_pDevice, L"../../Resources/Models/ship.X", L"../../Resources/Textures/"))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
-		return E_FAIL;
-	}
-
 	/* For.Component_Mesh_Axis */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
@@ -281,16 +271,6 @@ HRESULT CMainView::Ready_StaticResources()
 		CGeoMesh_Cylinder::Create(m_pDevice, 1,1,1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Cylinder");
-		return E_FAIL;
-	}
-
-	/* For.Component_GeoMesh_Torus */
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::Static,
-		L"Component_GeoMesh_Torus",
-		CGeoMesh_Torus::Create(m_pDevice, 1,10))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Torus");
 		return E_FAIL;
 	}
 
@@ -333,67 +313,25 @@ HRESULT CMainView::Ready_StageResources()
 
 #pragma endregion
 
-//#pragma region Components
-//	/* For.Component_VIBuffer_TerrainColor */
-//	if (FAILED(m_pManagement->Add_Component_Prototype(
-//		EResourceType::NonStatic,
-//		L"Component_VIBuffer_TerrainColor",
-//		CVIBuffer_TerrainColor::Create(m_pDevice, 129, 129))))
-//	{
-//		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_TerrainColor");
-//		return E_FAIL;
-//	}
-//
-//	/* For.Component_VIBuffer_TerrainTexture */
-//	if (FAILED(m_pManagement->Add_Component_Prototype(
-//		EResourceType::NonStatic,
-//		L"Component_VIBuffer_TerrainTexture",
-//		CVIBuffer_TerrainTexture::Create(m_pDevice, 129, 129))))
-//	{
-//		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_TerrainTexture");
-//		return E_FAIL;
-//	}
-//
-//	/* For.Component_Texture_Terrain */
-//	if (FAILED(m_pManagement->Add_Component_Prototype(
-//		EResourceType::NonStatic,
-//		L"Component_Texture_Terrain",
-//		CTexture::Create(m_pDevice, ETextureType::Normal, L"../Resources/Terrain/Terrain%d.png"))))
-//	{
-//		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Terrain");
-//		return E_FAIL;
-//	}
-//
-//	/* For.Component_Texture_Monster */
-//	if (FAILED(m_pManagement->Add_Component_Prototype(
-//		EResourceType::NonStatic,
-//		L"Component_Texture_Monster",
-//		CTexture::Create(m_pDevice, ETextureType::Cube, L"../Resources/Monster%d.dds", 2))))
-//	{
-//		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Monster");
-//		return E_FAIL;
-//	}
-//
-//	/* For.Component_Texture_Grass */
-//	if (FAILED(m_pManagement->Add_Component_Prototype(
-//		EResourceType::NonStatic,
-//		L"Component_Texture_Grass",
-//		CTexture::Create(m_pDevice, ETextureType::Normal, L"../Resources/BillboardGrass%d.png"))))
-//	{
-//		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Grass");
-//		return E_FAIL;
-//	}
-//
-//	/* For.Component_Texture_Skybox */
-//	if (FAILED(m_pManagement->Add_Component_Prototype(
-//		EResourceType::NonStatic,
-//		L"Component_Texture_Skybox",
-//		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Skybox%d.dds", 1))))
-//	{
-//		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
-//		return E_FAIL;
-//	}
-//#pragma endregion
+#pragma region Components
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_BigShip",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/ship.X", L"../../Resources/Textures/PlayerShip/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Ring",
+		CGeoMesh_Torus::Create(m_pDevice, 1.f, 10.f))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Torus");
+		return E_FAIL;
+	}
+#pragma endregion
 
 	return S_OK;
 }

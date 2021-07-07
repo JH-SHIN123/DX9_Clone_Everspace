@@ -26,7 +26,6 @@ HRESULT CMainScene::Ready_Scene()
 	lightDesc.eLightType = ELightType::Directional;
 	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
 	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	lightDesc.iLightIndex = 0;
 	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
 		return E_FAIL;
 

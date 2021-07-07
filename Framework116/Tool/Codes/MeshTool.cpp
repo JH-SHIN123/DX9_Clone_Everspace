@@ -61,10 +61,10 @@ BOOL CMeshTool::OnInitDialog()
 	//// 설치할수 있는 기하도형 메시 리스트 채우기
 	m_listbox_InstallableMesh.ResetContent();
 
-	m_listbox_InstallableMesh.AddString(L"박스");
-	m_listbox_InstallableMesh.AddString(L"실린더");
-	m_listbox_InstallableMesh.AddString(L"스피어");
-	m_listbox_InstallableMesh.AddString(L"토러스");
+	m_listbox_InstallableMesh.AddString(L"플레이어");
+	m_listbox_InstallableMesh.AddString(L"운석1");
+	m_listbox_InstallableMesh.AddString(L"운석2");
+	m_listbox_InstallableMesh.AddString(L"링");
 
 	s_pInstance = this;
 
@@ -107,21 +107,21 @@ void CMeshTool::OnLbnSelchangeList_SelectContent()
 		return;
 	}
 
-	if (strContent == L"박스")
+	if (strContent == L"플레이어")
 	{
-		pPlayer->ChangeMesh(L"Component_GeoMesh_Cube");
+		pPlayer->ChangeMesh(L"Component_Mesh_BigShip");
 	}
-	else if (strContent == L"실린더")
+	else if (strContent == L"운석1")
 	{
 		pPlayer->ChangeMesh(L"Component_GeoMesh_Cylinder");
 	}
-	else if (strContent == L"스피어")
+	else if (strContent == L"운석2")
 	{
 		pPlayer->ChangeMesh(L"Component_GeoMesh_Sphere");
 	}
-	else if (strContent == L"토러스")
+	else if (strContent == L"링")
 	{
-		pPlayer->ChangeMesh(L"Component_GeoMesh_Torus");
+		pPlayer->ChangeMesh(L"Component_GeoMesh_Ring");
 	}
 
 }
