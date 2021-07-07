@@ -12,6 +12,9 @@ public:
 	virtual ~CMonster() = default;
 
 public:
+	enum State { Research, Warning, Attack, Die, End };
+
+public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
 	virtual HRESULT Ready_GameObject(void * pArg = nullptr) override;
 	virtual _uint Update_GameObject(_float fDeltaTime) override;
@@ -19,7 +22,11 @@ public:
 	virtual _uint Render_GameObject() override;
 
 private:
-	_uint Movement(_float fDeltaTime);
+	_uint	Movement(_float fDeltaTime);
+	_uint	Researching(_float fDeltaTime);
+
+private:
+	void	StateCheck();
 
 public:
 	static CMonster* Create(LPDIRECT3DDEVICE9 pDevice);
@@ -27,9 +34,16 @@ public:
 	virtual void Free() override;
 
 private:
-	CVIBuffer*  m_pVIBuffer = nullptr;
+	State m_eCurState = State::End;
+	State m_eNextState = State::End;
+
+private:
+	_float3 m_vCreatePosition = { 0.f,0.f,0.f };
+	_float3 m_vResearchRange = {0.f,0.f,0.f};
+
+private:
+	CModelMesh*  m_pModelMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
-	CTexture*	m_pTexture = nullptr;
 	CVIBuffer_TerrainTexture* m_pTerrainBuffer = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
 };

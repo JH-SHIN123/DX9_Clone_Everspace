@@ -64,6 +64,96 @@
     <Filter Include="02.GameObject\07.Boss_Monster">
       <UniqueIdentifier>{88b50869-9c1a-4425-ae6e-f5919ea9d218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\08.Bullet">
+      <UniqueIdentifier>{dddd415c-d79f-4cda-8a24-608ab1a97737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\00.Boss_Addon">
+      <UniqueIdentifier>{bfb875ea-b2a7-4d4a-bbed-0a6495b857a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\00.Player_Bullet">
+      <UniqueIdentifier>{7d5cac0b-1660-4c0f-b751-150a20b3d770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\01.Player_Lazer">
+      <UniqueIdentifier>{56eed6f8-b2dc-4d38-abca-147e087c3fbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Player_Missile">
+      <UniqueIdentifier>{dff417bd-e330-43c0-b8a0-558cadf4c97a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD">
+      <UniqueIdentifier>{b5258aa2-1843-44fe-9cb2-0404d0b7aa33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\00.Crosshair">
+      <UniqueIdentifier>{ad13f66b-199e-47bb-a198-9eb9f3aec96b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utilities\01.Collision">
+      <UniqueIdentifier>{ab97317d-a971-4291-8903-d4121dc9d1de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\01.Weapons">
+      <UniqueIdentifier>{fe21133b-9cea-4b43-a588-c27d7b949fb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster">
+      <UniqueIdentifier>{e78bf798-cc12-47ff-a895-e53d09a29172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\07.Boss_Monster\02.Boss_Warmhole">
+      <UniqueIdentifier>{23952399-75ac-4693-abdf-417bc1b3013f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\02.LockOn">
+      <UniqueIdentifier>{84e70570-19d0-4df2-9eda-52d39675beef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\03.AlertArrow">
+      <UniqueIdentifier>{37c54f37-cdab-4b8c-8598-2ec500978762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utilities\02.Effect">
+      <UniqueIdentifier>{f959bdb2-0912-43cb-adf8-ee417c86a864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06.Particle\Follow">
+      <UniqueIdentifier>{6b4389f6-3af0-4db3-9bb6-db9bdb2c7186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Utilities\02.Material">
+      <UniqueIdentifier>{30c21b7f-470d-46f1-83f3-a507c17cce1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\11.Ring">
+      <UniqueIdentifier>{8ad1be28-6814-4d28-a03d-cf98acfa6bb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\13.Meteor">
+      <UniqueIdentifier>{a1e7d7a9-e5bd-4814-b91c-66f719d0066f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14.Planet">
+      <UniqueIdentifier>{1889675a-4ff8-49d4-885a-09ebe36839b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\04.TutorialUI">
+      <UniqueIdentifier>{5c3ac12f-e17d-41c7-8771-302f615e6d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\05.MissionUI">
+      <UniqueIdentifier>{078845c1-2258-4768-9ea8-37c058281276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12.TargetMonster">
+      <UniqueIdentifier>{ec3f8199-67e4-4bae-bdc8-a8e07ff027cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06.Particle\EngineBoost">
+      <UniqueIdentifier>{be95110a-b9c3-4575-9e9a-de07624eff64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06.Particle\WingBoost">
+      <UniqueIdentifier>{6840ecc0-5224-47b6-968b-27169f738624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\03.Boss">
+      <UniqueIdentifier>{8ac5797a-a195-456d-a81a-0db08aed7682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\03.Boss\02.EMP_Bomb">
+      <UniqueIdentifier>{478d85d1-2c7c-48a4-9e74-aa8aae3cb2c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\03.Boss\02.EMP_Bomb\Bullet_EMP_Bomb_Explotion">
+      <UniqueIdentifier>{eea6f620-9d2d-4616-ba21-63ddd79ec6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\03.Boss\01.Laser">
+      <UniqueIdentifier>{20ac20a6-4343-4b16-a3bc-f8a01dc5f730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\03.Boss\00.EnergyBall">
+      <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\10.HUD_Effect">
+      <UniqueIdentifier>{2f511fc6-a5f3-45e3-83a9-dffebade5ee9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -123,8 +213,77 @@
     <ClInclude Include="..\Headers\StreamHandler.h">
       <Filter>97.Utilities\00.Stream</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Bullet_EnergyBall.h">
+      <Filter>02.GameObject\08.Bullet\03.Boss\00.EnergyBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Bullet_Laser.h">
+      <Filter>02.GameObject\08.Bullet\03.Boss\01.Laser</Filter>
+    </ClInclude>
     <ClInclude Include="..\Headers\Boss_Monster.h">
       <Filter>02.GameObject\07.Boss_Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Bullet_EMP_Bomb.h">
+      <Filter>02.GameObject\08.Bullet\03.Boss\02.EMP_Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Bullet.h">
+      <Filter>02.GameObject\08.Bullet\00.Player_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Lazer.h">
+      <Filter>02.GameObject\08.Bullet\01.Player_Lazer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Crosshair.h">
+      <Filter>02.GameObject\09.HUD\00.Crosshair</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Missile.h">
+      <Filter>02.GameObject\08.Bullet\02.Player_Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Boss_Spawn_Monster.h">
+      <Filter>02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Boss_Warmhole.h">
+      <Filter>02.GameObject\07.Boss_Monster\02.Boss_Warmhole</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\CollisionHandler.h">
+      <Filter>97.Utilities\01.Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Ring.h">
+      <Filter>02.GameObject\11.Ring</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\TargetMonster.h">
+      <Filter>02.GameObject\12.TargetMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\MaterialHandler.h">
+      <Filter>97.Utilities\02.Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\EffectHandler.h">
+      <Filter>97.Utilities\02.Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\FollowSystem.h">
+      <Filter>02.GameObject\06.Particle\Follow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\LockOn.h">
+      <Filter>02.GameObject\09.HUD\02.LockOn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\AlertArrow.h">
+      <Filter>02.GameObject\09.HUD\03.AlertArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Meteor.h">
+      <Filter>02.GameObject\13.Meteor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\TutorialUI.h">
+      <Filter>02.GameObject\09.HUD\04.TutorialUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\EngineEffectSystem.h">
+      <Filter>02.GameObject\06.Particle\EngineBoost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\11.Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\WingBoost_System.h">
+      <Filter>02.GameObject\06.Particle\WingBoost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\14.Planet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,11 +329,80 @@
     <ClCompile Include="..\Codes\LaserSystem.cpp">
       <Filter>02.GameObject\06.Particle\Lazer</Filter>
     </ClCompile>
-    <ClCompile Include="StreamHandler.cpp">
-      <Filter>97.Utilities\00.Stream</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Boss_Monster.cpp">
       <Filter>02.GameObject\07.Boss_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Bullet_EnergyBall.cpp">
+      <Filter>02.GameObject\08.Bullet\03.Boss\00.EnergyBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Bullet_Laser.cpp">
+      <Filter>02.GameObject\08.Bullet\03.Boss\01.Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Bullet_EMP_Bomb.cpp">
+      <Filter>02.GameObject\08.Bullet\03.Boss\02.EMP_Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Bullet.cpp">
+      <Filter>02.GameObject\08.Bullet\00.Player_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Lazer.cpp">
+      <Filter>02.GameObject\08.Bullet\01.Player_Lazer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Crosshair.cpp">
+      <Filter>02.GameObject\09.HUD\00.Crosshair</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Missile.cpp">
+      <Filter>02.GameObject\08.Bullet\02.Player_Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Boss_Spawn_Monster.cpp">
+      <Filter>02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Boss_Warmhole.cpp">
+      <Filter>02.GameObject\07.Boss_Monster\02.Boss_Warmhole</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\CollisionHandler.cpp">
+      <Filter>97.Utilities\01.Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\StreamHandler.cpp">
+      <Filter>97.Utilities\00.Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Ring.cpp">
+      <Filter>02.GameObject\11.Ring</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\TargetMonster.cpp">
+      <Filter>02.GameObject\12.TargetMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\MaterialHandler.cpp">
+      <Filter>97.Utilities\02.Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\EffectHandler.cpp">
+      <Filter>97.Utilities\02.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\FollowSystem.cpp">
+      <Filter>02.GameObject\06.Particle\Follow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\LockOn.cpp">
+      <Filter>02.GameObject\09.HUD\02.LockOn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\AlertArrow.cpp">
+      <Filter>02.GameObject\09.HUD\03.AlertArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Meteor.cpp">
+      <Filter>02.GameObject\13.Meteor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\TutorialUI.cpp">
+      <Filter>02.GameObject\09.HUD\04.TutorialUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\EngineEffectSystem.cpp">
+      <Filter>02.GameObject\06.Particle\EngineBoost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\11.Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\WingBoost_System.cpp">
+      <Filter>02.GameObject\06.Particle\WingBoost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\14.Planet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

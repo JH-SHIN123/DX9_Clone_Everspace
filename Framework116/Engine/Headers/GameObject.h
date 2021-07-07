@@ -17,10 +17,12 @@ public:
 	const _bool Get_IsEmptyCollides() const;
 	const _bool Get_IsPicking() const { return m_IsPicking; }
 	const _bool Get_IsDead() const { return m_IsDead; }
+	const _bool Get_IsCollide() const { return m_IsCollide; }
 
 public:
 	void Set_IsPicking(const _bool _isPicking) { m_IsPicking = _isPicking; };
 	void Set_IsDead(const _bool _isDead) { m_IsDead = _isDead; }
+	void Set_IsCollide(const _bool _isCollide) { m_IsCollide = _isCollide; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() = 0;	/* 프로토타입 초기화 */
@@ -39,6 +41,7 @@ public:
 
 protected:
 	_bool m_IsDead = false;
+	_bool m_IsCollide = false;
 
 protected:
 	LPDIRECT3DDEVICE9 m_pDevice = nullptr;

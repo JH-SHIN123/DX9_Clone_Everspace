@@ -4,7 +4,11 @@
 #include "Player.h"
 #include "MainCam.h"
 #include "UI.h"
-
+#include "Player_Bullet.h"
+#include "Player_Lazer.h"
+#include "Player_Missile.h"
+#include "Light.h"
+#include "AlertArrow.h"
 
 CMainApp::CMainApp()
 	: m_pManagement(CManagement::Get_Instance())
@@ -67,7 +71,6 @@ HRESULT CMainApp::Ready_StaticResources()
 		L"../../Resources/PrototypeData/StaticPlayer.object"
 		, EResourceType::Static);
 
-
 	/* For.GameObject_MainCam */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::Static,
@@ -88,13 +91,53 @@ HRESULT CMainApp::Ready_StaticResources()
 		return E_FAIL;
 	}
 
-	/* For.GameObject_DirectionalLight */
+	/* For.GameObject_Light */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::Static,
-		L"GameObject_DirectionalLight",
+		L"GameObject_Light",
 		CLight::Create(m_pDevice))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_DirectionalLight");
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Light");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Player_Bullet */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_Player_Bullet",
+		CPlayer_Bullet::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Player_Bullet");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Player_Lazer */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_Player_Lazer",
+		CPlayer_Lazer::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Player_Lazer");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Player_Missile */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_Player_Missile",
+		CPlayer_Missile::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Player_Missile");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_AlertArrow */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_AlertArrow",
+		CAlertArrow::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_AlertArrow");
 		return E_FAIL;
 	}
 
@@ -155,7 +198,7 @@ HRESULT CMainApp::Ready_StaticResources()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
 		L"Component_Mesh_BigShip",
-		CModelMesh::Create(m_pDevice,L"../../Resources/Models/ship.X", L"../../Resources/Textures/"))))
+		CModelMesh::Create(m_pDevice,L"../../Resources/Models/ship.X", L"../../Resources/Textures/PlayerShip/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
@@ -190,6 +233,56 @@ HRESULT CMainApp::Ready_StaticResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Controller");
 		return E_FAIL;
 	}
+
+	/* For.Component_Texture_Player_Bullet */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Texture_Player_Bullet",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Player_Bullet%d.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet");
+		return E_FAIL;
+	}
+
+	/* For.Component_GeoMesh_Player_Lazer */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Player_Lazer",
+		CGeoMesh_Cylinder::Create(m_pDevice, 0.1f, 0.1f, 0.1f))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Player_Lazer");
+		return E_FAIL;
+	}
+
+	/* For.Component_GeoMesh_Player_Missile */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_GeoMesh_Player_Missile",
+		CGeoMesh_Cylinder::Create(m_pDevice, 3.f, 2.f, 15.f))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Player_Lazer");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_AlertArrow */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Texture_AlertArrow",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/AlertArrow%d.png", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_AlertArrow");
+		return E_FAIL;
+	}
+
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Texture_Player_Lazer",
+	//	CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Player_Lazer%d.dds", 1))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet");
+	//	return E_FAIL;
+	//}
+
 	//For. Static Texture Component Prototype
 	if (FAILED(CStreamHandler::Load_PassData_Resource(L"../../Resources/Data/Static.txt", TRUE)))
 	{
@@ -206,6 +299,7 @@ HRESULT CMainApp::Setup_DefaultSetting()
 	//
 	// Set lighting related render states.
 	//
+
 	m_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
 	m_pDevice->SetRenderState(D3DRS_SPECULARENABLE, false);
 

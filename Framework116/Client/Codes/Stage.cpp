@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Stage.h"
 #include "Camera.h"
+#include "StreamHandler.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
@@ -11,10 +12,9 @@ HRESULT CStage::Ready_Scene()
 {
 	CScene::Ready_Scene();
 
-	::SetWindowText(g_hWnd, L"Stage");
+	//CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/Stage1.mapInfo");
 
-	if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
-		return E_FAIL;
+	::SetWindowText(g_hWnd, L"Stage");
 
 	if (FAILED(Add_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
@@ -22,8 +22,29 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//
+	// 전역조명 : Directional Light
+	LIGHT_DESC lightDesc;
+	lightDesc.eLightType = ELightType::Directional;
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(100, 100, 100);
+	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
+
+	// 행성조명 : Point Light
+
+	// 플레이어 조명 : Sport Light
+	//lightDesc.eLightType = ELightType::SpotLight;
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(125, 125, 125);
+	//lightDesc.iLightIndex = 0;
+	//if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
+	//	return E_FAIL;
+
+	//if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
+	//	return E_FAIL;
+
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
@@ -31,38 +52,20 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 		return E_FAIL;
 
-	UI_DESC uiDesc;
-	uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
-	uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
-	uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
+	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-	// 우주에서 태양광을 표현하기 위해선
-	// 포인트라이트 혹은 스포트라이트가 더 어울릴듯
-	LIGHT_DESC lightDesc;
-	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	lightDesc.iLightIndex = 0;
-	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
+	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
 		return E_FAIL;
 
-	PARTICLESYSTEM_DESC pSystemDesc;
-	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	pSystemDesc.iNumParticles = 500;
-	pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-	pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
-	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
-	if (FAILED(Add_Layer_ExplosionSystem(L"Layer_ExplosionSystem", &pSystemDesc)))
+	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
 		return E_FAIL;
 
-	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	//pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-	//pSystemDesc.tResetAttribute.fParticleSpeed = 100.f;
-	//pSystemDesc.tResetAttribute.fLifeTime = 1.f;
-	//if (FAILED(Add_Layer_LaserSystem(L"Layer_LaserSystem", &pSystemDesc)))
-	//	return E_FAIL;
+	if (FAILED(Add_Layer_Planet(L"Layer_Planet")))
+		return E_FAIL;
+
+	if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -71,25 +74,21 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
 
-	if (GetAsyncKeyState(L'O') & 0x8000)
-	{
-		PARTICLESYSTEM_DESC pSystemDesc;
-		pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-		pSystemDesc.iNumParticles = 500;
-		pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-		pSystemDesc.tResetAttribute.fParticleSpeed = 50.f;
-		pSystemDesc.tResetAttribute.fLifeTime = 2.f;
-		if (FAILED(Add_Layer_ExplosionSystem(L"Layer_Particle_Explosion", &pSystemDesc)))
-			return E_FAIL;
-
-	}
-
 	return _uint();
 }
 
 _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
+
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
+
+	// Ring
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
+
+	// TargetMonster
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
 
 	return _uint();
 }
@@ -182,11 +181,11 @@ HRESULT CStage::Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc)
 		PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
 		return E_FAIL;
 	}
-	if (FAILED(CStreamHandler::Load_PassData_UI(L"../../Resources/Data/Ui.txt",TRUE)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Load UI In Layer");
-		return E_FAIL;
-	}
+	//if (FAILED(CStreamHandler::Load_PassData_UI(L"../../Resources/Data/Ui.txt",TRUE)))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Load UI In Layer");
+	//	return E_FAIL;
+	//}
 	return S_OK;
 }
 
@@ -194,11 +193,11 @@ HRESULT CStage::Add_Layer_Light(const wstring& LayerTag, const LIGHT_DESC* pLigh
 {
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
-		L"GameObject_DirectionalLight",
+		L"GameObject_Light",
 		LayerTag,
 		(void*)pLightDesc)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Directional Light In Layer");
+		PRINT_LOG(L"Error", L"Failed To Add Light In Layer");
 		return E_FAIL;
 	}
 
@@ -242,9 +241,88 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 		L"GameObject_Boss_Monster",
 		LayerTag)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Skybox In Layer");
+		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
 		return E_FAIL;
 	}
+
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Boss_Warmhole",
+	//	L"Layer_Boss_Warmhole")))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+	//	return E_FAIL;
+	//}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Ring(const wstring & LayerTag)
+{
+
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
+		return E_FAIL;
+	}
+
+	TRANSFORM_DESC* pData = new TRANSFORM_DESC;
+	pData->vPosition = { 50.f, 0.f, 50.f };
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		LayerTag, pData)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
+		return E_FAIL;
+	}
+
+
+	pData->vPosition = { 130.f, 0.f, 90.f };
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Ring",
+		LayerTag, pData)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
+		return E_FAIL;
+	}
+
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_TargetMonster(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_TargetMonster",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Planet(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Planet",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -272,4 +350,142 @@ void CStage::Free()
 	/* 1.자식 리소스 먼저 정리하고난 뒤 */
 
 	CScene::Free(); // 2.부모 리소스 정리	
+}
+
+HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
+{
+	// Crosshair
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Crosshair",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Crosshair In Layer");
+		return E_FAIL;
+	}
+
+	// Weapon Gatling -> 테두리 빼고 플레이어로 통합.
+
+	UI_DESC HUD_Boarder_Gatling;
+	HUD_Boarder_Gatling.tTransformDesc.vPosition = { -300.f, 435.f, 0.f };
+	HUD_Boarder_Gatling.tTransformDesc.vScale = { 201.f, 123.f, 0.f };
+	HUD_Boarder_Gatling.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_Gatling)))
+		return E_FAIL;
+
+	// Skill OverDrive
+
+	UI_DESC OverdriveHUD;
+	OverdriveHUD.tTransformDesc.vPosition = { -20.f, 435.f, 0.f };
+	OverdriveHUD.tTransformDesc.vScale = { 130.f, 90.f, 0.f };
+	OverdriveHUD.wstrTexturePrototypeTag = L"Component_Texture_Overdrive_HUD";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &OverdriveHUD)))
+		return E_FAIL;
+
+	UI_DESC HUD_Boarder_OverDrive;
+	HUD_Boarder_OverDrive.tTransformDesc.vPosition = { -20.f, 435.f, 0.f };
+	HUD_Boarder_OverDrive.tTransformDesc.vScale = { 201.f, 123.f, 0.f };
+	HUD_Boarder_OverDrive.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_OverDrive)))
+		return E_FAIL;
+
+	// Skill Shield
+	UI_DESC HUD_Shield_Battery;
+	HUD_Shield_Battery.tTransformDesc.vPosition = { 260.f, 435.f, 0.f };
+	HUD_Shield_Battery.tTransformDesc.vScale = { 130.f, 90.f, 0.f };
+	HUD_Shield_Battery.wstrTexturePrototypeTag = L"Component_Texture_Shield_Battery_HUD";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Shield_Battery)))
+		return E_FAIL;
+
+	UI_DESC HUD_Boarder_Shield;
+	HUD_Boarder_Shield.tTransformDesc.vPosition = { 260.f, 435.f, 0.f };
+	HUD_Boarder_Shield.tTransformDesc.vScale = { 201.f, 123.f, 0.f };
+	HUD_Boarder_Shield.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder_Shield)))
+		return E_FAIL;
+
+	// Player Status (Shield, HP)
+
+	UI_DESC HUD_Shield;
+	HUD_Shield.tTransformDesc.vPosition = { -858.f, 460.f, 0.f };
+	HUD_Shield.tTransformDesc.vScale = { 30.f, 30.f, 0.f };
+	HUD_Shield.wstrTexturePrototypeTag = L"Component_Texture_HUD_Shield";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Shield)))
+		return E_FAIL;
+
+	UI_DESC HUD_Hp;
+	HUD_Hp.tTransformDesc.vPosition = { -858.f, 424.f, 0.f };
+	HUD_Hp.tTransformDesc.vScale = { 30.f, 30.f, 0.f };
+	HUD_Hp.wstrTexturePrototypeTag = L"Component_Texture_HUD_Hp";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Hp)))
+		return E_FAIL;
+
+	// 없는게 낫네 ㅋㅋ
+	//UI_DESC HUD_Boarder;
+	//HUD_Boarder.tTransformDesc.vPosition = { -295.f, 250.f, 0.f };
+	//HUD_Boarder.tTransformDesc.vScale = { 160.f, 61.f, 0.f };
+	//HUD_Boarder.wstrTexturePrototypeTag = L"Component_Texture_HUD_Boarder";
+	//if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Boarder)))
+	//	return E_FAIL;
+
+	UI_DESC HUD_Shield_InBar;
+	HUD_Shield_InBar.tTransformDesc.vPosition = { -700.f, 460.f, 0.f };
+	HUD_Shield_InBar.tTransformDesc.vScale = { 260.f, 12.f, 0.f };
+	HUD_Shield_InBar.wstrTexturePrototypeTag = L"Component_Texture_HUD_In_Bar";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Shield_InBar)))
+		return E_FAIL;
+
+	UI_DESC HUD_Shield_OutBar;
+	HUD_Shield_OutBar.tTransformDesc.vPosition = { -700.f, 460.f, 0.f };
+	HUD_Shield_OutBar.tTransformDesc.vScale = { 262.f, 14.f, 0.f };
+	HUD_Shield_OutBar.wstrTexturePrototypeTag = L"Component_Texture_HUD_Out_Bar";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Shield_OutBar)))
+		return E_FAIL;
+
+	UI_DESC HUD_HP_InBar;
+	HUD_HP_InBar.tTransformDesc.vPosition = { -700.f, 424.f, 0.f };
+	HUD_HP_InBar.tTransformDesc.vScale = { 260.f, 12.f, 0.f };
+	HUD_HP_InBar.wstrTexturePrototypeTag = L"Component_Texture_HUD_In_Bar";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_HP_InBar)))
+		return E_FAIL;
+
+	UI_DESC HUD_HP_OutBar;
+	HUD_HP_OutBar.tTransformDesc.vPosition = { -700.f, 424.f, 0.f };
+	HUD_HP_OutBar.tTransformDesc.vScale = { 262.f, 14.f, 0.f };
+	HUD_HP_OutBar.wstrTexturePrototypeTag = L"Component_Texture_HUD_Out_Bar";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_HP_OutBar)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_TutorialUI(const wstring & LayerTag)
+{
+	wstring TargetLayerTag = L"Layer_Ring";
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_TutorialUI",
+		LayerTag, &TargetLayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add TutorialUI In Layer");
+		return E_FAIL;
+	}
+
+	/*
+	#define WINCX 1920
+	#define WINCY 1080
+	*/
+
+	//UI_DESC HUD_TutorialUI;
+	//HUD_TutorialUI.tTransformDesc.vPosition = { -700.f, 424.f, 0.f };
+	//HUD_TutorialUI.tTransformDesc.vScale = { 262.f, 14.f, 0.f };
+	//HUD_TutorialUI.wstrTexturePrototypeTag = L"Component_Texture_Tutorial_Nevi";
+	//if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_TutorialUI)))
+	//	return E_FAIL;
+
+
+
+
+	return S_OK;
 }

@@ -28,3 +28,5 @@
 #include "../../Protocol.h"
 
 #include "StreamHandler.h"
+#include "CollisionHandler.h"
+#include "EffectHandler.h"
