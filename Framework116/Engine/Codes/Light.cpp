@@ -124,7 +124,7 @@ HRESULT CLight::Ready_GameObject(void* pArg)
 	// 일단 조명 한개만 설치할거임
 	m_pDevice->SetLight(s_iLightIndex, &m_tLight);
 	m_pDevice->LightEnable(s_iLightIndex, true);
-	//m_pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	//m_pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
 	//m_pDevice->SetRenderState(D3DRS_DIF, 0x00202020);
 
 	return S_OK;
