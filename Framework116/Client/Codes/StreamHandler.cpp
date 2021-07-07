@@ -136,41 +136,100 @@ HRESULT CStreamHandler::Load_PassData_Object(const wstring& wstrObjectPrototypeP
 
 HRESULT CStreamHandler::Load_PassData_Map(const wstring& wstrFilePath)
 {
-	HANDLE hFile = CreateFile(wstrFilePath.c_str(), GENERIC_READ
-		, NULL, NULL
-		, OPEN_EXISTING
-		, FILE_ATTRIBUTE_NORMAL, NULL);
+	wifstream fin;
+	fin.open(wstrFilePath.c_str());
 
-	if (INVALID_HANDLE_VALUE == hFile)
+	if (fin.fail())
 	{
-		MessageBox(g_hWnd, L"불러오기 실패!", L"실패", MB_OK);
+		PRINT_LOG(L"Path Error", wstrFilePath.c_str());
 		return E_FAIL;
 	}
 
-	PASSDATA_MAP tPassDataMap;
-	DWORD		dwByte = 0;
+	TCHAR szPrototypeTag[MAX_PATH] = L"";
+	TCHAR matWorld_11[MAX_PATH] = L"";
+	TCHAR matWorld_12[MAX_PATH] = L"";
+	TCHAR matWorld_13[MAX_PATH] = L"";
+	TCHAR matWorld_14[MAX_PATH] = L"";
+	TCHAR matWorld_21[MAX_PATH] = L"";
+	TCHAR matWorld_22[MAX_PATH] = L"";
+	TCHAR matWorld_23[MAX_PATH] = L"";
+	TCHAR matWorld_24[MAX_PATH] = L"";
+	TCHAR matWorld_31[MAX_PATH] = L"";
+	TCHAR matWorld_32[MAX_PATH] = L"";
+	TCHAR matWorld_33[MAX_PATH] = L"";
+	TCHAR matWorld_34[MAX_PATH] = L"";
+	TCHAR matWorld_41[MAX_PATH] = L"";
+	TCHAR matWorld_42[MAX_PATH] = L"";
+	TCHAR matWorld_43[MAX_PATH] = L"";
+	TCHAR matWorld_44[MAX_PATH] = L"";
+	TCHAR RotateX[MAX_PATH] = L"";
+	TCHAR RotateY[MAX_PATH] = L"";
+	TCHAR RotateZ[MAX_PATH] = L"";
+	TCHAR szCloneName[MAX_PATH] = L"";
+
+	wstring wstrProtoTypeName = L"";
+	_float4x4 matWorld;
+	_float3 vRot;
 
 	while (true)
 	{
-		ReadFile(hFile, &tPassDataMap.wstrPrototypeTag, sizeof(wstring), &dwByte, nullptr);
-		ReadFile(hFile, &tPassDataMap.matWorld, sizeof(D3DXMATRIX), &dwByte, nullptr);
-		ReadFile(hFile, &tPassDataMap.wstrCloneName, sizeof(wstring), &dwByte, nullptr);
-		ReadFile(hFile, &tPassDataMap.Rotate, sizeof(_float3), &dwByte, nullptr);
+		fin.getline(szPrototypeTag, MAX_PATH, L'|');
+		fin.getline(matWorld_11, MAX_PATH, '|');
+		fin.getline(matWorld_12, MAX_PATH, '|');
+		fin.getline(matWorld_13, MAX_PATH, '|');
+		fin.getline(matWorld_14, MAX_PATH, '|');
+		fin.getline(matWorld_21, MAX_PATH, '|');
+		fin.getline(matWorld_22, MAX_PATH, '|');
+		fin.getline(matWorld_23, MAX_PATH, '|');
+		fin.getline(matWorld_24, MAX_PATH, '|');
+		fin.getline(matWorld_31, MAX_PATH, '|');
+		fin.getline(matWorld_32, MAX_PATH, '|');
+		fin.getline(matWorld_33, MAX_PATH, '|');
+		fin.getline(matWorld_34, MAX_PATH, '|');
+		fin.getline(matWorld_41, MAX_PATH, '|');
+		fin.getline(matWorld_42, MAX_PATH, '|');
+		fin.getline(matWorld_43, MAX_PATH, '|');
+		fin.getline(matWorld_44, MAX_PATH, '|');
+		fin.getline(RotateX, MAX_PATH, '|');
+		fin.getline(RotateY, MAX_PATH, '|');
+		fin.getline(RotateZ, MAX_PATH, '|');
+		fin.getline(szCloneName, MAX_PATH);
 
-		if (0 == dwByte)
+		if (fin.eof())
 			break;
 
+		wstrProtoTypeName = szPrototypeTag;
+		matWorld._11 = (_float)_ttof(matWorld_11);
+		matWorld._12 = (_float)_ttof(matWorld_12);
+		matWorld._13 = (_float)_ttof(matWorld_13);
+		matWorld._14 = (_float)_ttof(matWorld_14);
+		matWorld._21 = (_float)_ttof(matWorld_21);
+		matWorld._22 = (_float)_ttof(matWorld_22);
+		matWorld._23 = (_float)_ttof(matWorld_23);
+		matWorld._24 = (_float)_ttof(matWorld_24);
+		matWorld._31 = (_float)_ttof(matWorld_31);
+		matWorld._32 = (_float)_ttof(matWorld_32);
+		matWorld._33 = (_float)_ttof(matWorld_33);
+		matWorld._34 = (_float)_ttof(matWorld_34);
+		matWorld._41 = (_float)_ttof(matWorld_41);
+		matWorld._42 = (_float)_ttof(matWorld_42);
+		matWorld._43 = (_float)_ttof(matWorld_43);
+		matWorld._44 = (_float)_ttof(matWorld_44);
+		vRot.x = (_float)_ttof(RotateX);
+		vRot.y = (_float)_ttof(RotateY);
+		vRot.z = (_float)_ttof(RotateZ);
+
 		TRANSFORM_DESC TransformDesc;
-		TransformDesc.vPosition = { tPassDataMap.matWorld._41, tPassDataMap.matWorld._42, tPassDataMap.matWorld._43 };
-		TransformDesc.vRotate = { tPassDataMap.Rotate.x, tPassDataMap.Rotate.y, tPassDataMap.Rotate.z };
-		TransformDesc.vScale = { tPassDataMap.matWorld._11, tPassDataMap.matWorld._22, tPassDataMap.matWorld._33 };
-		TransformDesc.matWorld = tPassDataMap.matWorld;
+		TransformDesc.vPosition = { matWorld._41, matWorld._42, matWorld._43 };
+		TransformDesc.vRotate = { vRot.x, vRot.y, vRot.z };
+		//TransformDesc.vScale = { matWorld._11, matWorld._22, matWorld._33 };
+		TransformDesc.matWorld = matWorld;
 
 		// EResourceType 파싱데이터에서 받아오기
-		Add_GameObject_Layer(EResourceType::NonStatic, tPassDataMap.wstrPrototypeTag, &TransformDesc);
+		Add_GameObject_Layer(EResourceType::NonStatic, wstrProtoTypeName, &TransformDesc);
 	}
 
-	CloseHandle(hFile);
+	fin.close();
 
 	return S_OK;
 }
@@ -207,9 +266,9 @@ HRESULT CStreamHandler::Load_PassData_UI(const wstring& wstrFilePath, const _boo
 			UiDesc.tTransformDesc.vScale = { ScaleX,ScaleY,0.f };
 			UiDesc.wstrTexturePrototypeTag = szTexturePrototypeTag;
 
-	
+
 			EResourceType eResourceType = (EResourceType)(!_isStatic);
-			
+
 			if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
 				eResourceType, L"GameObject_UI"
 				, L"Layer_UI", &UiDesc)))
@@ -274,18 +333,18 @@ HRESULT CStreamHandler::Load_PassData_Resource(const wstring& wstrFilePath, cons
 			wstring wstrTag = L"Component_Texture_";
 			wstrTag += pPathInfo.wstrPrototypeTag;
 			EResourceType eResourceType = (EResourceType)(!_isStatic);
-			
+
 			if (FAILED(CManagement::Get_Instance()->Add_Component_Prototype(
 				eResourceType, wstrTag,
 				CTexture::Create(CManagement::Get_Instance()->Get_Device()
-				, eType, pPathInfo.wstrFilePath.c_str()
-				,pPathInfo.dwTextureCount))))
-				{
-					wstring Err = L"Failed To Add " + wstrTag;
-					PRINT_LOG(L"Error", Err.c_str());
-					return E_FAIL;
-				}
-		
+					, eType, pPathInfo.wstrFilePath.c_str()
+					, pPathInfo.dwTextureCount))))
+			{
+				wstring Err = L"Failed To Add " + wstrTag;
+				PRINT_LOG(L"Error", Err.c_str());
+				return E_FAIL;
+			}
+
 		}
 
 	}
@@ -359,42 +418,55 @@ HRESULT CStreamHandler::Add_GameObject_Prototype(const wstring& wstrClassName, P
 	return S_OK;
 }
 
-HRESULT CStreamHandler::Add_GameObject_Layer(EResourceType eType, const wstring& PrototypeTag, void* pArg)
+HRESULT CStreamHandler::Add_GameObject_Layer(EResourceType eType, wstring PrototypeTag, void* pArg)
 {
+	wstring Prototype = L"GameObject_";
+	wstring Layer = L"Layer_";
+
 	wstring wstrPrototypeTag = L"GameObject_" + PrototypeTag;
-	int i = PrototypeTag.length();
-	if (i >= 999999)
-		return S_OK;
+	wstring wstrLayerTag = L"Layer_" + PrototypeTag;
 
-	if (wstrPrototypeTag == L"")
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		eType, 
+		wstrPrototypeTag,
+		wstrLayerTag, pArg))) 
 	{
-		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_Dummy", pArg))) {
-			wstring errMsg = L"Failed to Add Layer ";
-			errMsg += PrototypeTag;
-			PRINT_LOG(L"Error", errMsg.c_str());
-			return E_FAIL;
-		}
+		wstring errMsg = L"Failed to Add Layer ";
+		errMsg += PrototypeTag;
+		PRINT_LOG(L"Error", errMsg.c_str());
+		return E_FAIL;
 	}
+	
 
-	if (wstrPrototypeTag == L"GameObject_Ring")
-	{
-		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_Ring", pArg))) {
-			wstring errMsg = L"Failed to Add Layer ";
-			errMsg += PrototypeTag;
-			PRINT_LOG(L"Error", errMsg.c_str());
-			return E_FAIL;
-		}
-	}
+	//if (wstrPrototypeTag == L"GameObject_Ring")
+	//{
+	//	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_Ring", pArg))) {
+	//		wstring errMsg = L"Failed to Add Layer ";
+	//		errMsg += PrototypeTag;
+	//		PRINT_LOG(L"Error", errMsg.c_str());
+	//		return E_FAIL;
+	//	}
+	//}
 
-	if (wstrPrototypeTag == L"GameObject_TargetMonster")
-	{
-		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_TargetMonster", pArg))) {
-			wstring errMsg = L"Failed to Add Layer ";
-			errMsg += PrototypeTag;
-			PRINT_LOG(L"Error", errMsg.c_str());
-			return E_FAIL;
-		}
-	}
+	//if (wstrPrototypeTag == L"GameObject_TargetMonster")
+	//{
+	//	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_TargetMonster", pArg))) {
+	//		wstring errMsg = L"Failed to Add Layer ";
+	//		errMsg += PrototypeTag;
+	//		PRINT_LOG(L"Error", errMsg.c_str());
+	//		return E_FAIL;
+	//	}
+	//}
+
+	//if (wstrPrototypeTag == L"GameObject_Planet")
+	//{
+	//	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_Planet", pArg))) {
+	//		wstring errMsg = L"Failed to Add Layer ";
+	//		errMsg += PrototypeTag;
+	//		PRINT_LOG(L"Error", errMsg.c_str());
+	//		return E_FAIL;
+	//	}
+	//}
 
 	return S_OK;
 }

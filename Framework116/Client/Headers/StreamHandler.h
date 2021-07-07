@@ -19,7 +19,7 @@ public:
 
 private:
 	static HRESULT Add_GameObject_Prototype(const wstring& wstrClassName, PASSDATA_OBJECT* pPassDataObject, EResourceType eType);
-	static HRESULT Add_GameObject_Layer(EResourceType eType, const wstring& PrototypeTag, void* pArg);
+	static HRESULT Add_GameObject_Layer(EResourceType eType, wstring PrototypeTag, void* pArg);
 
 };
 

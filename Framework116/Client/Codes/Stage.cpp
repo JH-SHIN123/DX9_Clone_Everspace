@@ -12,8 +12,6 @@ HRESULT CStage::Ready_Scene()
 {
 	CScene::Ready_Scene();
 
-	CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/Stage1.mapInfo");
-
 	::SetWindowText(g_hWnd, L"Stage");
 
 	if (FAILED(Add_Layer_Player(L"Layer_Player")))
@@ -57,42 +55,31 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
+	//	return E_FAIL;
+	//
+	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
+	//	return E_FAIL;
+	//
+	//if (FAILED(Add_Layer_Planet(L"Layer_Planet")))
+	//	return E_FAIL;
 
-	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
-		return E_FAIL;
+	CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/TestSave.mapInfo");
 
-	if (FAILED(Add_Layer_Planet(L"Layer_Planet")))
-		return E_FAIL;
 
 	if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
 		return E_FAIL;
 
-	//UI_DESC uiDesc;
-	//uiDesc.tTransformDesc.vPosition = { 350.f, 250.f, 0.f };
-	//uiDesc.tTransformDesc.vScale = { 150.f, 150.f,0.f };
-	//uiDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	//if (FAILED(Add_Layer_UI(L"Layer_UI", &uiDesc)))
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Planet",
+	//	L"Layer_Planet")))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet In Layer");
 	//	return E_FAIL;
+	//}
 
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Planet",
-		L"Layer_Planet")))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet In Layer");
-		return E_FAIL;
-	}
 
-	//PARTICLESYSTEM_DESC pSystemDesc;
-	//pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Grass";
-	//pSystemDesc.iNumParticles = 500;
-	//pSystemDesc.tResetAttribute.fParticleSize = 0.9f;
-	//pSystemDesc.tResetAttribute.fParticleSpeed = 100.f;
-	//pSystemDesc.tResetAttribute.fLifeTime = 1.f;
-	//if (FAILED(Add_Layer_LaserSystem(L"Layer_LaserSystem", &pSystemDesc)))
-	//	return E_FAIL;
 
 	return S_OK;
 }
