@@ -66,6 +66,11 @@ _uint CHP_Bar::Render_GameObject()
 	return _uint();
 }
 
+void CHP_Bar::Set_Scale(_float _fDamage)
+{
+	m_pTransform->Set_ScaleX(m_pTransform->Get_TransformDesc().vScale.x - _fDamage);
+}
+
 _uint CHP_Bar::Movement(_float fDeltaTime)
 {
 	return _uint();

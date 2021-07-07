@@ -148,7 +148,8 @@ _uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
 
 	if (m_IsCollide) {
 		CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_State(EState::Position), 1.f);
-		//m_pHP_Bar->Set_FullHp(m_fFullHp);
+		// 여기 데미지 넣어야함.
+		m_pHp_Bar->Set_Scale(2.f);
 		m_IsCollide = false;
 	}
 
@@ -569,6 +570,9 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 			//////////////////////////////////////////////////////////////////
 			// 감지범위에 들어오게 되면 HP_Bar 생성
 			
+			CGameObject* pGameObject = nullptr;
+
+
 			UI_DESC HUD_Hp_Bar;
 			HUD_Hp_Bar.tTransformDesc.vPosition = { ptBoss.x, ptBoss.y - 40.f, 0.f };
        		HUD_Hp_Bar.tTransformDesc.vScale = { m_fHp * (100.f / m_fFullHp), 10.f, 0.f };
@@ -577,12 +581,13 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 				EResourceType::NonStatic,
 				L"GameObject_HP_Bar",
 				L"Layer_HP_Bar",
-				&HUD_Hp_Bar)))
+				&HUD_Hp_Bar, &pGameObject)))
 			{
 				PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
 				return E_FAIL;
 			}
 			m_IsHPBar = true;
+			m_pHp_Bar = static_cast<CHP_Bar*>(pGameObject);
 		}
 
 	}
@@ -615,6 +620,7 @@ CGameObject * CBoss_Monster::Clone(void * pArg/* = nullptr*/)
 
 void CBoss_Monster::Free()
 {
+	Safe_Release(m_pHp_Bar);
 	Safe_Release(m_pTargetTransform);
 	Safe_Release(m_pCube);
 	Safe_Release(m_pTransform);

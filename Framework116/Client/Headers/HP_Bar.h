@@ -18,6 +18,9 @@ public:
 	virtual _uint LateUpdate_GameObject(_float fDeltaTime) override;
 	virtual _uint Render_GameObject() override;
 
+public:
+	void Set_Scale(_float _fDamage);
+
 private:
 	_uint Movement(_float fDeltaTime);
 	_uint Adjust_Pos(_float fDeltaTime);
