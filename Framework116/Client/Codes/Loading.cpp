@@ -228,15 +228,32 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-	/* For.GameObject_Planet */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
-		L"GameObject_Asteroid",
+		L"GameObject_Asteroid_A",
 		CAsteroid::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
 		return E_FAIL;
 	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Asteroid_B",
+		CAsteroid::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
+		return E_FAIL;
+	}
+
+	//if (FAILED(m_pManagement->Add_GameObject_Prototype(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Rock_Cloud",
+	//	::Create(m_pDevice))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
+	//	return E_FAIL;
+	//}
 
 #pragma endregion
 
@@ -717,7 +734,7 @@ HRESULT CLoading::Ready_BossAndOthers()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Boss_Monster",
-		CBoss_Monster::Create(m_pDevice, nullptr))))
+		CBoss_Monster::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_LaserSystem");
 		return E_FAIL;
@@ -727,7 +744,7 @@ HRESULT CLoading::Ready_BossAndOthers()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Bullet_EnergyBall",
-		CBullet_EnergyBall::Create(m_pDevice, nullptr))))
+		CBullet_EnergyBall::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall");
 		return E_FAIL;
@@ -736,7 +753,7 @@ HRESULT CLoading::Ready_BossAndOthers()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Bullet_Laser",
-		CBullet_Laser::Create(m_pDevice, nullptr))))
+		CBullet_Laser::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Bullet_Laser");
 		return E_FAIL;
@@ -745,7 +762,7 @@ HRESULT CLoading::Ready_BossAndOthers()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Bullet_EMP_Bomb",
-		CBullet_EMP_Bomb::Create(m_pDevice, nullptr))))
+		CBullet_EMP_Bomb::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Bullet_EMP_Bomb");
 		return E_FAIL;

@@ -282,12 +282,12 @@
     <ClInclude Include="..\Headers\WingBoost_System.h">
       <Filter>02.GameObject\06.Particle\WingBoost</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Planet.h">
-      <Filter>02.GameObject\14.Planet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Planet.h" />
     <ClInclude Include="..\Headers\Asteroid.h">
       <Filter>02.GameObject\15.Asteroid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\14.Planet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -402,12 +402,12 @@
     <ClCompile Include="..\Codes\WingBoost_System.cpp">
       <Filter>02.GameObject\06.Particle\WingBoost</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Planet.cpp">
-      <Filter>02.GameObject\14.Planet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp" />
     <ClCompile Include="..\Codes\Asteroid.cpp">
       <Filter>02.GameObject\15.Asteroid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\14.Planet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

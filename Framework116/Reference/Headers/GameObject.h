@@ -2,8 +2,16 @@
 #ifndef __GAMEOBJECT_H__
 
 #include "Base.h"
+#include "Transform.h"
 
 BEGIN(Engine)
+
+typedef struct tagGameObjectDesc : public BASE_DESC
+{
+	TRANSFORM_DESC	tTransformDesc;
+	wstring	wstrMeshName = L"";
+}GAMEOBJECT_DESC;
+
 class ENGINE_DLL CGameObject abstract : public CBase
 {
 protected:
@@ -55,10 +63,6 @@ protected:
 	COLLIDES m_Collides;
 
 	class CManagement* m_pManagement = nullptr;
-
-protected:
-	/* Get함수 제작 금지! */
-	PASSDATA_OBJECT* m_pPassData = nullptr;
 
 ///////////////////////////////////////////////////////////
 // Tool 전용 함수 / 변수들

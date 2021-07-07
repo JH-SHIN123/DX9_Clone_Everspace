@@ -5,10 +5,9 @@
 #include "EngineEffectSystem.h"
 #include "WingBoost_System.h"
 
-CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
+CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	m_pPassData = pPassData;
 }
 
 CPlayer::CPlayer(const CPlayer & other)
@@ -66,8 +65,20 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 {
 	CGameObject::Ready_GameObject(pArg);
 
+	GAMEOBJECT_DESC* pDesc = nullptr;
+	if (auto ptr = (BASE_DESC*)pArg)
+	{
+		if (pDesc = dynamic_cast<GAMEOBJECT_DESC*>(ptr))
+		{}
+		else
+		{
+			PRINT_LOG(L"Error", L"GAMEOBJECT_DESC is nullptr");
+			return E_FAIL;
+		}
+	}
+
 	// For.Com_VIBuffer
-	wstring meshTag = L"Component_Mesh_BigShip";
+	wstring meshTag = pDesc->wstrMeshName;
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		meshTag,
@@ -79,12 +90,9 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// For.Com_Transform Test
-	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 45.f;
-	TransformDesc.vPosition = _float3(50.f, 0.f, 0.f);
-	TransformDesc.fSpeedPerSec = 25.f;
+	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
+	TransformDesc.fSpeedPerSec = 35.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
-	TransformDesc.vScale = { 1.f,1.f,1.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -452,9 +460,9 @@ void CPlayer::TimeOperation(const _float fDeltaTime)
 	}
 }
 
-CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
+CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	CPlayer* pInstance = new CPlayer(pDevice, pPassData);
+	CPlayer* pInstance = new CPlayer(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Player");

@@ -13,17 +13,16 @@ HRESULT CStage::Ready_Scene()
 {
 	CScene::Ready_Scene();
 
-	//CStreamHandler::Load_PassData_Map(L"../../Resources/MapInfo/Stage1.mapInfo");
-
 	::SetWindowText(g_hWnd, L"Stage");
 
-	if (FAILED(Add_Layer_Player(L"Layer_Player")))
-		return E_FAIL;
+	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/test.map");
 
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
 
-	//
+	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
+		return E_FAIL;
+
 	// 전역조명 : Directional Light
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
@@ -33,22 +32,10 @@ HRESULT CStage::Ready_Scene()
 		return E_FAIL;
 
 	// 행성조명 : Point Light
-
 	// 플레이어 조명 : Sport Light
-	//lightDesc.eLightType = ELightType::SpotLight;
-	//lightDesc.tLightColor = D3DCOLOR_XRGB(125, 125, 125);
-	//lightDesc.iLightIndex = 0;
-	//if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
-	//	return E_FAIL;
-
-	//if (FAILED(Add_Layer_Terrain(L"Layer_Terrain")))
-	//	return E_FAIL;
 
 	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 	//	return E_FAIL;
-
-	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
-		return E_FAIL;
 
 	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 		return E_FAIL;
@@ -56,8 +43,6 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
-		return E_FAIL;
 
 	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
 		return E_FAIL;
@@ -76,7 +61,7 @@ HRESULT CStage::Ready_Scene()
 	pDesc.tTransformDesc.vScale = { 5.f,5.f,5.f };
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
-		L"GameObject_Asteroid",
+		L"GameObject_Asteroid_A",
 		L"Layer_Asteroid",
 		(void*)&pDesc)))
 	{

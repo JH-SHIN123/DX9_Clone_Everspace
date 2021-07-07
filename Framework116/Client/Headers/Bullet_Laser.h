@@ -7,7 +7,7 @@ USING(Engine)
 class CBullet_Laser final : public CGameObject
 {
 public:
-	explicit CBullet_Laser(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData);
+	explicit CBullet_Laser(LPDIRECT3DDEVICE9 pDevice);
 	explicit CBullet_Laser(const CBullet_Laser& other);
 	virtual ~CBullet_Laser() = default;
 
@@ -23,7 +23,7 @@ private:
 	_uint Fire_Triger(_float fDeltaTime);
 
 public:
-	static CBullet_Laser* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
+	static CBullet_Laser* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 

@@ -5,10 +5,9 @@
 #include "MainCam.h"
 #include "Collision.h"
 
-CPlayer_Missile::CPlayer_Missile(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
+CPlayer_Missile::CPlayer_Missile(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	m_pPassData = pData;
 }
 
 CPlayer_Missile::CPlayer_Missile(const CPlayer_Missile & other)
@@ -277,9 +276,9 @@ _uint CPlayer_Missile::Searching_Target(_float fDeltaTime)
 	return _uint();
 }
 
-CPlayer_Missile * CPlayer_Missile::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)
+CPlayer_Missile * CPlayer_Missile::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	CPlayer_Missile* pInstance = new CPlayer_Missile(pDevice, pData);
+	CPlayer_Missile* pInstance = new CPlayer_Missile(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Player_Bullet");

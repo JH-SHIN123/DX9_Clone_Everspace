@@ -11,7 +11,7 @@ USING(Engine)
 class CBoss_Monster final : public CGameObject
 {
 public:
-	explicit CBoss_Monster(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData);
+	explicit CBoss_Monster(LPDIRECT3DDEVICE9 pDevice);
 	explicit CBoss_Monster(const CBoss_Monster& other);
 	virtual ~CBoss_Monster() = default;
 
@@ -48,7 +48,7 @@ private: // Move_Mode
 	void RotateMy_Z(_float fDeltaTime);
 
 public:
-	static CBoss_Monster* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
+	static CBoss_Monster* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
