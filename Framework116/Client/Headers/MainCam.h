@@ -4,6 +4,13 @@
 #include "Camera.h"
 
 USING(Engine)
+
+enum class ESoloMoveMode
+{
+	Stage1_Ring,
+	End
+};
+
 class CMainCam final : public CCamera
 {
 public:
@@ -26,12 +33,19 @@ public:
 	_uint FPSMovement(_float fDeltaTime);
 	_uint SetCameraFPS(_float fDeltaTime);
 
+	// 카메라 연출
+	void Set_IsSoloMove(ESoloMoveMode eMove);
+
 	// 카메라 쉐이킹
 	_uint CameraShakingStart(_float fDeltaTime);
 
 private:
 	_uint Movement(_float fDeltaTime);
 	_uint KeyInput(_float fDeltaTime);
+
+private: // 카메라 연출
+	void Check_SoloMoveMode(_float fDeltaTime);
+	_uint Solo_Stage1_Ring(_float fDeletaTime);
 
 public:
 	static CMainCam* Create(LPDIRECT3DDEVICE9 pDevice);
@@ -48,6 +62,12 @@ private:
 
 private:
 	_bool m_IsFPS = false;
+
+private: // 카메라 연출 End일 때 플레이어를 따라감
+	ESoloMoveMode m_eSoloMoveMode = ESoloMoveMode::End;
+	CTransform* m_pTargetTransform = nullptr;
+	BYTE m_byMoveCount = 0;
+	_bool m_IsMoveCountCheck = false;
 };
 
 #define __MAINCAM_H__

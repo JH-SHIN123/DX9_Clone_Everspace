@@ -267,14 +267,14 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 		return E_FAIL;
 	}
 
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Boss_Warmhole",
-		L"Layer_Boss_Warmhole")))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
-		return E_FAIL;
-	}
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Boss_Warmhole",
+	//	L"Layer_Boss_Warmhole")))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+	//	return E_FAIL;
+	//}
 
 	return S_OK;
 }
@@ -539,7 +539,7 @@ HRESULT CStage::Add_Layer_ScriptUI(const wstring & LayerTag)
 		return E_FAIL;
 	}
 
-	((CScriptUI*)m_pManagement->Get_GameObject(LayerTag))->Set_Script(eScript::Tutorial);
+	((CScriptUI*)m_pManagement->Get_GameObject(LayerTag))->Set_Script(EScript::Tutorial);
 
 	//if (FAILED(Add_Layer_UI(LayerTag, &Desc)))
 	//	return E_FAIL;

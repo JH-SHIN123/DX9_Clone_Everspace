@@ -6,9 +6,8 @@
 
 USING(Engine)
 
-enum eScript {
-	Tutorial
-	, End
+enum class EScript {
+	Tutorial, End
 };
 
 class CScriptUI final : public CUI
@@ -27,7 +26,7 @@ public:
 
 public:
 	_uint Set_NextScript();
-	_uint Set_Script(eScript eScript);
+	_uint Set_Script(EScript eScript);
 
 private:
 	_uint Script_Check();
@@ -40,7 +39,7 @@ public:
 	virtual void Free() override;
 
 private:
-	eScript m_eScriptMode = End;
+	EScript m_eScriptMode = EScript::End;
 	wstring m_wstrName = L"";
 	wstring m_wstrScript = L"";
 	RECT m_tPortrait;

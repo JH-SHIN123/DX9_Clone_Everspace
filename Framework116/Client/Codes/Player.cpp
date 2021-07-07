@@ -220,6 +220,13 @@ _uint CPlayer::Set_IsScript(_bool IsScript)
 	return _uint();
 }
 
+_uint CPlayer::Set_IsCameraMove(_bool IsCameraMove)
+{
+	m_IsCameraMove = IsCameraMove;
+
+	return _uint();
+}
+
 void CPlayer::KeyProcess(_float fDeltaTime)
 {
 	if (nullptr == m_pController) return;
@@ -228,17 +235,11 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	// ´ëÈ­
 	if (m_IsScript == true)
 	{
-		//if (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->front() != nullptr)
-		//{
-			if (m_pController->Key_Down(KEY_F))
-			{
-				static_cast<CScriptUI*>(m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")
-					->front())->Set_NextScript();
-			}
-		//}
-		//else
-//			m_IsScript = false;
-
+		if (m_pController->Key_Down(KEY_F))
+		{
+			static_cast<CScriptUI*>(m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")
+				->front())->Set_NextScript();
+		}
 		return;
 	}
 		

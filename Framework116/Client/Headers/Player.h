@@ -23,6 +23,7 @@ public:
 
 public:
 	_uint Set_IsScript(_bool IsScript);
+	_uint Set_IsCameraMove(_bool IsCameraMove);
 
 private:
 	void	KeyProcess(_float fDeltaTime);
@@ -79,8 +80,9 @@ private: // AlertArrow 관련
 	_uint Make_Arrow();
 	const list<class CGameObject*>* m_listCheckMonsters = nullptr;
 
-private:
-	_bool m_IsScript = false;
+private: //연출 관련
+	_bool m_IsScript = false; //대화
+	_bool m_IsCameraMove = false; // 카메라 연출
 };
 
 #define __PLAYER_H__

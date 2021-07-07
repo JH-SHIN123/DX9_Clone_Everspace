@@ -4,6 +4,7 @@
 #include "Pipeline.h"
 #include "Ring.h"
 #include "Player.h"
+#include "MainCam.h"
 
 CScriptUI::CScriptUI(LPDIRECT3DDEVICE9 pDevice)
 	: CUI(pDevice)
@@ -48,6 +49,7 @@ _uint CScriptUI::LateUpdate_GameObject(_float fDeltaTime)
 	if (m_IsEndScript == true)
 	{
 		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsScript(false);
+		((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Stage1_Ring);
 
 		return DEAD_OBJECT;
 	}
@@ -91,7 +93,7 @@ _uint CScriptUI::Script_Check()
 {
 	switch (m_eScriptMode)
 	{
-	case Tutorial:
+	case EScript::Tutorial:
 		Script_Tutorial();
 		break;
 	}
@@ -138,7 +140,7 @@ _uint CScriptUI::Set_NextScript()
 	return _uint();
 }
 
-_uint CScriptUI::Set_Script(eScript eScript)
+_uint CScriptUI::Set_Script(EScript eScript)
 {
 	m_eScriptMode = eScript;
 
