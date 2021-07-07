@@ -72,7 +72,7 @@ HRESULT CStage::Ready_Scene()
 	// TEST Component_Mesh_Rock_Generic_001
 	ASTEROID_DESC pDesc;
 	pDesc.pMeshTag = L"Component_Mesh_Rock_Generic_001";
-	pDesc.tTransformDesc.vPosition = { 0.f + i * 60.f,0.f,0.f + j * 60.f };
+	pDesc.tTransformDesc.vPosition = { 0.f,0.f,0.f };
 	pDesc.tTransformDesc.vScale = { 5.f,5.f,5.f };
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
