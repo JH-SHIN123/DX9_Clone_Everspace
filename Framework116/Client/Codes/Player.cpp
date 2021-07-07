@@ -164,13 +164,11 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	KeyProcess(fDeltaTime);
 	
 	Movement(fDeltaTime);
-<<<<<<< HEAD
-	
-=======
+
 	TimeOperation(fDeltaTime);
 	
 	Make_Arrow();
->>>>>>> origin/main
+
 
 	// 월드행렬 업데이트
 	m_pTransform->Update_Transform_Quaternion();
@@ -202,16 +200,13 @@ _uint CPlayer::Render_GameObject()
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pMesh->Render_Mesh();
 
-<<<<<<< HEAD
 
-=======
 	wstring str = L"궁서";
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 	m_pManagement->Get_Font()->DrawText(NULL
 		, str.c_str(), -1
 		, &rc, DT_CENTER, D3DXCOLOR(255, 0, 0, 255));
->>>>>>> origin/main
 
 #ifdef _DEBUG // Render Collide
 	//for (auto& collide : m_Collides)

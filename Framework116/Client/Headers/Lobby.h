@@ -22,14 +22,18 @@ public:
 	HRESULT Add_Layer_Skybox(const wstring & LayerTag);
 	HRESULT Add_Layer_UI(const wstring & LayerTag);
 	HRESULT Add_Layer_GatchaBox(const wstring & LayerTag);
+	HRESULT Add_Layer_StatusBoard(const wstring & LayerTag);
 
 	void Set_GotoNextScene(_bool bSet);
 	void Set_IsGatcha(_bool bSet);
 	void Set_IsSetPlayerModel(_bool bSet);
 	void Set_SceneChange(_bool bSet);
+	void Set_StartUnPacking(_bool bSet);
+
 	_bool Get_IsGatcha()const;
 	_bool Get_IsSetPlayerModel()const;
 	_bool Get_GotoNextScene()const;
+	_uint Get_Money()const;
 public:
 	static CLobby* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual void Free() override;
@@ -42,6 +46,9 @@ private:
 	_bool m_bIsGatcha = false;
 	_bool m_bIsSetPlayerModel = false;
 	_bool m_bSceneChange = false;
+	_bool m_bStartUnPacking = false;
+
+	_uint m_iMoney = 3000;
 };
 
 #define __LOBBY_H__

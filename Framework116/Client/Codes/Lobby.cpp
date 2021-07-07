@@ -6,6 +6,8 @@
 #include"LobbyUI.h"
 #include"LobbyModel.h"
 #include"LobbyCam.h""
+#include"GatchaBox.h"
+#include"StatusBoard.h"
 CLobby::CLobby(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
 {
@@ -30,13 +32,14 @@ HRESULT CLobby::Ready_Scene()
 
 	if (FAILED(Add_Layer_GatchaBox(L"Layer_GatchaBox")))
 		return E_FAIL;
+	if (FAILED(Add_Layer_StatusBoard(L"Layer_StatusBoard")))
+		return E_FAIL;
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
 	lightDesc.vLightDir = { 1.0f, -0.0f, 0.25f };
 	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	lightDesc.iLightIndex = 0;
-	if (FAILED(Add_Layer_Light(L"Layer_DirectionalLight", &lightDesc)))
+	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -79,6 +82,24 @@ _uint CLobby::LateUpdate_Scene(_float fDeltaTime)
 			static_cast<CLobbyCam*>(pCam)->Set_GotoNextScene(TRUE);
 		}
 	}
+	if (m_bStartUnPacking)
+	{
+		for (auto& pDst : *m_pManagement->Get_GameObjectList(L"Layer_UI"))
+		{
+			static_cast<CLobbyUI*>(pDst)->Set_StartUnPacking(TRUE);
+		}
+		CLobbyCam* pCam = (CLobbyCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
+		pCam->Set_StartUnPacking(TRUE);
+	}
+	else
+	{
+		for (auto& pDst : *m_pManagement->Get_GameObjectList(L"Layer_UI"))
+		{
+			static_cast<CLobbyUI*>(pDst)->Set_StartUnPacking(FALSE);
+		}
+		CLobbyCam* pCam = (CLobbyCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
+		pCam->Set_StartUnPacking(FALSE);
+	}
 	
 	return _uint();
 }
@@ -88,7 +109,7 @@ HRESULT CLobby::Add_Layer_Light(const wstring & LayerTag, const LIGHT_DESC * pLi
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
-		L"GameObject_DirectionalLight",
+		L"GameObject_Light",
 		LayerTag,
 		(void*)pLightDesc)))
 	{
@@ -183,6 +204,26 @@ HRESULT CLobby::Add_Layer_GatchaBox(const wstring & LayerTag)
 		PRINT_LOG(L"Error", L"Failed To Add Skybox In Layer");
 		return E_FAIL;
 	}
+	CGatchaBox* pBox = (CGatchaBox*)(m_pManagement->Get_GameObject(LayerTag));
+	pBox->Set_Scene(this);
+	AddRef();
+}
+
+HRESULT CLobby::Add_Layer_StatusBoard(const wstring & LayerTag)
+{
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_StatusBoard",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add StatusBoard In Layer");
+		return E_FAIL;
+	}
+	CStatusBoard* pBoard = (CStatusBoard*)m_pManagement->Get_GameObject(LayerTag);
+	pBoard->Set_Scene(this);
+	AddRef();
+	return S_OK;
 }
 
 
@@ -210,6 +251,11 @@ void CLobby::Set_SceneChange(_bool bSet)
 	m_bSceneChange = bSet;
 }
 
+void CLobby::Set_StartUnPacking(_bool bSet)
+{
+	m_bStartUnPacking = bSet;
+}
+
 
 
 _bool CLobby::Get_IsGatcha() const
@@ -225,6 +271,11 @@ _bool CLobby::Get_IsSetPlayerModel() const
 _bool CLobby::Get_GotoNextScene() const
 {
 	return m_bGotoNextScene;
+}
+
+_uint CLobby::Get_Money() const
+{
+	return m_iMoney;
 }
 
 CLobby * CLobby::Create(LPDIRECT3DDEVICE9 pDevice)

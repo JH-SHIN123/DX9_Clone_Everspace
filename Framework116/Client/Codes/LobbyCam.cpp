@@ -90,7 +90,20 @@ _uint CLobbyCam::OffSet(_float fDeltaTime)
 {
 	if (!m_pPlayerTransform)
 		return 0;
-
+	if (m_bStartUnPacking)
+	{
+		if (m_bUnPacked)
+		{
+			Safe_Release(m_pPlayerTransform);
+			m_pPlayerTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Product"
+				, L"Com_Transform");
+			Safe_AddRef(m_pPlayerTransform);
+			m_CameraDesc.vAt = m_pPlayerTransform->Get_State(EState::Position);
+			return 0;
+		}
+		else
+			return 0;
+	}
 	static _bool bStart = false;
 	if (!bStart)
 	{

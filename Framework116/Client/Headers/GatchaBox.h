@@ -20,16 +20,25 @@ public:
 
 private:
 	_uint Movement(_float fDeltaTime);
-	void CheckPicking();
+	_bool CheckPicking();
+	_bool StartUnPacking(_float fDeltaTime);
+	void Add_Layer_Product(wstring& wstrLayerTag);
 public:
 	static CGatchaBox* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
-
+public:
+	void Set_Scene(class CLobby* _pLobby) { m_pLobby = _pLobby; }
 private:
 	CVIBuffer*  m_pVIBuffer = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
+	CCollideSphere* m_pCollide = nullptr;
+
+	class CLobby* m_pLobby = nullptr;
+	_bool m_bStartUnpacking = false;
+	_float m_fUnPackingTime = 0.f;
+	_bool m_bBomb = false;
 };
 
 #define __GATCHABOX_H__

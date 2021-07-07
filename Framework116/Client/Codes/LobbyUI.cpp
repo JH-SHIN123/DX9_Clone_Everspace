@@ -34,7 +34,7 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 {
 	if (m_bDead)
 		return DEAD_OBJECT;
-	if (m_bGotoNextScene)
+	if (m_bGotoNextScene || m_bStartUnPacking)
 		return NO_EVENT;
 	CUI::Update_GameObject(fDeltaTime);
 	Update_Bounds();
@@ -48,7 +48,7 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 _uint CLobbyUI::LateUpdate_GameObject(_float fDeltaTime)
 {
 
-	if (m_bGotoNextScene)
+	if (m_bGotoNextScene || m_bStartUnPacking)
 		return NO_EVENT;
 	
 
@@ -68,7 +68,7 @@ _uint CLobbyUI::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CLobbyUI::Render_GameObject()
 {
-	if (m_bGotoNextScene)
+	if (m_bGotoNextScene || m_bStartUnPacking)
 		return 0;
 	
 	CGameObject::Render_GameObject();
@@ -107,6 +107,8 @@ _uint CLobbyUI::Render_GameObject()
 
 
 	if (Get_IsPicking())
+		Set_Text();
+	else if (m_wstrTexturePrototypeTag == L"Component_Texture_Product")
 		Set_Text();
 
 
@@ -201,6 +203,16 @@ void CLobbyUI::Set_Text()
 		, str.c_str(), -1
 		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
 	}
+	if (L"Component_Texture_Product" == m_wstrTexturePrototypeTag)
+	{
+		TCHAR szMoney[MAX_PATH];
+		_itow_s(m_pLobby->Get_Money(),szMoney,10);
+		rc.left = (WINCX >> 1) - 470;
+		rc.top = (WINCY >> 1) - 465;
+		m_pManagement->Get_Font()->DrawText(NULL
+			, szMoney, -1
+			, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
+	}
 	if (L"Component_Texture_PlaneTemplete" == m_wstrTexturePrototypeTag)
 	{
 		str = L"플레이어 선택";
@@ -245,6 +257,8 @@ void CLobbyUI::OnMouseButton()
 			m_dwIdx = 1;
 		}
 	}
+	else if (m_wstrTexturePrototypeTag == L"Component_Texture_Product")
+		m_dwIdx = 4;
 	else if(m_wstrTexturePrototypeTag != L"Component_Texture_PlaneTemplete")
 		m_dwIdx = 0;
 }

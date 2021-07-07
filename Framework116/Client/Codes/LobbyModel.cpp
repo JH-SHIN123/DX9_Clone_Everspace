@@ -161,7 +161,7 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 		_float fAngle = acosf(D3DXVec3Dot(&vTargetDir, &vDir));
 		m_pTransform->RotateY(fDeltaTime*D3DXToRadian(fAngle)*20.f);
 		
-		if (0.01>= fAngle)
+		if (0.05>= fAngle)
 		{
 			vTargetDir = _float3(0.f, 1.f, 1.f);
 			vDir = m_pTransform->Get_State(EState::Look);
@@ -170,7 +170,7 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 			
 			fAngle = D3DXVec3Dot(&vDir, &vTargetDir);
 			m_pTransform->RotateX(fDeltaTime*fAngle);
-			if (0.001 >= fAngle)
+			if (0.005 >= fAngle)
 			{
 				m_bGo_Straight = TRUE;
 			}

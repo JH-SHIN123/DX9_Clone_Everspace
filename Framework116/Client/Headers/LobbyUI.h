@@ -26,7 +26,7 @@ private:
 	void ChangeModelIcon();
 public:
 	void Set_GotoNextScene(_bool bSet) { m_bGotoNextScene = bSet; }
-
+	void Set_StartUnPacking(_bool bSet) { m_bStartUnPacking = bSet; }
 public:
 	static CLobbyUI* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject* Clone(void* pArg = nullptr) override;
@@ -35,13 +35,16 @@ public:
 	void Set_Scene(class CLobby* _pUI);
 	
 private:
+	//for KeyCheck
 	_float m_fDelayCheck = 0;
 	_float m_fDeltaTime = 0;
 	DWORD m_dwIdx = 0;
 	class CLobby* m_pLobby;
+
 	_bool m_bGotoNextScene = false;
 	_bool m_bDead = false;
 	_bool m_bShowModelIcon = false;
 	_bool m_bChangeModelIcon = false;
+	_bool m_bStartUnPacking = false;
 };
 

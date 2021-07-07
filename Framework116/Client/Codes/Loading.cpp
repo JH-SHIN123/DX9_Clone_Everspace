@@ -21,10 +21,8 @@
 #include "Bullet_Laser.h"
 #include "Bullet_EMP_Bomb.h"
 #include "Crosshair.h"
-<<<<<<< HEAD
 #include"LobbyUI.h"
 #include"GatchaBox.h"
-=======
 #include "Boss_Warmhole.h"
 #include "Boss_Spawn_Monster.h"
 #include "Ring.h"
@@ -34,13 +32,16 @@
 #include "LockOn.h"
 #include "Planet.h"
 #include "WingBoost_System.h"
->>>>>>> origin/main
+#include"Product.h"
+#include"StatusBoard.h"
+#include"VIBuffer_HexagonColor.h"
 #pragma endregion
 
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pDevice, ESceneType eNextSceneID)
 	: CScene(pDevice)
 	, m_eNextSceneID(eNextSceneID)
+
 {
 }
 
@@ -139,6 +140,7 @@ unsigned CLoading::ThreadMain(void * pArg)
 	{
 	case ESceneType::Stage:
 		hr = pLoading->Ready_StageResources();
+
 		break;
 	case ESceneType::Lobby:
 		hr = pLoading->Ready_LobbyResources();
@@ -164,15 +166,7 @@ HRESULT CLoading::Ready_StageResources()
 	m_pManagement->Clear_NonStatic_Resources();
 
 #pragma region GameObjects
-	/* For.GameObject_Terrain */
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_Terrain",
-		CTerrain::Create(m_pDevice))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Terrain");
-		return E_FAIL;
-	}
+
 
 	/* For.GameObject_Monster */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -181,16 +175,6 @@ HRESULT CLoading::Ready_StageResources()
 		CMonster::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Monster");
-		return E_FAIL;
-	}
-
-	/* For.GameObject_Grass */
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_Grass",
-		CGrass::Create(m_pDevice))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Grass");
 		return E_FAIL;
 	}
 
@@ -241,36 +225,6 @@ HRESULT CLoading::Ready_StageResources()
 #pragma endregion
 
 #pragma region Components
-	/* For.Component_VIBuffer_TerrainColor */
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"Component_VIBuffer_TerrainColor",
-		CVIBuffer_TerrainColor::Create(m_pDevice, 129, 129))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_TerrainColor");
-		return E_FAIL;
-	}
-
-	/* For.Component_VIBuffer_TerrainTexture */
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"Component_VIBuffer_TerrainTexture",
-		CVIBuffer_TerrainTexture::Create(m_pDevice, 129, 129,
-			1.f, L"../../Resources/Textures/Terrain/Height.bmp"))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_TerrainTexture");
-		return E_FAIL;
-	}
-
-	/* For.Component_Texture_Terrain */
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"Component_Texture_Terrain",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Terrain/Terrain%d.png"))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Terrain");
-		return E_FAIL;
-	}
 
 	/* For.Component_Texture_Crosshair */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
@@ -302,15 +256,6 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-	/* For.Component_Texture_Grass */
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"Component_Texture_Grass",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/BillboardGrass%d.png"))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Grass");
-		return E_FAIL;
-	}
 
 	/* For.Component_Texture_Skybox */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
@@ -360,7 +305,7 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
-
+	Ready_Stage1();
 	Ready_HUD_Resources();
 	Ready_StageEffect();
 #pragma endregion
@@ -371,7 +316,11 @@ HRESULT CLoading::Ready_StageResources()
 
 HRESULT CLoading::Ready_LobbyResources()
 {
+
 	m_pManagement->Clear_NonStatic_Resources();
+
+	CStreamHandler::Load_PassData_Resource(L"../../Resources/Data/Lobby.txt", FALSE);
+
 #pragma region GameObjects
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -381,8 +330,6 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Lobby_Skybox");
 		return E_FAIL;
 	}
-
-<<<<<<< HEAD
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Lobby_Skybox",
@@ -413,9 +360,55 @@ HRESULT CLoading::Ready_LobbyResources()
 		CGatchaBox::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_GatchaBox");
-=======
-	Ready_Stage1();
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Product",
+		CProduct::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_StatusBoard",
+		CStatusBoard::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring");
+		return E_FAIL;
+	}
+#pragma endregion
+	
+#pragma region Components
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Ring",
+		CGeoMesh_Torus::Create(m_pDevice, 0.1f, 5.f)))) //도넛의 두께와 지름
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Player_Lazer");
+		return E_FAIL;
+	}
 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Ring",
+		CTexture::Create(m_pDevice, ETextureType::Normal,
+			L"../../Tool_Executable/Resources/Textures/Player/Player1.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_In_Bar");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_VIBuffer_HexagonColor",
+		CVIBuffer_HexagonColor::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_HexagonColor");
+		return E_FAIL;
+	}
+
+#pragma endregion
 	return S_OK;
 }
 
@@ -506,19 +499,11 @@ HRESULT CLoading::Ready_StageEffect()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/boost.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Boost");
->>>>>>> origin/main
+
 		return E_FAIL;
 	}
 #pragma endregion
-
-#pragma region Components
-	CStreamHandler::Load_PassData_Resource(L"../../Resources/Data/Lobby.txt", FALSE);
-	
-	
-#pragma endregion
 	return S_OK;
-
-
 }
 
 HRESULT CLoading::Ready_HUD_Resources()
@@ -669,7 +654,8 @@ HRESULT CLoading::Ready_Stage1()
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Ring",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Player/Player1.png"))))
+		CTexture::Create(m_pDevice, ETextureType::Normal,
+			L"../../Tool_Executable/Resources/Textures/Player/Player1.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_In_Bar");
 		return E_FAIL;
@@ -678,7 +664,6 @@ HRESULT CLoading::Ready_Stage1()
 
 HRESULT CLoading::Ready_Map_Effect_Resources()
 {
-
 
 	return S_OK;
 }
@@ -723,8 +708,6 @@ HRESULT CLoading::Ready_BossAndOthers()
 		return E_FAIL;
 	}
 
-<<<<<<< HEAD
-=======
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Billboard_Warmhole",
@@ -751,7 +734,6 @@ HRESULT CLoading::Ready_BossAndOthers()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Boss_Spawn_Monster");
 		return E_FAIL;
 	}
->>>>>>> origin/main
 
 	return S_OK;
 }

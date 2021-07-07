@@ -106,7 +106,6 @@
     <Filter Include="02.GameObject\08.Bullet\02.Boss\00.EnergyBall">
       <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
     <Filter Include="01.Scene\02.Lobby">
       <UniqueIdentifier>{8d910698-dbf1-4df6-81a6-afc6d4f2e268}</UniqueIdentifier>
     </Filter>
@@ -121,7 +120,7 @@
     </Filter>
     <Filter Include="01.Scene\02.Lobby\01.LobbyUI\00.GatchaBox">
       <UniqueIdentifier>{dcaa591a-4806-43df-92c8-58e4f922a218}</UniqueIdentifier>
-=======
+    </Filter>
     <Filter Include="02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster">
       <UniqueIdentifier>{e78bf798-cc12-47ff-a895-e53d09a29172}</UniqueIdentifier>
     </Filter>
@@ -163,7 +162,15 @@
     </Filter>
     <Filter Include="02.GameObject\06.Particle\WingBoost">
       <UniqueIdentifier>{6840ecc0-5224-47b6-968b-27169f738624}</UniqueIdentifier>
->>>>>>> origin/main
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\01.Product">
+      <UniqueIdentifier>{cca5d187-96ff-4e2b-9b19-c1449b85890a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\02.Board">
+      <UniqueIdentifier>{8cb3ff72-238c-470b-ab26-b478d50b03b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor">
+      <UniqueIdentifier>{0973b3ee-c372-4144-a066-7892b4b68465}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -257,7 +264,6 @@
     <ClInclude Include="..\Headers\CollisionHandler.h">
       <Filter>97.Utilities\01.Collision</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="..\Headers\LobbyModel.h">
       <Filter>01.Scene\02.Lobby\00.LobbyModel</Filter>
     </ClInclude>
@@ -272,7 +278,7 @@
     </ClInclude>
     <ClInclude Include="..\Headers\GatchaBox.h">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\00.GatchaBox</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="..\Headers\PlayerLight.h">
       <Filter>02.GameObject\10.Light\PlayerLight</Filter>
     </ClInclude>
@@ -305,7 +311,18 @@
     </ClInclude>
     <ClInclude Include="..\Headers\WingBoost_System.h">
       <Filter>02.GameObject\06.Particle\WingBoost</Filter>
->>>>>>> origin/main
+    </ClInclude>
+    <ClInclude Include="..\Headers\Grass.h" />
+    <ClInclude Include="..\Headers\LaserSystem.h" />
+    <ClInclude Include="..\Headers\Loading.h" />
+    <ClInclude Include="..\Headers\Product.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\01.Product</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\StatusBoard.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\VIBuffer_HexagonColor.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,7 +404,6 @@
     <ClCompile Include="..\Codes\StreamHandler.cpp">
       <Filter>97.Utilities\00.Stream</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="..\Codes\LobbyModel.cpp">
       <Filter>01.Scene\02.Lobby\00.LobbyModel</Filter>
     </ClCompile>
@@ -402,7 +418,7 @@
     </ClCompile>
     <ClCompile Include="..\Codes\GatchaBox.cpp">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\00.GatchaBox</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="..\Codes\PlayerLight.cpp">
       <Filter>02.GameObject\10.Light\PlayerLight</Filter>
     </ClCompile>
@@ -435,7 +451,18 @@
     </ClCompile>
     <ClCompile Include="..\Codes\WingBoost_System.cpp">
       <Filter>02.GameObject\06.Particle\WingBoost</Filter>
->>>>>>> origin/main
+    </ClCompile>
+    <ClCompile Include="..\Codes\Grass.cpp" />
+    <ClCompile Include="..\Codes\LaserSystem.cpp" />
+    <ClCompile Include="..\Codes\Loading.cpp" />
+    <ClCompile Include="..\Codes\Product.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\01.Product</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\StatusBoard.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\VIBuffer_HexagonColor.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

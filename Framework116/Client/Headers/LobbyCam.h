@@ -23,6 +23,10 @@ public:
 	void Set_CamAngle(_float fRadian) { m_fCamAngle = fRadian; }
 
 	void Set_GotoNextScene(_bool bSet) { m_bGotoNextScene = bSet; }
+	void Set_StartUnPacking(_bool bSet) { m_bStartUnPacking = bSet; }
+	void Set_UnPacked(_bool bSet) { m_bUnPacked = bSet; }
+
+	void Set_CamAt(_float3 vAt) { m_CameraDesc.vAt = vAt; }
 	void Set_Scene(class CLobby* pLobby) { m_pLobby = pLobby; }
 private:
 	_uint OffSet(_float fDeltaTime);
@@ -37,10 +41,13 @@ private:
 	_float m_fDistanceFromTarget = 10.f;
 	_float m_fCamAngle = D3DXToRadian(45.f);
 
+	_float m_fSceneChangeDeltaTime = 0.f;
 	_bool m_bGotoNextScene = false;
+	
+	_bool m_bStartUnPacking = false;
+	_bool m_bUnPacked = false;
 	class CLobby* m_pLobby = nullptr;
 
-	_float m_fSceneChangeDeltaTime = 0.f;
 };
 
 #define __LOBBYCAM_H__
