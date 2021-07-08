@@ -208,6 +208,9 @@
     <Filter Include="02.GameObject\15.Asteroid">
       <UniqueIdentifier>{0f2d898c-4c85-4d14-8e5e-62e0a5845a28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\16.NaviArrow">
+      <UniqueIdentifier>{39a5666c-bfbc-4048-9492-51b50235537c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObject\09.HUD\07.Stamina_Bar">
       <UniqueIdentifier>{d26afb06-6587-4612-8786-de21ca95aa86}</UniqueIdentifier>
     </Filter>
@@ -390,10 +393,12 @@
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\NaviArrow.h">
+      <Filter>02.GameObject\16.NaviArrow</Filter>
+    </ClInclude>
     <ClInclude Include="..\Headers\HP_Bar.h">
       <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\HP_Bar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -558,10 +563,12 @@
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\NaviArrow.cpp">
+      <Filter>02.GameObject\16.NaviArrow</Filter>
+    </ClCompile>
     <ClCompile Include="..\Codes\HP_Bar.cpp">
       <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\HP_Bar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -200,6 +200,7 @@
     <ClInclude Include="..\Headers\Meteor.h" />
     <ClInclude Include="..\Headers\MissionUI.h" />
     <ClInclude Include="..\Headers\Monster.h" />
+    <ClInclude Include="..\Headers\NaviArrow.h" />
     <ClInclude Include="..\Headers\Planet.h" />
     <ClInclude Include="..\Headers\Player.h" />
     <ClInclude Include="..\Headers\Player_Bullet.h" />
@@ -258,6 +259,7 @@
     <ClCompile Include="..\Codes\Meteor.cpp" />
     <ClCompile Include="..\Codes\MissionUI.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />
+    <ClCompile Include="..\Codes\NaviArrow.cpp" />
     <ClCompile Include="..\Codes\Planet.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
     <ClCompile Include="..\Codes\Player_Bullet.cpp" />

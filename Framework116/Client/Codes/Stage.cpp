@@ -19,6 +19,7 @@ HRESULT CStage::Ready_Scene()
 	m_pManagement->StopSound(CSoundMgr::BGM);
 
 	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/stage1.map");
+	CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/guide.navi");
 
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
@@ -49,8 +50,8 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Planet(L"Layer_Meteor")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
 		return E_FAIL;
@@ -81,7 +82,6 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 				return E_FAIL;
 		}
 	}
-
 
 
 	// Monster
