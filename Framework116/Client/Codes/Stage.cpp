@@ -4,6 +4,10 @@
 #include "StreamHandler.h"
 #include "ScriptUI.h"
 #include "Asteroid.h"
+#include "MissionUI.h"
+#include "MainCam.h"
+#include "QuestHandler.h"
+#include "Ring.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
@@ -69,17 +73,7 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
 
-	if (m_fDummyTime >= 0)
-	{
-		m_fDummyTime -= fDeltaTime;
-
-		if (m_fDummyTime <= 0)
-		{
-			if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI")))
-				return E_FAIL;
-		}
-	}
-
+	Stage_Flow(fDeltaTime);
 
 	// Boss
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
@@ -94,6 +88,42 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
 
 	return _uint();
+}
+
+_uint CStage::Stage_Flow(_float fDeltaTime)
+{
+	switch (m_iFlowCount)
+	{
+	case 0: // 스크립트 시작
+		if (m_fFlowTime >= 0)
+		{
+			m_fFlowTime -= fDeltaTime;
+
+			if (m_fFlowTime <= 0)
+			{
+				if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Tutorial)))
+					return E_FAIL;
+				++m_iFlowCount;
+			}
+		}
+		return S_OK;
+	case 1:
+		if (((CMainCam*)(m_pManagement->Get_GameObject(L"Layer_Cam")))->Get_SoloMoveMode() == ESoloMoveMode::End)
+		{
+			if (FAILED(Add_Layer_MissionUI(L"Layer_MissionUI", EQuest::Stage_1_Ring)))
+				return E_FAIL;
+			++m_iFlowCount;
+		}
+		return S_OK;
+
+	case 2:
+		return S_OK;
+
+	default:
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 HRESULT CStage::Add_Layer_Player(const wstring & LayerTag)
@@ -505,7 +535,7 @@ HRESULT CStage::Add_Layer_TutorialUI(const wstring & LayerTag)
 	return S_OK;
 }
 
-HRESULT CStage::Add_Layer_ScriptUI(const wstring & LayerTag)
+HRESULT CStage::Add_Layer_ScriptUI(const wstring & LayerTag, EScript eScript)
 {
 	UI_DESC Desc;
 	Desc.tTransformDesc.vPosition = { 0.f, 0.f ,0.f };
@@ -521,10 +551,29 @@ HRESULT CStage::Add_Layer_ScriptUI(const wstring & LayerTag)
 		return E_FAIL;
 	}
 
-	((CScriptUI*)m_pManagement->Get_GameObject(LayerTag))->Set_Script(EScript::Tutorial);
+	((CScriptUI*)m_pManagement->Get_GameObject(LayerTag))->Set_Script(eScript);
 
-	//if (FAILED(Add_Layer_UI(LayerTag, &Desc)))
-	//	return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_MissionUI(const wstring & LayerTag, EQuest eQuest)
+{
+	CQuestHandler::Get_Instance()->Set_Start_Quest(eQuest);
+
+	UI_DESC Desc;
+	Desc.tTransformDesc.vPosition = { 0.f, 0.f ,0.f };
+	Desc.tTransformDesc.vScale = { 1.f, 1.f,0.f };
+	Desc.wstrTexturePrototypeTag = L"Component_Texture_ScriptUI_Script";
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_MissionUI",
+		LayerTag, &Desc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add ScriptUI In Layer");
+		return E_FAIL;
+	}
+
 
 	return S_OK;
 }

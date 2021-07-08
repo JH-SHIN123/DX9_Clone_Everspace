@@ -108,12 +108,20 @@ _uint CScriptUI::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CScriptUI::Render_GameObject()
 {
-	CUI::Render_GameObject();
+	CGameObject::Render_GameObject();
+
+	TRANSFORM_DESC transformDesc = m_pTransform->Get_TransformDesc();
+
+	_float4x4 matView;
+	D3DXMatrixIdentity(&matView);
+	matView._11 = transformDesc.vScale.x;
+	matView._22 = transformDesc.vScale.y;
+	matView._41 = transformDesc.vPosition.x;
+	matView._42 = transformDesc.vPosition.y;
+	m_pDevice->SetTransform(D3DTS_VIEW, &matView);
+
 
 	//m_pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
-	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(0);
-	m_pVIBuffer->Render_VIBuffer();
 
 	m_fScriptTime += m_pManagement->Get_DeltaTime();
 
@@ -168,16 +176,30 @@ void CScriptUI::Script_Tutorial()
 	switch (m_dwScriptNext)
 	{
 	case 0:
-		m_IsPlayerPortrait = true;
-		m_wstrName = L"김쥬신";
-		m_wstrScript = L"가나다라마바사아자차카타파하";
+		m_IsPlayerPortrait = false;
+		m_wstrName = L"사령관";
+		m_wstrScript = L"오, 자네가 이번에 새로 들어왔다던 신병인가?";
 		break;
 	case 1:
 		m_IsPlayerPortrait = false;
 		m_wstrName = L"사령관";
-		m_wstrScript = L"으하하 메롱";
+		m_wstrScript = L"자네가 임무를 수행 하기 전 거쳐야 할 훈련이 하나 있지";
 		break;
-
+	case 2:
+		m_IsPlayerPortrait = false;
+		m_wstrName = L"사령관";
+		m_wstrScript = L"오늘의 훈련을 진행 할 헥터 도일 사령관이라고 하네, 잘 부탁하네 제군";
+		break;
+	case 3:
+		m_IsPlayerPortrait = false;
+		m_wstrName = L"사령관 헥터 도일";
+		m_wstrScript = L"자 우선 고리를 통과해 보겠나?";
+		break;
+	case 4:
+		m_IsPlayerPortrait = false;
+		m_wstrName = L"사령관 헥터 도일";
+		m_wstrScript = L"WASD 방향키로 조종이 가능하지";
+		break;
 	default:
 		m_wstrName = L"";
 		m_wstrScript = L"";

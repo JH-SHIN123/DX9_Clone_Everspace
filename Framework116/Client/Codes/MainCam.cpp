@@ -459,6 +459,11 @@ void CMainCam::Set_IsSoloMove(ESoloMoveMode eMove)
 	m_eSoloMoveMode = eMove;
 }
 
+const ESoloMoveMode CMainCam::Get_SoloMoveMode()
+{
+	return m_eSoloMoveMode;
+}
+
 _uint CMainCam::CameraShakingStart(_float fDeltaTime)
 {
 	_float3 Shake = { (_float)(rand() % 6), (_float)(rand() % 6), 0.f };

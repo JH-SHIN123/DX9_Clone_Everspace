@@ -16,6 +16,9 @@ public:
 	virtual _uint LateUpdate_Scene(_float fDeltaTime) override;
 
 private:
+	_uint Stage_Flow(_float fDeltaTime);
+
+private:
 	HRESULT Add_Layer_Player(const wstring& LayerTag);
 	HRESULT Add_Layer_Terrain(const wstring& LayerTag);
 	HRESULT Add_Layer_Cam(const wstring& LayerTag);
@@ -37,7 +40,10 @@ private:
 	// HUD
 	HRESULT Add_Layer_HUD(const wstring& LayerTag);
 	HRESULT Add_Layer_TutorialUI(const wstring& LayerTag);
-	HRESULT Add_Layer_ScriptUI(const wstring& LayerTag);
+
+	// InGame
+	HRESULT Add_Layer_ScriptUI(const wstring& LayerTag, EScript eScript);
+	HRESULT Add_Layer_MissionUI(const wstring& LayerTag, EQuest eQuest);
 
 
 
@@ -47,8 +53,8 @@ public:
 	virtual void Free() override;
 
 private:
-	_float m_fDummyTime = 1.f;
-	_uint m_iDummyCount = 0;
+	_float m_fFlowTime = 1.f;
+	_uint m_iFlowCount = 0;
 };
 
 #define __STAGE_H__

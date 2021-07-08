@@ -8,7 +8,7 @@
 
 USING(Engine)
 
-enum Quest {
+enum EQuest {
 	Stage_1_Ring, Stage_1_Target,
 	End
 };
@@ -23,7 +23,7 @@ private:
 	~CQuestHandler();
 
 public:
-	HRESULT Start_Quest(const _int& iCount_Max, const wstring& wstrQuestName = L"");
+	HRESULT Set_Start_Quest(EQuest eQuest);
 	_int	Set_Counting(const _int iCount = 1);
 
 public:
@@ -36,7 +36,7 @@ private:
 	_bool Update_Quest();
 
 private:
-	Quest	m_eNowQuest = End;
+	EQuest	m_eNowQuest = End;
 	wstring m_wstrQuestName = L"";
 	_bool	m_IsClear = true;
 	_int	m_iCount = 0;

@@ -33,6 +33,7 @@
 #include "ScriptUI.h"
 #include "HP_Bar.h"
 #include "Asteroid.h"
+#include "MissionUI.h"
 #pragma endregion
 
 
@@ -779,6 +780,16 @@ HRESULT CLoading::Ready_Stage1()
 		CScriptUI::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_ScriptUI");
+		return E_FAIL;
+	}
+
+	// ¹Ì¼Ç/Äù½ºÆ® UI
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_MissionUI",
+		CMissionUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_MissionUI");
 		return E_FAIL;
 	}
 

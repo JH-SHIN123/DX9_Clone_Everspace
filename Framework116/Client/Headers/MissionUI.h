@@ -4,7 +4,7 @@
 #include "GameObject.h"
 
 USING(Engine)
-class CMissionUI final : public CGameObject
+class CMissionUI final : public CUI
 {
 public:
 	explicit CMissionUI(LPDIRECT3DDEVICE9 pDevice);
@@ -28,18 +28,13 @@ public:
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
-private:
-	CVIBuffer*  m_pVIBuffer = nullptr;
-	CTransform* m_pTransform = nullptr;
-	CTexture*	m_pTexture = nullptr;
-
-	// 해당 스테이지의 미션을 알려주는 UI이다.
-	// 무엇이 필요 할까 
-
-private:
+private: 
+	// 퀘스트의 조건이나 완료 유무 자체는 스트림이 관리하고 여기서는 출력 할 값만 따지자
 	wstring m_wstrMissionName = L"";
 	_uint m_iMissionCount = 0;
 	_uint m_iMissionMaxCount = 0;
+	_bool m_IsClear = false;
+
 };
 
 #define __MISSIONUI_H__
