@@ -61,8 +61,7 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
-	TransformDesc.fSpeedPerSec = 20.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);
+	TransformDesc.fRotatePerSec = D3DXToRadian(20.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -111,6 +110,8 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 _uint CPlanet::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
+	
+	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
@@ -148,15 +149,9 @@ _uint CPlanet::Render_GameObject()
 
 _uint CPlanet::Movement(_float fDeltaTime)
 {
-	//_float3 vOutPos = m_pTransform->Get_State(EState::Position);
-	//if (true == m_pTerrainBuffer->Is_OnTerrain(&vOutPos))
-	//{
-	//	vOutPos.y += 0.5f;
-	//	m_pTransform->Set_Position(vOutPos);
-	//}	
-
-
-	m_pTransform->Go_Straight(fDeltaTime);
+	if (m_pTransform) {
+		m_pTransform->RotateY(fDeltaTime);
+	}
 
 
 	return _uint();

@@ -69,9 +69,11 @@ HRESULT CAsteroid::Ready_GameObject(void* pArg)
 	if (false == m_bDontMove) {
 		// For.Com_Collide
 		BOUNDING_SPHERE BoundingSphere;
-		if (pDesc->tTransformDesc.vScale.x <= 2.f)
+		if (pDesc->tTransformDesc.vScale.x >= 20.f)
+			BoundingSphere.fRadius = 4.f;
+		else if (pDesc->tTransformDesc.vScale.x <= 2.f)
 			BoundingSphere.fRadius = 4.5f;
-		else if (pDesc->tTransformDesc.vScale.x <= 5.f)
+		else
 			BoundingSphere.fRadius = 5.f;
 
 		if (FAILED(CGameObject::Add_Component(
@@ -129,7 +131,7 @@ _uint CAsteroid::Render_GameObject()
 	// Test
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	if(m_pCollide) m_pCollide->Render_Collide();
 #endif
 
 	return _uint();
