@@ -4,6 +4,9 @@
 #include "Pipeline.h"
 #include "EngineEffectSystem.h"
 #include "WingBoost_System.h"
+#include "HP_Bar.h"
+#include "Stamina_Bar.h"
+#include "CollisionHandler.h"
 #include "ScriptUI.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
@@ -37,21 +40,24 @@ void CPlayer::Update_Effect()
 	}
 
 	// Wing-Boost Effect
-	if (m_pLeftWingBoost) {
-		_float3 vWingPos = m_pTransform->Get_TransformDesc().vPosition;
-		vWingPos += m_pTransform->Get_State(EState::Right) * m_vLeftWingOffset.x;
-		vWingPos += m_pTransform->Get_State(EState::Up) * m_vLeftWingOffset.y;
-		vWingPos += m_pTransform->Get_State(EState::Look) * m_vLeftWingOffset.z;
-		m_pLeftWingBoost->Set_WingOffset(vWingPos);
-		m_pLeftWingBoost->Set_IsBoost(m_IsBoost);
-	}
-	if (m_pRightWingBoost) {
-		_float3 vWingPos = m_pTransform->Get_TransformDesc().vPosition;
-		vWingPos += m_pTransform->Get_State(EState::Right) * m_vRightWingOffset.x;
-		vWingPos += m_pTransform->Get_State(EState::Up) * m_vRightWingOffset.y;
-		vWingPos += m_pTransform->Get_State(EState::Look) * m_vRightWingOffset.z;
-		m_pRightWingBoost->Set_WingOffset(vWingPos);
-		m_pRightWingBoost->Set_IsBoost(m_IsBoost);
+	if (m_fStamina > 1.f)
+	{
+		if (m_pLeftWingBoost) {
+			_float3 vWingPos = m_pTransform->Get_TransformDesc().vPosition;
+			vWingPos += m_pTransform->Get_State(EState::Right) * m_vLeftWingOffset.x;
+			vWingPos += m_pTransform->Get_State(EState::Up) * m_vLeftWingOffset.y;
+			vWingPos += m_pTransform->Get_State(EState::Look) * m_vLeftWingOffset.z;
+			m_pLeftWingBoost->Set_WingOffset(vWingPos);
+			m_pLeftWingBoost->Set_IsBoost(m_IsBoost);
+		}
+		if (m_pRightWingBoost) {
+			_float3 vWingPos = m_pTransform->Get_TransformDesc().vPosition;
+			vWingPos += m_pTransform->Get_State(EState::Right) * m_vRightWingOffset.x;
+			vWingPos += m_pTransform->Get_State(EState::Up) * m_vRightWingOffset.y;
+			vWingPos += m_pTransform->Get_State(EState::Look) * m_vRightWingOffset.z;
+			m_pRightWingBoost->Set_WingOffset(vWingPos);
+			m_pRightWingBoost->Set_IsBoost(m_IsBoost);
+		}
 	}
 }
 
@@ -131,6 +137,46 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
 		return E_FAIL;
 	}
+
+	// HP 바.
+	m_fHp = 100.f;
+	m_fFullHp = m_fHp;
+
+	CGameObject* pGameObject = nullptr;
+	UI_DESC HUD_Hp_Bar;
+	HUD_Hp_Bar.tTransformDesc.vPosition = { 0.f, 0.f, 0.f };
+	HUD_Hp_Bar.tTransformDesc.vScale = { m_fHp * (m_fHpLength / m_fFullHp), 8.f, 0.f };
+	HUD_Hp_Bar.wstrTexturePrototypeTag = L"Component_Texture_HP_Bar";
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_HP_Bar",
+		L"Layer_HP_Bar",
+		&HUD_Hp_Bar, &pGameObject)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
+		return E_FAIL;
+	}
+	m_pHp_Bar = static_cast<CHP_Bar*>(pGameObject);
+	m_pHp_Bar->Who_Make_Me(m_pHp_Bar->MAKER_PLAYER);
+
+	// 스태미너 바
+	CGameObject* pGameObjectStamina = nullptr;
+	UI_DESC HUD_Stamina_Bar;
+	HUD_Stamina_Bar.tTransformDesc.vPosition = { 0.f, 0.f, 0.f };
+	HUD_Stamina_Bar.tTransformDesc.vScale = { m_fStamina * (m_fStaminaLength / m_fFullStamina), 8.f, 0.f };
+	HUD_Stamina_Bar.wstrTexturePrototypeTag = L"Component_Texture_Stamina_Bar";
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Stamina_Bar",
+		L"Layer_Stamina_Bar",
+		&HUD_Stamina_Bar, &pGameObjectStamina)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Stamina UI In Layer");
+		return E_FAIL;
+	}
+	m_pStamina_Bar = static_cast<CStamina_Bar*>(pGameObjectStamina);
+	m_pStamina_Bar->Who_Make_Me(m_pStamina_Bar->MAKER_PLAYER);
+
 	// For.Com_Collide
 	PASSDATA_COLLIDE tCollide;
 	CStreamHandler::Load_PassData_Collide(L"BigShip", meshTag, tCollide);
@@ -158,11 +204,12 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	m_vRightEngineOffset = { 1.4f, 0.9f, -6.7f };
 	
 	// Add Wing-Boost Effect
+
 	CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pLeftWingBoost);
 	m_vLeftWingOffset = { -8.2f, -1.5f, -2.f };
 	CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pRightWingBoost);
 	m_vRightWingOffset = { 8.2f, -1.5f, -2.f };
-
+	
 
 	return S_OK;
 }
@@ -172,6 +219,7 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	KeyProcess(fDeltaTime);
+
 	
 	Movement(fDeltaTime);
 
@@ -183,20 +231,37 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	// 월드행렬 업데이트
 	m_pTransform->Update_Transform_Quaternion();
 
-	// 충돌박스 업데이트
-	for (auto& collide : m_Collides) 
-		collide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
+	if (!m_IsDead)
+	{
+		Movement(fDeltaTime);
+		Increase_Stamina(fDeltaTime);
+		TimeOperation(fDeltaTime);
 
-	// (순서 중요!) 이펙트 업데이트
-	Update_Effect();
+		Make_Arrow();
 
+		// 월드행렬 업데이트
+		m_pTransform->Update_Transform_Quaternion();
+
+		Collide_Planet_Or_Astroid(fDeltaTime);
+		// 충돌박스 업데이트
+		for (auto& collide : m_Collides)
+			collide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
+
+		// (순서 중요!) 이펙트 업데이트
+		Update_Effect();
+	}
 	return NO_EVENT;
 }
 
 _uint CPlayer::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CGameObject::LateUpdate_GameObject(fDeltaTime);
-
+	
+	if (m_fHp <= 0.f && !m_IsDead)
+	{
+		CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_State(EState::Position), 1.f);
+		m_IsDead = true;
+	}
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
 		return UPDATE_ERROR;
 
@@ -207,8 +272,10 @@ _uint CPlayer::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
-	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pMesh->Render_Mesh();
+	if (!m_IsDead)
+	{
+		m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
+		m_pMesh->Render_Mesh();
 
 
 	wstring str = L"궁서";
@@ -219,10 +286,10 @@ _uint CPlayer::Render_GameObject()
 		, &rc, DT_CENTER, D3DXCOLOR(255, 0, 0, 255));
 
 #ifdef _DEBUG // Render Collide
-	//for (auto& collide : m_Collides)
-	//	collide->Render_Collide();
+		for (auto& collide : m_Collides)
+			collide->Render_Collide();
 #endif
-
+	}
 	return _uint();
 }
 
@@ -254,29 +321,63 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		}
 		return;
 	}
+
+	if (m_IsCameraMove == true)
+		return;
 		
 	// Move
 	if (GetAsyncKeyState('W') & 0x8000)
+	{
 		m_pTransform->Go_Straight(fDeltaTime);
+		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+	}
 
+	
 	if (GetAsyncKeyState('S') & 0x8000)
+	{
 		m_pTransform->Go_Straight(-fDeltaTime);
+		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+	}
 
 	if (GetAsyncKeyState('D') & 0x8000)
+	{
 		m_pTransform->Go_Side(fDeltaTime);
+		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+	}
 
 	if (GetAsyncKeyState('A') & 0x8000)
+	{
 		m_pTransform->Go_Side(-fDeltaTime);
+		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+	}
+
+	if ((!GetAsyncKeyState('W') && 0x8000)
+		&& (!GetAsyncKeyState('A') && 0x8000)
+		&& (!GetAsyncKeyState('S') && 0x8000)
+		&& (!GetAsyncKeyState('D') && 0x8000))
+	{
+		m_pManagement->StopSound(CSoundMgr::PLAYER_MOVE);
+	}
 
 	// Booster
-	if (m_pController->Key_Pressing(KEY_SPACE)) {
+	if (m_pController->Key_Pressing(KEY_SPACE) && m_fStamina > 0.f) {
 		m_IsBoost = true;
 		m_pTransform->Go_Straight(fDeltaTime * 1.5f);
+		//Stamina
+		m_IsStaminaShrink = true;
+		m_fStamina -= 0.2f;
+		m_pStamina_Bar->Set_ScaleX(-0.2f / m_fFullStamina * m_fStaminaLength);
+
+		m_pManagement->PlaySound(L"Player_Boost_Loop.ogg", CSoundMgr::PLAYER_BOOST);
+		
 	}
 	if (m_pController->Key_Up(KEY_SPACE))
+	{
+		m_pManagement->StopSound(CSoundMgr::PLAYER_BOOST);
 		m_IsBoost = false;
-
-
+		//Stamina
+		m_IsStaminaShrink = false;
+	}
 	// Rotate
 	if (GetAsyncKeyState('Q') & 0x8000)
 		m_pTransform->RotateZ(fDeltaTime);
@@ -340,6 +441,12 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			return;
 		}
 	}
+	// 피깎는 !TEST!!!!!!!!!!!!!
+	if (m_pController->Key_Down(KEY_F1))
+	{
+		m_fHp -= 10.f;
+		m_pHp_Bar->Set_ScaleX(-10.f / m_fFullHp * m_fHpLength);
+	}
 
 	if (m_pController->Key_Down(KEY_F2))
 	{
@@ -358,7 +465,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		if (m_iWeapon == WEAPON_MACHINEGUN)
 		{
 			m_fMachinegunFireDelay += fDeltaTime * m_fOverDrive;
-			if (m_fMachinegunFireDelay > 0.15f)
+			if (m_fMachinegunFireDelay > 0.25f)
 			{
 				if (m_IsLeft)
 					m_IsLeft = false;
@@ -374,6 +481,8 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 					PRINT_LOG(L"Error", L"Failed To Add Player_Bullet In Layer");
 					return;
 				}
+				m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
+				m_pManagement->PlaySound(L"Pulse_Laser.ogg", CSoundMgr::PLAYER_WEAPON);
 				m_fMachinegunFireDelay = 0.f;
 			}
 		}
@@ -418,7 +527,8 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 					PRINT_LOG(L"Error", L"Failed To Add Player_Lazer In Layer");
 					return;
 				}
-				
+				m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
+				m_pManagement->PlaySound(L"Launch_Missile.ogg", CSoundMgr::PLAYER_WEAPON);
 			}
 			if (m_pManagement->Get_GameObjectList(L"Layer_Player_Missile")->size() == 1)
 				m_IsMissile = true;
@@ -434,8 +544,9 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
-	if (m_IsScript == true) // 대화중
+	if (m_IsScript == true || m_IsCameraMove) // 대화중이거나 카메라가 움직이는중!
 		return 0;
+		
 
 	// 화면 가둬줄 가상의 네모
 	POINT pt;
@@ -472,7 +583,6 @@ _uint CPlayer::Movement(_float fDeltaTime)
 
 	m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed * 0.6f);
 	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed * 0.3f);
-
 	return _uint();
 }
 
@@ -489,6 +599,89 @@ void CPlayer::TimeOperation(const _float fDeltaTime)
 			m_fOverDrive = 1.f;
 		}
 	}
+}
+
+void CPlayer::Increase_Stamina(const _float fDeltaTime)
+{
+	if (!m_IsStaminaShrink)
+	{
+		m_fStaminaIncreaseDelay += fDeltaTime;
+		if (m_fStaminaIncreaseDelay >= 1.2f)
+		{
+			if (m_fStamina < 100.f)
+			{
+				m_fStamina += 0.2f;
+				m_pStamina_Bar->Set_ScaleX(0.2f / m_fFullStamina * m_fStaminaLength);
+			}
+		}
+	}
+	else
+	{
+		m_fStaminaIncreaseDelay = 0.f;
+	}
+}
+
+_uint CPlayer::Collide_Planet_Or_Astroid(const _float fDeltaTime)
+{
+	// 1.Planet
+	CCollisionHandler::Collision_PlayerToObstacle(L"Layer_Player", L"Layer_Planet");
+	CCollisionHandler::Collision_PlayerToObstacle(L"Layer_Player", L"Layer_Asteroid");
+
+	// 일반이동 충돌
+	if (m_IsBoost == false && m_IsAstroidCollide == true)
+	{
+		//정면
+		if (GetAsyncKeyState(L'W') & 0x8000)
+		{
+			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), -fDeltaTime);
+			m_IsAstroidCollide = false;
+		}
+		// 후진
+		if (GetAsyncKeyState(L'S') & 0x8000)
+		{
+			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime);
+			m_IsAstroidCollide = false;
+		}
+		// 좌측, 우측
+		if (GetAsyncKeyState(L'A') & 0x8000)
+		{
+			m_pTransform->Go_Side(fDeltaTime * 1.2f);
+			m_IsAstroidCollide = false;
+		}
+		if (GetAsyncKeyState(L'D') & 0x8000)
+		{
+			m_pTransform->Go_Side(-fDeltaTime * 1.2f);
+			m_IsAstroidCollide = false;
+		}
+	}
+	// 부스터 시 충돌
+	else if (m_IsBoost == true && m_IsAstroidCollide == true)
+	{
+		if (GetAsyncKeyState(L'W') & 0x8000)
+		{
+			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), -fDeltaTime * 2.5f);
+			m_IsAstroidCollide = false;
+		}
+		// 후진
+		if (GetAsyncKeyState(L'S') & 0x8000)
+		{
+			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime * 1.f);
+			m_IsAstroidCollide = false;
+		}
+		if (GetAsyncKeyState(L'A') & 0x8000)
+		{
+			m_pTransform->Go_Side(fDeltaTime * 1.2f);
+			m_IsAstroidCollide = false;
+		}
+		if (GetAsyncKeyState(L'D') & 0x8000)
+		{
+			m_pTransform->Go_Side(-fDeltaTime * 1.2f);
+			m_IsAstroidCollide = false;
+		}
+	
+	}
+
+	return _uint();
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
@@ -535,6 +728,8 @@ void CPlayer::Free()
 		m_pLeftWingBoost = nullptr;
 	}
 
+	Safe_Release(m_pStamina_Bar);
+	Safe_Release(m_pHp_Bar);
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pController);

@@ -37,8 +37,6 @@ private:
 	HRESULT Add_Layer_Planet(const wstring& LayerTag);
 	HRESULT Add_Layer_Meteor(const wstring& LayerTag);
 
-
-
 	// HUD
 	HRESULT Add_Layer_HUD(const wstring& LayerTag);
 	HRESULT Add_Layer_TutorialUI(const wstring& LayerTag);
@@ -46,9 +44,6 @@ private:
 	// InGame
 	HRESULT Add_Layer_ScriptUI(const wstring& LayerTag, EScript eScript);
 	HRESULT Add_Layer_MissionUI(const wstring& LayerTag, EQuest eQuest);
-
-
-
 
 public:
 	static CStage* Create(LPDIRECT3DDEVICE9 pDevice);

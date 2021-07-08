@@ -11,6 +11,7 @@ CManagement::CManagement()
 	, m_pRenderer(CRenderer::Get_Instance())
 	, m_pTime_Manager(CTime_Manager::Get_Instance())
 	, m_pFrame_Manager(CFrame_Manager::Get_Instance())
+	, m_pSound_Manager(CSoundMgr::Get_Instance())
 {
 }
 
@@ -22,7 +23,8 @@ HRESULT CManagement::Ready_Game(HWND hWnd, _uint iWinCX, _uint iWinCY, EDisplayM
 		nullptr == m_pGameObject_Manager ||
 		nullptr == m_pRenderer ||
 		nullptr == m_pTime_Manager ||
-		nullptr == m_pFrame_Manager)
+		nullptr == m_pFrame_Manager ||
+		nullptr == m_pSound_Manager)
 	{
 		PRINT_LOG(L"Error", L"One of Managers is nullptr");
 		return E_FAIL;
@@ -37,6 +39,12 @@ HRESULT CManagement::Ready_Game(HWND hWnd, _uint iWinCX, _uint iWinCY, EDisplayM
 	if (FAILED(m_pFrame_Manager->Ready_FrameManager(_fSPF)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Ready_FrameManager");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pSound_Manager->Ready_SoundManager()))
+	{
+		PRINT_LOG(L"Error", L"Failed To Ready_SoundManager");
 		return E_FAIL;
 	}
 
@@ -290,8 +298,57 @@ HRESULT CManagement::Add_GameObject_InRenderer(ERenderType eType, CGameObject * 
 	return m_pRenderer->Add_GameObject(eType, pObject);
 }
 
+void CManagement::PlaySound(TCHAR * pSoundKey, CSoundMgr::CHANNELID eID)
+{
+	if (nullptr == m_pSound_Manager)
+	{
+		PRINT_LOG(L"Error", L"m_pSound_Manager is nullptr");
+		return;
+	}
+
+	return m_pSound_Manager->PlaySoundW(pSoundKey, eID);
+}
+
+void CManagement::PlayBGM(TCHAR * pSoundKey)
+{
+	if (nullptr == m_pSound_Manager)
+	{
+		PRINT_LOG(L"Error", L"m_pSound_Manager is nullptr");
+		return;
+	}
+
+	return m_pSound_Manager->PlayBGM(pSoundKey);
+}
+
+void CManagement::StopSound(CSoundMgr::CHANNELID eID)
+{
+	if (nullptr == m_pSound_Manager)
+	{
+		PRINT_LOG(L"Error", L"m_pSound_Manager is nullptr");
+		return;
+	}
+
+	return m_pSound_Manager->StopSound(eID);
+}
+
+void CManagement::StopAll()
+{
+	if (nullptr == m_pSound_Manager)
+	{
+		PRINT_LOG(L"Error", L"m_pSound_Manager is nullptr");
+		return;
+	}
+
+	return m_pSound_Manager->StopAll();
+}
+
 void CManagement::Free()
 {
+	if (Safe_Release(m_pSound_Manager))
+	{
+		PRINT_LOG(L"Warning", L"Failed To Release Sound_Manager");
+	}
+
 	if (Safe_Release(m_pFrame_Manager))
 	{
 		PRINT_LOG(L"Warning", L"Failed To Release Frame_Manager");
@@ -326,4 +383,5 @@ void CManagement::Free()
 	{
 		PRINT_LOG(L"Warning", L"Failed To Release Device_Manager");
 	}
+
 }

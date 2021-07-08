@@ -41,9 +41,12 @@
 #include "Meteor.h"
 #include "ScriptUI.h"
 #include "HP_Bar.h"
+#include "HP_Bar_Border.h"
+#include "Stamina_Bar.h"
 #include "Asteroid.h"
 #include "MissionUI.h"
 #include "BackUI.h"
+#include "NaviArrow.h"
 #pragma endregion
 
 
@@ -75,7 +78,8 @@ HRESULT CLoading::Ready_Scene()
 _uint CLoading::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
-
+	m_pManagement->StopSound(CSoundMgr::BGM);
+	m_pManagement->PlaySound(L"Loading_Ambience.ogg", CSoundMgr::BGM);
 	if (m_IsFinished)
 	{
 		//
@@ -242,6 +246,39 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_HP_Bar_Border */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_HP_Bar_Border",
+		CHP_Bar_Border::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_HP_Bar_Border");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_NaviArrow",
+		CNaviArrow::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_NaviArrow");
+		return E_FAIL;
+	}
+
+#pragma endregion
+
+#pragma region Components
+	/* For.GameObject_Stamina_Bar */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Stamina_Bar",
+		CStamina_Bar::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Stamina_Bar");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Planet */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Asteroid",
@@ -250,6 +287,7 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
 		return E_FAIL;
 	}
+
 
 #pragma endregion
 
@@ -364,6 +402,15 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_NaviArrow",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/naviArrow.X", L"../../Resources/Textures/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_NaviArrow");
+		return E_FAIL;
+	}
+
 	//if (FAILED(m_pManagement->Add_Component_Prototype(
 	//	EResourceType::Static,
 	//	L"Component_Mesh_Monster",
@@ -380,6 +427,7 @@ HRESULT CLoading::Ready_StageResources()
 	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
 	return S_OK;
 }
+
 
 HRESULT CLoading::Ready_LobbyResources()
 {
@@ -482,6 +530,7 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_HexagonColor");
 		return E_FAIL;
 	}
+
 
 #pragma endregion
 	return S_OK;
@@ -694,6 +743,16 @@ HRESULT CLoading::Ready_HUD_Resources()
 		return E_FAIL;
 	}
 
+	/* For.Component_Texture_HUD_Out_Bar */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HP_Border",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HUD_Out_Bar.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HP_Border");
+		return E_FAIL;
+	}
+
 	/* For.Component_Texture_HUD_In_Bar */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -795,6 +854,16 @@ HRESULT CLoading::Ready_ScriptUI_Resources()
 		CBackUI::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Stamina_Bar */ 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Stamina_Bar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HP/Stamina_Bar%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Stamina_Bar");
 		return E_FAIL;
 	}
 

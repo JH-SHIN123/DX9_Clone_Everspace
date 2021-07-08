@@ -18,7 +18,10 @@ HRESULT CStage::Ready_Scene()
 
 	::SetWindowText(g_hWnd, L"Stage");
 
+	m_pManagement->StopSound(CSoundMgr::BGM);
+
 	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/stage1.map");
+	CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/guide.navi");
 
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
@@ -49,8 +52,8 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Planet(L"Layer_Meteor")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
+	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
 		return E_FAIL;
@@ -65,6 +68,8 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 	Stage_Flow(fDeltaTime);
 
 
+	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
+	
 	return _uint();
 }
 
@@ -74,17 +79,24 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 	
 
 
-	// Boss
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
-
 	// Monster
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Monster");
+
+	// Boss
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Boss_Monster");
+
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Asteroid");
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
 
 	// Ring
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
+
+	// TargetMonster
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
+
+	// Planet
+	// CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Planet");
 
 	return _uint();
 }
@@ -96,6 +108,8 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 	case 0: // 스크립트 시작
 		if (m_fFlowTime >= 0)
 		{
+			SetCursorPos(WINCX >> 1, (WINCY >> 1) - 5);
+
 			m_fFlowTime -= fDeltaTime;
 
 			if (m_fFlowTime <= 0)

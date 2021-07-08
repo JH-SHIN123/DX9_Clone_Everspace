@@ -38,6 +38,8 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 		}
 	}
 
+
+
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -75,12 +77,12 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	UI_DESC HUD_DESC;
 	HUD_DESC.tTransformDesc.vPosition = { 0.f, 740.f, 0.f };
-	HUD_DESC.tTransformDesc.vScale = { 1920.f, 300.f, 0.f };
+	HUD_DESC.tTransformDesc.vScale = { 1920.f, 350.f, 0.f };
 	HUD_DESC.wstrTexturePrototypeTag = L"Component_Texture_ScriptUI_BlackBar";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD_BlackBar", &HUD_DESC)))
 		return E_FAIL;
 
-	HUD_DESC.tTransformDesc.vPosition = { 0.f, 740.f, 0.f };
+	HUD_DESC.tTransformDesc.vPosition = { 0.f, -740.f, 0.f };
 	if (FAILED(Add_Layer_UI(L"Layer_HUD_BlackBar", &HUD_DESC)))
 		return E_FAIL;
 
@@ -104,6 +106,7 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// 여기서 카메라 잠그고 플레이어 잠금
 	((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsScript(true);
+	((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(true);
 	((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Lock);
 
 
@@ -113,6 +116,8 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CScriptUI::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
+
+	Lock_Cursor();
 
 	switch (m_eScriptFlow)
 	{
@@ -275,26 +280,6 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"비행 솜씨가 꽤 뛰어나군 그래!";
 		break;
-	case 2:
-		m_IsPlayerPortrait = false;
-		m_wstrName = L"사령관 헥터 도일";
-		m_wstrScript = L"오늘의 훈련을 진행 할 헥터 도일 사령관이라고 하네, 잘 부탁하네 제군";
-		break;
-	case 3:
-		m_IsPlayerPortrait = false;
-		m_wstrName = L"사령관 헥터 도일";
-		m_wstrScript = L"자 우선 고리를 통과해 보겠나?";
-		break;
-	case 4:
-		m_IsPlayerPortrait = false;
-		m_wstrName = L"사령관 헥터 도일";
-		m_wstrScript = L"WASD 방향키로 조종이 가능하지";
-		break;
-	case 5:
-		m_IsPlayerPortrait = false;
-		m_wstrName = L"사령관 헥터 도일";
-		m_wstrScript = L"그 전에 주위를 한번 둘러보게나";
-		break;
 	default:
 		m_wstrName = L"";
 		m_wstrScript = L"";
@@ -303,6 +288,21 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 	}
 	m_dwScriptCountMax = m_wstrScript.length();
 
+}
+
+void CScriptUI::Lock_Cursor()
+{
+	//RECT rc;
+
+	//GetClientRect(g_hWnd, &rc);
+
+	//rc.left = WINCX >> 1;
+	//rc.top = WINCY >> 1;
+	//rc.right = rc.left + 1;
+	//rc.bottom = rc.top + 1;
+
+	//ClipCursor(&rc);
+	SetCursorPos(WINCX >> 1, (WINCY >> 1) - 5);
 }
 
 void CScriptUI::BlackBar_Start(_float fDeltaTime)
@@ -315,8 +315,13 @@ void CScriptUI::BlackBar_Start(_float fDeltaTime)
 	m_vUI_BlackBar_Down_Pos += vDir * fSpeedPerSec;
 	m_pTransfrom_BlackBar_Down->Set_Position(m_vUI_BlackBar_Down_Pos);
 
-	if (m_vUI_BlackBar_Up_Pos.y <= 540.f)
+	if (m_vUI_BlackBar_Up_Pos.y <= 510.f)
 	{
+		if (!m_bSoundOnce)
+		{
+			m_pManagement->PlaySound(L"PopUp_Quest2.ogg", CSoundMgr::SCRIPT_POPUP);
+			m_bSoundOnce = true;
+		}
 		m_eScriptFlow = EScriptFlow::Script;
 		m_pTransfrom_Portrait->Set_Position(_float3(-700.f, -200.f, 0.f));
 	}

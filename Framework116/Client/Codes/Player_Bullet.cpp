@@ -82,7 +82,7 @@ HRESULT CPlayer_Bullet::Ready_GameObject(void * pArg/* = nullptr*/)
 	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
 	_float3 vPlayerUp = m_pPlayerTransform->Get_State(EState::Up);
 	
-	if ((_bool)pArg == true)
+	if (pArg)
 		m_vMuzzlePos = vPlayerPos - (vPlayerRight * 8.2f);
 	else
 		m_vMuzzlePos = vPlayerPos + (vPlayerRight * 8.2f);
@@ -154,7 +154,7 @@ _uint CPlayer_Bullet::LateUpdate_GameObject(_float fDeltaTime)
 			m_pBulletParticle->Set_IsDead(true);
 			m_pBulletParticle = nullptr;
 		}
-
+		// 타격음 넣어야함!
 		return DEAD_OBJECT;
 	}
 

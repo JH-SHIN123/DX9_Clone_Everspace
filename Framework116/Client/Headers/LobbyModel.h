@@ -40,6 +40,9 @@ private:
 	_bool m_bGo_Straight = false;
 	_float m_fDelaySceneChange = 0.f;
 	class CLobby* m_pLobby;
+
+	//Sound
+	_float m_fSoundTiming = 0.f;
 };
 
 #define __LOBBYMODEL_H__

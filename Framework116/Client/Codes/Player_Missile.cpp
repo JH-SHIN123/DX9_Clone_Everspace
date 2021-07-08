@@ -50,7 +50,7 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 50.f;
+	TransformDesc.fSpeedPerSec = 150.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
 	TransformDesc.vScale = { 0.1f, 0.1f, 0.1f };
 
@@ -93,13 +93,17 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// 유도할 타겟.
-	m_pTargetTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Boss_Monster", L"Com_Transform");
-	Safe_AddRef(m_pTargetTransform);
-	if (nullptr == m_pTargetTransform)
+	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() != 0)
 	{
-		PRINT_LOG(L"Error", L"m_pTargetTransform is nullptr");
-		return E_FAIL;
+		m_pTargetTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Boss_Monster", L"Com_Transform");
+		Safe_AddRef(m_pTargetTransform);
+		if (nullptr == m_pTargetTransform)
+		{
+			PRINT_LOG(L"Error", L"m_pTargetTransform is nullptr");
+			return E_FAIL;
+		}
 	}
+
 
 	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
 	_float3 vPlayerRight = m_pPlayerTransform->Get_State(EState::Right);
@@ -142,19 +146,21 @@ _uint CPlayer_Missile::Update_GameObject(_float fDeltaTime)
 		Movement(fDeltaTime);
 	else
 	{
-		m_fAddSpeed += 0.05f;
-		m_fRotateSpeed += D3DXToRadian(15.f);
-		m_pTransform->Set_SpeedPerSec(m_fAddSpeed);
-		m_pTransform->Set_RotatePerSec(m_fRotateSpeed);
-		Homing(fDeltaTime);
+		if (m_pTargetTransform != nullptr)
+		{
+			m_fAddSpeed += 0.15f;
+			m_fRotateSpeed += D3DXToRadian(15.f);
+			m_pTransform->Set_SpeedPerSec(m_fAddSpeed);
+			m_pTransform->Set_RotatePerSec(m_fRotateSpeed);
+			Homing(fDeltaTime);
+		}
 	}
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	
 	// 아직 충돌하면 사라지게하는거 안했음!!
 	m_fLifeTime += fDeltaTime;
-	if (m_fLifeTime > 4.f)
-		return DEAD_OBJECT;
+	
 	return NO_EVENT;
 }
 
@@ -172,11 +178,13 @@ _uint CPlayer_Missile::LateUpdate_GameObject(_float fDeltaTime)
 			m_pHeadParticle->Set_IsDead(true);
 			m_pHeadParticle = nullptr;
 		}
-		
+		m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
+		m_pManagement->PlaySound(L"Missile_Explosion.ogg", CSoundMgr::PLAYER_MISSILE_EXPLOSION);
+
 		return DEAD_OBJECT;
 	}
 
-	if (m_fLifeTime >= 2.f) {
+	if (m_fLifeTime >= 4.f) {
 		m_IsDead = true;
 
 		if (m_pBulletParticle) {
@@ -188,7 +196,7 @@ _uint CPlayer_Missile::LateUpdate_GameObject(_float fDeltaTime)
 			m_pHeadParticle->Set_IsDead(true);
 			m_pHeadParticle = nullptr;
 		}
-
+		CEffectHandler::Add_Layer_Effect_Missile_Explosion(m_pTransform->Get_State(EState::Position));
 		return DEAD_OBJECT;
 	}
 
@@ -219,7 +227,7 @@ _uint CPlayer_Missile::Render_GameObject()
 
 _uint CPlayer_Missile::Movement(_float fDeltaTime)
 {
-	m_pTransform->Go_Straight(fDeltaTime);
+	m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime);
 	return _uint();
 }
 

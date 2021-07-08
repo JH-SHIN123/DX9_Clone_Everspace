@@ -40,6 +40,7 @@ public:
 	_uint Set_Script(EScript eScript);
 
 private:
+	void Lock_Cursor();
 	void BlackBar_Start(_float fDeltaTime); // 대화의 시작
 	void BlackBar_End(_float fDeltaTime);
 	_uint Script_Check();
@@ -88,6 +89,9 @@ private:
 	_float3 m_vUI_BlackBar_Up_Pos = { 0.f, 740.f, 0.f };
 	_float3 m_vUI_BlackBar_Down_Pos = { 0.f, -740.f, 0.f };
 	_float3 m_vUI_Protrait_Pos = { -700.f, -500.f, 0.f };
+
+	//Sound
+	_bool m_bSoundOnce = false;
 
 
 

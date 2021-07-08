@@ -12,6 +12,7 @@
 #include <string>
 #include <random>
 #include <ctime>
+#include <map>
 
 using namespace std;
 #pragma endregion
@@ -28,6 +29,15 @@ using namespace std;
 #include "Engine_Struct.h"
 #include "Engine_Function.h"
 #include "../../Protocol.h"
+
+// 사운드
+#include <io.h>
+#include "fmod.h"
+#pragma comment (lib, "fmodex_vc.lib")
+
+// 동영상
+#include <Vfw.h>
+#pragma comment (lib, "vfw32.lib")
 #pragma endregion
 
 #define __ENGINE_INCLUDE_H__

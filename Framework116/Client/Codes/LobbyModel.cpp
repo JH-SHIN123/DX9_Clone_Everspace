@@ -101,7 +101,7 @@ _uint CLobbyModel::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CLobbyModel::Render_GameObject()
 {
-	if (m_pLobby->Get_SceneSelect())
+	if (m_pLobby->Get_SceneSelect() && !m_pLobby->Get_GotoNextScene())
 		return 0;
 	CGameObject::Render_GameObject();
 
@@ -141,6 +141,7 @@ _uint CLobbyModel::Movement(_float fDeltaTime)
 
 void CLobbyModel::StartSceneChange(_float fDeltaTime)
 {
+	//
 	static _float fTime = 0;
 	fTime += fDeltaTime;
 	if (m_bGo_Straight)
@@ -150,7 +151,7 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 	}
 	if (fTime < 5.f)
 	{
-		m_pTransform->Go_Up(0.01*fDeltaTime);
+		m_pTransform->Go_Up(0.01f*fDeltaTime);
 	}
 	else
 	{
@@ -163,8 +164,12 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 		_float fAngle = acosf(D3DXVec3Dot(&vTargetDir, &vDir));
 		m_pTransform->RotateY(fDeltaTime*D3DXToRadian(fAngle)*20.f);
 		
+
 		if (0.05>= fAngle)
 		{
+			m_fSoundTiming += fDeltaTime;
+			m_pManagement->PlaySound(L"Jump_Gate.ogg", CSoundMgr::LOBBY_EFFECT);
+
 			vTargetDir = _float3(0.f, 1.f, 1.f);
 			vDir = m_pTransform->Get_State(EState::Look);
 			vDir.x = 0.f;
@@ -172,7 +177,7 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 			
 			fAngle = D3DXVec3Dot(&vDir, &vTargetDir);
 			m_pTransform->RotateX(fDeltaTime*fAngle);
-			if (0.005 >= fAngle)
+			if (0.005 >= fAngle && m_fSoundTiming >= 9.f)
 			{
 				m_bGo_Straight = TRUE;
 			}
