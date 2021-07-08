@@ -3,6 +3,7 @@
 #include"Collision.h"
 #include"Lobby.h"
 #include"LobbyCam.h"
+#include"Product.h"
 CGatchaBox::CGatchaBox(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
@@ -140,7 +141,7 @@ _bool CGatchaBox::CheckPicking()
 		_float fDist;
 		CGameObject* pObj = CCollision::PickingObject(fDist, g_hWnd, WINCX, WINCY, 
 			m_pDevice, m_pManagement->Get_GameObjectList(L"Layer_GatchaBox"));
-		if (pObj)
+		if (pObj && m_pLobby->Get_Money() >=1000)
 		{
 			m_fUnPackingTime = 0.f;
 			m_bStartUnpacking = TRUE;
@@ -204,6 +205,9 @@ void CGatchaBox::Add_Layer_Product(wstring & wstrLayerTag)
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
 		return;
 	}
+	CProduct* pProduct = (CProduct*)m_pManagement->Get_GameObject(wstrLayerTag);
+	pProduct->Set_Scene(m_pLobby);
+	Safe_AddRef(m_pLobby);
 }
 
 CGatchaBox * CGatchaBox::Create(LPDIRECT3DDEVICE9 pDevice)

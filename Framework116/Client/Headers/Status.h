@@ -1,15 +1,16 @@
 #pragma once
-#ifndef __STATUSBOARD_H__
+#ifndef __STATUS_H__
 
 #include "GameObject.h"
-
+#include"Lobby.h"
 USING(Engine)
-class CStatusBoard final : public CGameObject
+class CStatus :
+	public CGameObject
 {
 public:
-	explicit CStatusBoard(LPDIRECT3DDEVICE9 pDevice);
-	explicit CStatusBoard(const CStatusBoard& other);
-	virtual ~CStatusBoard() = default;
+	explicit CStatus(LPDIRECT3DDEVICE9 pDevice);
+	explicit CStatus(const CStatus& other);
+	virtual ~CStatus() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -20,10 +21,9 @@ public:
 
 private:
 	_uint Movement(_float fDeltaTime);
-	void Render_AxisMean();
-
+	_bool UpdateHexagon(_float fDeltaTime);
 public:
-	static CStatusBoard* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CStatus* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 public:
@@ -33,7 +33,11 @@ private:
 	CVIBuffer*  m_pVIBuffer = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
+
+	UNIT_INFO*	m_pUnitInfo = nullptr;
+	UNIT_INFO	m_tPreUnitInfo = {0,0,0,0,0,0};
+
 };
 
-#define __STATUSBOARD_H__
-#endif
+#define __STATUS_H__
+#endif // !__STATUS_H__

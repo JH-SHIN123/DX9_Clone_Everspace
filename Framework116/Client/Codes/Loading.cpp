@@ -34,7 +34,8 @@
 #include "WingBoost_System.h"
 #include"Product.h"
 #include"StatusBoard.h"
-#include"VIBuffer_HexagonColor.h"
+#include"Status.h"
+#include"VIBuffer_HexagonTex.h"
 #pragma endregion
 
 
@@ -378,6 +379,14 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring");
 		return E_FAIL;
 	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Status",
+		CStatus::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring");
+		return E_FAIL;
+	}
 #pragma endregion
 	
 #pragma region Components
@@ -401,8 +410,8 @@ HRESULT CLoading::Ready_LobbyResources()
 	}
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
-		L"Component_VIBuffer_HexagonColor",
-		CVIBuffer_HexagonColor::Create(m_pDevice))))
+		L"Component_VIBuffer_HexagonTex",
+		CVIBuffer_HexagonTex::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_HexagonColor");
 		return E_FAIL;

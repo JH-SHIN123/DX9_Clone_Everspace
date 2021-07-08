@@ -3,6 +3,7 @@
 #include"Pipeline.h"
 #include"LobbyCam.h"
 #include"Lobby.h"
+#include"GatchaBox.h"
 CStatusBoard::CStatusBoard(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
@@ -34,16 +35,7 @@ HRESULT CStatusBoard::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_VIBuffer");
 		return E_FAIL;
 	}
-	//For.Com_HexagonVIBuffer
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::NonStatic,
-		L"Component_VIBuffer_HexagonColor",
-		L"Com_HexagonVIBuffer",
-		(CComponent**)&m_pHexagonBuffer)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_VIBuffer");
-		return E_FAIL;
-	}
+	
 	
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(
@@ -57,8 +49,8 @@ HRESULT CStatusBoard::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	TRANSFORM_DESC tTrans;
-	tTrans.vScale = { 400.f,400.f,0.f };
-	tTrans.vPosition = _float3(-700.f, -200.f, 0.f);
+	tTrans.vScale = { 350.f,350.f,0.f };
+	tTrans.vPosition = _float3(-750.f, -200.f, 0.f);
 	// For.Com_Transform
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -78,6 +70,7 @@ HRESULT CStatusBoard::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CStatusBoard::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
+
 	Movement(fDeltaTime);	
 	
 	return m_pTransform->Update_Transform();
@@ -98,10 +91,13 @@ _uint CStatusBoard::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CStatusBoard::Render_GameObject()
 {
-	if (m_pLobby->Get_IsGatcha())
-		return 0;
 	
-
+	CGatchaBox* pBox = (CGatchaBox*)m_pManagement->Get_GameObject(L"Layer_GatchaBox");
+	if (pBox)
+	{
+		if (pBox->Get_StartUnpacking())
+			return 0;
+	}
 	CGameObject::Render_GameObject();
 	TRANSFORM_DESC transformDesc = m_pTransform->Get_TransformDesc();
 
@@ -112,21 +108,84 @@ _uint CStatusBoard::Render_GameObject()
 	matView._41 = transformDesc.vPosition.x;
 	matView._42 = transformDesc.vPosition.y;
 	m_pDevice->SetTransform(D3DTS_VIEW, &matView);
-	/////////////////////////////////////////////////////////////////
 	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer();
+	/////////////////////////////////////////////////////////////////
 
-	m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pHexagonBuffer->Render_VIBuffer();
-	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	Render_AxisMean();
+
 	return _uint();
 }
 
 _uint CStatusBoard::Movement(_float fDeltaTime)
 {
 	return _uint();
+}
+
+void CStatusBoard::Render_AxisMean()
+{
+	wstring str;
+	RECT rc;
+	GetClientRect(g_hWnd, &rc);
+
+	str = L"ATK";
+	_float3 vDecartPos = m_pTransform->Get_TransformDesc().vPosition;
+	_float3 vScale = m_pTransform->Get_TransformDesc().vScale;
+	_float3 vPos = {0,0,0};
+	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
+	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
+	rc.left = vPos.x;
+	rc.top = vPos.y - (vScale.y/2.f);
+	m_pManagement->Get_Font()->DrawText(NULL
+		, str.c_str(), -1
+		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
+	
+	str = L"DEF";
+	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
+	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
+	rc.left = vPos.x + (vScale.x/2.f);
+	rc.top = vPos.y - vScale.y /4.f;
+	m_pManagement->Get_Font()->DrawText(NULL
+		, str.c_str(), -1
+		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
+
+
+	str = L"HP";
+	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
+	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
+	rc.left = vPos.x + vScale.x/2.f;
+	rc.top = vPos.y + vScale.y /4.f;
+	m_pManagement->Get_Font()->DrawText(NULL
+		, str.c_str(), -1
+		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
+
+	str = L"SHIELD";
+	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
+	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
+	rc.left = vPos.x - 20.f;
+	rc.top = vPos.y + vScale.y /2.f;
+	m_pManagement->Get_Font()->DrawText(NULL
+		, str.c_str(), -1
+		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
+
+	str = L"ENERGY";
+	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
+	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
+	rc.left = vPos.x - vScale.x/2.f;
+	rc.top = vPos.y + vScale.y / 4.f;
+	m_pManagement->Get_Font()->DrawText(NULL
+		, str.c_str(), -1
+		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
+
+
+	str = L"FIRE RATE";
+	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
+	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
+	rc.left = vPos.x - vScale.x /2.f - 30.f;
+	rc.top = vPos.y - vScale.y /4.f;
+	m_pManagement->Get_Font()->DrawText(NULL
+		, str.c_str(), -1
+		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
 }
 
 

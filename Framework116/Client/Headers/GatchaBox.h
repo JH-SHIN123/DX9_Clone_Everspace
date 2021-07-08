@@ -29,6 +29,8 @@ public:
 	virtual void Free() override;
 public:
 	void Set_Scene(class CLobby* _pLobby) { m_pLobby = _pLobby; }
+
+	_bool Get_StartUnpacking() { return m_bStartUnpacking; }
 private:
 	CVIBuffer*  m_pVIBuffer = nullptr;
 	CTransform* m_pTransform = nullptr;

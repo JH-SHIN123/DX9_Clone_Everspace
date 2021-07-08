@@ -101,6 +101,8 @@ _uint CLobbyModel::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CLobbyModel::Render_GameObject()
 {
+	if (m_pLobby->Get_SceneSelect())
+		return 0;
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);

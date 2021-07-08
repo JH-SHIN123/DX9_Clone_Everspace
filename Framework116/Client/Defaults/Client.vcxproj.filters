@@ -172,6 +172,9 @@
     <Filter Include="01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor">
       <UniqueIdentifier>{0973b3ee-c372-4144-a066-7892b4b68465}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\02.Board\00.Status">
+      <UniqueIdentifier>{17f0422e-b673-4d3f-98b4-8a8e2fc56cb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -321,7 +324,10 @@
     <ClInclude Include="..\Headers\StatusBoard.h">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\VIBuffer_HexagonColor.h">
+    <ClInclude Include="..\Headers\Status.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board\00.Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\VIBuffer_HexagonTex.h">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor</Filter>
     </ClInclude>
   </ItemGroup>
@@ -461,7 +467,10 @@
     <ClCompile Include="..\Codes\StatusBoard.cpp">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\VIBuffer_HexagonColor.cpp">
+    <ClCompile Include="..\Codes\Status.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board\00.Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\VIBuffer_HexagonTex.cpp">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor</Filter>
     </ClCompile>
   </ItemGroup>

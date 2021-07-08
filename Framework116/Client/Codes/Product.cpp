@@ -3,6 +3,7 @@
 #include "MaterialHandler.h"
 #include"Pipeline.h"
 #include"LobbyCam.h"
+#include"Lobby.h"
 
 CProduct::CProduct(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -114,6 +115,8 @@ _uint CProduct::Update_GameObject(_float fDeltaTime)
 		CLobbyCam* pCam = (CLobbyCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
 		pCam->Set_StartUnPacking(TRUE);
 		pCam->Set_UnPacked(FALSE);
+		Get_Product();
+		m_pLobby->Set_Money(-1000);
 		return DEAD_OBJECT;
 	}
 	Movement(fDeltaTime);
@@ -173,6 +176,7 @@ _uint CProduct::Movement(_float fDeltaTime)
 		m_pTransform->RotateX(fDeltaTime*10.f);
 	else
 	{
+		
 		m_bShowProduct = TRUE;
 		m_pTransform->Set_Rotate(_float3(D3DXToRadian(90.f), 0.f, 0.f));
 	}
@@ -199,6 +203,7 @@ void CProduct::UpdateProduct(_float fDeltaTime)
 
 void CProduct::Render_Product()
 {
+	
 	DWORD dwRenderState;
 	m_pDevice->GetRenderState(D3DRS_CULLMODE,&dwRenderState);
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -206,6 +211,68 @@ void CProduct::Render_Product()
 	m_pProductTex->Set_Texture((_uint)m_eProduct);
 	m_pProductVIBuffer->Render_VIBuffer();
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, dwRenderState);
+	if (m_bShowProduct)
+		Set_Text();
+}
+
+void CProduct::Get_Product()
+{
+	UNIT_INFO tCurUnitInfo = *m_pLobby->Get_UnitInfo();
+	switch (m_eProduct)
+	{
+	case EProduct::ATK_UP:
+			tCurUnitInfo.iAtk += 20;
+		break;
+	case EProduct::DEF_UP:
+			tCurUnitInfo.iDef += 20;
+		break;
+	case EProduct::MAX_HP_UP:
+			tCurUnitInfo.iMaxHp += 20;
+		break;
+	case EProduct::MAX_SHIELD_UP:
+			tCurUnitInfo.iMaxShield += 20;
+		break;
+	case EProduct::MONEY:
+		m_pLobby->Set_Money(1000);
+		break;
+	}
+	m_pLobby->Set_UnitInfo(tCurUnitInfo);
+}
+
+void CProduct::Set_Text()
+{
+	wstring str;
+	RECT rc;
+	GetClientRect(g_hWnd, &rc);
+	switch (m_eProduct)
+	{
+	case EProduct::ATK_UP:
+		str = L"°ø°Ý·Â Áõ°¡!";
+		break;
+	case EProduct::DEF_UP:
+		str = L"¹æ¾î·Â Áõ°¡!";
+		break;
+	case EProduct::MAX_HP_UP:
+		str = L"ÃÖ´ëÃ¼·Â Áõ°¡!";
+		break;
+	case EProduct::MAX_SHIELD_UP:
+		str = L"½¯µå·® Áõ°¡!";
+		break;
+	case EProduct::MONEY:
+		str = L"µ· È¹µæ!";
+		break;
+	case EProduct::SHIP0:
+		str = L"¸ðµ¨ 0 È¹µæ!";
+		break;
+	case EProduct::SHIP1:
+		str = L"¸ðµ¨ 1 È¹µæ!";
+		break;
+	}
+		rc.left = (WINCX >> 1) - 100;
+		rc.top = (WINCY >> 1) - 400;
+		m_pManagement->Get_Font()->DrawText(NULL
+			, str.c_str(), -1
+			, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
 }
 
 
@@ -235,10 +302,10 @@ CGameObject * CProduct::Clone(void * pArg/* = nullptr*/)
 
 void CProduct::Free()
 {
+	Safe_Release(m_pLobby);
 	Safe_Release(m_pProductTex);
 	Safe_Release(m_pProductVIBuffer);
 	Safe_Release(m_pGeoMesh);
-	
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	

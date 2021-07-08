@@ -8,6 +8,7 @@
 #include"LobbyCam.h""
 #include"GatchaBox.h"
 #include"StatusBoard.h"
+#include"Status.h"
 CLobby::CLobby(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
 {
@@ -34,6 +35,8 @@ HRESULT CLobby::Ready_Scene()
 		return E_FAIL;
 	if (FAILED(Add_Layer_StatusBoard(L"Layer_StatusBoard")))
 		return E_FAIL;
+	if (FAILED(Add_Layer_Status(L"Layer_Status")))
+		return E_FAIL;
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
@@ -42,6 +45,7 @@ HRESULT CLobby::Ready_Scene()
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
+	m_tUnitInfo = { 20,30,50,30,40,70 };
 	return S_OK;
 }
 
@@ -58,6 +62,7 @@ _uint CLobby::Update_Scene(_float fDeltaTime)
 		}
 		return CHANGE_SCENE;
 	}
+	UpdateMoney();
 	CScene::Update_Scene(fDeltaTime);
 
 	
@@ -226,6 +231,34 @@ HRESULT CLobby::Add_Layer_StatusBoard(const wstring & LayerTag)
 	return S_OK;
 }
 
+HRESULT CLobby::Add_Layer_Status(const wstring & LayerTag)
+{
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Status",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add StatusBoard In Layer");
+		return E_FAIL;
+	}
+	CStatus* pBoard = (CStatus*)m_pManagement->Get_GameObject(LayerTag);
+	pBoard->Set_Scene(this);
+	AddRef();
+	return S_OK;
+}
+
+
+void CLobby::UpdateMoney()
+{
+	if (m_iMoney != m_iNextMoney)
+	{
+		if (m_iMoney < m_iNextMoney)
+			m_iMoney++;
+		else if (m_iMoney > m_iNextMoney)
+			m_iMoney--;
+	}
+}
 
 void CLobby::Set_GotoNextScene(_bool bSet)
 {
@@ -256,6 +289,11 @@ void CLobby::Set_StartUnPacking(_bool bSet)
 	m_bStartUnPacking = bSet;
 }
 
+void CLobby::Set_SceneSelect(_bool bSet)
+{
+	m_bSelectScene = bSet;
+}
+
 
 
 _bool CLobby::Get_IsGatcha() const
@@ -273,10 +311,32 @@ _bool CLobby::Get_GotoNextScene() const
 	return m_bGotoNextScene;
 }
 
+_bool CLobby::Get_SceneSelect() const
+{
+	return m_bSelectScene;
+}
+
 _uint CLobby::Get_Money() const
 {
 	return m_iMoney;
 }
+
+UNIT_INFO * CLobby::Get_UnitInfo()
+{
+	return &m_tUnitInfo;
+}
+
+void CLobby::Set_UnitInfo(UNIT_INFO _tUnitInfo)
+{
+	m_tUnitInfo = _tUnitInfo;
+}
+
+void CLobby::Set_Money(_uint _iMoney)
+{
+	m_iNextMoney = _iMoney;
+}
+
+
 
 CLobby * CLobby::Create(LPDIRECT3DDEVICE9 pDevice)
 {
