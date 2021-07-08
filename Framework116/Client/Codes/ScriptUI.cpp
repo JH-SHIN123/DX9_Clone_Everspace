@@ -27,12 +27,41 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 {
 	CUI::Ready_GameObject(pArg);
 
+
+	UI_DESC HUD_DESC;
+	HUD_DESC.tTransformDesc.vPosition = { 0.f, 720.f, 0.f };
+	HUD_DESC.tTransformDesc.vScale = { 1920.f, 180.f, 0.f };
+	HUD_DESC.wstrTexturePrototypeTag = L"Component_Texture_ScriptUI_BlackBar";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD_BlackBar", &HUD_DESC)))
+		return E_FAIL;
+
+	//HUD_DESC.tTransformDesc.vPosition = { 0.f, -720.f, 0.f };
+	if (FAILED(Add_Layer_UI(L"Layer_HUD_BlackBar", &HUD_DESC)))
+		return E_FAIL;
+
+
+
+
+
+
+
+	m_pTransfrom_BlackBar_Up = (CTransform*)m_pManagement->Get_Component(L"Layer_HUD_BlackBar", L"Com_Transform");
+	Safe_AddRef(m_pTransfrom_BlackBar_Up);
+
+	m_pTransfrom_BlackBar_Down = (CTransform*)m_pManagement->Get_Component(L"Layer_HUD_BlackBar", L"Com_Transform",1);
+	Safe_AddRef(m_pTransfrom_BlackBar_Down);
+
+
+
 	return S_OK;
 }
 
 _uint CScriptUI::Update_GameObject(_float fDeltaTime)
 {
 	CUI::Update_GameObject(fDeltaTime);
+
+	//((CUI*)m_pManagement->Get_GameObject(L"Layer_HUD_BlackBar"))->m_pTransform->
+	Check_BlackBar(fDeltaTime);
 
 	Script_Check();
 	
@@ -125,6 +154,35 @@ void CScriptUI::Script_Tutorial()
 	m_dwScriptCountMax = m_wstrScript.length();
 }
 
+void CScriptUI::Check_BlackBar(_float fDeltaTime)
+{
+	if (m_IsStartScript == false)
+		return;
+
+	//_float fSpeedPerSec = 20.f;
+	//_float3 vDir = { 0.f, 1.f, 0.f };
+	//_float3 vBlackBar_Up = m_pTransfrom_BlackBar_Up->Get_State(EState::Position);
+	////vBlackBar_Up -= vDir * fSpeedPerSec;
+	//m_pTransfrom_BlackBar_Up->Set_Position(vBlackBar_Up);
+
+
+
+}
+
+HRESULT CScriptUI::Add_Layer_UI(const wstring & LayerTag, const UI_DESC * pUIDesc)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_UI",
+		LayerTag,
+		(void*)pUIDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
+		return E_FAIL;
+	}
+	return S_OK;
+}
+
 _uint CScriptUI::Set_NextScript()
 {
 	if (m_dwScriptCount >= m_dwScriptCountMax)
@@ -175,7 +233,10 @@ CGameObject * CScriptUI::Clone(void * pArg/* = nullptr*/)
 
 void CScriptUI::Free()
 {
-
+	Safe_Release(m_pTransfrom_Name);
+	Safe_Release(m_pTransfrom_Portrait);
+	Safe_Release(m_pTransfrom_BlackBar_Up);
+	Safe_Release(m_pTransfrom_BlackBar_Down);
 
 
 	CUI::Free();

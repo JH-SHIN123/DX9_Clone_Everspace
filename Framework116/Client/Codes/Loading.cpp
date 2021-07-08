@@ -563,6 +563,27 @@ HRESULT CLoading::Ready_HUD_Resources()
 		return E_FAIL;
 	}
 
+	// Script_UI blackbar
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_ScriptUI_BlackBar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Script/BlackBar.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_BlackBar");
+		return E_FAIL;
+	}
+
+	// ÃÊ»óÈ­
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_ScriptUI_Portrait_Test",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Script/Portrait_Test.jpg"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_Portrait_Test");
+		return E_FAIL;
+	}
+
+
 	return S_OK;
 }
 

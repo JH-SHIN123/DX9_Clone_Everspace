@@ -29,6 +29,8 @@ public:
 	_uint Set_Script(EScript eScript);
 
 private:
+	void Check_BlackBar(_float fDeltaTime); // 대화의 시작
+	HRESULT Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc);
 	_uint Script_Check();
 	void Script_Tutorial();
 
@@ -48,14 +50,16 @@ private:
 	DWORD m_dwScriptCountMax;// 최대치
 	_float m_fScriptTime;	// 끊어서 출력 시간
 	_bool m_IsPlayerPortrait = false;
+	_bool m_IsStartScript = true;
 	_bool m_IsEndScript = false;
-	
+	_float m_fShowBlackBar = 3.f;
 
 private:	// m_pTransform = 대화 창
 	CTransform* m_pTransfrom_Portrait = nullptr;
 	CTransform* m_pTransfrom_Name = nullptr;
 	CTransform* m_pTransfrom_BlackBar_Up = nullptr;
 	CTransform* m_pTransfrom_BlackBar_Down = nullptr;
+
 
 };
 
