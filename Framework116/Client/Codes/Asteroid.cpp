@@ -137,8 +137,6 @@ _uint CAsteroid::Render_GameObject()
 
 _uint CAsteroid::Movement(_float fDeltaTime)
 {
-	if (m_bDontMove) return NO_EVENT;
-
 	if (m_vRandomRotateDir.x) {
 		m_pTransform->RotateX(fDeltaTime);
 	}

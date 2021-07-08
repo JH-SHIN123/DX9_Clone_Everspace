@@ -108,7 +108,7 @@ HRESULT CStage::Add_Layer_Cam(const wstring & LayerTag)
 	CameraDesc.fFovY = D3DXToRadian(90.f);
 	CameraDesc.fAspect = (_float)WINCX / WINCY;
 	CameraDesc.fNear = 1.f;
-	CameraDesc.fFar = 1000.f;
+	CameraDesc.fFar = 10000.f;
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
