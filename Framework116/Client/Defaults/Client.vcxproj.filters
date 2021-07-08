@@ -91,6 +91,36 @@
     <Filter Include="02.GameObject\09.HUD\01.Weapons">
       <UniqueIdentifier>{fe21133b-9cea-4b43-a588-c27d7b949fb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss">
+      <UniqueIdentifier>{8ac5797a-a195-456d-a81a-0db08aed7682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss\02.EMP_Bomb">
+      <UniqueIdentifier>{478d85d1-2c7c-48a4-9e74-aa8aae3cb2c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss\02.EMP_Bomb\Bullet_EMP_Bomb_Explotion">
+      <UniqueIdentifier>{eea6f620-9d2d-4616-ba21-63ddd79ec6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss\01.Laser">
+      <UniqueIdentifier>{20ac20a6-4343-4b16-a3bc-f8a01dc5f730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\08.Bullet\02.Boss\00.EnergyBall">
+      <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby">
+      <UniqueIdentifier>{8d910698-dbf1-4df6-81a6-afc6d4f2e268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\00.LobbyModel">
+      <UniqueIdentifier>{2749b316-5923-4830-b26c-0ffc0f389432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\02.Camera\01.LobbyCam">
+      <UniqueIdentifier>{1bd7f9af-fb40-4ba5-960e-212922241cb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI">
+      <UniqueIdentifier>{b7681a85-fa55-4dd9-907a-83021c34d3a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\00.GatchaBox">
+      <UniqueIdentifier>{dcaa591a-4806-43df-92c8-58e4f922a218}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObject\07.Boss_Monster\01.Boss_Spawn_Monster">
       <UniqueIdentifier>{e78bf798-cc12-47ff-a895-e53d09a29172}</UniqueIdentifier>
     </Filter>
@@ -132,6 +162,18 @@
     </Filter>
     <Filter Include="02.GameObject\06.Particle\WingBoost">
       <UniqueIdentifier>{6840ecc0-5224-47b6-968b-27169f738624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\01.Product">
+      <UniqueIdentifier>{cca5d187-96ff-4e2b-9b19-c1449b85890a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\02.Board">
+      <UniqueIdentifier>{8cb3ff72-238c-470b-ab26-b478d50b03b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor">
+      <UniqueIdentifier>{0973b3ee-c372-4144-a066-7892b4b68465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\02.Lobby\01.LobbyUI\02.Board\00.Status">
+      <UniqueIdentifier>{17f0422e-b673-4d3f-98b4-8a8e2fc56cb3}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject\09.HUD\06.ScriptUI">
       <UniqueIdentifier>{c7f25113-b245-4948-850d-0ad03c90ce48}</UniqueIdentifier>
@@ -258,6 +300,24 @@
     <ClInclude Include="..\Headers\CollisionHandler.h">
       <Filter>97.Utilities\01.Collision</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\LobbyModel.h">
+      <Filter>01.Scene\02.Lobby\00.LobbyModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Lobby.h">
+      <Filter>01.Scene\02.Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\LobbyCam.h">
+      <Filter>02.GameObject\02.Camera\01.LobbyCam</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\LobbyUI.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\GatchaBox.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\00.GatchaBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\PlayerLight.h">
+      <Filter>02.GameObject\10.Light\PlayerLight</Filter>
+    </ClInclude>
     <ClInclude Include="..\Headers\Ring.h">
       <Filter>02.GameObject\11.Ring</Filter>
     </ClInclude>
@@ -290,6 +350,18 @@
     </ClInclude>
     <ClInclude Include="..\Headers\WingBoost_System.h">
       <Filter>02.GameObject\06.Particle\WingBoost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Product.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\01.Product</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\StatusBoard.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Status.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board\00.Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\VIBuffer_HexagonTex.h">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\MissionUI.h">
       <Filter>02.GameObject\09.HUD\05.MissionUI</Filter>
@@ -392,6 +464,24 @@
     <ClCompile Include="..\Codes\StreamHandler.cpp">
       <Filter>97.Utilities\00.Stream</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\LobbyModel.cpp">
+      <Filter>01.Scene\02.Lobby\00.LobbyModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Lobby.cpp">
+      <Filter>01.Scene\02.Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\LobbyCam.cpp">
+      <Filter>02.GameObject\02.Camera\01.LobbyCam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\LobbyUI.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GatchaBox.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\00.GatchaBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\PlayerLight.cpp">
+      <Filter>02.GameObject\10.Light\PlayerLight</Filter>
+    </ClCompile>
     <ClCompile Include="..\Codes\Ring.cpp">
       <Filter>02.GameObject\11.Ring</Filter>
     </ClCompile>
@@ -424,6 +514,18 @@
     </ClCompile>
     <ClCompile Include="..\Codes\WingBoost_System.cpp">
       <Filter>02.GameObject\06.Particle\WingBoost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Product.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\01.Product</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\StatusBoard.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Status.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\02.Board\00.Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\VIBuffer_HexagonTex.cpp">
+      <Filter>01.Scene\02.Lobby\01.LobbyUI\03.VIBuffer_HexagonColor</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\MissionUI.cpp">
       <Filter>02.GameObject\09.HUD\05.MissionUI</Filter>

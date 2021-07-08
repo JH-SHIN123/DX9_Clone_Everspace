@@ -28,6 +28,7 @@ public: /* For.Device Manager */
 	LPDIRECT3DDEVICE9 Get_Device() const;
 	LPD3DXFONT		  Get_Font()const;
 
+
 public: /* For.Time Manager */
 	_float Get_DeltaTime() const;
 	const _float2 Get_WindowSize() const { return _float2((float)m_iWinCX, (float)m_iWinCY); }

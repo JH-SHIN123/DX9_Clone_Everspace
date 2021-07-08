@@ -74,7 +74,9 @@ _uint CManagement::Update_Game()
 		return iEvent;
 
 	m_pDevice_Manager->Render_Begin();
+
 	m_pRenderer->Render_GameObject();
+
 	m_pDevice_Manager->Render_End();
 
 	return iEvent;
@@ -113,6 +115,9 @@ LPD3DXFONT CManagement::Get_Font() const
 
 	return m_pDevice_Manager->Get_Font();
 }
+
+
+
 
 _float CManagement::Get_DeltaTime() const
 {

@@ -43,7 +43,13 @@ private: // For.Components
 	CTransform* m_pTransform = nullptr;
 	CController* m_pController = nullptr;
 
+
+
+	//CCamera* m_pCam = nullptr;
+	//_float m_fCameraDist = 5.f;
+
 private: // 플레이어가 사용하실 변수님들.
+
 	// 발사속도
 	_float m_fMachinegunFireDelay = 0.f;
 
