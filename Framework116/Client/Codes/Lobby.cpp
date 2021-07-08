@@ -5,7 +5,7 @@
 #include"Loading.h"
 #include"LobbyUI.h"
 #include"LobbyModel.h"
-#include"LobbyCam.h""
+#include"LobbyCam.h"
 #include"GatchaBox.h"
 #include"StatusBoard.h"
 #include"Status.h"
@@ -17,6 +17,8 @@ CLobby::CLobby(LPDIRECT3DDEVICE9 pDevice)
 HRESULT CLobby::Ready_Scene()
 {
 	::SetWindowText(g_hWnd, L"Lobby");
+
+	m_pManagement->StopSound(CSoundMgr::BGM);
 
 		CScene::Ready_Scene();
 	if (FAILED(Add_Layer_Lobby_Model(L"Layer_Lobby_Model")))
@@ -51,6 +53,8 @@ HRESULT CLobby::Ready_Scene()
 
 _uint CLobby::Update_Scene(_float fDeltaTime)
 {
+	m_pManagement->PlaySound(L"Garage_BGM.ogg", CSoundMgr::BGM);
+
 	if (m_bSceneChange)
 	{
 		m_pManagement->Clear_NonStatic_Resources();
@@ -137,6 +141,7 @@ HRESULT CLobby::Add_Layer_Lobby_Model(const wstring & LayerTag)
 	CLobbyModel* pModel = (CLobbyModel*)m_pManagement->Get_GameObject(LayerTag);
 	pModel->Set_Scene(this);
 	AddRef();
+	return S_OK;
 }
 
 HRESULT CLobby::Add_Layer_LobbyCam(const wstring & LayerTag)
@@ -211,6 +216,7 @@ HRESULT CLobby::Add_Layer_GatchaBox(const wstring & LayerTag)
 	CGatchaBox* pBox = (CGatchaBox*)(m_pManagement->Get_GameObject(LayerTag));
 	pBox->Set_Scene(this);
 	AddRef();
+	return S_OK;
 }
 
 HRESULT CLobby::Add_Layer_StatusBoard(const wstring & LayerTag)

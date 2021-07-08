@@ -16,6 +16,8 @@ HRESULT CStage::Ready_Scene()
 
 	::SetWindowText(g_hWnd, L"Stage");
 
+	m_pManagement->StopSound(CSoundMgr::BGM);
+
 	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/stage1.map");
 
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))

@@ -321,9 +321,6 @@
     <ClInclude Include="..\Headers\GatchaBox.h">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\00.GatchaBox</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\PlayerLight.h">
-      <Filter>02.GameObject\10.Light\PlayerLight</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Ring.h">
       <Filter>02.GameObject\11.Ring</Filter>
     </ClInclude>
@@ -378,9 +375,6 @@
     <ClInclude Include="..\Headers\QuestHandler.h">
       <Filter>97.Utilities\04.Quest</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\HP_Bar.h">
-      <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClInclude>
@@ -395,6 +389,9 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\14.Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\HP_Bar.h">
+      <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -491,9 +488,6 @@
     <ClCompile Include="..\Codes\GatchaBox.cpp">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\00.GatchaBox</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\PlayerLight.cpp">
-      <Filter>02.GameObject\10.Light\PlayerLight</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Ring.cpp">
       <Filter>02.GameObject\11.Ring</Filter>
     </ClCompile>
@@ -548,9 +542,6 @@
     <ClCompile Include="..\Codes\QuestHandler.cpp">
       <Filter>97.Utilities\04.Quest</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\HP_Bar.cpp">
-      <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClCompile>
@@ -565,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\14.Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\HP_Bar.cpp">
+      <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

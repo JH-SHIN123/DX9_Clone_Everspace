@@ -75,7 +75,8 @@ HRESULT CLoading::Ready_Scene()
 _uint CLoading::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
-
+	m_pManagement->StopSound(CSoundMgr::BGM);
+	m_pManagement->PlaySound(L"Loading_Ambience.ogg", CSoundMgr::BGM);
 	if (m_IsFinished)
 	{
 		//

@@ -342,6 +342,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	{
 		m_pManagement->StopSound(CSoundMgr::PLAYER_MOVE);
 	}
+
 	// Booster
 	if (m_pController->Key_Pressing(KEY_SPACE) && m_fStamina > 0.f) {
 		m_IsBoost = true;
