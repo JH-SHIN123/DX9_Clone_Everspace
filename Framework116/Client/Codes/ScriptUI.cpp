@@ -171,13 +171,11 @@ void CScriptUI::Script_Tutorial()
 		m_IsPlayerPortrait = true;
 		m_wstrName = L"김쥬신";
 		m_wstrScript = L"가나다라마바사아자차카타파하";
-		m_pManagement->PlaySound(L"PopUp_Quest2.ogg", CSoundMgr::SCRIPT_POPUP);
 		break;
 	case 1:
 		m_IsPlayerPortrait = false;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"으하하 메롱";
-		m_pManagement->PlaySound(L"PopUp_Quest2.ogg", CSoundMgr::SCRIPT_POPUP);
 		break;
 
 	default:
@@ -201,6 +199,11 @@ void CScriptUI::BlackBar_Start(_float fDeltaTime)
 
 	if (m_vUI_BlackBar_Up_Pos.y <= 540.f)
 	{
+		if (!m_bSoundOnce)
+		{
+			m_pManagement->PlaySound(L"PopUp_Quest2.ogg", CSoundMgr::SCRIPT_POPUP);
+			m_bSoundOnce = true;
+		}
 		m_eScriptFlow = EScriptFlow::Script;
 		m_pTransfrom_Portrait->Set_Position(m_vUI_Protrait_Pos);
 	}

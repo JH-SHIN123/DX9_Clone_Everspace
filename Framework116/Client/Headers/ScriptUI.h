@@ -75,6 +75,9 @@ private:
 	_float3 m_vUI_BlackBar_Down_Pos = { 0.f, -740.f, 0.f };
 	_float3 m_vUI_Protrait_Pos = { -700.f, -340.f, 0.f };
 
+	//Sound
+	_bool m_bSoundOnce = false;
+
 
 
 };
