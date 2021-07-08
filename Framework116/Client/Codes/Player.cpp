@@ -297,10 +297,13 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		m_IsStaminaShrink = true;
 		m_fStamina -= 0.2f;
 		m_pStamina_Bar->Set_ScaleX(-0.2f / m_fFullStamina * m_fStaminaLength);
+
+		m_pManagement->PlaySound(L"Player_Boost_Loop.ogg", CSoundMgr::PLAYER_BOOST);
 		
 	}
 	if (m_pController->Key_Up(KEY_SPACE))
 	{
+		m_pManagement->StopSound(CSoundMgr::PLAYER_BOOST);
 		m_IsBoost = false;
 		//Stamina
 		m_IsStaminaShrink = false;
@@ -392,7 +395,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		if (m_iWeapon == WEAPON_MACHINEGUN)
 		{
 			m_fMachinegunFireDelay += fDeltaTime * m_fOverDrive;
-			if (m_fMachinegunFireDelay > 0.15f)
+			if (m_fMachinegunFireDelay > 0.25f)
 			{
 				if (m_IsLeft)
 					m_IsLeft = false;
@@ -408,6 +411,8 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 					PRINT_LOG(L"Error", L"Failed To Add Player_Bullet In Layer");
 					return;
 				}
+				m_pManagement->StopSound(CSoundMgr::PLAYER_PULSE_LASER);
+				m_pManagement->PlaySound(L"Pulse_Laser.ogg", CSoundMgr::PLAYER_PULSE_LASER);
 				m_fMachinegunFireDelay = 0.f;
 			}
 		}

@@ -58,12 +58,15 @@ HRESULT CCrosshair::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// 老窜 焊胶父 
-	m_pBossMonsterCollide = (CCollideSphere*)m_pManagement->Get_Component(L"Layer_Boss_Monster", L"Com_CollideSphere");
-	Safe_AddRef(m_pBossMonsterCollide);
-	if (nullptr == m_pBossMonsterCollide)
+	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() != 0)
 	{
-		PRINT_LOG(L"Error", L"m_pMonsterCollide is nullptr");
-		return E_FAIL;
+		m_pBossMonsterCollide = (CCollideSphere*)m_pManagement->Get_Component(L"Layer_Boss_Monster", L"Com_CollideSphere");
+		Safe_AddRef(m_pBossMonsterCollide);
+		if (nullptr == m_pBossMonsterCollide)
+		{
+			PRINT_LOG(L"Error", L"m_pMonsterCollide is nullptr");
+			return E_FAIL;
+		}
 	}
 
 	return S_OK;
@@ -155,45 +158,48 @@ void CCrosshair::Free()
 
 _uint CCrosshair::Searching_Target(_float fDeltaTime)
 {
-	RAY ray;
-	CPipeline::CreatePickingRay(ray, g_hWnd, WINCX, WINCY, m_pDevice);
-	_float3 m_vLockOn;
-	m_vLockOn = ray.vDirection;
-
-	_float4x4 matView;
-	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
-	D3DXMatrixInverse(&matView, 0, &matView);
-	D3DXVec3TransformCoord(&ray.vPos, &ray.vPos, &matView);
-	D3DXVec3TransformNormal(&ray.vDirection, &ray.vDirection, &matView);
-	D3DXVec3Normalize(&ray.vDirection, &ray.vDirection);
-
-	m_vLockOn = ray.vDirection;
-	D3DXVec3Normalize(&m_vLockOn, &m_vLockOn);
-
-	// True搁? - LockOn HUD 积己
-	if (CCollision::IntersectRayToSphere(ray, m_pBossMonsterCollide->Get_BoundingSphere()))
+	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() != 0)
 	{
-		if (!m_IsBossLockOn)
-		{
-			wstring TargetLayerTag = L"Layer_Boss_Monster";
+		RAY ray;
+		CPipeline::CreatePickingRay(ray, g_hWnd, WINCX, WINCY, m_pDevice);
+		_float3 m_vLockOn;
+		m_vLockOn = ray.vDirection;
 
-			// LockOn 积己.
-			if (FAILED(m_pManagement->Add_GameObject_InLayer(
-				EResourceType::NonStatic,
-				L"GameObject_LockOn",
-				L"Layer_LockOn", &TargetLayerTag)))
+		_float4x4 matView;
+		m_pDevice->GetTransform(D3DTS_VIEW, &matView);
+		D3DXMatrixInverse(&matView, 0, &matView);
+		D3DXVec3TransformCoord(&ray.vPos, &ray.vPos, &matView);
+		D3DXVec3TransformNormal(&ray.vDirection, &ray.vDirection, &matView);
+		D3DXVec3Normalize(&ray.vDirection, &ray.vDirection);
+
+		m_vLockOn = ray.vDirection;
+		D3DXVec3Normalize(&m_vLockOn, &m_vLockOn);
+
+		// True搁? - LockOn HUD 积己
+		if (CCollision::IntersectRayToSphere(ray, m_pBossMonsterCollide->Get_BoundingSphere()))
+		{
+			if (!m_IsBossLockOn)
 			{
-				PRINT_LOG(L"Error", L"Failed To Add LockOn In Layer");
-				return E_FAIL;
-				m_IsBossLockOn = true;
+				wstring TargetLayerTag = L"Layer_Boss_Monster";
+
+				// LockOn 积己.
+				if (FAILED(m_pManagement->Add_GameObject_InLayer(
+					EResourceType::NonStatic,
+					L"GameObject_LockOn",
+					L"Layer_LockOn", &TargetLayerTag)))
+				{
+					PRINT_LOG(L"Error", L"Failed To Add LockOn In Layer");
+					return E_FAIL;
+					m_IsBossLockOn = true;
+				}
+
 			}
+			else if (!m_IsDistOn)
+			{
+				// 芭府 唱鸥郴林绰 HUD积己.
 
-		}
-		else if (!m_IsDistOn)
-		{
-			// 芭府 唱鸥郴林绰 HUD积己.
-
-			m_IsDistOn = true;
+				m_IsDistOn = true;
+			}
 		}
 	}
 	return _uint();
