@@ -7,7 +7,7 @@ USING(Engine)
 class CPlayer final : public CGameObject
 {
 public:
-	explicit CPlayer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData);
+	explicit CPlayer(LPDIRECT3DDEVICE9 pDevice);
 	explicit CPlayer(const CPlayer& other);
 	virtual ~CPlayer() = default;
 
@@ -21,6 +21,10 @@ public:
 	virtual _uint LateUpdate_GameObject(_float fDeltaTime) override;
 	virtual _uint Render_GameObject() override;
 
+public:
+	_uint Set_IsScript(_bool IsScript);
+	_uint Set_IsCameraMove(_bool IsCameraMove);
+
 private:
 	void	KeyProcess(_float fDeltaTime);
 	_uint	Movement(_float fDeltaTime);
@@ -30,7 +34,7 @@ private:
 	_uint	Collide_Planet_Or_Astroid(const _float fDeltaTime);
 
 public:
-	static CPlayer* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData);
+	static CPlayer* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
 
@@ -42,7 +46,13 @@ private: // For.Components
 	CTransform* m_pTransform = nullptr;
 	CController* m_pController = nullptr;
 
+
+
+	//CCamera* m_pCam = nullptr;
+	//_float m_fCameraDist = 5.f;
+
 private: // 플레이어가 사용하실 변수님들.
+
 	// 발사속도
 	_float m_fMachinegunFireDelay = 0.f;
 
@@ -84,7 +94,6 @@ private: // HP, 스태미너 관련
 	class CHP_Bar* m_pHp_Bar = nullptr;
 	_float m_fHpLength = 256.f;
 
-
 	class CStamina_Bar* m_pStamina_Bar = nullptr;
 	_float m_fStamina = 100.f;
 	_float m_fFullStamina = 100.f;
@@ -92,7 +101,10 @@ private: // HP, 스태미너 관련
 	_bool m_IsStaminaShrink = false;
 	_float m_fStaminaIncreaseDelay = 0.f;
 
-	// 행성, 운석이랑 충돌처리
+private: //연출 관련
+	_bool m_IsScript = false; //대화
+	_bool m_IsCameraMove = false; // 카메라 연출
+
 };
 
 #define __PLAYER_H__

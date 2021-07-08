@@ -27,10 +27,10 @@ public:
 	virtual void Free() override;
 
 private:
-	CTexture*	m_pTexture = nullptr;
-	CTransform* m_pTransform = nullptr;
-	CGeoMesh_Sphere*  m_pMesh = nullptr;
-	CCollideSphere* m_pCollide = nullptr;
+	CModelMesh*			m_pModelMesh = nullptr;
+	CTransform*			m_pTransform = nullptr;
+	CTexture*			m_pTexture = nullptr;
+	CCollideSphere*		m_pCollide = nullptr;
 
 private:
 	_float m_fSpawnTime = 2.f;

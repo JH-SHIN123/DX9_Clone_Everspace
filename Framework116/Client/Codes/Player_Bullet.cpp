@@ -5,10 +5,9 @@
 #include "MainCam.h"
 #include "ExplosionSystem.h"
 
-CPlayer_Bullet::CPlayer_Bullet(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
+CPlayer_Bullet::CPlayer_Bullet(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	m_pPassData = pData;
 }
 
 CPlayer_Bullet::CPlayer_Bullet(const CPlayer_Bullet & other)
@@ -217,9 +216,9 @@ _uint CPlayer_Bullet::Movement(_float fDeltaTime)
 	return _uint();
 }
 
-CPlayer_Bullet * CPlayer_Bullet::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)
+CPlayer_Bullet * CPlayer_Bullet::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	CPlayer_Bullet* pInstance = new CPlayer_Bullet(pDevice, pData);
+	CPlayer_Bullet* pInstance = new CPlayer_Bullet(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Player_Bullet");

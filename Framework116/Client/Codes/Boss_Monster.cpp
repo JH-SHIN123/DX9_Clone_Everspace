@@ -4,10 +4,9 @@
 #include "HP_Bar.h"
 #include "HP_Bar_Border.h"
 
-CBoss_Monster::CBoss_Monster(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
+CBoss_Monster::CBoss_Monster(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	m_pPassData = pData;
 }
 
 CBoss_Monster::CBoss_Monster(const CBoss_Monster & other)
@@ -622,9 +621,9 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 	return _uint();
 }
 
-CBoss_Monster * CBoss_Monster::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)
+CBoss_Monster* CBoss_Monster::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	CBoss_Monster* pInstance = new CBoss_Monster(pDevice, pData);
+	CBoss_Monster* pInstance = new CBoss_Monster(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Boss_Monster");

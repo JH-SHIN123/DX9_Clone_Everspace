@@ -20,10 +20,10 @@ HRESULT CAsteroid::Ready_GameObject_Prototype()
 
 HRESULT CAsteroid::Ready_GameObject(void* pArg)
 {
-	ASTEROID_DESC* pDesc = nullptr;
+	GAMEOBJECT_DESC* pDesc = nullptr;
 	if (auto ptr = (BASE_DESC*)pArg)
 	{
-		if (pDesc = dynamic_cast<ASTEROID_DESC*>(ptr))
+		if (pDesc = dynamic_cast<GAMEOBJECT_DESC*>(ptr))
 		{
 		}
 		else 
@@ -36,7 +36,7 @@ HRESULT CAsteroid::Ready_GameObject(void* pArg)
 	// For.Com_Mesh Component_Mesh_Rock_Generic_001
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		pDesc->pMeshTag,
+		pDesc->wstrMeshName,
 		L"Com_Mesh",
 		(CComponent**)&m_pMesh)))
 	{
@@ -46,9 +46,14 @@ HRESULT CAsteroid::Ready_GameObject(void* pArg)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
-	float randRotateSpeed = rand() % 10 + 20.f;
+	float randRotateSpeed = rand() % 5 + 10.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(randRotateSpeed);
-	TransformDesc.fSpeedPerSec = 2.f;
+	TransformDesc.fSpeedPerSec = 4.f;
+
+	// 행성 움직임 AI 안하는 메시목록
+	if (pDesc->wstrMeshName == L"Component_Mesh_Rock_Cloud") {
+		m_bDontMove = true;
+	}
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -61,28 +66,33 @@ HRESULT CAsteroid::Ready_GameObject(void* pArg)
 		return E_FAIL;
 	}
 
-	// For.Com_Collide
-	BOUNDING_SPHERE BoundingSphere;
-	if (pDesc->tTransformDesc.vScale.x <= 2.f)
-		BoundingSphere.fRadius = 4.5f;
-	else if (pDesc->tTransformDesc.vScale.x <= 5.f)
-		BoundingSphere.fRadius = 5.f;
+	if (false == m_bDontMove) {
+		// For.Com_Collide
+		BOUNDING_SPHERE BoundingSphere;
+		if (pDesc->tTransformDesc.vScale.x >= 20.f)
+			BoundingSphere.fRadius = 4.f;
+		else if (pDesc->tTransformDesc.vScale.x <= 2.f)
+			BoundingSphere.fRadius = 4.5f;
+		else
+			BoundingSphere.fRadius = 5.f;
 
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_CollideSphere",
-		L"Com_CollideSphere",
-		(CComponent**)&m_pCollide,
-		&BoundingSphere,
-		true)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
-		return E_FAIL;
+		if (FAILED(CGameObject::Add_Component(
+			EResourceType::Static,
+			L"Component_CollideSphere",
+			L"Com_CollideSphere",
+			(CComponent**)&m_pCollide,
+			&BoundingSphere,
+			true)))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
+			return E_FAIL;
+		}
+
+		m_vRandomRotateDir.x = (float)(rand() % 2);
+		m_vRandomRotateDir.y = (float)(rand() % 2);
+		m_vRandomRotateDir.z = (float)(rand() % 2);
+
 	}
-
-	m_vRandomRotateDir.x = (float)(rand() % 2);
-	m_vRandomRotateDir.y = (float)(rand() % 2);
-	m_vRandomRotateDir.z = (float)(rand() % 2);
 
 	return S_OK;
 }
@@ -95,7 +105,8 @@ _uint CAsteroid::Update_GameObject(_float fDeltaTime)
 	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
-	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
+	if (false == m_bDontMove)
+		m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	return NO_EVENT;
 }
 
@@ -120,7 +131,7 @@ _uint CAsteroid::Render_GameObject()
 	// Test
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	if(m_pCollide) m_pCollide->Render_Collide();
 #endif
 
 	return _uint();

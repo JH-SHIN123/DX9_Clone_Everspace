@@ -51,7 +51,7 @@ HRESULT CEffectHandler::Add_Layer_Effect_Bullet_Explosion(const _float3& _vPos)
 	PARTICLESYSTEM_DESC pSystemDesc;
 	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Plasma";
 	pSystemDesc.iNumParticles = 5;
-	pSystemDesc.tResetAttribute.fParticleSize = 1.5f;
+	pSystemDesc.tResetAttribute.fParticleSize = 2.5f;
 	pSystemDesc.tResetAttribute.fParticleSpeed = 2.f;
 	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.05f;
 	pSystemDesc.tResetAttribute.fLifeTime = 1.f;

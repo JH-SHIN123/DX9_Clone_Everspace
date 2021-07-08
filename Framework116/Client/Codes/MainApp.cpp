@@ -9,6 +9,7 @@
 #include "Player_Missile.h"
 #include "Light.h"
 #include "AlertArrow.h"
+#include "ScriptUI.h"
 #include "HP_Bar.h"
 
 CMainApp::CMainApp()
@@ -68,9 +69,14 @@ HRESULT CMainApp::Ready_StaticResources()
 {
 #pragma region GameObjects
 	/* For.GameObject_Player */
-	CStreamHandler::Load_PassData_Object(
-		L"../../Resources/PrototypeData/StaticPlayer.object"
-		, EResourceType::Static);
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_Player",
+		CPlayer::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_MainCam");
+		return E_FAIL;
+	}
 
 	/* For.GameObject_MainCam */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -141,6 +147,7 @@ HRESULT CMainApp::Ready_StaticResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_AlertArrow");
 		return E_FAIL;
 	}
+
 
 #pragma endregion
 
@@ -295,7 +302,7 @@ HRESULT CMainApp::Ready_StaticResources()
 	//}
 
 	//For. Static Texture Component Prototype
-	if (FAILED(CStreamHandler::Load_PassData_Resource(L"../../Resources/Data/Static.txt", TRUE)))
+	if (FAILED(CStreamHandler::Load_PassData_Resource(L"../../Resources/Data/StaticTexture.txt", TRUE)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Controller");
 		return E_FAIL;

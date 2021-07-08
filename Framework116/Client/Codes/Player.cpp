@@ -7,11 +7,11 @@
 #include "HP_Bar.h"
 #include "Stamina_Bar.h"
 #include "CollisionHandler.h"
+#include "ScriptUI.h"
 
-CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
+CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	m_pPassData = pPassData;
 }
 
 CPlayer::CPlayer(const CPlayer & other)
@@ -72,8 +72,20 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 {
 	CGameObject::Ready_GameObject(pArg);
 
+	GAMEOBJECT_DESC* pDesc = nullptr;
+	if (auto ptr = (BASE_DESC*)pArg)
+	{
+		if (pDesc = dynamic_cast<GAMEOBJECT_DESC*>(ptr))
+		{}
+		else
+		{
+			PRINT_LOG(L"Error", L"GAMEOBJECT_DESC is nullptr");
+			return E_FAIL;
+		}
+	}
+
 	// For.Com_VIBuffer
-	wstring meshTag = L"Component_Mesh_BigShip";
+	wstring meshTag = pDesc->wstrMeshName;
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		meshTag,
@@ -85,12 +97,9 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// For.Com_Transform Test
-	TRANSFORM_DESC TransformDesc;
-	TransformDesc.fSpeedPerSec = 45.f;
-	TransformDesc.vPosition = _float3(50.f, 0.f, 0.f);
-	TransformDesc.fSpeedPerSec = 25.f;
+	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
+	TransformDesc.fSpeedPerSec = 35.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
-	TransformDesc.vScale = { 1.f,1.f,1.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -256,12 +265,12 @@ _uint CPlayer::Render_GameObject()
 		m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 		m_pMesh->Render_Mesh();
 
-		wstring str = L"궁서";
-		RECT rc;
-		GetClientRect(g_hWnd, &rc);
-		m_pManagement->Get_Font()->DrawText(NULL
-			, str.c_str(), -1
-			, &rc, DT_CENTER, D3DXCOLOR(255, 0, 0, 255));
+	wstring str = L"궁서";
+	RECT rc;
+	GetClientRect(g_hWnd, &rc);
+	m_pManagement->Get_Font()->DrawText(NULL
+		, str.c_str(), -1
+		, &rc, DT_CENTER, D3DXCOLOR(255, 0, 0, 255));
 
 #ifdef _DEBUG // Render Collide
 		for (auto& collide : m_Collides)
@@ -271,11 +280,35 @@ _uint CPlayer::Render_GameObject()
 	return _uint();
 }
 
+_uint CPlayer::Set_IsScript(_bool IsScript)
+{
+	m_IsScript = IsScript;
+	return _uint();
+}
+
+_uint CPlayer::Set_IsCameraMove(_bool IsCameraMove)
+{
+	m_IsCameraMove = IsCameraMove;
+
+	return _uint();
+}
+
 void CPlayer::KeyProcess(_float fDeltaTime)
 {
 	if (nullptr == m_pController) return;
 	m_pController->Update_Controller();
 
+	// 대화
+	if (m_IsScript == true)
+	{
+		if (m_pController->Key_Down(KEY_F))
+		{
+			static_cast<CScriptUI*>(m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")
+				->front())->Set_NextScript();
+		}
+		return;
+	}
+		
 	// Move
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
@@ -494,6 +527,9 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
+	if (m_IsScript == true) // 대화중
+		return 0;
+
 	// 화면 가둬줄 가상의 네모
 	POINT pt;
 	GetCursorPos(&pt);
@@ -528,8 +564,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	D3DXVec3Normalize(&vGap, &vGap);
 
 	m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed * 0.6f);
-	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed * 0.6f);
-	
+	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed * 0.3f);
 	return _uint();
 }
 
@@ -630,9 +665,9 @@ _uint CPlayer::Collide_Planet_Or_Astroid(const _float fDeltaTime)
 	return _uint();
 }
 
-CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pPassData)
+CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	CPlayer* pInstance = new CPlayer(pDevice, pPassData);
+	CPlayer* pInstance = new CPlayer(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Player");

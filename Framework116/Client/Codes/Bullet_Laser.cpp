@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "..\Headers\Bullet_Laser.h"
 
-CBullet_Laser::CBullet_Laser(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
+CBullet_Laser::CBullet_Laser(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	m_pPassData = pData;
 }
 
 CBullet_Laser::CBullet_Laser(const CBullet_Laser & other)
@@ -176,9 +175,9 @@ _uint CBullet_Laser::Fire_Triger(_float fDeltaTime)
 	return _uint();
 }
 
-CBullet_Laser * CBullet_Laser::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)
+CBullet_Laser * CBullet_Laser::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	CBullet_Laser* pInstance = new CBullet_Laser(pDevice, pData);
+	CBullet_Laser* pInstance = new CBullet_Laser(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Boss_Monster");
