@@ -2,6 +2,7 @@
 #include "..\Headers\Boss_Monster.h"
 #include "Bullet_EnergyBall.h"
 #include "HP_Bar.h"
+#include "HP_Bar_Border.h"
 
 CBoss_Monster::CBoss_Monster(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -150,12 +151,13 @@ _uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
 		CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_State(EState::Position), 1.f);
 		m_IsDead = true;
 		m_pHp_Bar->Set_IsDead(TRUE);
+		m_pHP_Bar_Border->Set_IsDead(TRUE);
+		m_pManagement->PlaySound(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
 		return DEAD_OBJECT;
 	}
 	if (m_IsCollide) {
-		//CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_State(EState::Position), 1.f);
-		// 여기 데미지 넣어야함.
- 		m_pHp_Bar->Set_ScaleX(-100.f / 10);
+		// Bullet 데미지 만큼.
+ 		m_pHp_Bar->Set_ScaleX(-100.f / m_fFullHp * m_fHpLength);
 		m_fHp -= 100.f;
 		m_IsCollide = false;
 	}
@@ -578,11 +580,9 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 			// 감지범위에 들어오게 되면 HP_Bar 생성!
 			
 			CGameObject* pGameObject = nullptr;
-
-
 			UI_DESC HUD_Hp_Bar;
-			HUD_Hp_Bar.tTransformDesc.vPosition = { ptBoss.x, ptBoss.y - 40.f, 0.f };
-       		HUD_Hp_Bar.tTransformDesc.vScale = { m_fHp * (100.f / m_fFullHp), 10.f, 0.f };
+			HUD_Hp_Bar.tTransformDesc.vPosition = { ptBoss.x - 64.f, ptBoss.y - 50.f, 0.f };
+       		HUD_Hp_Bar.tTransformDesc.vScale = { m_fHp * (m_fHpLength / m_fFullHp), 8.f, 0.f };
 			HUD_Hp_Bar.wstrTexturePrototypeTag = L"Component_Texture_HP_Bar";
  			if (FAILED(m_pManagement->Add_GameObject_InLayer(
 				EResourceType::NonStatic,
@@ -593,8 +593,28 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 				PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
 				return E_FAIL;
 			}
+
+			CGameObject* pGameObjectBorder = nullptr;
+			UI_DESC HUD_Hp_Bar_Border;
+			HUD_Hp_Bar_Border.tTransformDesc.vPosition = { ptBoss.x - 64.f, ptBoss.y - 50.f, 0.f };
+			HUD_Hp_Bar_Border.tTransformDesc.vScale = { m_fHp * (m_fHpLength / m_fFullHp) + 2.5f, 12.f, 0.f };
+			HUD_Hp_Bar_Border.wstrTexturePrototypeTag = L"Component_Texture_HP_Border";
+			if (FAILED(m_pManagement->Add_GameObject_InLayer(
+				EResourceType::NonStatic,
+				L"GameObject_HP_Bar_Border",
+				L"Layer_HP_Bar_Border",
+				&HUD_Hp_Bar_Border, &pGameObjectBorder)))
+			{
+				PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
+				return E_FAIL;
+			}
 			m_IsHPBar = true;
+
+			m_pHP_Bar_Border = static_cast<CHP_Bar_Border*>(pGameObjectBorder);
+			m_pHP_Bar_Border->Who_Make_Me(m_pHP_Bar_Border->MAKER_BOSS_MONSTER);
+
 			m_pHp_Bar = static_cast<CHP_Bar*>(pGameObject);
+			m_pHp_Bar->Who_Make_Me(m_pHp_Bar->MAKER_BOSS_MONSTER);
 		}
 
 	}
@@ -627,6 +647,7 @@ CGameObject * CBoss_Monster::Clone(void * pArg/* = nullptr*/)
 
 void CBoss_Monster::Free()
 {
+	Safe_Release(m_pHP_Bar_Border);
 	Safe_Release(m_pHp_Bar);
 	Safe_Release(m_pTargetTransform);
 	Safe_Release(m_pCube);

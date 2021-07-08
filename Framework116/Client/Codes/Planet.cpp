@@ -132,10 +132,12 @@ _uint CPlanet::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
+	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pTexture->Set_Texture();
 	m_pModelMesh->Render_Mesh();
+	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 #ifdef _DEBUG // Render Collide
 	m_pCollide->Render_Collide();

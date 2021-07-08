@@ -51,7 +51,7 @@ HRESULT CStreamHandler::Load_PassData_Map(const TCHAR* wstrFilePath)
 
 	CloseHandle(hFile);
 
-	for (auto& p : vecPassData) 
+	for (auto& p : vecPassData)
 	{
 		Add_GameObject_Layer_Map(&p);
 	}
@@ -91,11 +91,11 @@ HRESULT CStreamHandler::Load_PassData_UI(const wstring& wstrFilePath, const _boo
 			UiDesc.tTransformDesc.vScale = { ScaleX,ScaleY,0.f };
 			UiDesc.wstrTexturePrototypeTag = szTexturePrototypeTag;
 
-	
+
 			EResourceType eResourceType = (EResourceType)(!_isStatic);
-			
+
 			if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
-				eResourceType, L"GameObject_UI"
+				eResourceType, L"GameObject_LobbyUI"
 				, L"Layer_UI", &UiDesc)))
 			{
 				PRINT_LOG(L"Error", L"Add_GameObject_InLayerTool_Failed");
@@ -159,18 +159,18 @@ HRESULT CStreamHandler::Load_PassData_Resource(const wstring& wstrFilePath, cons
 			wstring wstrTag = L"Component_Texture_";
 			wstrTag += pPathInfo.wstrPrototypeTag;
 			EResourceType eResourceType = (EResourceType)(!_isStatic);
-			
+
 			if (FAILED(CManagement::Get_Instance()->Add_Component_Prototype(
 				eResourceType, wstrTag,
 				CTexture::Create(CManagement::Get_Instance()->Get_Device()
-				, eType, pPathInfo.wstrFilePath.c_str()
-				,pPathInfo.dwTextureCount))))
-				{
-					wstring Err = L"Failed To Add " + wstrTag;
-					PRINT_LOG(L"Error", Err.c_str());
-					return E_FAIL;
-				}
-		
+					, eType, pPathInfo.wstrFilePath.c_str()
+					, pPathInfo.dwTextureCount))))
+			{
+				wstring Err = L"Failed To Add " + wstrTag;
+				PRINT_LOG(L"Error", Err.c_str());
+				return E_FAIL;
+			}
+
 		}
 
 	}
@@ -277,10 +277,10 @@ HRESULT CStreamHandler::Add_GameObject_Layer_Map(const PASSDATA_MAP* pPassData)
 		tDesc.wstrMeshName = pPassData->wstrMeshName;
 
 		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
-			EResourceType::Static, 
-			wstrPrototypeTag, 
+			EResourceType::Static,
+			wstrPrototypeTag,
 			L"Layer_Player",
-			&tDesc))) 
+			&tDesc)))
 		{
 			wstring errMsg = L"Failed to Add Layer ";
 			errMsg += wstrPrototypeTag;
@@ -300,7 +300,7 @@ HRESULT CStreamHandler::Add_GameObject_Layer_Map(const PASSDATA_MAP* pPassData)
 		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
 			EResourceType::NonStatic,
 			wstrPrototypeTag,
-			L"Layer_Ring", 
+			L"Layer_Ring",
 			&tDesc)))
 		{
 			wstring errMsg = L"Failed to Add Layer ";

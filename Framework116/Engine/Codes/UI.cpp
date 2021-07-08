@@ -31,20 +31,37 @@ HRESULT CUI::Ready_GameObject(void* pArg)
 		if (uiDescPtr = dynamic_cast<UI_DESC*>(ptr))
 		{
 			m_wstrTexturePrototypeTag = uiDescPtr->wstrTexturePrototypeTag;
+			m_tTransformDesc = uiDescPtr->tTransformDesc;
 		}
 	}
 
-	// For.Com_VIBuffer
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_VIBuffer_RectTexture",
-		L"Com_VIBuffer",
-		(CComponent**)&m_pVIBuffer)))
+	if (m_wstrTexturePrototypeTag == L"Component_Texture_HP_Bar" 
+		|| m_wstrTexturePrototypeTag == L"Component_Texture_Stamina_Bar"
+		|| m_wstrTexturePrototypeTag == L"Component_Texture_HP_Border")
 	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_VIBuffer");
-		return E_FAIL;
+		if (FAILED(CGameObject::Add_Component(
+			EResourceType::Static,
+			L"Component_VIBuffer_RectTexture_HP_Bar",
+			L"Com_VIBuffer",
+			(CComponent**)&m_pVIBuffer)))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add_Component Com_VIBuffer");
+			return E_FAIL;
+		}
 	}
-
+	else
+	{
+		// For.Com_VIBuffer
+		if (FAILED(CGameObject::Add_Component(
+			EResourceType::Static,
+			L"Component_VIBuffer_RectTexture",
+			L"Com_VIBuffer",
+			(CComponent**)&m_pVIBuffer)))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add_Component Com_VIBuffer");
+			return E_FAIL;
+		}
+	}
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
@@ -62,7 +79,7 @@ HRESULT CUI::Ready_GameObject(void* pArg)
 		L"Component_Transform",
 		L"Com_Transform",
 		(CComponent**)&m_pTransform,
-		(void*)&uiDescPtr->tTransformDesc)))
+		(void*)&m_tTransformDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
@@ -122,6 +139,28 @@ _uint CUI::Render_GameObject()
 	/////////////////////////////////////////////////////////////////
 
 	return _uint();
+}
+
+const TRANSFORM_DESC CUI::Get_UI_TransformDesc()
+{
+	return m_tTransformDesc;
+}
+
+HRESULT CUI::Change_Texture(const wstring & wstrTexturePrototypeTag)
+{
+	Safe_Release(m_pTransform);
+	m_wstrTexturePrototypeTag = wstrTexturePrototypeTag;
+
+	if (FAILED(CGameObject::Add_Component(
+		EResourceType::NonStatic,
+		wstrTexturePrototypeTag,
+		L"Com_Texture",
+		(CComponent**)&m_pTexture)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
+		return E_FAIL;
+	}
+	return S_OK;
 }
 
 CUI* CUI::Create(LPDIRECT3DDEVICE9 pDevice)

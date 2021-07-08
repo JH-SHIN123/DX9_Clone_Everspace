@@ -2,6 +2,7 @@
 #include "..\Headers\Stage.h"
 #include "Camera.h"
 #include "StreamHandler.h"
+#include "ScriptUI.h"
 #include "Asteroid.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
@@ -14,6 +15,8 @@ HRESULT CStage::Ready_Scene()
 	CScene::Ready_Scene();
 
 	::SetWindowText(g_hWnd, L"Stage");
+
+	m_pManagement->StopSound(CSoundMgr::BGM);
 
 	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/stage1.map");
 	CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/guide.navi");
@@ -44,6 +47,9 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
+	if (FAILED(Add_Layer_Planet(L"Layer_Meteor")))
+		return E_FAIL;
+
 	if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
 		return E_FAIL;
 
@@ -56,25 +62,47 @@ HRESULT CStage::Ready_Scene()
 _uint CStage::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
-
+	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
+	
 	return _uint();
 }
 
 _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
+	
 
-	// Boss
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
+	if (m_fDummyTime >= 0)
+	{
+		m_fDummyTime -= fDeltaTime;
+
+		if (m_fDummyTime <= 0)
+		{
+			if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI")))
+				return E_FAIL;
+		}
+	}
+
+
 
 	// Monster
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Monster");
+
+	// Boss
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Boss_Monster");
+
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Asteroid");
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
 
 	// Ring
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
+
+	// TargetMonster
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
+
+	// Planet
+	// CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Planet");
 
 	return _uint();
 }
@@ -245,8 +273,6 @@ HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
 
 HRESULT CStage::Add_Layer_Ring(const wstring & LayerTag)
 {
-
-
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
 		L"GameObject_Ring",
@@ -300,16 +326,21 @@ HRESULT CStage::Add_Layer_TargetMonster(const wstring & LayerTag)
 
 HRESULT CStage::Add_Layer_Planet(const wstring & LayerTag)
 {
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Planet",
-		LayerTag)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
-		return E_FAIL;
-	}
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Planet",
+	//	LayerTag)))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
+	//	return E_FAIL;
+	//}
 
 	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Meteor(const wstring & LayerTag)
+{
+	return E_NOTIMPL;
 }
 
 CStage * CStage::Create(LPDIRECT3DDEVICE9 pDevice)
@@ -442,6 +473,7 @@ HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_HP_OutBar)))
 		return E_FAIL;
 
+
 	return S_OK;
 }
 
@@ -458,6 +490,14 @@ HRESULT CStage::Add_Layer_TutorialUI(const wstring & LayerTag)
 		return E_FAIL;
 	}
 
+	//// Mission HUD
+	//UI_DESC HUD_Mission;
+	//HUD_Mission.tTransformDesc.vPosition = { 860.f, 500.f, 0.f };
+	//HUD_Mission.tTransformDesc.vScale = { 262.f, 14.f, 0.f };
+	//HUD_Mission.wstrTexturePrototypeTag = L"Component_Texture_HUD_Mission";
+	//if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Mission)))
+	//	return E_FAIL;
+
 	/*
 	#define WINCX 1920
 	#define WINCY 1080
@@ -472,6 +512,30 @@ HRESULT CStage::Add_Layer_TutorialUI(const wstring & LayerTag)
 
 
 
+
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_ScriptUI(const wstring & LayerTag)
+{
+	UI_DESC Desc;
+	Desc.tTransformDesc.vPosition = { 0.f, 0.f ,0.f };
+	Desc.tTransformDesc.vScale = { 1.f, 1.f,0.f };
+	Desc.wstrTexturePrototypeTag = L"Component_Texture_ScriptUI_Script";
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ScriptUI",
+		LayerTag, &Desc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add ScriptUI In Layer");
+		return E_FAIL;
+	}
+
+	((CScriptUI*)m_pManagement->Get_GameObject(LayerTag))->Set_Script(EScript::Tutorial);
+
+	//if (FAILED(Add_Layer_UI(LayerTag, &Desc)))
+	//	return E_FAIL;
 
 	return S_OK;
 }

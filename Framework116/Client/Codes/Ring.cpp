@@ -58,15 +58,15 @@ HRESULT CRing::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::NonStatic,
-		L"Component_Texture_Ring",
-		L"Com_Texture",
-		(CComponent**)&m_pTexture)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
-		return E_FAIL;
-	}
+	//if (FAILED(CGameObject::Add_Component(
+	//	EResourceType::NonStatic,
+	//	L"Component_Texture_Ring",
+	//	L"Com_Texture",
+	//	(CComponent**)&m_pTexture)))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
+	//	return E_FAIL;
+	//}
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
@@ -135,13 +135,13 @@ _uint CRing::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(0);
+	//m_pTexture->Set_Texture(0);
 	m_pDevice->SetMaterial(&m_tMaterial);
 	m_pGeoMesh->Render_Mesh();
 	// Test
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();
@@ -157,6 +157,12 @@ _bool CRing::CollideCheck()
 {
 	if (m_IsCollide == true)
 	{
+		if (m_bSoundOnce == false)
+		{
+			m_pManagement->StopSound(CSoundMgr::RINGCOLLISION);
+			m_pManagement->PlaySound(L"PopUp_Quest.ogg", CSoundMgr::RINGCOLLISION);
+		}
+		m_bSoundOnce = true;
 		CMaterialHandler::Set_RGBA(vColorRGBA.x, vColorRGBA.y, vColorRGBA.z, vColorRGBA.w, &m_tMaterial);
 	}
 
@@ -197,7 +203,7 @@ void CRing::Free()
 
 	Safe_Release(m_pGeoMesh);
 	Safe_Release(m_pTransform);
-	Safe_Release(m_pTexture);
+	//Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);
 
 	CGameObject::Free();
