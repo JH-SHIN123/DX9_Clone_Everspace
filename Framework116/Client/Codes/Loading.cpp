@@ -41,6 +41,8 @@
 #include "Meteor.h"
 #include "ScriptUI.h"
 #include "HP_Bar.h"
+#include "HP_Bar_Border.h"
+#include "Stamina_Bar.h"
 #include "Asteroid.h"
 #pragma endregion
 
@@ -240,6 +242,29 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_HP_Bar_Border */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_HP_Bar_Border",
+		CHP_Bar_Border::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_HP_Bar_Border");
+		return E_FAIL;
+	}
+
+<<<<<<< HEAD
+=======
+	/* For.GameObject_Stamina_Bar */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Stamina_Bar",
+		CStamina_Bar::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Stamina_Bar");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Planet */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Asteroid",
@@ -249,6 +274,7 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+>>>>>>> main
 #pragma endregion
 
 #pragma region Components
@@ -378,6 +404,7 @@ HRESULT CLoading::Ready_StageResources()
 	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
 	return S_OK;
 }
+<<<<<<< HEAD
 
 HRESULT CLoading::Ready_LobbyResources()
 {
@@ -481,6 +508,111 @@ HRESULT CLoading::Ready_LobbyResources()
 		return E_FAIL;
 	}
 
+=======
+
+HRESULT CLoading::Ready_LobbyResources()
+{
+
+	m_pManagement->Clear_NonStatic_Resources();
+
+	CStreamHandler::Load_PassData_Resource(L"../../Resources/Data/Lobby.txt", FALSE);
+
+#pragma region GameObjects
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Lobby_Model",
+		CLobbyModel::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Lobby_Skybox");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Lobby_Skybox",
+		CSkybox::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Lobby_Skybox");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyCam",
+		CLobbyCam::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_MainCam");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyUI",
+		CLobbyUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_MainCam");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_GatchaBox",
+		CGatchaBox::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_GatchaBox");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Product",
+		CProduct::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_StatusBoard",
+		CStatusBoard::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Status",
+		CStatus::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring");
+		return E_FAIL;
+	}
+#pragma endregion
+	
+#pragma region Components
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Ring",
+		CGeoMesh_Torus::Create(m_pDevice, 0.1f, 5.f)))) //도넛의 두께와 지름
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Player_Lazer");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Ring",
+		CTexture::Create(m_pDevice, ETextureType::Normal,
+			L"../../Tool_Executable/Resources/Textures/Player/Player1.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_In_Bar");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_VIBuffer_HexagonTex",
+		CVIBuffer_HexagonTex::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_HexagonColor");
+		return E_FAIL;
+	}
+
+>>>>>>> main
 #pragma endregion
 	return S_OK;
 }
@@ -692,6 +824,16 @@ HRESULT CLoading::Ready_HUD_Resources()
 		return E_FAIL;
 	}
 
+	/* For.Component_Texture_HUD_Out_Bar */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HP_Border",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HUD_Out_Bar.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HP_Border");
+		return E_FAIL;
+	}
+
 	/* For.Component_Texture_HUD_In_Bar */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -746,6 +888,16 @@ HRESULT CLoading::Ready_HUD_Resources()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HP/HP_Bar%d.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HP_Bar");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Stamina_Bar */ 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Stamina_Bar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HP/Stamina_Bar%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Stamina_Bar");
 		return E_FAIL;
 	}
 

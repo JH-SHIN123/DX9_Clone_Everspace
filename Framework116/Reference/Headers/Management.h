@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "Time_Manager.h"
 #include "Frame_Manager.h"
+#include "SoundMgr.h"
 
 BEGIN(Engine)
 class ENGINE_DLL CManagement final : public CBase
@@ -55,6 +56,12 @@ public: /* For.GameObject Manager */
 
 public: /* For.Renderer */
 	HRESULT Add_GameObject_InRenderer(ERenderType eType, class CGameObject* pObject);
+
+public: /* For.Sound_Manager*/
+	void PlaySound(TCHAR* pSoundKey, CSoundMgr::CHANNELID eID);
+	void PlayBGM(TCHAR* pSoundKey);
+	void StopSound(CSoundMgr::CHANNELID eID);
+	void StopAll();
 	
 public:
 	virtual void Free() override;
@@ -67,6 +74,7 @@ private:
 	CRenderer*				m_pRenderer = nullptr;
 	CTime_Manager*			m_pTime_Manager = nullptr;
 	CFrame_Manager*			m_pFrame_Manager = nullptr;
+	CSoundMgr*				m_pSound_Manager = nullptr;
 
 private:
 	_uint m_iWinCX = 0;

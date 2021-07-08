@@ -68,6 +68,10 @@ _uint CMainCam::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CCamera::LateUpdate_GameObject(fDeltaTime);
 
+	// 카메라에도 스피어 달아야하나??
+
+
+
 	return _uint();
 }
 
@@ -170,10 +174,10 @@ _uint CMainCam::KeyInput(_float fDeltaTime)
 	}
 	
 	// 카메라 쉐이킹
-	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
-	{
-		CameraShakingStart(fDeltaTime);
-	}
+	//if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	//{
+	//	CameraShakingStart(fDeltaTime);
+	//}
 
 
 	return _uint();

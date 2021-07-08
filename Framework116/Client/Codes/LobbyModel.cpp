@@ -101,7 +101,11 @@ _uint CLobbyModel::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CLobbyModel::Render_GameObject()
 {
+<<<<<<< HEAD
 	if (m_pLobby->Get_SceneSelect() && !m_pLobby->Get_GotoNextScene())
+=======
+	if (m_pLobby->Get_SceneSelect())
+>>>>>>> main
 		return 0;
 	CGameObject::Render_GameObject();
 
@@ -150,7 +154,11 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 	}
 	if (fTime < 5.f)
 	{
+<<<<<<< HEAD
 		m_pTransform->Go_Up(0.01f*fDeltaTime);
+=======
+		m_pTransform->Go_Up(0.01*fDeltaTime);
+>>>>>>> main
 	}
 	else
 	{

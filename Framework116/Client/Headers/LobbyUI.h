@@ -22,6 +22,7 @@ private:
 	void Key_Check(_float fDeltaTime);
 	void Set_Text();
 	void OnMouseButton();
+<<<<<<< HEAD
 	void ChangeModelIcon();
 
 	//For.SceneSelect
@@ -30,6 +31,10 @@ private:
 	void Render_Nodes();
 	void Update_SceneSelect(_float fDeltaTime);
 
+=======
+
+	void ChangeModelIcon();
+>>>>>>> main
 public:
 	void Set_GotoNextScene(_bool bSet) { m_bGotoNextScene = bSet; }
 	void Set_StartUnPacking(_bool bSet) { m_bStartUnPacking = bSet; }
@@ -52,6 +57,7 @@ private:
 	_bool m_bShowModelIcon = false;
 	_bool m_bChangeModelIcon = false;
 	_bool m_bStartUnPacking = false;
+<<<<<<< HEAD
 
 	//for SceneSelect
 	_float3 m_vCursorPos = {0.f,0.f,0.f};
@@ -61,5 +67,7 @@ private:
 	_float3 m_vThirdNode = { 0.f,0.f,0.f };
 	_uint m_iSelect = 0;
 	_float m_fDelaySceneSelectCheck = 0.f;
+=======
+>>>>>>> main
 };
 
