@@ -186,10 +186,44 @@ void CMainCam::Check_SoloMoveMode(_float fDeltaTime)
 	case ESoloMoveMode::Stage1_Ring:
 		Solo_Stage1_Ring(fDeltaTime);
 		break;
+	case ESoloMoveMode::Lock:
+		Solo_Lock(fDeltaTime);
+		break;
 	default:
 		m_eSoloMoveMode = ESoloMoveMode::End;
 		break;
 	}
+}
+
+_uint CMainCam::Solo_Lock(_float fDeltaTime)
+{
+	_float3 vCameraDir = { 0.f,0.f, -1.f };
+	D3DXQuaternionSlerp(&m_qCameraRot, &m_qCameraRot, &m_pPlayerTransform->Get_TransformDesc().qRot, 0.05f);
+	_float4x4 matCameraRot;
+	D3DXMatrixRotationQuaternion(&matCameraRot, &m_qCameraRot);
+	_float4x4 matInitCameraRot;
+	D3DXMatrixRotationX(&matInitCameraRot, D3DXToRadian(m_fCamAngle));
+	D3DXVec3TransformNormal(&vCameraDir, &vCameraDir, &matInitCameraRot);
+	D3DXVec3TransformNormal(&vCameraDir, &vCameraDir, &matCameraRot);
+
+	// 내가 있어야 할 위치
+	_float3 vCameraPos = m_pPlayerTransform->Get_State(EState::Position) + vCameraDir * 30.f;
+	_float3 vNowPos = m_CameraDesc.vEye;
+	_float3 vDir = vCameraPos - vNowPos;
+
+	if (D3DXVec3Length(&vDir) >= 1.f)
+	{
+		D3DXVec3Normalize(&vDir, &vDir);
+		_float fSpeedPerSec = 10.f;
+
+		vNowPos += vDir * fSpeedPerSec * fDeltaTime;
+
+		m_CameraDesc.vEye = vNowPos;	
+	}
+
+
+
+	return _uint();
 }
 
 _uint CMainCam::Solo_Stage1_Ring(_float fDeletaTime)

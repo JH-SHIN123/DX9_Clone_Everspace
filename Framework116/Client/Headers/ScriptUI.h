@@ -10,6 +10,15 @@ enum class EScript {
 	Tutorial, End
 };
 
+enum class EScriptFlow
+{
+	BlackBar_Start,
+	Script,
+	BlackBar_End,
+	Flow_End,
+	End
+};
+
 class CScriptUI final : public CUI
 {
 public:
@@ -29,10 +38,11 @@ public:
 	_uint Set_Script(EScript eScript);
 
 private:
-	void Check_BlackBar(_float fDeltaTime); // 대화의 시작
-	HRESULT Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc);
+	void BlackBar_Start(_float fDeltaTime); // 대화의 시작
+	void BlackBar_End(_float fDeltaTime);
 	_uint Script_Check();
 	void Script_Tutorial();
+	HRESULT Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc);
 
 
 public:
@@ -41,7 +51,6 @@ public:
 	virtual void Free() override;
 
 private:
-	EScript m_eScriptMode = EScript::End;
 	wstring m_wstrName = L"";
 	wstring m_wstrScript = L"";
 	RECT m_tPortrait;
@@ -50,15 +59,22 @@ private:
 	DWORD m_dwScriptCountMax;// 최대치
 	_float m_fScriptTime;	// 끊어서 출력 시간
 	_bool m_IsPlayerPortrait = false;
-	_bool m_IsStartScript = true;
-	_bool m_IsEndScript = false;
 	_float m_fShowBlackBar = 3.f;
+	EScript m_eScriptMode = EScript::End;
+	EScriptFlow m_eScriptFlow = EScriptFlow::End;
 
 private:	// m_pTransform = 대화 창
-	CTransform* m_pTransfrom_Portrait = nullptr;
-	CTransform* m_pTransfrom_Name = nullptr;
 	CTransform* m_pTransfrom_BlackBar_Up = nullptr;
 	CTransform* m_pTransfrom_BlackBar_Down = nullptr;
+	CTransform* m_pTransfrom_Portrait = nullptr;
+	CTransform* m_pTransfrom_Name = nullptr;
+
+
+private:
+	_float3 m_vUI_BlackBar_Up_Pos = { 0.f, 740.f, 0.f };
+	_float3 m_vUI_BlackBar_Down_Pos = { 0.f, -740.f, 0.f };
+	_float3 m_vUI_Protrait_Pos = { -700.f, -340.f, 0.f };
+
 
 
 };

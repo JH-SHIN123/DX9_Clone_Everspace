@@ -56,8 +56,6 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI")))
-		return E_FAIL;
 
 
 	//if (FAILED(Add_Layer_Ring(L"Layer_Ring")))
@@ -103,6 +101,18 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
+
+	if (m_fDummyTime >= 0)
+	{
+		m_fDummyTime -= fDeltaTime;
+
+		if (m_fDummyTime <= 0)
+		{
+			if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI")))
+				return E_FAIL;
+		}
+	}
+
 
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
 
@@ -527,8 +537,9 @@ HRESULT CStage::Add_Layer_TutorialUI(const wstring & LayerTag)
 HRESULT CStage::Add_Layer_ScriptUI(const wstring & LayerTag)
 {
 	UI_DESC Desc;
-	Desc.tTransformDesc.vPosition = { 0.f,0.f ,0.f };
-	Desc.wstrTexturePrototypeTag = L"Component_Texture_HUD_In_Bar";
+	Desc.tTransformDesc.vPosition = { 0.f, 0.f ,0.f };
+	Desc.tTransformDesc.vScale = { 1.f, 1.f,0.f };
+	Desc.wstrTexturePrototypeTag = L"Component_Texture_ScriptUI_Script";
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,

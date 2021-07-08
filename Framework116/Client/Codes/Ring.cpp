@@ -45,15 +45,15 @@ HRESULT CRing::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::NonStatic,
-		L"Component_Texture_Ring",
-		L"Com_Texture",
-		(CComponent**)&m_pTexture)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
-		return E_FAIL;
-	}
+	//if (FAILED(CGameObject::Add_Component(
+	//	EResourceType::NonStatic,
+	//	L"Component_Texture_Ring",
+	//	L"Com_Texture",
+	//	(CComponent**)&m_pTexture)))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
+	//	return E_FAIL;
+	//}
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
@@ -139,7 +139,7 @@ _uint CRing::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(0);
+	//m_pTexture->Set_Texture(0);
 	m_pDevice->SetMaterial(&m_tMaterial);
 	m_pGeoMesh->Render_Mesh();
 	// Test
@@ -203,7 +203,7 @@ void CRing::Free()
 	Safe_Release(m_pGeoMesh);
 	//Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
-	Safe_Release(m_pTexture);
+	//Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);
 
 	CGameObject::Free();

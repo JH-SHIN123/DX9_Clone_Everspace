@@ -7,6 +7,7 @@ USING(Engine)
 
 enum class ESoloMoveMode
 {
+	Lock,
 	Stage1_Ring,
 	End
 };
@@ -45,6 +46,7 @@ private:
 
 private: // 카메라 연출
 	void Check_SoloMoveMode(_float fDeltaTime);
+	_uint Solo_Lock(_float fDeltaTime);
 	_uint Solo_Stage1_Ring(_float fDeletaTime);
 
 public:
@@ -68,6 +70,7 @@ private: // 카메라 연출 End일 때 플레이어를 따라감
 	CTransform* m_pTargetTransform = nullptr;
 	BYTE m_byMoveCount = 0;
 	_bool m_IsMoveCountCheck = false;
+	//_bool 
 };
 
 #define __MAINCAM_H__

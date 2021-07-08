@@ -45,6 +45,10 @@ private:
 public:
 	static CStage* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual void Free() override;
+
+private:
+	_float m_fDummyTime = 1.f;
+	_uint m_iDummyCount = 0;
 };
 
 #define __STAGE_H__

@@ -29,28 +29,37 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 
 
 	UI_DESC HUD_DESC;
-	HUD_DESC.tTransformDesc.vPosition = { 0.f, 720.f, 0.f };
-	HUD_DESC.tTransformDesc.vScale = { 1920.f, 180.f, 0.f };
+	HUD_DESC.tTransformDesc.vPosition = { 0.f, 740.f, 0.f };
+	HUD_DESC.tTransformDesc.vScale = { 1920.f, 300.f, 0.f };
 	HUD_DESC.wstrTexturePrototypeTag = L"Component_Texture_ScriptUI_BlackBar";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD_BlackBar", &HUD_DESC)))
 		return E_FAIL;
 
-	HUD_DESC.tTransformDesc.vPosition = { 0.f, -720.f, 0.f };
+	HUD_DESC.tTransformDesc.vPosition = { 0.f, 740.f, 0.f };
 	if (FAILED(Add_Layer_UI(L"Layer_HUD_BlackBar", &HUD_DESC)))
 		return E_FAIL;
 
-
-
-
+	HUD_DESC.tTransformDesc.vPosition = { -700.f, -700.f, 0.f };
+	HUD_DESC.tTransformDesc.vScale = { 240.f, 320.f, 0.f };
+	HUD_DESC.wstrTexturePrototypeTag = L"Component_Texture_Player_Portrait";
+	if (FAILED(Add_Layer_UI(L"Layer_HUD_Portrait", &HUD_DESC)))
+		return E_FAIL;
 
 
 
 	m_pTransfrom_BlackBar_Up = (CTransform*)m_pManagement->Get_Component(L"Layer_HUD_BlackBar", L"Com_Transform");
 	Safe_AddRef(m_pTransfrom_BlackBar_Up);
 
-	m_pTransfrom_BlackBar_Down = (CTransform*)m_pManagement->Get_Component(L"Layer_HUD_BlackBar", L"Com_Transform",1);
+	m_pTransfrom_BlackBar_Down = (CTransform*)m_pManagement->Get_Component(L"Layer_HUD_BlackBar", L"Com_Transform", 1);
 	Safe_AddRef(m_pTransfrom_BlackBar_Down);
 
+	m_pTransfrom_Portrait = (CTransform*)m_pManagement->Get_Component(L"Layer_HUD_Portrait", L"Com_Transform");
+	Safe_AddRef(m_pTransfrom_Portrait);
+
+
+	// 여기서 카메라 잠그고 플레이어 잠금
+	((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsScript(true);
+	((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Lock);
 
 
 	return S_OK;
@@ -60,22 +69,33 @@ _uint CScriptUI::Update_GameObject(_float fDeltaTime)
 {
 	CUI::Update_GameObject(fDeltaTime);
 
-	//((CUI*)m_pManagement->Get_GameObject(L"Layer_HUD_BlackBar"))->m_pTransform->
-	Check_BlackBar(fDeltaTime);
+	switch (m_eScriptFlow)
+	{
+	case EScriptFlow::BlackBar_Start:
+		BlackBar_Start(fDeltaTime);
+		break;
+	case EScriptFlow::Script:
+		Script_Check();
+		break;
+	case EScriptFlow::BlackBar_End:
+		BlackBar_End(fDeltaTime);
+		break;
+	default:
+		break;
+	}
 
-	Script_Check();
-	
+
 	return m_pTransform->Update_Transform();
 }
 
 _uint CScriptUI::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CUI::LateUpdate_GameObject(fDeltaTime);
-	
+
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::Alpha, this)))
 		return UPDATE_ERROR;
 
-	if (m_IsEndScript == true)
+	if (m_eScriptFlow == EScriptFlow::Flow_End)
 	{
 		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsScript(false);
 		((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Stage1_Ring);
@@ -90,11 +110,10 @@ _uint CScriptUI::Render_GameObject()
 {
 	CUI::Render_GameObject();
 
-	m_pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+	//m_pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer();
-	m_pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 
 	m_fScriptTime += m_pManagement->Get_DeltaTime();
 
@@ -107,12 +126,22 @@ _uint CScriptUI::Render_GameObject()
 	if (m_dwScriptCount >= m_dwScriptCountMax)
 		m_dwScriptCount = m_dwScriptCountMax;
 
+
 	GetClientRect(g_hWnd, &m_tUIBounds);
-	m_tUIBounds.top += 850;
+	m_tUIBounds.top += 900;
 	m_pManagement->Get_Font()->DrawText(NULL
 		, m_wstrScript.c_str(), _int(m_dwScriptCount)
 		, &m_tUIBounds, DT_CENTER, D3DXCOLOR(200, 200, 200, 255));
 
+	GetClientRect(g_hWnd, &m_tUIBounds);
+	m_tUIBounds.top += 950;
+	m_tUIBounds.right -= 1200;
+	m_pManagement->Get_Font()->DrawText(NULL
+		, m_wstrName.c_str(), -1
+		, &m_tUIBounds, DT_CENTER, D3DXCOLOR(200, 200, 200, 255));
+
+
+	//m_pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 
 
 	return _uint();
@@ -120,13 +149,15 @@ _uint CScriptUI::Render_GameObject()
 
 _uint CScriptUI::Script_Check()
 {
+
 	switch (m_eScriptMode)
 	{
 	case EScript::Tutorial:
 		Script_Tutorial();
 		break;
+	default:
+		break;
 	}
-
 
 
 	return _uint();
@@ -148,25 +179,46 @@ void CScriptUI::Script_Tutorial()
 		break;
 
 	default:
-		m_IsEndScript = true;
+		m_wstrName = L"";
+		m_wstrScript = L"";
+		m_eScriptFlow = EScriptFlow::BlackBar_End;
 		break;
 	}
 	m_dwScriptCountMax = m_wstrScript.length();
 }
 
-void CScriptUI::Check_BlackBar(_float fDeltaTime)
+void CScriptUI::BlackBar_Start(_float fDeltaTime)
 {
-	if (m_IsStartScript == false)
-		return;
+	_float fSpeedPerSec = 3.f;
+	_float3 vDir = { 0.f, 1.f, 0.f };
 
-	//_float fSpeedPerSec = 20.f;
-	//_float3 vDir = { 0.f, 1.f, 0.f };
-	//_float3 vBlackBar_Up = m_pTransfrom_BlackBar_Up->Get_State(EState::Position);
-	////vBlackBar_Up -= vDir * fSpeedPerSec;
-	//m_pTransfrom_BlackBar_Up->Set_Position(vBlackBar_Up);
+	m_vUI_BlackBar_Up_Pos -= vDir * fSpeedPerSec;
+	m_pTransfrom_BlackBar_Up->Set_Position(m_vUI_BlackBar_Up_Pos);
+	m_vUI_BlackBar_Down_Pos += vDir * fSpeedPerSec;
+	m_pTransfrom_BlackBar_Down->Set_Position(m_vUI_BlackBar_Down_Pos);
 
+	if (m_vUI_BlackBar_Up_Pos.y <= 540.f)
+	{
+		m_eScriptFlow = EScriptFlow::Script;
+		m_pTransfrom_Portrait->Set_Position(m_vUI_Protrait_Pos);
+	}
+}
 
+void CScriptUI::BlackBar_End(_float fDeltaTime)
+{
+	_float fSpeedPerSec = 3.f;
+	_float3 vDir = { 0.f, 1.f, 0.f };
 
+	m_vUI_BlackBar_Up_Pos += vDir * fSpeedPerSec;
+	m_pTransfrom_BlackBar_Up->Set_Position(m_vUI_BlackBar_Up_Pos);
+	m_vUI_BlackBar_Down_Pos -= vDir * fSpeedPerSec;
+	m_pTransfrom_BlackBar_Down->Set_Position(m_vUI_BlackBar_Down_Pos);
+
+	if (m_vUI_BlackBar_Up_Pos.y >= 740.f)
+	{
+		m_eScriptFlow = EScriptFlow::Flow_End;
+		m_pTransfrom_Portrait->Set_Position(_float3(0.f,-800.f,0.f));
+	}
 }
 
 HRESULT CScriptUI::Add_Layer_UI(const wstring & LayerTag, const UI_DESC * pUIDesc)
@@ -201,8 +253,7 @@ _uint CScriptUI::Set_NextScript()
 _uint CScriptUI::Set_Script(EScript eScript)
 {
 	m_eScriptMode = eScript;
-
-	((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsScript(true);
+	m_eScriptFlow = EScriptFlow::BlackBar_Start;
 
 	return _uint();
 }

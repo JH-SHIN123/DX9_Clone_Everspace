@@ -422,6 +422,9 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
+	if (m_IsScript == true) // 대화중
+		return 0;
+
 	// 화면 가둬줄 가상의 네모
 	POINT pt;
 	GetCursorPos(&pt);

@@ -28,7 +28,7 @@ public:
 	virtual void Free() override;
 
 private:
-	CTexture*	m_pTexture = nullptr;
+	//CTexture*	m_pTexture = nullptr;
 	CTransform* m_pTransform = nullptr;
 	//CVIBuffer*  m_pVIBuffer = nullptr;
 	CGeoMesh_Torus* m_pGeoMesh = nullptr;
