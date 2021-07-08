@@ -59,6 +59,7 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// 여기서 카메라 잠그고 플레이어 잠금
 	((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsScript(true);
+	((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(true);
 	((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Lock);
 
 

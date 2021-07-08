@@ -321,6 +321,9 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		}
 		return;
 	}
+
+	if (m_IsCameraMove == true)
+		return;
 		
 	// Move
 	if (GetAsyncKeyState('W') & 0x8000)
@@ -541,8 +544,9 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 _uint CPlayer::Movement(_float fDeltaTime)
 {
-	if (m_IsScript == true) // 대화중
+	if (m_IsScript == true || m_IsCameraMove) // 대화중이거나 카메라가 움직이는중!
 		return 0;
+		
 
 	// 화면 가둬줄 가상의 네모
 	POINT pt;
