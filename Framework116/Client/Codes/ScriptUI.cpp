@@ -35,7 +35,7 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 	if (FAILED(Add_Layer_UI(L"Layer_HUD_BlackBar", &HUD_DESC)))
 		return E_FAIL;
 
-	//HUD_DESC.tTransformDesc.vPosition = { 0.f, -720.f, 0.f };
+	HUD_DESC.tTransformDesc.vPosition = { 0.f, -720.f, 0.f };
 	if (FAILED(Add_Layer_UI(L"Layer_HUD_BlackBar", &HUD_DESC)))
 		return E_FAIL;
 
