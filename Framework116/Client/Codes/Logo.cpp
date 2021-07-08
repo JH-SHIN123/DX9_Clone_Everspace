@@ -2,6 +2,7 @@
 #include "..\Headers\Logo.h"
 #include "Loading.h"
 
+
 CLogo::CLogo(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
 {
@@ -22,7 +23,8 @@ _uint CLogo::Update_Scene(_float fDeltaTime)
 
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 	{
-		if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading, CLoading::Create(m_pDevice, ESceneType::Stage))))
+		if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading, 
+			CLoading::Create(m_pDevice, ESceneType::Lobby))))
 		{
 			PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
 			return E_FAIL;

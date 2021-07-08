@@ -211,6 +211,8 @@ _uint CRenderer::Render_Particle()
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
+	
+
 	return iEvent;
 }
 
@@ -262,7 +264,6 @@ _uint CRenderer::Render_UI()
 
 	// 기존 세팅으로 돌려놓기
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
 	pDevice->SetTransform(D3DTS_VIEW, &matPrevView);
 	pDevice->SetTransform(D3DTS_PROJECTION, &matPrevProj);
 
@@ -330,6 +331,7 @@ _uint CRenderer::Render_AlphaUI()
 	pDevice->SetTransform(D3DTS_PROJECTION, &matPrevProj);
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
 
 	return iEvent;
 }

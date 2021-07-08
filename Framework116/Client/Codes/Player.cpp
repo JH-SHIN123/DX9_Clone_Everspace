@@ -174,9 +174,11 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 	KeyProcess(fDeltaTime);
 	
 	Movement(fDeltaTime);
+
 	TimeOperation(fDeltaTime);
 	
 	Make_Arrow();
+
 
 	// 월드행렬 업데이트
 	m_pTransform->Update_Transform_Quaternion();
@@ -207,6 +209,7 @@ _uint CPlayer::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pMesh->Render_Mesh();
+
 
 	wstring str = L"궁서";
 	RECT rc;

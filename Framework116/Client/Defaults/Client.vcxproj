@@ -72,7 +72,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Bin/</OutDir>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\cjh\Desktop\새 폴더 %282%29\Framework116\Reference\Headers;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -83,7 +83,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Bin/</OutDir>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\cjh\Desktop\새 폴더 %282%29\Framework116\Reference\Headers;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,6 +165,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\AlertArrow.h" />
+    <ClInclude Include="..\Headers\Status.h" />
+    <ClInclude Include="..\Headers\StatusBoard.h" />
     <ClInclude Include="..\Headers\Asteroid.h" />
     <ClInclude Include="..\Headers\Boss_Monster.h" />
     <ClInclude Include="..\Headers\Boss_Spawn_Monster.h" />
@@ -178,10 +180,15 @@
     <ClInclude Include="..\Headers\Crosshair.h" />
     <ClInclude Include="..\Headers\EffectHandler.h" />
     <ClInclude Include="..\Headers\ExplosionSystem.h" />
-    <ClInclude Include="..\Headers\FollowSystem.h" />
+    <ClInclude Include="..\Headers\GatchaBox.h" />
     <ClInclude Include="..\Headers\Grass.h" />
-    <ClInclude Include="..\Headers\HP_Bar.h" />
     <ClInclude Include="..\Headers\LaserSystem.h" />
+    <ClInclude Include="..\Headers\Lobby.h" />
+    <ClInclude Include="..\Headers\LobbyCam.h" />
+    <ClInclude Include="..\Headers\LobbyModel.h" />
+    <ClInclude Include="..\Headers\LobbyUI.h" />
+    <ClInclude Include="..\Headers\FollowSystem.h" />
+    <ClInclude Include="..\Headers\HP_Bar.h" />
     <ClInclude Include="..\Headers\Loading.h" />
     <ClInclude Include="..\Headers\LockOn.h" />
     <ClInclude Include="..\Headers\Logo.h" />
@@ -197,6 +204,7 @@
     <ClInclude Include="..\Headers\Player_Bullet.h" />
     <ClInclude Include="..\Headers\Player_Lazer.h" />
     <ClInclude Include="..\Headers\Player_Missile.h" />
+    <ClInclude Include="..\Headers\Product.h" />
     <ClInclude Include="..\Headers\QuestHandler.h" />
     <ClInclude Include="..\Headers\Ring.h" />
     <ClInclude Include="..\Headers\ScriptUI.h" />
@@ -205,6 +213,7 @@
     <ClInclude Include="..\Headers\StreamHandler.h" />
     <ClInclude Include="..\Headers\TargetMonster.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
+    <ClInclude Include="..\Headers\VIBuffer_HexagonTex.h" />
     <ClInclude Include="..\Headers\TutorialUI.h" />
     <ClInclude Include="..\Headers\WingBoost_System.h" />
     <ClInclude Include="Client.h" />
@@ -214,6 +223,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\AlertArrow.cpp" />
+    <ClCompile Include="..\Codes\Status.cpp" />
+    <ClCompile Include="..\Codes\StatusBoard.cpp" />
     <ClCompile Include="..\Codes\Asteroid.cpp" />
     <ClCompile Include="..\Codes\Boss_Monster.cpp" />
     <ClCompile Include="..\Codes\Boss_Spawn_Monster.cpp" />
@@ -225,10 +236,15 @@
     <ClCompile Include="..\Codes\Crosshair.cpp" />
     <ClCompile Include="..\Codes\EffectHandler.cpp" />
     <ClCompile Include="..\Codes\ExplosionSystem.cpp" />
-    <ClCompile Include="..\Codes\FollowSystem.cpp" />
+    <ClCompile Include="..\Codes\GatchaBox.cpp" />
     <ClCompile Include="..\Codes\Grass.cpp" />
-    <ClCompile Include="..\Codes\HP_Bar.cpp" />
     <ClCompile Include="..\Codes\LaserSystem.cpp" />
+    <ClCompile Include="..\Codes\Lobby.cpp" />
+    <ClCompile Include="..\Codes\LobbyCam.cpp" />
+    <ClCompile Include="..\Codes\LobbyModel.cpp" />
+    <ClCompile Include="..\Codes\LobbyUI.cpp" />
+    <ClCompile Include="..\Codes\FollowSystem.cpp" />
+    <ClCompile Include="..\Codes\HP_Bar.cpp" />
     <ClCompile Include="..\Codes\Loading.cpp" />
     <ClCompile Include="..\Codes\LockOn.cpp" />
     <ClCompile Include="..\Codes\Logo.cpp" />
@@ -244,6 +260,7 @@
     <ClCompile Include="..\Codes\Player_Bullet.cpp" />
     <ClCompile Include="..\Codes\Player_Lazer.cpp" />
     <ClCompile Include="..\Codes\Player_Missile.cpp" />
+    <ClCompile Include="..\Codes\Product.cpp" />
     <ClCompile Include="..\Codes\QuestHandler.cpp" />
     <ClCompile Include="..\Codes\Ring.cpp" />
     <ClCompile Include="..\Codes\ScriptUI.cpp" />
@@ -252,6 +269,7 @@
     <ClCompile Include="..\Codes\StreamHandler.cpp" />
     <ClCompile Include="..\Codes\TargetMonster.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
+    <ClCompile Include="..\Codes\VIBuffer_HexagonTex.cpp" />
     <ClCompile Include="..\Codes\TutorialUI.cpp" />
     <ClCompile Include="..\Codes\WingBoost_System.cpp" />
     <ClCompile Include="Client.cpp" />

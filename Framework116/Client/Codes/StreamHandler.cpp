@@ -93,7 +93,7 @@ HRESULT CStreamHandler::Load_PassData_UI(const wstring& wstrFilePath, const _boo
 			EResourceType eResourceType = (EResourceType)(!_isStatic);
 
 			if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
-				eResourceType, L"GameObject_UI"
+				eResourceType, L"GameObject_LobbyUI"
 				, L"Layer_UI", &UiDesc)))
 			{
 				PRINT_LOG(L"Error", L"Add_GameObject_InLayerTool_Failed");
