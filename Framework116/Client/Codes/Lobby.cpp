@@ -66,6 +66,7 @@ _uint CLobby::Update_Scene(_float fDeltaTime)
 		}
 		return CHANGE_SCENE;
 	}
+
 	CScene::Update_Scene(fDeltaTime);
 
 	
@@ -141,6 +142,7 @@ HRESULT CLobby::Add_Layer_Lobby_Model(const wstring & LayerTag)
 	CLobbyModel* pModel = (CLobbyModel*)m_pManagement->Get_GameObject(LayerTag);
 	pModel->Set_Scene(this);
 	AddRef();
+
 	return S_OK;
 }
 

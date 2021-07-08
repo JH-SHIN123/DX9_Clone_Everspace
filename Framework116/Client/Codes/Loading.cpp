@@ -273,6 +273,7 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+
 #pragma endregion
 
 #pragma region Components
@@ -403,6 +404,7 @@ HRESULT CLoading::Ready_StageResources()
 	return S_OK;
 }
 
+
 HRESULT CLoading::Ready_LobbyResources()
 {
 
@@ -504,6 +506,7 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_HexagonColor");
 		return E_FAIL;
 	}
+
 
 #pragma endregion
 	return S_OK;
