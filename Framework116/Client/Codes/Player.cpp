@@ -742,6 +742,9 @@ _uint CPlayer::Make_Arrow()
 	// 나중에는 모든 몬스터 순회하면서 검사해야함.
 	// 몬스터 pos - 플레이어 pos. => 
 	// 각도로 비교하자~
+	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() == 0 
+		/*||m_pManagement->Get_GameObjectList(L"Layer_Monster")->size() == 0*/)
+		return UPDATE_ERROR;
 
 	//Test
 	m_pTransform->Get_TransformDesc().matWorld;
