@@ -337,12 +337,12 @@ _uint CMainCam::Solo_Stage1_Ring(_float fDeletaTime)
 		D3DXVec3Normalize(&vDir, &vDir);
 
 		m_CameraDesc.vEye += vDir * fSpeedPerSec * fDeletaTime;
-
+		
 		if (vLength <= 20.f)
 			++m_byMoveCount;
 	}
 	break;
-
+	
 	case 4:
 	{
 		_float3 vTargetPos = { 650.f, 35.f, 1800.f };
