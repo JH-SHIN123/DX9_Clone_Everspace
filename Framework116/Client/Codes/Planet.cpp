@@ -24,6 +24,19 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 {
 	CGameObject::Ready_GameObject(pArg);
 
+	GAMEOBJECT_DESC* pDesc = nullptr;
+	if (auto ptr = (BASE_DESC*)pArg)
+	{
+		if (pDesc = dynamic_cast<GAMEOBJECT_DESC*>(ptr))
+		{
+		}
+		else
+		{
+			PRINT_LOG(L"Error", L"ASEROID_DESC is nullptr");
+			return E_FAIL;
+		}
+	}
+
 	// For.Com_Geo_Sphere
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -47,16 +60,8 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 	}
 
 	// For.Com_Transform
-	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = _float3(200.f, 0.f, 200.f);
-	TransformDesc.vScale = _float3(1.f, 1.f, 1.f);
-	if (pArg != nullptr)
-	{
-		TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
-		TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
-	}
-	TransformDesc.fSpeedPerSec = 20.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);
+	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
+	TransformDesc.fRotatePerSec = D3DXToRadian(20.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -84,9 +89,10 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 		return E_FAIL;
 	}
 
+	// Point Light Ãß°¡
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::PointLight;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(180, 180, 180);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
 	lightDesc.tTransformDesc.vPosition = TransformDesc.vPosition;
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
@@ -104,6 +110,8 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 _uint CPlanet::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
+	
+	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
@@ -141,15 +149,9 @@ _uint CPlanet::Render_GameObject()
 
 _uint CPlanet::Movement(_float fDeltaTime)
 {
-	//_float3 vOutPos = m_pTransform->Get_State(EState::Position);
-	//if (true == m_pTerrainBuffer->Is_OnTerrain(&vOutPos))
-	//{
-	//	vOutPos.y += 0.5f;
-	//	m_pTransform->Set_Position(vOutPos);
-	//}	
-
-
-	m_pTransform->Go_Straight(fDeltaTime);
+	if (m_pTransform) {
+		m_pTransform->RotateY(fDeltaTime);
+	}
 
 
 	return _uint();

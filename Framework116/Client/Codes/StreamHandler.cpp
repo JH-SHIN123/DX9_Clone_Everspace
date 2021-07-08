@@ -4,232 +4,55 @@
 #pragma region GameObject
 #pragma endregion
 
-HRESULT CStreamHandler::Load_PassData_Object(const wstring& wstrObjectPrototypePath, EResourceType eType)
+HRESULT CStreamHandler::Load_PassData_Map(const TCHAR* wstrFilePath)
 {
-	wifstream fin;
-	fin.open(wstrObjectPrototypePath);
-
-	if (fin.fail())
-	{
-		wstring wstrErrorLog = wstrObjectPrototypePath + L" is wrong path";
-		PRINT_LOG(L"Error", wstrErrorLog.c_str());
+	HANDLE hFile = CreateFile(wstrFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (INVALID_HANDLE_VALUE == hFile) {
+		PRINT_LOG(L"Error", L"Failed to Load Map");
 		return E_FAIL;
 	}
 
-	// 오브젝트 프로토타입
-	TCHAR szObjectProtoTypeTag[MAX_PATH] = L"";
-	// 구별 할 클래스명
-	TCHAR szObjectClassName[MAX_PATH] = L"";
-	// 머테리얼 정보
-	TCHAR szMaterial_Diffuse_r[MAX_PATH] = L"";
-	TCHAR szMaterial_Diffuse_g[MAX_PATH] = L"";
-	TCHAR szMaterial_Diffuse_b[MAX_PATH] = L"";
-	TCHAR szMaterial_Diffuse_a[MAX_PATH] = L"";
+	DWORD dwByte = 0;
+	DWORD dwStrByte = 0;
 
-	TCHAR szMaterial_Ambient_r[MAX_PATH] = L"";
-	TCHAR szMaterial_Ambient_g[MAX_PATH] = L"";
-	TCHAR szMaterial_Ambient_b[MAX_PATH] = L"";
-	TCHAR szMaterial_Ambient_a[MAX_PATH] = L"";
-
-	TCHAR szMaterial_Specular_r[MAX_PATH] = L"";
-	TCHAR szMaterial_Specular_g[MAX_PATH] = L"";
-	TCHAR szMaterial_Specular_b[MAX_PATH] = L"";
-	TCHAR szMaterial_Specular_a[MAX_PATH] = L"";
-
-	TCHAR szMaterial_Emissive_r[MAX_PATH] = L"";
-	TCHAR szMaterial_Emissive_g[MAX_PATH] = L"";
-	TCHAR szMaterial_Emissive_b[MAX_PATH] = L"";
-	TCHAR szMaterial_Emissive_a[MAX_PATH] = L"";
-
-	TCHAR szMaterial_Power[MAX_PATH] = L"";
-	// 컴포넌트의 개수
-	TCHAR szComponentTag_Count[MAX_PATH] = L"";
-	// 읽을 컴포넌트
-	TCHAR szComponentTag[MAX_PATH] = L"";
+	vector<PASSDATA_MAP> vecPassData;
+	PASSDATA_MAP tPassMap;
+	TCHAR* pTag = nullptr;
 
 	while (true)
 	{
-		PASSDATA_OBJECT* pData = new PASSDATA_OBJECT;
-		pData->wstrPrototypeTag_Object = L"";
-		ZeroMemory(&pData->tMaterial, sizeof(D3DMATERIAL9));
-		pData->vecPrototypeTag_Mesh.reserve(10);
+		// Obj Prototype Tag
+		ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+		pTag = new TCHAR[dwStrByte];
+		ReadFile(hFile, pTag, dwStrByte, &dwByte, nullptr);
+		tPassMap.wstrPrototypeTag = pTag;
+		Safe_Delete_Array(pTag);
 
-		fin.getline(szObjectProtoTypeTag, MAX_PATH, L'(');		// PrototypeTag
-		fin.getline(szObjectClassName, MAX_PATH, L')');			// ClassName
+		// Mesh Prototype Tag
+		ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+		pTag = new TCHAR[dwStrByte];
+		ReadFile(hFile, pTag, dwStrByte, &dwByte, nullptr);
+		tPassMap.wstrMeshName = pTag;
+		Safe_Delete_Array(pTag);
 
-		if (fin.eof())
-		{
-			delete pData;
-			pData = nullptr;
-			break;
-		}
+		// Mesh Transform
+		ReadFile(hFile, &tPassMap.matWorld, sizeof(tPassMap.matWorld), &dwByte, nullptr);
+		ReadFile(hFile, &tPassMap.Pos, sizeof(tPassMap.Pos), &dwByte, nullptr);
+		ReadFile(hFile, &tPassMap.Rotate, sizeof(tPassMap.Rotate), &dwByte, nullptr);
+		ReadFile(hFile, &tPassMap.Scale, sizeof(tPassMap.Scale), &dwByte, nullptr);
 
-		fin.getline(szMaterial_Diffuse_r, MAX_PATH, L'?');
-		fin.getline(szMaterial_Diffuse_g, MAX_PATH, L'?');
-		fin.getline(szMaterial_Diffuse_b, MAX_PATH, L'?');
-		fin.getline(szMaterial_Diffuse_a, MAX_PATH, L'?');
-
-		fin.getline(szMaterial_Ambient_r, MAX_PATH, L'?');
-		fin.getline(szMaterial_Ambient_g, MAX_PATH, L'?');
-		fin.getline(szMaterial_Ambient_b, MAX_PATH, L'?');
-		fin.getline(szMaterial_Ambient_a, MAX_PATH, L'?');
-
-		fin.getline(szMaterial_Specular_r, MAX_PATH, L'?');
-		fin.getline(szMaterial_Specular_g, MAX_PATH, L'?');
-		fin.getline(szMaterial_Specular_b, MAX_PATH, L'?');
-		fin.getline(szMaterial_Specular_a, MAX_PATH, L'?');
-
-		fin.getline(szMaterial_Emissive_r, MAX_PATH, L'?');
-		fin.getline(szMaterial_Emissive_g, MAX_PATH, L'?');
-		fin.getline(szMaterial_Emissive_b, MAX_PATH, L'?');
-		fin.getline(szMaterial_Emissive_a, MAX_PATH, L'?');
-
-		fin.getline(szMaterial_Power, MAX_PATH, L'?');
-
-		// 읽은 값 삽입
-		pData->wstrPrototypeTag_Object = szObjectProtoTypeTag;
-
-		pData->tMaterial.Diffuse.r = (_float)_ttof(szMaterial_Diffuse_r);
-		pData->tMaterial.Diffuse.g = (_float)_ttof(szMaterial_Diffuse_g);
-		pData->tMaterial.Diffuse.b = (_float)_ttof(szMaterial_Diffuse_b);
-		pData->tMaterial.Diffuse.a = (_float)_ttof(szMaterial_Diffuse_a);
-
-		pData->tMaterial.Ambient.r = (_float)_ttof(szMaterial_Ambient_r);
-		pData->tMaterial.Ambient.g = (_float)_ttof(szMaterial_Ambient_g);
-		pData->tMaterial.Ambient.b = (_float)_ttof(szMaterial_Ambient_b);
-		pData->tMaterial.Ambient.a = (_float)_ttof(szMaterial_Ambient_a);
-
-		pData->tMaterial.Specular.r = (_float)_ttof(szMaterial_Specular_r);
-		pData->tMaterial.Specular.g = (_float)_ttof(szMaterial_Specular_g);
-		pData->tMaterial.Specular.b = (_float)_ttof(szMaterial_Specular_b);
-		pData->tMaterial.Specular.a = (_float)_ttof(szMaterial_Specular_a);
-
-		pData->tMaterial.Emissive.r = (_float)_ttof(szMaterial_Emissive_r);
-		pData->tMaterial.Emissive.g = (_float)_ttof(szMaterial_Emissive_g);
-		pData->tMaterial.Emissive.b = (_float)_ttof(szMaterial_Emissive_b);
-		pData->tMaterial.Emissive.a = (_float)_ttof(szMaterial_Emissive_a);
-
-		pData->tMaterial.Power = (_float)_ttof(szMaterial_Power);
-
-
-		// 카운트 만큼 읽어서 삽입
-		fin.getline(szComponentTag_Count, MAX_PATH, L'|');
-		_uint iComponentTag_Count = _ttoi(szComponentTag_Count);
-
-		for (_uint i = 0; i < iComponentTag_Count; ++i)
-		{
-			fin.getline(szComponentTag, MAX_PATH, L'|');
-			pData->vecPrototypeTag_Mesh.emplace_back(szComponentTag);
-		}
-
-		if (FAILED(Add_GameObject_Prototype(szObjectClassName, pData, eType)))
-		{
-			PRINT_LOG(L"Error", L"Failed To Add_GameObject_Prototype");
-			return E_FAIL;
-		}
-	}
-	//
-	fin.close();
-
-	return S_OK;
-}
-
-HRESULT CStreamHandler::Load_PassData_Map(const wstring& wstrFilePath)
-{
-	wifstream fin;
-	fin.open(wstrFilePath.c_str());
-
-	if (fin.fail())
-	{
-		PRINT_LOG(L"Path Error", wstrFilePath.c_str());
-		return E_FAIL;
-	}
-
-	TCHAR szPrototypeTag[MAX_PATH] = L"";
-	TCHAR matWorld_11[MAX_PATH] = L"";
-	TCHAR matWorld_12[MAX_PATH] = L"";
-	TCHAR matWorld_13[MAX_PATH] = L"";
-	TCHAR matWorld_14[MAX_PATH] = L"";
-	TCHAR matWorld_21[MAX_PATH] = L"";
-	TCHAR matWorld_22[MAX_PATH] = L"";
-	TCHAR matWorld_23[MAX_PATH] = L"";
-	TCHAR matWorld_24[MAX_PATH] = L"";
-	TCHAR matWorld_31[MAX_PATH] = L"";
-	TCHAR matWorld_32[MAX_PATH] = L"";
-	TCHAR matWorld_33[MAX_PATH] = L"";
-	TCHAR matWorld_34[MAX_PATH] = L"";
-	TCHAR matWorld_41[MAX_PATH] = L"";
-	TCHAR matWorld_42[MAX_PATH] = L"";
-	TCHAR matWorld_43[MAX_PATH] = L"";
-	TCHAR matWorld_44[MAX_PATH] = L"";
-	TCHAR RotateX[MAX_PATH] = L"";
-	TCHAR RotateY[MAX_PATH] = L"";
-	TCHAR RotateZ[MAX_PATH] = L"";
-	TCHAR szCloneName[MAX_PATH] = L"";
-
-	wstring wstrProtoTypeName = L"";
-	_float4x4 matWorld;
-	_float3 vRot;
-
-	while (true)
-	{
-		fin.getline(szPrototypeTag, MAX_PATH, L'|');
-		fin.getline(matWorld_11, MAX_PATH, '|');
-		fin.getline(matWorld_12, MAX_PATH, '|');
-		fin.getline(matWorld_13, MAX_PATH, '|');
-		fin.getline(matWorld_14, MAX_PATH, '|');
-		fin.getline(matWorld_21, MAX_PATH, '|');
-		fin.getline(matWorld_22, MAX_PATH, '|');
-		fin.getline(matWorld_23, MAX_PATH, '|');
-		fin.getline(matWorld_24, MAX_PATH, '|');
-		fin.getline(matWorld_31, MAX_PATH, '|');
-		fin.getline(matWorld_32, MAX_PATH, '|');
-		fin.getline(matWorld_33, MAX_PATH, '|');
-		fin.getline(matWorld_34, MAX_PATH, '|');
-		fin.getline(matWorld_41, MAX_PATH, '|');
-		fin.getline(matWorld_42, MAX_PATH, '|');
-		fin.getline(matWorld_43, MAX_PATH, '|');
-		fin.getline(matWorld_44, MAX_PATH, '|');
-		fin.getline(RotateX, MAX_PATH, '|');
-		fin.getline(RotateY, MAX_PATH, '|');
-		fin.getline(RotateZ, MAX_PATH, '|');
-		fin.getline(szCloneName, MAX_PATH);
-
-		if (fin.eof())
+		if (0 == dwByte)
 			break;
 
-		wstrProtoTypeName = szPrototypeTag;
-		matWorld._11 = (_float)_ttof(matWorld_11);
-		matWorld._12 = (_float)_ttof(matWorld_12);
-		matWorld._13 = (_float)_ttof(matWorld_13);
-		matWorld._14 = (_float)_ttof(matWorld_14);
-		matWorld._21 = (_float)_ttof(matWorld_21);
-		matWorld._22 = (_float)_ttof(matWorld_22);
-		matWorld._23 = (_float)_ttof(matWorld_23);
-		matWorld._24 = (_float)_ttof(matWorld_24);
-		matWorld._31 = (_float)_ttof(matWorld_31);
-		matWorld._32 = (_float)_ttof(matWorld_32);
-		matWorld._33 = (_float)_ttof(matWorld_33);
-		matWorld._34 = (_float)_ttof(matWorld_34);
-		matWorld._41 = (_float)_ttof(matWorld_41);
-		matWorld._42 = (_float)_ttof(matWorld_42);
-		matWorld._43 = (_float)_ttof(matWorld_43);
-		matWorld._44 = (_float)_ttof(matWorld_44);
-		vRot.x = (_float)_ttof(RotateX);
-		vRot.y = (_float)_ttof(RotateY);
-		vRot.z = (_float)_ttof(RotateZ);
-
-		TRANSFORM_DESC TransformDesc;
-		TransformDesc.vPosition = { matWorld._41, matWorld._42, matWorld._43 };
-		TransformDesc.vRotate = { vRot.x, vRot.y, vRot.z };
-		//TransformDesc.vScale = { matWorld._11, matWorld._22, matWorld._33 };
-		TransformDesc.matWorld = matWorld;
-
-		// EResourceType 파싱데이터에서 받아오기
-		Add_GameObject_Layer(EResourceType::NonStatic, wstrProtoTypeName, &TransformDesc);
+		vecPassData.emplace_back(tPassMap);
 	}
 
-	fin.close();
+	CloseHandle(hFile);
+
+	for (auto& p : vecPassData)
+	{
+		Add_GameObject_Layer(&p);
+	}
 
 	return S_OK;
 }
@@ -399,51 +222,101 @@ HRESULT CStreamHandler::Load_PassData_Collide(const wstring& wstrFileName, const
 	return S_OK;
 }
 
-
-
-HRESULT CStreamHandler::Add_GameObject_Prototype(const wstring& wstrClassName, PASSDATA_OBJECT* pPassDataObject, EResourceType eType)
+HRESULT CStreamHandler::Add_GameObject_Layer(const PASSDATA_MAP* pPassData)
 {
-	if (wstrClassName == L"Player")
-	{
-		if (FAILED(CManagement::Get_Instance()->Add_GameObject_Prototype(
-			eType,
-			pPassDataObject->wstrPrototypeTag_Object.c_str(),
-			CPlayer::Create(CManagement::Get_Instance()->Get_Device(), pPassDataObject))))
-		{
-			PRINT_LOG(L"Error", L"Failed To Add GameObject_Player");
-			return E_FAIL;
-		}
-		return S_OK;
-	}
-	return S_OK;
-}
-
-HRESULT CStreamHandler::Add_GameObject_Layer(EResourceType eType, wstring PrototypeTag, void* pArg)
-{
-	wstring wstrPrototypeTag = L"GameObject_" + PrototypeTag;
-	wstring wstrLayerTag = L"Layer_" + PrototypeTag;
-
-	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
-		eType, 
-		wstrPrototypeTag,
-		wstrLayerTag, pArg))) 
-	{
-		wstring errMsg = L"Failed to Add Layer ";
-		errMsg += PrototypeTag;
-		PRINT_LOG(L"Error", errMsg.c_str());
+	if (nullptr == pPassData) {
+		PRINT_LOG(L"Error", L"(Load Map) Failed To Add Layer");
 		return E_FAIL;
 	}
-	
 
-	//if (wstrPrototypeTag == L"GameObject_Ring")
-	//{
-	//	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(eType, wstrPrototypeTag, L"Layer_Ring", pArg))) {
-	//		wstring errMsg = L"Failed to Add Layer ";
-	//		errMsg += PrototypeTag;
-	//		PRINT_LOG(L"Error", errMsg.c_str());
-	//		return E_FAIL;
-	//	}
-	//}
+	wstring wstrPrototypeTag = pPassData->wstrPrototypeTag;
+
+#pragma region Stage1
+	if (wstrPrototypeTag == L"GameObject_Player")
+	{
+		GAMEOBJECT_DESC tDesc;
+		tDesc.tTransformDesc.matWorld = pPassData->matWorld;
+		tDesc.tTransformDesc.vPosition = pPassData->Pos;
+		tDesc.tTransformDesc.vRotate = pPassData->Rotate;
+		tDesc.tTransformDesc.vScale = pPassData->Scale;
+		tDesc.wstrMeshName = pPassData->wstrMeshName;
+
+		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+			EResourceType::Static,
+			wstrPrototypeTag,
+			L"Layer_Player",
+			&tDesc)))
+		{
+			wstring errMsg = L"Failed to Add Layer ";
+			errMsg += wstrPrototypeTag;
+			PRINT_LOG(L"Error", errMsg.c_str());
+			return E_FAIL;
+		}
+	}
+	else if (wstrPrototypeTag == L"GameObject_Ring")
+	{
+		GAMEOBJECT_DESC tDesc;
+		tDesc.tTransformDesc.matWorld = pPassData->matWorld;
+		tDesc.tTransformDesc.vPosition = pPassData->Pos;
+		tDesc.tTransformDesc.vRotate = pPassData->Rotate;
+		tDesc.tTransformDesc.vScale = pPassData->Scale;
+		tDesc.wstrMeshName = pPassData->wstrMeshName;
+
+		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+			EResourceType::NonStatic,
+			wstrPrototypeTag,
+			L"Layer_Ring",
+			&tDesc)))
+		{
+			wstring errMsg = L"Failed to Add Layer ";
+			errMsg += wstrPrototypeTag;
+			PRINT_LOG(L"Error", errMsg.c_str());
+			return E_FAIL;
+		}
+	}
+	else if (wstrPrototypeTag == L"GameObject_Planet")
+	{
+		GAMEOBJECT_DESC tDesc;
+		tDesc.tTransformDesc.matWorld = pPassData->matWorld;
+		tDesc.tTransformDesc.vPosition = pPassData->Pos;
+		tDesc.tTransformDesc.vRotate = pPassData->Rotate;
+		tDesc.tTransformDesc.vScale = pPassData->Scale;
+		tDesc.wstrMeshName = pPassData->wstrMeshName;
+
+		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+			EResourceType::NonStatic,
+			wstrPrototypeTag,
+			L"Layer_Planet",
+			&tDesc)))
+		{
+			wstring errMsg = L"Failed to Add Layer ";
+			errMsg += wstrPrototypeTag;
+			PRINT_LOG(L"Error", errMsg.c_str());
+			return E_FAIL;
+		}
+	}
+	else if (wstrPrototypeTag == L"GameObject_Asteroid_A" || wstrPrototypeTag == L"GameObject_Asteroid_B" || wstrPrototypeTag == L"GameObject_Rock_Cloud")
+	{
+		GAMEOBJECT_DESC tDesc;
+		tDesc.tTransformDesc.matWorld = pPassData->matWorld;
+		tDesc.tTransformDesc.vPosition = pPassData->Pos;
+		tDesc.tTransformDesc.vRotate = pPassData->Rotate;
+		tDesc.tTransformDesc.vScale = pPassData->Scale;
+		tDesc.wstrMeshName = pPassData->wstrMeshName;
+
+		if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+			EResourceType::NonStatic,
+			L"GameObject_Asteroid",
+			L"Layer_Asteroid",
+			&tDesc)))
+		{
+			wstring errMsg = L"Failed to Add Layer ";
+			errMsg += wstrPrototypeTag;
+			PRINT_LOG(L"Error", errMsg.c_str());
+			return E_FAIL;
+		}
+	}
+#pragma endregion
 
 	return S_OK;
 }

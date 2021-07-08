@@ -31,6 +31,8 @@
 #include "WingBoost_System.h"
 #include "Meteor.h"
 #include "ScriptUI.h"
+#include "HP_Bar.h"
+#include "Asteroid.h"
 #pragma endregion
 
 
@@ -219,6 +221,7 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+
 	/* For.GameObject_Planet */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -226,6 +229,25 @@ HRESULT CLoading::Ready_StageResources()
 		CPlanet::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_HP_Bar */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_HP_Bar",
+		CHP_Bar::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_HP_Bar");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Asteroid",
+		CAsteroid::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
 		return E_FAIL;
 	}
 
@@ -355,11 +377,46 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Rock_Generic_001",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/Asteroid/rock_generic_001.X", L"../../Resources/Textures/Asteroid/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Rock_Generic_002",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/Asteroid/rock_generic_002.X", L"../../Resources/Textures/Asteroid/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Rock_Cloud",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/Asteroid/cloud.X", L"../../Resources/Textures/Asteroid/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Monster",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/monster.X", L"../../Resources/Textures/Monster/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Monster");
+	//	return E_FAIL;
+	//}
+
 	Ready_HUD_Resources();
 	Ready_StageEffect();
 #pragma endregion
 
-	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
 
 
 	Ready_Stage1();
@@ -419,6 +476,7 @@ HRESULT CLoading::Ready_StageEffect()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_WingBoostSystem");
 		return E_FAIL;
 	}
+
 #pragma endregion
 
 #pragma region Components
@@ -456,6 +514,25 @@ HRESULT CLoading::Ready_StageEffect()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Boost");
 		return E_FAIL;
 	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Glow",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/glow.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Boost");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Spark",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/spark.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Wind");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 	return S_OK;
@@ -463,6 +540,7 @@ HRESULT CLoading::Ready_StageEffect()
 
 HRESULT CLoading::Ready_HUD_Resources()
 {
+
 	/* For.Component_Texture_Machinegun_HUD */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -600,6 +678,16 @@ HRESULT CLoading::Ready_HUD_Resources()
 		return E_FAIL;
 	}
 
+	/* For.Component_Texture_HUD_HP_Bar */ //HP_Bar!! 있는데 뭐지
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HP_Bar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HP/HP_Bar%d.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HP_Bar");
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -656,35 +744,6 @@ HRESULT CLoading::Ready_Stage1()
 	//	return E_FAIL;
 	//}
 
-	// 행성
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_Planet",
-		CPlanet::Create(m_pDevice)))) 
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
-		return E_FAIL;
-	}
-	// 행성 매쉬
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"Component_GeoMesh_Planet",
-		CGeoMesh_Sphere::Create(m_pDevice, 50.f)))) 
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Planet");
-		return E_FAIL;
-	}
-	// 행성 이미지
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"Component_Texture_Planet_Jupiter",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/jupitermap.jpg"))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Planet_Jupiter");
-		return E_FAIL;
-	}
-
-
 	// 고리 내비게이션
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -729,7 +788,6 @@ HRESULT CLoading::Ready_Stage1()
 HRESULT CLoading::Ready_Map_Effect_Resources()
 {
 
-
 	return S_OK;
 }
 
@@ -739,7 +797,7 @@ HRESULT CLoading::Ready_BossAndOthers()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Boss_Monster",
-		CBoss_Monster::Create(m_pDevice, nullptr))))
+		CBoss_Monster::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_LaserSystem");
 		return E_FAIL;
@@ -749,7 +807,7 @@ HRESULT CLoading::Ready_BossAndOthers()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Bullet_EnergyBall",
-		CBullet_EnergyBall::Create(m_pDevice, nullptr))))
+		CBullet_EnergyBall::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall");
 		return E_FAIL;
@@ -758,7 +816,7 @@ HRESULT CLoading::Ready_BossAndOthers()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Bullet_Laser",
-		CBullet_Laser::Create(m_pDevice, nullptr))))
+		CBullet_Laser::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Bullet_Laser");
 		return E_FAIL;
@@ -767,7 +825,7 @@ HRESULT CLoading::Ready_BossAndOthers()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Bullet_EMP_Bomb",
-		CBullet_EMP_Bomb::Create(m_pDevice, nullptr))))
+		CBullet_EMP_Bomb::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Bullet_EMP_Bomb");
 		return E_FAIL;

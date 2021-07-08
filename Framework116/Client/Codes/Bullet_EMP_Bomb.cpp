@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "..\Headers\Bullet_EMP_Bomb.h"
 
-CBullet_EMP_Bomb::CBullet_EMP_Bomb(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
+CBullet_EMP_Bomb::CBullet_EMP_Bomb(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	m_pPassData = pData;
 }
 
 CBullet_EMP_Bomb::CBullet_EMP_Bomb(const CBullet_EMP_Bomb & other)
@@ -198,9 +197,9 @@ _uint CBullet_EMP_Bomb::Move_Dir(_float fDeltaTime)
 	return _uint();
 }
 
-CBullet_EMP_Bomb * CBullet_EMP_Bomb::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)
+CBullet_EMP_Bomb * CBullet_EMP_Bomb::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	CBullet_EMP_Bomb* pInstance = new CBullet_EMP_Bomb(pDevice, pData);
+	CBullet_EMP_Bomb* pInstance = new CBullet_EMP_Bomb(pDevice);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Boss_Monster");

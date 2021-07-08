@@ -4,7 +4,6 @@
 CBullet_EnergyBall::CBullet_EnergyBall(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 	: CGameObject(pDevice)
 {
-	m_pPassData = pData;
 }
 
 CBullet_EnergyBall::CBullet_EnergyBall(const CBullet_EnergyBall & other)

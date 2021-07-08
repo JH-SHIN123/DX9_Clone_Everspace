@@ -8,9 +8,9 @@ CRing::CRing(LPDIRECT3DDEVICE9 pDevice)
 {
 	ZeroMemory(&m_tMaterial, sizeof(D3DMATERIAL9));
 
-	CMaterialHandler::Set_RGBA(0.4f, 0.2f, 0.5f, 0.f, &m_tMaterial);
+	CMaterialHandler::Set_RGBA(0.1f, 0.4f, 0.4f, 0.7f, &m_tMaterial);
 
-	m_tMaterial.Power = 1.f;
+	m_tMaterial.Power = 10.f;
 }
 
 CRing::CRing(const CRing & other)
@@ -33,10 +33,23 @@ HRESULT CRing::Ready_GameObject(void * pArg/* = nullptr*/)
 {
 	CGameObject::Ready_GameObject(pArg);
 
+	GAMEOBJECT_DESC* pDesc = nullptr;
+	if (auto ptr = (BASE_DESC*)pArg)
+	{
+		if (pDesc = dynamic_cast<GAMEOBJECT_DESC*>(ptr))
+		{
+		}
+		else
+		{
+			PRINT_LOG(L"Error", L"GAMEOBJECT_DESC is nullptr");
+			return E_FAIL;
+		}
+	}
+
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
-		L"Component_GeoMesh_Ring",
+		pDesc->wstrMeshName,
 		L"Com_GeoMesh",
 		(CComponent**)&m_pGeoMesh)))
 	{
@@ -56,18 +69,9 @@ HRESULT CRing::Ready_GameObject(void * pArg/* = nullptr*/)
 	//}
 
 	// For.Com_Transform
-	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vScale = { 1.f, 1.f, 1.f };
-	TransformDesc.vPosition = { 50.f,10.f,100.f };
+	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
 	TransformDesc.fSpeedPerSec = 20.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);
-
-	if (pArg != nullptr)
-	{
-		TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
-		TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
-	}
-
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -79,14 +83,6 @@ HRESULT CRing::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
 	}
-
-	//m_pTerrainBuffer = (CVIBuffer_TerrainTexture*)m_pManagement->Get_Component(L"Layer_Terrain", L"Com_VIBuffer");
-	//Safe_AddRef(m_pTerrainBuffer);
-	//if (nullptr == m_pTerrainBuffer)
-	//{
-	//	PRINT_LOG(L"Error", L"m_pTerrainBuffer is nullptr");
-	//	return E_FAIL;
-	//}
 
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
@@ -162,7 +158,6 @@ _bool CRing::CollideCheck()
 	if (m_IsCollide == true)
 	{
 		CMaterialHandler::Set_RGBA(vColorRGBA.x, vColorRGBA.y, vColorRGBA.z, vColorRGBA.w, &m_tMaterial);
-		
 	}
 
 	return false;
@@ -201,7 +196,6 @@ void CRing::Free()
 	//m_TargetCollide.clear();
 
 	Safe_Release(m_pGeoMesh);
-	//Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
 	//Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);

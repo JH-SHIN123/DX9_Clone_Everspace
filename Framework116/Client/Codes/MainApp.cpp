@@ -10,6 +10,7 @@
 #include "Light.h"
 #include "AlertArrow.h"
 #include "ScriptUI.h"
+#include "HP_Bar.h"
 
 CMainApp::CMainApp()
 	: m_pManagement(CManagement::Get_Instance())
@@ -68,9 +69,14 @@ HRESULT CMainApp::Ready_StaticResources()
 {
 #pragma region GameObjects
 	/* For.GameObject_Player */
-	CStreamHandler::Load_PassData_Object(
-		L"../../Resources/PrototypeData/StaticPlayer.object"
-		, EResourceType::Static);
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_Player",
+		CPlayer::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_MainCam");
+		return E_FAIL;
+	}
 
 	/* For.GameObject_MainCam */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -173,6 +179,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		CVIBuffer_RectTexture::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_RectTexture");
+		return E_FAIL;
+	}
+
+	/* For.Component_VIBuffer_RectTexture_HP_Bar */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_VIBuffer_RectTexture_HP_Bar",
+		CVIBuffer_RectTexture_HP_Bar::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_VIBuffer_RectTexture_HP_Bar");
 		return E_FAIL;
 	}
 
