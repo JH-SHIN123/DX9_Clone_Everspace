@@ -55,6 +55,9 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
 	//	return E_FAIL;
 
+	if (FAILED(Add_Layer_MissionUI(L"Layer_MissionUI", EQuest::Stage_1_Ring)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -557,8 +560,8 @@ HRESULT CStage::Add_Layer_MissionUI(const wstring & LayerTag, EQuest eQuest)
 
 	UI_DESC Desc;
 	Desc.tTransformDesc.vPosition = { 835.f, -50.f ,0.f };
-	Desc.tTransformDesc.vScale = { 250.f, 450.f,0.f };
-	Desc.wstrTexturePrototypeTag = L"Component_Texture_Mission_HUD";
+	Desc.tTransformDesc.vScale = { 201.f, 123.f,0.f };
+	Desc.wstrTexturePrototypeTag = L"Component_Texture_HUD_Mission";
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,

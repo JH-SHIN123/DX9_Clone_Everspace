@@ -24,7 +24,7 @@ HRESULT CQuestHandler::Set_Start_Quest(EQuest eQuest)
 		m_IsClear = false;
 		m_iCount = 0;
 		m_iCount_Max = (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Ring"))->size();
-		m_wstrQuestName = L"Mission Ring!";
+		m_wstrQuestName = L"고리를 통과하라";
 		break;
 	case Stage_1_Target:
 		break;

@@ -30,6 +30,11 @@ private:
 	_uint m_iMissionMaxCount = 0;
 	_bool m_IsClear = false;
 
+private:
+	CTransform* m_pTransform_Name = nullptr;
+	CTransform* m_pTransform_Deco = nullptr;
+
+	_float m_fPoint = 735.f;
 };
 
 #define __MISSIONUI_H__

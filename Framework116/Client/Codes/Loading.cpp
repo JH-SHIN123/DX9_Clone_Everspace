@@ -841,10 +841,30 @@ HRESULT CLoading::Ready_ScriptUI_Resources()
 	// 미션 텍스처
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
-		L"Component_Texture_Mission_HUD",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Mission/Mission_HUD.png"))))
+		L"Component_Texture_HUD_Mission",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Mission/HUD_Mission.png"))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_Portrait_Test");
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Mission_HUD");
+		return E_FAIL;
+	}
+
+	// 미션 텍스처1
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HUD_Mission_Name",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Mission/HUD_Mission_Name.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_Mission_Name");
+		return E_FAIL;
+	}
+
+	// 미션 텍스처2
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HUD_Mission_Deco",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Mission/HUD_Mission_Deco.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_Mission_Deco");
 		return E_FAIL;
 	}
 
