@@ -231,7 +231,6 @@ CGameObject * CStatusBoard::Clone(void * pArg/* = nullptr*/)
 
 void CStatusBoard::Free()
 {
-
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);

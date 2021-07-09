@@ -6,8 +6,6 @@
 CLobbyModel::CLobbyModel(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	
-	
 }
 
 CLobbyModel::CLobbyModel(const CLobbyModel & other)

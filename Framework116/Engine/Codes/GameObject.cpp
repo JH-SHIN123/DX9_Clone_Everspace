@@ -110,4 +110,5 @@ void CGameObject::Free()
 	m_Collides.clear();
 
 	Safe_Release(m_pDevice);
+
 }

@@ -38,7 +38,7 @@ public:
 	virtual void Free() override;
 public:
 	void Set_Scene(class CLobby* _pUI);
-	
+	class CLobby* Get_Scene() { return m_pLobby; }
 private:
 	//for KeyCheck
 	_float m_fDelayCheck = 0;

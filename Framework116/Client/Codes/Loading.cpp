@@ -149,7 +149,6 @@ unsigned CLoading::ThreadMain(void * pArg)
 	{
 	case ESceneType::Stage:
 		hr = pLoading->Ready_StageResources();
-
 		break;
 	case ESceneType::Lobby:
 		hr = pLoading->Ready_LobbyResources();
@@ -386,20 +385,12 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-	//if (FAILED(m_pManagement->Add_Component_Prototype(
-	//	EResourceType::Static,
-	//	L"Component_Mesh_Monster",
-	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/monster.X", L"../../Resources/Textures/Monster/"))))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Monster");
-	//	return E_FAIL;
-	//}
+	
 
 	Ready_HUD_Resources();
 	Ready_StageEffect();
 #pragma endregion
 
-	//CStreamHandler::Load_PassData_Object(L"../../Data/PrototypeData/TestSaveFile.object");
 	return S_OK;
 }
 

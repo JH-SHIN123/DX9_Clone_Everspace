@@ -39,7 +39,7 @@ private:
 	_bool m_bGotoNextScene = false;
 	_bool m_bGo_Straight = false;
 	_float m_fDelaySceneChange = 0.f;
-	class CLobby* m_pLobby;
+	class CLobby* m_pLobby = nullptr;
 };
 
 #define __LOBBYMODEL_H__

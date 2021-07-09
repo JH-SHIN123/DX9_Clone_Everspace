@@ -222,10 +222,10 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 				}
 				for (auto& pUI : *m_pManagement->Get_GameObjectList(L"Layer_UI"))
 				{
-					if (static_cast<CLobbyUI*>(pUI)->m_pLobby == nullptr)
+					if (!static_cast<CLobbyUI*>(pUI)->Get_Scene())
 					{
 						static_cast<CLobbyUI*>(pUI)->Set_Scene(m_pLobby);
-						Safe_AddRef(m_pLobby);
+						m_pLobby->AddRef();
 					}
 				}
 				m_pLobby->Set_SceneSelect(TRUE);
@@ -462,17 +462,12 @@ CGameObject* CLobbyUI::Clone(void* pArg)
 void CLobbyUI::Free()
 {
 	Safe_Release(m_pLobby);
-	Safe_Release(m_pVIBuffer);
-	Safe_Release(m_pTransform);
-	Safe_Release(m_pTexture);
-
-	CGameObject::Free();
+	CUI::Free();
 }
 
 void CLobbyUI::Set_Scene(CLobby * _pUI)
 {
 	m_pLobby = _pUI;
-	m_pLobby->AddRef();
 }
 
 
