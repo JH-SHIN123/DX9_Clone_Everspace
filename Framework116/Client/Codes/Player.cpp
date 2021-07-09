@@ -99,7 +99,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform Test
 	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
 	TransformDesc.fSpeedPerSec = 35.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
+	TransformDesc.fRotatePerSec = D3DXToRadian(120.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -581,7 +581,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	_float fSpeed = D3DXVec3Length(&vGap) * 0.15f;
 	D3DXVec3Normalize(&vGap, &vGap);
 
-	m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed * 0.6f);
+	m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed * 0.5f);
 	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed * 0.3f);
 	return _uint();
 }
@@ -747,8 +747,9 @@ _uint CPlayer::Make_Arrow()
 	m_pTransform->Get_TransformDesc().matWorld;
 	_float3 vPlayerLook = m_pTransform->Get_State(EState::Look);
 
-
 	m_listCheckMonsters = m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster");
+	if (nullptr == m_listCheckMonsters || m_listCheckMonsters->size() == 0) return NO_EVENT;
+
 	auto& iter = m_listCheckMonsters->begin();
 
 	for (; iter != m_listCheckMonsters->end(); ++iter)

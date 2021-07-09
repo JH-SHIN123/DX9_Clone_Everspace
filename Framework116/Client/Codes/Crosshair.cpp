@@ -58,7 +58,7 @@ HRESULT CCrosshair::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// 일단 보스만 
-	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() != 0)
+	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster") && m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size())
 	{
 		m_pBossMonsterCollide = (CCollideSphere*)m_pManagement->Get_Component(L"Layer_Boss_Monster", L"Com_CollideSphere");
 		Safe_AddRef(m_pBossMonsterCollide);
@@ -158,7 +158,7 @@ void CCrosshair::Free()
 
 _uint CCrosshair::Searching_Target(_float fDeltaTime)
 {
-	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() != 0)
+	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster") && m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() != 0)
 	{
 		RAY ray;
 		CPipeline::CreatePickingRay(ray, g_hWnd, WINCX, WINCY, m_pDevice);
