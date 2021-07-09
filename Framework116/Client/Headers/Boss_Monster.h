@@ -61,7 +61,6 @@ public:
 private:
 	CModelMesh*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
-	CCollideSphere* m_pCollide = nullptr;
 	CTransform* m_pTargetTransform = nullptr;
 
 

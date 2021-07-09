@@ -20,8 +20,8 @@ HRESULT CStage::Ready_Scene()
 
 	m_pManagement->StopSound(CSoundMgr::BGM);
 
-	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/stage1.map");
-	CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/guide.navi");
+	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/Map/tutorial.map");
+	CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/Navi/guide.navi");
 
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
