@@ -164,6 +164,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Headers\AimAssist.h" />
+    <ClInclude Include="..\Headers\AimAssist2.h" />
     <ClInclude Include="..\Headers\AlertArrow.h" />
     <ClInclude Include="..\Headers\BackUI.h" />
     <ClInclude Include="..\Headers\HP_Bar.h" />
@@ -205,7 +207,6 @@
     <ClInclude Include="..\Headers\Planet.h" />
     <ClInclude Include="..\Headers\Player.h" />
     <ClInclude Include="..\Headers\Player_Bullet.h" />
-    <ClInclude Include="..\Headers\Player_Lazer.h" />
     <ClInclude Include="..\Headers\Player_Missile.h" />
     <ClInclude Include="..\Headers\Product.h" />
     <ClInclude Include="..\Headers\QuestHandler.h" />
@@ -226,6 +227,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Codes\AimAssist.cpp" />
+    <ClCompile Include="..\Codes\AimAssist2.cpp" />
     <ClCompile Include="..\Codes\AlertArrow.cpp" />
     <ClCompile Include="..\Codes\BackUI.cpp" />
     <ClCompile Include="..\Codes\HP_Bar.cpp" />
@@ -265,7 +268,6 @@
     <ClCompile Include="..\Codes\Planet.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
     <ClCompile Include="..\Codes\Player_Bullet.cpp" />
-    <ClCompile Include="..\Codes\Player_Lazer.cpp" />
     <ClCompile Include="..\Codes\Player_Missile.cpp" />
     <ClCompile Include="..\Codes\Product.cpp" />
     <ClCompile Include="..\Codes\QuestHandler.cpp" />

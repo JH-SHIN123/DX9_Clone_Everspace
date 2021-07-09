@@ -219,7 +219,7 @@ _uint CPlayer_Missile::Render_GameObject()
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();

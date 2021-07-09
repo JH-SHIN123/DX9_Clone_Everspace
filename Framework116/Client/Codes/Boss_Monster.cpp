@@ -174,7 +174,7 @@ _uint CBoss_Monster::Render_GameObject()
 	m_pCube->Render_VIBuffer();
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();

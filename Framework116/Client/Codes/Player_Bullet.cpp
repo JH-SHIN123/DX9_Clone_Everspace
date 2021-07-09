@@ -187,7 +187,7 @@ _uint CPlayer_Bullet::Render_GameObject()
 
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();
