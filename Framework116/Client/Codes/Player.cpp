@@ -99,7 +99,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform Test
 	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
 	TransformDesc.fSpeedPerSec = 35.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
+	TransformDesc.fRotatePerSec = D3DXToRadian(120.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -546,7 +546,6 @@ _uint CPlayer::Movement(_float fDeltaTime)
 {
 	if (m_IsScript == true || m_IsCameraMove) // 대화중이거나 카메라가 움직이는중!
 		return 0;
-		
 
 	// 화면 가둬줄 가상의 네모
 	POINT pt;
@@ -571,7 +570,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	rc.right = p2.x;
 	rc.bottom = p2.y;
 
-	//ClipCursor(&rc);
+	ClipCursor(&rc);
 	
 	_float3 vMouse = { (_float)pt.x, (_float)pt.y, 0.f };
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
@@ -581,7 +580,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	_float fSpeed = D3DXVec3Length(&vGap) * 0.15f;
 	D3DXVec3Normalize(&vGap, &vGap);
 
-	m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed * 0.6f);
+	m_pTransform->RotateX(D3DXToRadian(vGap.y) * fDeltaTime * fSpeed * 0.5f);
 	m_pTransform->RotateY(D3DXToRadian(vGap.x) * fDeltaTime * fSpeed * 0.3f);
 	return _uint();
 }
@@ -747,8 +746,9 @@ _uint CPlayer::Make_Arrow()
 	m_pTransform->Get_TransformDesc().matWorld;
 	_float3 vPlayerLook = m_pTransform->Get_State(EState::Look);
 
-
 	m_listCheckMonsters = m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster");
+	if (nullptr == m_listCheckMonsters || m_listCheckMonsters->size() == 0) return NO_EVENT;
+
 	auto& iter = m_listCheckMonsters->begin();
 
 	for (; iter != m_listCheckMonsters->end(); ++iter)

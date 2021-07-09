@@ -40,23 +40,20 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
-	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
-	//	return E_FAIL;
-
-	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
-		return E_FAIL;
-
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Planet(L"Layer_Meteor")))
+	if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
 		return E_FAIL;
+
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
+
+	//if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
+	//	return E_FAIL;
 
 	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
 	//	return E_FAIL;
-
-	if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -66,7 +63,6 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 	CScene::Update_Scene(fDeltaTime);
 
 	//Stage_Flow(fDeltaTime);
-
 
 	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
 	
@@ -364,25 +360,6 @@ HRESULT CStage::Add_Layer_TargetMonster(const wstring & LayerTag)
 	return S_OK;
 }
 
-HRESULT CStage::Add_Layer_Planet(const wstring & LayerTag)
-{
-	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
-	//	EResourceType::NonStatic,
-	//	L"GameObject_Planet",
-	//	LayerTag)))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
-	//	return E_FAIL;
-	//}
-
-	return S_OK;
-}
-
-HRESULT CStage::Add_Layer_Meteor(const wstring & LayerTag)
-{
-	return E_NOTIMPL;
-}
-
 CStage * CStage::Create(LPDIRECT3DDEVICE9 pDevice)
 {
 	if (nullptr == pDevice)
@@ -549,9 +526,6 @@ HRESULT CStage::Add_Layer_TutorialUI(const wstring & LayerTag)
 	//HUD_TutorialUI.wstrTexturePrototypeTag = L"Component_Texture_Tutorial_Nevi";
 	//if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_TutorialUI)))
 	//	return E_FAIL;
-
-
-
 
 	return S_OK;
 }
