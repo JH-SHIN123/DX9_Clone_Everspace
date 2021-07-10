@@ -10,6 +10,7 @@
 #include "AlertArrow.h"
 #include "ScriptUI.h"
 #include "HP_Bar.h"
+#include "Loading.h"
 
 CMainApp::CMainApp() //glhf
 	: m_pManagement(CManagement::Get_Instance())

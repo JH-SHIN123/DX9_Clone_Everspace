@@ -181,8 +181,6 @@ HRESULT CLoading::Ready_StageResources()
 	m_pManagement->Clear_NonStatic_Resources();
 
 #pragma region GameObjects
-
-
 	/* For.GameObject_Monster */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -287,9 +285,6 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-#pragma endregion
-
-#pragma region Components
 	/* For.GameObject_Stamina_Bar */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -309,8 +304,6 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
 		return E_FAIL;
 	}
-
-
 #pragma endregion
 
 #pragma region Components
@@ -483,10 +476,46 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Boss",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/boss.X", L"../../Resources/Textures/Boss/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Boss");
+		return E_FAIL;
+	}
+
 	//if (FAILED(m_pManagement->Add_Component_Prototype(
 	//	EResourceType::Static,
-	//	L"Component_Mesh_Monster",
-	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/monster.X", L"../../Resources/Textures/Monster/"))))
+	//	L"Component_Mesh_Drone",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/drone.X", L"../../Resources/Textures/Enemy/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Monster");
+	//	return E_FAIL;
+	//}
+
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Enemy1",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/enemy1.X", L"../../Resources/Textures/Enemy/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Monster");
+	//	return E_FAIL;
+	//}
+
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Enemy2",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/enemy2.X", L"../../Resources/Textures/Enemy/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Monster");
+	//	return E_FAIL;
+	//}
+
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Delivery",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
 	//{
 	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Monster");
 	//	return E_FAIL;
@@ -913,10 +942,30 @@ HRESULT CLoading::Ready_ScriptUI_Resources()
 	// 미션 텍스처
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
-		L"Component_Texture_Mission_HUD",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Mission/Mission_HUD.png"))))
+		L"Component_Texture_HUD_Mission",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Mission/HUD_Mission.png"))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_Portrait_Test");
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Mission_HUD");
+		return E_FAIL;
+	}
+
+	// 미션 텍스처1
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HUD_Mission_Name",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Mission/HUD_Mission_Name.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_Mission_Name");
+		return E_FAIL;
+	}
+
+	// 미션 텍스처2
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_HUD_Mission_Deco",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Mission/HUD_Mission_Deco.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_HUD_Mission_Deco");
 		return E_FAIL;
 	}
 
