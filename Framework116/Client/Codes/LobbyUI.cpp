@@ -110,6 +110,8 @@ _uint CLobbyUI::LateUpdate_GameObject(_float fDeltaTime)
 			m_pProduct->Set_ShowProduct(TRUE);
 		}
 	}
+	
+
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::UI, this)))
 		return UPDATE_ERROR;
 	
@@ -124,8 +126,8 @@ _uint CLobbyUI::Render_GameObject()
 		m_fClicked += m_pManagement->Get_DeltaTime();
 		if (m_fClicked >= 0.1f)
 			m_bClicked = false;
-		return 0;
-
+		if(m_wstrTexturePrototypeTag != L"Component_Texture_SceneSelect")
+			return 0;
 	}
 	if (m_wstrTexturePrototypeTag != L"Component_Texture_X")
 	{
@@ -148,15 +150,28 @@ _uint CLobbyUI::Render_GameObject()
 	m_pVIBuffer->Render_VIBuffer();
 	/////////////////////////////////////////////////////////////////
 
+
 	if (m_wstrTexturePrototypeTag == L"Component_Texture_SceneSelect")
 	{
+		_float4x4 matView;
+		D3DXMatrixIdentity(&matView);
+		matView._11 = transformDesc.vScale.x + 100.f;
+		matView._22 = transformDesc.vScale.y + 100.f;
+		matView._41 = transformDesc.vPosition.x;
+		matView._42 = transformDesc.vPosition.y;
+		m_pDevice->SetTransform(D3DTS_VIEW, &matView);
+		m_pTexture->Set_Texture(5);
+		m_pVIBuffer->Render_VIBuffer();
+		
 		_float3 vScale = { 1000.f,600.f,0.f };
 		if (m_pTransform->Get_TransformDesc().vScale.x >= vScale.x
-			&&m_pTransform->Get_TransformDesc().vScale.y >= vScale.y)
+			&&m_pTransform->Get_TransformDesc().vScale.y >= vScale
+			.y)
 		{
 			Render_Cursor();
 			Render_Nodes();
 		}
+		
 	}
 
 	if (m_bShowModelIcon)
@@ -263,6 +278,8 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 			}
 			else if (m_wstrTexturePrototypeTag == L"Component_Texture_achievement")
 			{
+				if (m_pLobby->Get_SceneSelect())
+					return;
 				UI_DESC UiDesc;
 				_float PosX = 0.f;
 				_float PosY = 0.f;
