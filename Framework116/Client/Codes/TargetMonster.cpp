@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\TargetMonster.h"
 #include "MaterialHandler.h"
+#include "QuestHandler.h"
 
 CTargetMonster::CTargetMonster(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -101,6 +102,7 @@ HRESULT CTargetMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 	// HP ¼¼ÆÃ
 	m_fHp = 100.f;
 	m_fFullHp = m_fHp;
+	m_IsDead = false;
 
 	return S_OK;
 }
@@ -126,10 +128,10 @@ _uint CTargetMonster::LateUpdate_GameObject(_float fDeltaTime)
 
 	Collide_Check(fDeltaTime);
 
-	if (m_fHp <= 0)
+	if (m_IsDead == true)
 	{
 		CEffectHandler::Add_Layer_Effect_Particle_Yellow(m_pTransform->Get_State(EState::Position));
-
+		CQuestHandler::Get_Instance()->Set_Counting();
 		return DEAD_OBJECT;
 	}
 
@@ -174,7 +176,7 @@ _bool CTargetMonster::Collide_Check(_float fDeltaTime)
 
 		m_fColTime += fDeltaTime; 
 
-		if (m_fColTime >= 0.5f)
+		if (m_fColTime >= 0.01f)
 		{
 			m_fColTime = 0.f;
 			m_IsCollide = false;
@@ -182,6 +184,8 @@ _bool CTargetMonster::Collide_Check(_float fDeltaTime)
 
 	}
 
+	if (m_fHp <= 0)
+		m_IsDead = true;
 
 
 	return _bool();

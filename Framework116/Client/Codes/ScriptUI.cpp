@@ -157,11 +157,17 @@ _uint CScriptUI::LateUpdate_GameObject(_float fDeltaTime)
 		case EScript::Tutorial:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Stage1_Ring);
 			break;
+
 		case EScript::Tutorial_Ring_Clear:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::End);
 			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
-			CQuestHandler::Get_Instance()->Set_Start_Quest(EQuest::Stage_1_Target);
 			break;
+
+		case EScript::Tutorial_Target_Clear:
+			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::End);
+			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
+			break;
+
 		default:
 			break;
 		}
@@ -511,6 +517,14 @@ _uint CScriptUI::Set_Script(EScript eScript)
 	m_eScriptFlow = EScriptFlow::BlackBar_Start;
 
 	return _uint();
+}
+
+_bool CScriptUI::Get_IsScriptEnd()
+{
+	if(m_eScriptFlow == EScriptFlow::Flow_End)
+		return true;
+
+	return false;
 }
 
 CScriptUI * CScriptUI::Create(LPDIRECT3DDEVICE9 pDevice)

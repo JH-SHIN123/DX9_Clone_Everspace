@@ -6,6 +6,7 @@
 #include "MissionUI.h"
 #include "MainCam.h"
 #include "Ring.h"
+#include "ScriptUI.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
@@ -133,21 +134,28 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 			if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Tutorial_Ring_Clear)))
 				return E_FAIL;
 			++m_iFlowCount;
-
 		}
 
 		return S_OK;
 	case 3:
 	{
-		if (CQuestHandler::Get_Instance()->Get_IsClear())
+		_bool Check = (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI"))->empty();
+		if (Check == true)
 		{
-			if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Tutorial_Ring_Clear)))
-				return E_FAIL;
+			CQuestHandler::Get_Instance()->Set_Start_Quest(EQuest::Stage_1_Target);
 			++m_iFlowCount;
 		}
 	}
 		return S_OK;
-
+	case 4:
+	{
+		if (CQuestHandler::Get_Instance()->Get_IsClear())
+		{
+			if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Tutorial_Target_Clear)))
+				return E_FAIL;
+			++m_iFlowCount;
+		}
+	}
 	default:
 		return E_FAIL;
 	}

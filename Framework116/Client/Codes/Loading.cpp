@@ -683,7 +683,7 @@ HRESULT CLoading::Ready_StageEffect()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Ring_Pass");
 		return E_FAIL;
 	}
-
+	
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_Texture_Particle_Yellow",

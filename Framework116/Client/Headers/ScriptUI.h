@@ -40,6 +40,7 @@ public:
 public:
 	_uint Set_NextScript();
 	_uint Set_Script(EScript eScript);
+	_bool Get_IsScriptEnd();
 
 private: //대화 순서
 	void BlackBar_Start(_float fDeltaTime);
