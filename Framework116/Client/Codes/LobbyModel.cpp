@@ -77,6 +77,7 @@ _uint CLobbyModel::Update_GameObject(_float fDeltaTime)
 		m_pTransform->Update_Transform();
 	}
 	else
+
 	{
 		if (!m_bSetCreateCancelButton)
 		{
@@ -168,12 +169,7 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 		_float fAngle = acosf(D3DXVec3Dot(&vTargetDir, &vDir));
 		m_pTransform->RotateY(fDeltaTime*D3DXToRadian(fAngle)*20.f);
 		
-<<<<<<< HEAD
 		if (0.1>= fAngle)
-=======
-
-		if (0.05>= fAngle)
->>>>>>> main
 		{
 			m_fSoundTiming += fDeltaTime;
 			m_pManagement->PlaySound(L"Jump_Gate.ogg", CSoundMgr::LOBBY_EFFECT);
@@ -185,11 +181,8 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 			
 			fAngle = D3DXVec3Dot(&vDir, &vTargetDir);
 			m_pTransform->RotateX(fDeltaTime*fAngle);
-<<<<<<< HEAD
-			if (0.1 >= fAngle)
-=======
-			if (0.005 >= fAngle && m_fSoundTiming >= 9.f)
->>>>>>> main
+		
+			if (0.1 >= fAngle&&m_fSoundTiming >= 7.f)
 			{
 				m_bGo_Straight = TRUE;
 			}

@@ -47,7 +47,7 @@ HRESULT CProduct::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(
+	/*if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
 		L"Component_Texture_Ring",
 		L"Com_Texture",
@@ -55,7 +55,7 @@ HRESULT CProduct::Ready_GameObject(void * pArg/* = nullptr*/)
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
 		return E_FAIL;
-	}
+	}*/
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
 		L"Component_Texture_Product",
@@ -153,13 +153,12 @@ _uint CProduct::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
+	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
+	m_pDevice->SetMaterial(&m_tMaterial);
+	m_pGeoMesh->Render_Mesh();
 	if (m_bShowProduct)
 		Render_Product();
 
-	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pTexture->Set_Texture(0);
-	m_pDevice->SetMaterial(&m_tMaterial);
-	m_pGeoMesh->Render_Mesh();
 
 #ifdef _DEBUG // Render Collide
 	
@@ -227,6 +226,7 @@ void CProduct::Render_Product()
 {
 	
 	DWORD dwRenderState;
+	
 	m_pDevice->GetRenderState(D3DRS_CULLMODE,&dwRenderState);
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_matProduct);

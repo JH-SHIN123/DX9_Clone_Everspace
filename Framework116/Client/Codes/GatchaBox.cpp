@@ -157,7 +157,7 @@ _bool CGatchaBox::CheckPicking()
 				, L"Layer_UI", &UiDesc)))
 			{
 				PRINT_LOG(L"Error", L"Add_GameObject_InLayerTool_Failed");
-				return E_FAIL;
+				return false;
 			}
 			for (auto& pDst : *m_pManagement->Get_GameObjectList(L"Layer_UI"))
 			{

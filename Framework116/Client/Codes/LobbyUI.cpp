@@ -69,10 +69,6 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 	}
 	CUI::Update_GameObject(fDeltaTime);
 	Update_Bounds();
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 	Update_SceneSelect(fDeltaTime);
 
 	Check_Picking();
@@ -154,7 +150,7 @@ _uint CLobbyUI::Render_GameObject()
 	m_pVIBuffer->Render_VIBuffer();
 	/////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
+
 
 	if (m_wstrTexturePrototypeTag == L"Component_Texture_SceneSelect")
 	{
@@ -176,13 +172,7 @@ _uint CLobbyUI::Render_GameObject()
 			Render_Cursor();
 			Render_Nodes();
 		}
-		
-=======
-	if (m_wstrTexturePrototypeTag == L"Component_Texture_SceneSelect")
-	{
-		Render_Cursor();
-		Render_Nodes();
->>>>>>> main
+
 	}
 
 	if (m_bShowModelIcon)
@@ -289,7 +279,7 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 			}
 			else if (m_wstrTexturePrototypeTag == L"Component_Texture_achievement")
 			{
-<<<<<<< HEAD
+
 				if (m_pLobby->Get_SceneSelect())
 					return;
 				UI_DESC UiDesc;
@@ -297,14 +287,8 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 				_float PosY = 0.f;
 				_float ScaleX = 0;
 				_float ScaleY = 0;
-=======
-				//m_pLobby->Set_GotoNextScene(TRUE);
-				UI_DESC UiDesc;
-				_float PosX = 0.f;
-				_float PosY = 0.f;
-				_float ScaleX = 1000;
-				_float ScaleY = 600;
->>>>>>> main
+
+
 				UiDesc.tTransformDesc.vPosition = { PosX,PosY,0 };
 				UiDesc.tTransformDesc.vScale = { ScaleX,ScaleY,0.f };
 				UiDesc.wstrTexturePrototypeTag = L"Component_Texture_SceneSelect";
@@ -317,7 +301,6 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 				}
 				for (auto& pUI : *m_pManagement->Get_GameObjectList(L"Layer_UI"))
 				{
-<<<<<<< HEAD
 					if (!static_cast<CLobbyUI*>(pUI)->Get_Scene())
 					{
 						static_cast<CLobbyUI*>(pUI)->Set_Scene(m_pLobby);
@@ -336,20 +319,8 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 
 			}
 			
-=======
-					if (static_cast<CLobbyUI*>(pUI)->m_pLobby == nullptr)
-					{
-						static_cast<CLobbyUI*>(pUI)->Set_Scene(m_pLobby);
-						Safe_AddRef(m_pLobby);
-					}
-				}
-				m_pLobby->Set_SceneSelect(TRUE);
-			}
->>>>>>> main
 		}
 	}
-
-	
 }
 
 void CLobbyUI::Set_Text()
@@ -469,7 +440,7 @@ void CLobbyUI::ChangeModelIcon()
 	}
 }
 
-<<<<<<< HEAD
+
 void CLobbyUI::Render_ItemMean()
 {
 	TCHAR str[32];
@@ -485,8 +456,8 @@ void CLobbyUI::Render_ItemMean()
 	swprintf_s(str, L"Atk Buff : %d", m_pLobby->GetAtkBuffItemCount());
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
-	rc.left = vPos.x + i*vScale.x;
-	rc.top = vPos.y - vScale.y;
+	rc.left = (LONG)(vPos.x + i*vScale.x);
+	rc.top = (LONG)(vPos.y - vScale.y);
 	m_pManagement->Get_Font()->DrawText(NULL
 		, str, -1
 		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
@@ -494,8 +465,8 @@ void CLobbyUI::Render_ItemMean()
 	swprintf_s(str, L"Def Buff : %d", m_pLobby->GetDefBuffItemCount());
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
-	rc.left = vPos.x + i*vScale.x;
-	rc.top = vPos.y - vScale.y;
+	rc.left = (LONG)(vPos.x + i*vScale.x);
+	rc.top = (LONG)(vPos.y - vScale.y);
 	m_pManagement->Get_Font()->DrawText(NULL
 		, str, -1
 		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
@@ -504,8 +475,8 @@ void CLobbyUI::Render_ItemMean()
 	swprintf_s(str, L"Hp Buff : %d", m_pLobby->GetHpBuffItemCount());
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
-	rc.left = vPos.x + i*vScale.x;
-	rc.top = vPos.y - vScale.y;
+	rc.left = (LONG)(vPos.x + i*vScale.x);
+	rc.top = (LONG)(vPos.y - vScale.y);
 	m_pManagement->Get_Font()->DrawText(NULL
 		, str, -1
 		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
@@ -513,8 +484,8 @@ void CLobbyUI::Render_ItemMean()
 	swprintf_s(str, L"Energy Buff : %d", m_pLobby->GetEnergyBuffItemCount());
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
-	rc.left = vPos.x + i*vScale.x;
-	rc.top = vPos.y - vScale.y;
+	rc.left = (LONG)(vPos.x + i*vScale.x);
+	rc.top = (LONG)(vPos.y - vScale.y);
 	m_pManagement->Get_Font()->DrawText(NULL
 		, str, -1
 		, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
@@ -523,8 +494,7 @@ void CLobbyUI::Render_ItemMean()
 
 }
 
-=======
->>>>>>> main
+
 void CLobbyUI::Render_Cursor()
 {
 	_float4x4 matView;

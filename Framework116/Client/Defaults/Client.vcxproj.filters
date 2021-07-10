@@ -393,9 +393,6 @@
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="..\Headers\HP_Bar.h" />
-=======
     <ClInclude Include="..\Headers\BackUI.h">
       <Filter>02.GameObject\09.HUD\06.ScriptUI\00.BackUI</Filter>
     </ClInclude>
@@ -405,7 +402,6 @@
     <ClInclude Include="..\Headers\HP_Bar.h">
       <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClInclude>
->>>>>>> main
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -567,9 +563,6 @@
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="..\Codes\HP_Bar.cpp" />
-=======
     <ClCompile Include="..\Codes\BackUI.cpp">
       <Filter>02.GameObject\09.HUD\06.ScriptUI\00.BackUI</Filter>
     </ClCompile>
@@ -579,7 +572,6 @@
     <ClCompile Include="..\Codes\HP_Bar.cpp">
       <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClCompile>
->>>>>>> main
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

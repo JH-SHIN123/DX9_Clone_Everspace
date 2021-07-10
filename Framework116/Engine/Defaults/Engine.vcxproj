@@ -105,10 +105,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>fmodex_vc.lib;d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
-<<<<<<< HEAD
       <AdditionalLibraryDirectories>C:\Users\cjh\Desktop\새 폴더 %282%29\Framework116\Engine\Bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-=======
->>>>>>> main
     </Link>
     <PostBuildEvent>
       <Command>xcopy			/y				..\Headers\*.h		..\..\Reference\Headers\
@@ -154,10 +151,7 @@ xcopy			/y				..\Bin\*.dll		..\..\Tool\Bin\</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>fmodex_vc.lib;d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
-<<<<<<< HEAD
       <AdditionalLibraryDirectories>C:\Users\cjh\Desktop\새 폴더 %282%29\Framework116\Engine\Bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-=======
->>>>>>> main
     </Link>
     <PostBuildEvent>
       <Command>xcopy			/y				..\Headers\*.h		..\..\Reference\Headers\
