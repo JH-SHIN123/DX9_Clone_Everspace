@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "UI.h"
+#include "BackUI.h"
 
 USING(Engine)
 
@@ -75,6 +76,7 @@ private:
 private:
 	wstring m_wstrTexturePrototypeTag = L"";
 	TRANSFORM_DESC m_tTransformDesc;
+	wstring m_wstrTextureTag_Portrait = L"";
 	RECT m_tUIBounds;
 
 
@@ -92,7 +94,7 @@ private:
 
 	//Sound
 	_bool m_bSoundOnce = false;
-
+	EPortraitNumber m_ePortrait = EPortraitNumber::End;
 
 
 };

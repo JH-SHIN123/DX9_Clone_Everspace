@@ -38,8 +38,6 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 		}
 	}
 
-
-
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -88,7 +86,7 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	HUD_DESC.tTransformDesc.vPosition = { -700.f, -700.f, 0.f };
 	HUD_DESC.tTransformDesc.vScale = { 240.f, 320.f, 0.f };
-	HUD_DESC.wstrTexturePrototypeTag = L"Component_Texture_Player_Portrait";
+	HUD_DESC.wstrTexturePrototypeTag = L"Component_Texture_Portrait";
 	if (FAILED(Add_Layer_UI(L"Layer_HUD_Portrait", &HUD_DESC)))
 		return E_FAIL;
 
@@ -134,6 +132,8 @@ _uint CScriptUI::Update_GameObject(_float fDeltaTime)
 		break;
 	}
 
+	
+	((CBackUI*)m_pManagement->Get_GameObject(L"Layer_HUD_Portrait"))->Change_TextureNumber(m_ePortrait);
 
 	return m_pTransform->Update_Transform();
 }
@@ -192,8 +192,8 @@ _uint CScriptUI::Render_GameObject()
 		, &m_tUIBounds, DT_CENTER, D3DXCOLOR(200, 200, 200, 255));
 
 	GetClientRect(g_hWnd, &m_tUIBounds);
-	m_tUIBounds.top += 950;
-	m_tUIBounds.right -= 1200;
+	m_tUIBounds.top += 930;
+	m_tUIBounds.right -= 1400;
 	m_pManagement->Get_Font()->DrawText(NULL
 		, m_wstrName.c_str(), -1
 		, &m_tUIBounds, DT_CENTER, D3DXCOLOR(200, 200, 200, 255));
@@ -228,34 +228,34 @@ void CScriptUI::Script_Tutorial()
 	switch (m_dwScriptNext)
 	{
 	case 0:
-		m_IsPlayerPortrait = false;
+		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"오, 자네가 이번에 새로 들어왔다던 신병인가?";
 		break;
 	case 1:
-		m_IsPlayerPortrait = false;
+		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"자네가 임무를 수행 하기 전 거쳐야 할 훈련이 하나 있지";
 		break;
 	case 2:
-		m_IsPlayerPortrait = false;
+		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"오늘의 훈련을 진행 할 헥터 도일 사령관이라고 하네, 잘 부탁하네 제군";
 		break;
 	case 3:
-		m_IsPlayerPortrait = false;
+		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"자 우선 고리를 통과해 보겠나?";
 		break;
 	case 4:
-		m_IsPlayerPortrait = false;
-		m_wstrName = L"사령관 헥터 도일";
-		m_wstrScript = L"WASD 방향키로 조종이 가능하지";
-		break;
-	case 5:
-		m_IsPlayerPortrait = false;
+		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"그 전에 주위를 한번 둘러보게나";
+		break;
+	case 5:
+		m_ePortrait = EPortraitNumber::End;
+		m_wstrName = L"";
+		m_wstrScript = L"(WASD 키를 이용하여 움직일 수 있습니다.)";
 		break;
 	default:
 		m_wstrName = L"";
@@ -271,14 +271,34 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 	switch (m_dwScriptNext)
 	{
 	case 0:
-		m_IsPlayerPortrait = false;
+		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"아니 자네 경력있는 신입 뭐 그런건가?";
 		break;
 	case 1:
-		m_IsPlayerPortrait = false;
+		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"비행 솜씨가 꽤 뛰어나군 그래!";
+		break;
+	case 2:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrName = L"잭 한마";
+		m_wstrScript = L"하하하 과찬이십니다.";
+		break;
+	case 3:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrName = L"잭 한마";
+		m_wstrScript = L"주제를 넘을지 모르겠지만, 다음 임무는 무엇입니까?";
+		break;
+	case 4:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrName = L"사령관 헥터 도일";
+		m_wstrScript = L"이번에는 과녁을 쏘면 된다네 그리 어렵진 않을걸세";
+		break;
+	case 5:
+		m_ePortrait = EPortraitNumber::End;
+		m_wstrName = L"";
+		m_wstrScript = L"(마우스 좌클릭을 이용하여 무기를 발사 할 수 있습니다.)";
 		break;
 	default:
 		m_wstrName = L"";

@@ -55,8 +55,8 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
 	//	return E_FAIL;
 
-	if (FAILED(Add_Layer_MissionUI(L"Layer_MissionUI", EQuest::Stage_1_Ring)))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_MissionUI(L"Layer_MissionUI", EQuest::Stage_1_Ring)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -67,7 +67,7 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 
 	CQuestHandler::Get_Instance()->Update_Quest();
 	
-	//Stage_Flow(fDeltaTime);
+	Stage_Flow(fDeltaTime);
 
 	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
 	

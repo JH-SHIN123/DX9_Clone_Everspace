@@ -850,16 +850,8 @@ HRESULT CLoading::Ready_ScriptUI_Resources()
 	// ÃÊ»óÈ­
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
-		L"Component_Texture_Player_Portrait",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Portrait/Player_Portrait.png"))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_Portrait_Test");
-		return E_FAIL;
-	}
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"Component_Texture_Admiral_Protrait",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Portrait/Admiral_Protrait.png"))))
+		L"Component_Texture_Portrait",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Portrait/Portrait%d.png",3))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_Portrait_Test");
 		return E_FAIL;
