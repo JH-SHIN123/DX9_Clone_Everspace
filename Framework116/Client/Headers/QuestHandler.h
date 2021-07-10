@@ -34,6 +34,7 @@ public:
 
 public: // 계속 돌려줘야함
 	_bool Update_Quest();
+	void Release_Ref();
 
 private:
 	void Update_Quest_Stage1_Ring();

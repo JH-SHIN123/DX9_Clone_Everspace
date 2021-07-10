@@ -11,13 +11,6 @@ CQuestHandler::CQuestHandler()
 
 CQuestHandler::~CQuestHandler()
 {
-	for (auto& pObject : m_listTargetObject)
-	{
-		Safe_Release(pObject);
-	}
-	m_listTargetObject.clear();
-
-	Safe_Release(m_pPlayerTransform);
 }
 
 HRESULT CQuestHandler::Set_Start_Quest(EQuest eQuest)
@@ -25,13 +18,7 @@ HRESULT CQuestHandler::Set_Start_Quest(EQuest eQuest)
 	if (m_IsClear = false)
 		return E_FAIL;
 
-	for (auto& pObject : m_listTargetObject)
-	{
-		Safe_Release(pObject);
-	}
-	m_listTargetObject.clear();
-
-	Safe_Release(m_pPlayerTransform);
+	Release_Ref();
 
 	m_eNowQuest = eQuest;
 
@@ -118,6 +105,23 @@ _bool CQuestHandler::Update_Quest()
 	}
 
 	return m_IsClear;
+}
+
+void CQuestHandler::Release_Ref()
+{
+	if (m_listTargetObject.empty() == false)
+	{
+		for (auto& pObject : m_listTargetObject)
+		{
+			Safe_Release(pObject);
+		}
+		m_listTargetObject.clear();
+	}
+
+
+	if (m_pPlayerTransform != nullptr)
+		Safe_Release(m_pPlayerTransform);
+
 }
 
 void CQuestHandler::Update_Quest_Stage1_Ring()
