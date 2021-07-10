@@ -59,6 +59,11 @@ _uint CMainCam::Update_GameObject(_float fDeltaTime)
 
 	else
 	{
+		if (GetAsyncKeyState('C') & 0x8000)
+		{
+			m_byMoveCount = CAMERA_SKIP;
+		}
+
 		Check_SoloMoveMode(fDeltaTime);
 	}
 
@@ -73,12 +78,24 @@ _uint CMainCam::LateUpdate_GameObject(_float fDeltaTime)
 
 
 
+	if (m_eSoloMoveMode < ESoloMoveMode::Lock)
+	{
+		RECT m_tUIBounds;
+		GetClientRect(g_hWnd, &m_tUIBounds);
+		m_tUIBounds.top += 800;
+		m_tUIBounds.left += 1670;
+		m_pManagement->Get_Font()->DrawText(NULL
+			, L"C 키를 눌러 스킵", -1
+			, &m_tUIBounds, DT_CENTER, D3DXCOLOR(100, 100, 100, 255));
+	}
+
 	return _uint();
 }
 
 _uint CMainCam::Render_GameObject()
 {
 	CCamera::Render_GameObject();
+
 
 	return _uint();
 }

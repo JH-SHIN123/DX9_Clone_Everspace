@@ -47,6 +47,9 @@ void CController::Update_Controller()
         m_dwKey |= KEY_P;
 	if (GetAsyncKeyState('F') & 0x8000)
 		m_dwKey |= KEY_F;
+	if (GetAsyncKeyState('C') & 0x8000)
+		m_dwKey |= KEY_C;
+
 }
 
 bool CController::Key_Up(DWORD dwKey)
