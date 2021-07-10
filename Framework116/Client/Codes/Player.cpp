@@ -532,18 +532,21 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		{
 			if (!m_IsMissile)
 			{
-				if (FAILED(m_pManagement->Add_GameObject_InLayer(
-					EResourceType::Static,
-					L"GameObject_Player_Missile",
-					L"Layer_Player_Missile")))
+				for (int i = 0; i < 6; ++i)
 				{
-					PRINT_LOG(L"Error", L"Failed To Add Player_Lazer In Layer");
-					return;
+					if (FAILED(m_pManagement->Add_GameObject_InLayer(
+						EResourceType::Static,
+						L"GameObject_Player_Missile",
+						L"Layer_Player_Missile")))
+					{
+						PRINT_LOG(L"Error", L"Failed To Add Player_Lazer In Layer");
+						return;
+					}
 				}
-				m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
-				m_pManagement->PlaySound(L"Launch_Missile.ogg", CSoundMgr::PLAYER_WEAPON);
+					m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
+					m_pManagement->PlaySound(L"Launch_Missile.ogg", CSoundMgr::PLAYER_WEAPON);
 			}
-			if (m_pManagement->Get_GameObjectList(L"Layer_Player_Missile")->size() == 1)
+			if (m_pManagement->Get_GameObjectList(L"Layer_Player_Missile")->size() == 6)
 				m_IsMissile = true;
 			else
 				m_IsMissile = false;
