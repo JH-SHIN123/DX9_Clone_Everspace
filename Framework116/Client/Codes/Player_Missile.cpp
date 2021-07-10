@@ -133,6 +133,9 @@ HRESULT CPlayer_Missile::Ready_GameObject(void * pArg/* = nullptr*/)
 	CEffectHandler::Add_Layer_Effect_Missile_Head(this, &m_pHeadParticle);
 	CEffectHandler::Add_Layer_Effect_Missile_Smoke(this, &m_pBulletParticle);
 
+	vDir = (_float3*)pArg;
+	
+
 	return S_OK;
 }
 
@@ -227,26 +230,8 @@ _uint CPlayer_Missile::Render_GameObject()
 
 _uint CPlayer_Missile::Movement(_float fDeltaTime)
 {
-	_int iRand = rand() % 6;
-	switch (iRand)
-	{
-	case 0:
-		m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime);
-		break;
-	case 1:
-		m_pTransform->Go_Side(fDeltaTime);
-		break;
-	case 2:
-		m_pTransform->Go_Up(fDeltaTime);
-		break;
-	case 3:
-		m_pTransform->Go_Up(-fDeltaTime);
-		break;
-	case 4:
-		m_pTransform->Go_Side(fDeltaTime);
-		break;		
-	}
-	/*m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime);*/
+
+	m_pTransform->Go_Dir(*vDir, fDeltaTime);
 	return _uint();
 }
 

@@ -532,12 +532,27 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		{
 			if (!m_IsMissile)
 			{
-				for (int i = 0; i < 6; ++i)
+				for (int i = 0; i < 4; ++i)
 				{
+					switch (i)
+					{
+					case 0:
+						vMissileDir = {m_pTransform->Get_State(EState::Right)};
+						break;
+					case 1:
+						vMissileDir = { m_pTransform->Get_State(EState::Right) * -1.f };
+						break;
+					case 2:
+						vMissileDir = { m_pTransform->Get_State(EState::Up) };
+						break;
+					case 3:
+						vMissileDir = { m_pTransform->Get_State(EState::Up) * -1.f };
+						break;
+					}
 					if (FAILED(m_pManagement->Add_GameObject_InLayer(
 						EResourceType::Static,
 						L"GameObject_Player_Missile",
-						L"Layer_Player_Missile")))
+						L"Layer_Player_Missile", (void*)&vMissileDir)))
 					{
 						PRINT_LOG(L"Error", L"Failed To Add Player_Lazer In Layer");
 						return;
@@ -546,7 +561,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 					m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
 					m_pManagement->PlaySound(L"Launch_Missile.ogg", CSoundMgr::PLAYER_WEAPON);
 			}
-			if (m_pManagement->Get_GameObjectList(L"Layer_Player_Missile")->size() == 6)
+			if (m_pManagement->Get_GameObjectList(L"Layer_Player_Missile")->size() == 4)
 				m_IsMissile = true;
 			else
 				m_IsMissile = false;
