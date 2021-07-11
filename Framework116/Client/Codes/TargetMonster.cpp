@@ -150,7 +150,8 @@ _uint CTargetMonster::Render_GameObject()
 	// Test
 
 #ifdef _DEBUG // Render Collide
-	//m_pCollide->Render_Collide();
+	for (auto& collide : m_Collides)
+		collide->Render_Collide();
 #endif
 
 	return _uint();

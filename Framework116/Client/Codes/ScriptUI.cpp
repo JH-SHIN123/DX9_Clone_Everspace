@@ -391,7 +391,7 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		m_wstrScript = L"-좌표 : ×××, ×××, ×××";
 		break;
 	case 13:
-		m_ePortrait = EPortraitNumber::Admiral;
+		m_ePortrait = EPortraitNumber::Player;
 		m_wstrScript = L"항로 설정 완료, 명령만 내려주십시오.";
 		break;
 	case 14:
