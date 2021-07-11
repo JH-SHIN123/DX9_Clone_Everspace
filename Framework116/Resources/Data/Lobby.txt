@@ -9,4 +9,5 @@
 ..\..\Resources\Textures\Ui\RepairIcon\RepairIcon%d.png|RepairIcon|SINGLE|1
 ..\..\Resources\Textures\Ui\ShopIcon\ShopIcon%d.png|ShopIcon|SINGLE|1
 ..\..\Resources\Textures\Ui\X\X%d.png|X|SINGLE|1
+..\..\Resources\Textures\Ui\Cursor\Cursor%d.png|Cursor|SINGLE|1
 
