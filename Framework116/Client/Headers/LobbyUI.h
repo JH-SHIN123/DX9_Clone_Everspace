@@ -50,6 +50,7 @@ public:
 	void Set_Model(class CLobbyModel* pModel) { m_pModel = pModel; }
 	
 private:
+	
 	//for KeyCheck
 	_float m_fDelayCheck = 0;
 	_float m_fDeltaTime = 0;
@@ -66,7 +67,7 @@ private:
 	_bool m_bShowModelIcon = false;
 	_bool m_bChangeModelIcon = false;
 	_bool m_bStartUnPacking = false;
-
+	_bool m_bRenderItemMean = false;
 	//for SceneSelect
 	_float3 m_vCursorPos = {0.f,0.f,0.f};
 	_float3 m_vNodeScale = { 0.f,0.f,0.f};
@@ -75,9 +76,11 @@ private:
 	_float3 m_vThirdNode = { 0.f,0.f,0.f };
 	_uint m_iSelect = 0;
 	_float m_fDelaySceneSelectCheck = 0.f;
-
+	
 	_float m_fClicked = 0.f;
 	_bool m_bClicked = false;
+
+
 
 };
 
