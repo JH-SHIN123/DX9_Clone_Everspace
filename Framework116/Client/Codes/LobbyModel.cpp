@@ -5,11 +5,9 @@
 #include"Lobby.h"
 #include"LobbyUI.h"
 #include"GatchaBox.h"
-<<<<<<< HEAD
 #include"EngineEffectSystem.h"
 #include"WingBoost_System.h"
-=======
->>>>>>> main
+
 CLobbyModel::CLobbyModel(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
@@ -86,7 +84,6 @@ _uint CLobbyModel::Update_GameObject(_float fDeltaTime)
 	{
 		if (!m_bSetCreateCancelButton)
 		{
-<<<<<<< HEAD
 			// Add Engine-Boost Effect
 			CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pLeftEngineEffect);
 			m_vLeftEngineOffset = { -1.4f, 0.9f, -6.7f };
@@ -105,11 +102,7 @@ _uint CLobbyModel::Update_GameObject(_float fDeltaTime)
 			Add_Layer_CancelButton();
 		}
 		Update_Effect();
-=======
-			m_bSetCreateCancelButton = TRUE;
-			Add_Layer_CancelButton();
-		}
->>>>>>> main
+
 		StartSceneChange(fDeltaTime);
 	}
 	return m_pTransform->Update_Transform();;
@@ -150,17 +143,6 @@ void CLobbyModel::KeyProcess(_float fDeltaTime)
 {
 	if (nullptr == m_pController) return;
 	m_pController->Update_Controller();
-	if (GetAsyncKeyState('Q') & 0x8000)
-	{
-		m_pTransform->RotateZ(D3DXToRadian(45.f)*fDeltaTime);
-	}
-	else if (GetAsyncKeyState('E') & 0x8000)
-	{
-		m_pTransform->RotateZ(-D3DXToRadian(45.f)*fDeltaTime);
-	}
-	
-	
-
 }
 
 _uint CLobbyModel::Movement(_float fDeltaTime)
@@ -242,7 +224,7 @@ void CLobbyModel::Add_Layer_CancelButton()
 	
 }
 
-<<<<<<< HEAD
+
 void CLobbyModel::Update_Effect()
 {
 	// Engine-Boost Effect
@@ -286,8 +268,6 @@ void CLobbyModel::Update_Effect()
 	
 }
 
-=======
->>>>>>> main
 
 CLobbyModel * CLobbyModel::Create(LPDIRECT3DDEVICE9 pDevice)
 {
@@ -315,7 +295,7 @@ CGameObject * CLobbyModel::Clone(void * pArg/* = nullptr*/)
 
 void CLobbyModel::Free()
 {
-<<<<<<< HEAD
+
 	if (m_pLeftEngineEffect) {
 		m_pLeftEngineEffect->Set_IsDead(true);
 		m_pLeftEngineEffect = nullptr;
@@ -333,9 +313,7 @@ void CLobbyModel::Free()
 		m_pRightWingBoost->Set_IsDead(true);
 		m_pLeftWingBoost = nullptr;
 	}
-=======
 
->>>>>>> main
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pController);

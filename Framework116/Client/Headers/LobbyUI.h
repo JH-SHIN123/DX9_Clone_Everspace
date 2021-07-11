@@ -80,8 +80,7 @@ private:
 	_float m_fClicked = 0.f;
 	_bool m_bClicked = false;
 
-	_float m_fClicked = 0.f;
-	_bool m_bClicked = false;
+
 
 };
 

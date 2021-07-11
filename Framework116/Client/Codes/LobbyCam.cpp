@@ -141,11 +141,6 @@ _uint CLobbyCam::OffSet(_float fDeltaTime)
 		}
 			
 		
-<<<<<<< HEAD
-
-=======
->>>>>>> main
-		
 		fAngle *= fDeltaTime;
 		vAt = m_CameraDesc.vAt;
 		_float3 vNextAim;
