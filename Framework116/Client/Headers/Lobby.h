@@ -44,8 +44,6 @@ public:
 	HRESULT Add_Layer_Status(const wstring & LayerTag);
 	HRESULT Add_Layer_PlayerUnder(const wstring & LayerTag);
 
-private:
-
 public:
 	void Set_GotoNextScene(_bool bSet);
 	void Set_IsGatcha(_bool bSet);
