@@ -55,6 +55,9 @@ _uint CRenderer::Render_GameObject()
 	if (iEvent = Render_UI())
 		return iEvent;
 
+	if (iEvent = Render_Font())
+		return iEvent;
+
 	return iEvent;
 }
 
@@ -332,6 +335,33 @@ _uint CRenderer::Render_AlphaUI()
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
+	return iEvent;
+}
+
+_uint CRenderer::Render_Font()
+{
+	//m_pS
+	LPD3DXSPRITE pSprite = CManagement::Get_Instance()->Get_Sprite();
+	if (nullptr == pSprite)
+		return RENDER_ERROR;
+
+	_uint iRenderIndex = (_uint)ERenderType::Font;
+	_uint iEvent = NO_EVENT;
+
+	pSprite->Begin(D3DXSPRITE_ALPHABLEND);
+
+	for (auto& pObject : m_GameObjects[iRenderIndex])
+	{
+		iEvent = pObject->Render_GameObject();
+		Safe_Release(pObject);
+
+		if (iEvent)
+			return iEvent;
+	}
+
+	m_GameObjects[iRenderIndex].clear();
+
+	pSprite->End();
 
 	return iEvent;
 }

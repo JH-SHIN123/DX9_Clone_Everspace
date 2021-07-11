@@ -99,6 +99,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_Font */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_MyFont",
+		CMyFont::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_MyFont");
+		return E_FAIL;
+	}
+
 	/* For.GameObject_Light */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::Static,
