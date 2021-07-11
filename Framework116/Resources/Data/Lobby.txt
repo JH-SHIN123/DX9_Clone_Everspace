@@ -13,3 +13,6 @@
 ..\..\Resources\Textures\Ui\Frame\full_frame.png|Full_Frame|SINGLE|1
 ..\..\Resources\Textures\Ui\Frame\player_under.png|UNDER|SINGLE|1
 ..\..\Resources\Textures\Ui\Frame\board.png|Holo_Board|SINGLE|1
+..\..\Resources\Textures\Ui\Frame\stat_back.png|Stat_Back|SINGLE|1
+..\..\Resources\Textures\Ui\Frame\stat_frame.png|Stat_Frame|SINGLE|1
+..\..\Resources\Textures\Ui\Frame\item_frame.png|Item_Frame|SINGLE|1
