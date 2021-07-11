@@ -109,11 +109,19 @@ private: //연출 관련
 	_bool m_IsScript = false; //대화
 	_bool m_IsCameraMove = false; // 카메라 연출
 
-private: 
+private:
+	//4방향 미사일
 	_float3 vMissileDir1 = {};
 	_float3 vMissileDir2 = {};
 	_float3 vMissileDir3 = {};
 	_float3 vMissileDir4 = {};
+
+private:
+	//충돌후 밀려날 거리
+	_float m_fAfterCollisionDist = 0.f;
+	_float m_fSpeed = 5.f;
+
+
 
 
 };

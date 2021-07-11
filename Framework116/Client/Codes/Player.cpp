@@ -705,25 +705,33 @@ _uint CPlayer::Collide_Planet_Or_Astroid(const _float fDeltaTime)
 		//정면
 		if (GetAsyncKeyState(L'W') & 0x8000)
 		{
-			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), -fDeltaTime);
-			m_IsAstroidCollide = false;
+			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), -fDeltaTime * m_fSpeed);
+			m_fAfterCollisionDist += fDeltaTime;
+			if(m_fAfterCollisionDist > 1.f)
+				m_IsAstroidCollide = false;
 		}
 		// 후진
 		if (GetAsyncKeyState(L'S') & 0x8000)
 		{
-			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime);
-			m_IsAstroidCollide = false;
+			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime * m_fSpeed);
+			m_fAfterCollisionDist += fDeltaTime;
+			if (m_fAfterCollisionDist > 1.f)
+				m_IsAstroidCollide = false;
 		}
 		// 좌측, 우측
 		if (GetAsyncKeyState(L'A') & 0x8000)
 		{
-			m_pTransform->Go_Side(fDeltaTime * 1.2f);
-			m_IsAstroidCollide = false;
+			m_pTransform->Go_Side(fDeltaTime * 1.2f * m_fSpeed);
+			m_fAfterCollisionDist += fDeltaTime;
+			if (m_fAfterCollisionDist > 1.f)
+				m_IsAstroidCollide = false;
 		}
 		if (GetAsyncKeyState(L'D') & 0x8000)
 		{
-			m_pTransform->Go_Side(-fDeltaTime * 1.2f);
-			m_IsAstroidCollide = false;
+			m_pTransform->Go_Side(-fDeltaTime * 1.2f * m_fSpeed);
+			m_fAfterCollisionDist += fDeltaTime;
+			if (m_fAfterCollisionDist > 1.f)
+				m_IsAstroidCollide = false;
 		}
 	}
 	// 부스터 시 충돌
@@ -731,24 +739,32 @@ _uint CPlayer::Collide_Planet_Or_Astroid(const _float fDeltaTime)
 	{
 		if (GetAsyncKeyState(L'W') & 0x8000)
 		{
-			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), -fDeltaTime * 2.5f);
-			m_IsAstroidCollide = false;
+			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), -fDeltaTime * 2.5f * m_fSpeed);
+			m_fAfterCollisionDist += fDeltaTime;
+			if (m_fAfterCollisionDist > 1.f)
+				m_IsAstroidCollide = false;
 		}
 		// 후진
 		if (GetAsyncKeyState(L'S') & 0x8000)
 		{
-			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime * 1.f);
-			m_IsAstroidCollide = false;
+			m_pTransform->Go_Dir(m_pTransform->Get_State(EState::Look), fDeltaTime * 1.f * m_fSpeed);
+			m_fAfterCollisionDist += fDeltaTime;
+			if (m_fAfterCollisionDist > 1.f)
+				m_IsAstroidCollide = false;
 		}
 		if (GetAsyncKeyState(L'A') & 0x8000)
 		{
-			m_pTransform->Go_Side(fDeltaTime * 1.2f);
-			m_IsAstroidCollide = false;
+			m_pTransform->Go_Side(fDeltaTime * 1.2f * m_fSpeed);
+			m_fAfterCollisionDist += fDeltaTime;
+			if (m_fAfterCollisionDist > 1.f)
+				m_IsAstroidCollide = false;
 		}
 		if (GetAsyncKeyState(L'D') & 0x8000)
 		{
-			m_pTransform->Go_Side(-fDeltaTime * 1.2f);
-			m_IsAstroidCollide = false;
+			m_pTransform->Go_Side(-fDeltaTime * 1.2f * m_fSpeed);
+			m_fAfterCollisionDist += fDeltaTime;
+			if (m_fAfterCollisionDist > 1.f)
+				m_IsAstroidCollide = false;
 		}
 	
 	}
