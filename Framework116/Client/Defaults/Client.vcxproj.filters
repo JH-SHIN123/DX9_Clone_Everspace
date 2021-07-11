@@ -226,6 +226,9 @@
     <Filter Include="02.GameObject\09.HUD\11.Shield_Battery">
       <UniqueIdentifier>{03891a8b-bd20-404d-addc-68a478e9126b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\03.Monster\Drone">
+      <UniqueIdentifier>{c789007c-3e5b-4ee8-bc5e-c5f9ab10baaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -408,6 +411,9 @@
     <ClInclude Include="..\Headers\HP_Bar.h">
       <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Drone.h">
+      <Filter>02.GameObject\03.Monster\Drone</Filter>
+    </ClInclude>
     <ClInclude Include="..\Headers\AimAssist.h">
       <Filter>02.GameObject\09.HUD\09.AimAssist</Filter>
     </ClInclude>
@@ -587,6 +593,9 @@
     <ClCompile Include="..\Codes\HP_Bar.cpp">
       <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Drone.cpp">
+      <Filter>02.GameObject\03.Monster\Drone</Filter>
+	</ClCompile>
     <ClCompile Include="..\Codes\AimAssist.cpp">
       <Filter>02.GameObject\09.HUD\09.AimAssist</Filter>
     </ClCompile>

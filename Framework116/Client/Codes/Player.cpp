@@ -259,6 +259,9 @@ _uint CPlayer::LateUpdate_GameObject(_float fDeltaTime)
 	if (m_fHp <= 0.f && !m_IsDead)
 	{
 		CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_State(EState::Position), 1.f);
+
+		// 기존 이펙트 모두 off
+
 		m_IsDead = true;
 	}
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))

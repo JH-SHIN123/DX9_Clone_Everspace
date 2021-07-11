@@ -43,6 +43,9 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
+	if (FAILED(Add_Layer_MissionUI(L"Layer_MissionUI", EQuest::Stage_1_Ring)))
+		return E_FAIL;
+
 	//if (FAILED(Add_Layer_TutorialUI(L"Layer_TutorialUI")))
 	//	return E_FAIL;
 
@@ -55,8 +58,22 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_TargetMonster(L"Layer_TargetMonster")))
 	//	return E_FAIL;
 
-	if (FAILED(Add_Layer_MissionUI(L"Layer_MissionUI", EQuest::Stage_1_Ring)))
+	// TEST
+	GAMEOBJECT_DESC tDesc;
+	tDesc.tTransformDesc.vPosition = { 0.f,0.f,50.f };
+	tDesc.tTransformDesc.vRotate = { 0.f,90.f,0.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Drone",
+		L"Layer_Drone",
+		&tDesc)))
+	{
+		wstring errMsg = L"Failed to Add Layer ";
+		PRINT_LOG(L"Error", errMsg.c_str());
 		return E_FAIL;
+	}
+
 
 	return S_OK;
 }
@@ -78,11 +95,9 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
 	
-
-
 	// Monster
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Drone");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Drone");
 
 	// Boss
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
@@ -94,7 +109,7 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
 
 	// TargetMonster
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
+	//CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
 
 	// Planet
 	// CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Planet");
