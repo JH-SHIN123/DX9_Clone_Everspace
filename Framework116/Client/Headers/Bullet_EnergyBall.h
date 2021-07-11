@@ -28,7 +28,7 @@ public:
 	virtual void Free() override;
 
 private:
-	CVIBuffer_CubeTexture*  m_pCube = nullptr;
+	CVIBuffer_RectTexture*  m_pRect = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
@@ -38,7 +38,11 @@ private:
 
 	_float m_fTrackingTime = 1.f;
 	_bool m_IsTracking = false;
-	_float m_fLiveTime = 5.f;
+	_float m_fLiveTime = 10.f;
+
+private:
+	_float3 m_vEffectOffset = { 0.f, 0.f, 0.f };
+	class CGameObject* m_pEffect = nullptr;
 
 
 };

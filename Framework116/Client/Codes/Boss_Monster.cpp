@@ -17,11 +17,7 @@ CBoss_Monster::CBoss_Monster(const CBoss_Monster & other)
 	, m_fEnergyBall_CoolTime(other.m_fEnergyBall_CoolTime)
 	, m_fLaser_CoolTime(other.m_fLaser_CoolTime)
 	, m_fEmpBomb_CoolTime(other.m_fEmpBomb_CoolTime)
-{
-	//, m_fDetectionRange_Near(other.m_fDetectionRange_Near)
-	//, m_fDetectionRange_Middle(other.m_fDetectionRange_Middle)
-	//, m_fDetectionRange_Far(other.m_fDetectionRange_Far)
-	
+{	
 }
 
 HRESULT CBoss_Monster::Ready_GameObject_Prototype()
@@ -93,15 +89,6 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	//m_pGunTranform[0] = (CTransform*)m_pManagement->Get_Component(L"Layer_Boss_Monster_Has_A_EnergyBall_LEFT", L"Com_Transform");
-	//Safe_AddRef(m_pGunTranform[0]);
-	//m_pGunTranform[1] = (CTransform*)m_pManagement->Get_Component(L"Layer_Boss_Monster_Has_A_EnergyBall_RIGHT", L"Com_Transform");
-	//Safe_AddRef(m_pGunTranform[1]);
-	//if (nullptr == m_pGunTranform[0] || nullptr == m_pGunTranform[1])
-	//{
-	//	PRINT_LOG(L"Error", L"m_pGunTranform is nullptr");
-	//	return E_FAIL;
-	//}
 
 	// HP ¼¼ÆÃ
 	m_fHp = 900.f;
@@ -116,7 +103,7 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	Move_AI(fDeltaTime);
-	//Attack_AI(fDeltaTime);
+	Attack_AI(fDeltaTime);
 
 	//Spawn_Monster(fDeltaTime);
 
@@ -262,15 +249,17 @@ _uint CBoss_Monster::Fire_Triger(_float fDeltaTime)
 		vPos += vLook * 8.f;
 
 		if (m_IsLeftFire == true)
-			vPos -= vRight * 8.f;
+			vPos -= vRight * 65.f;
 
 		if (m_IsLeftFire == false)
-			vPos += vRight * 8.f;
+			vPos += vRight * 65.f;
 
 		m_IsLeftFire = !m_IsLeftFire;
 
 		pArg->vPosition = vPos;
 		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
+
+		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(vPos, 1.f);
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::NonStatic,
@@ -417,27 +406,27 @@ _uint CBoss_Monster::Move_AI(_float fDeltaTime)
 		m_eActionMode = SpecialAction;
 
 
-	switch (m_eActionMode)
-	{
-	case CBoss_Monster::Near:
-		Move_Near(fDeltaTime);
-		break;
+	//switch (m_eActionMode)
+	//{
+	//case CBoss_Monster::Near:
+	//	Move_Near(fDeltaTime);
+	//	break;
 
-	case CBoss_Monster::Middle:
-		Move_Middle(fDeltaTime);
-		break;
+	//case CBoss_Monster::Middle:
+	//	Move_Middle(fDeltaTime);
+	//	break;
 
-	case CBoss_Monster::Far:
-		Move_Far(fDeltaTime);
-		break;
+	//case CBoss_Monster::Far:
+	//	Move_Far(fDeltaTime);
+	//	break;
 
-	case CBoss_Monster::SpecialAction:
-		break;
+	//case CBoss_Monster::SpecialAction:
+	//	break;
 
-	default:
-		return UPDATE_ERROR;
-		break;
-	}
+	//default:
+	//	return UPDATE_ERROR;
+	//	break;
+	//}
 
 
 

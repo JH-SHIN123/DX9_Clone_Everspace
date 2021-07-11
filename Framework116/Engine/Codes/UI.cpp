@@ -148,7 +148,7 @@ const TRANSFORM_DESC CUI::Get_UI_TransformDesc()
 
 HRESULT CUI::Change_Texture(const wstring & wstrTexturePrototypeTag)
 {
-	Safe_Release(m_pTransform);
+	Safe_Release(m_pTexture);
 	m_wstrTexturePrototypeTag = wstrTexturePrototypeTag;
 
 	if (FAILED(CGameObject::Add_Component(
@@ -160,6 +160,8 @@ HRESULT CUI::Change_Texture(const wstring & wstrTexturePrototypeTag)
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
 		return E_FAIL;
 	}
+	Safe_AddRef(m_pTexture);
+
 	return S_OK;
 }
 

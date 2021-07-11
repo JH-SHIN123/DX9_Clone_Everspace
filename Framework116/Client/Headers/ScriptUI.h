@@ -3,12 +3,14 @@
 
 #include "GameObject.h"
 #include "UI.h"
+#include "BackUI.h"
 
 USING(Engine)
 
 enum class EScript {
 	Tutorial,
-	Tutorial_Ring_Clear, 
+	Tutorial_Ring_Clear,
+	Tutorial_Target_Clear,
 	End
 };
 
@@ -38,14 +40,21 @@ public:
 public:
 	_uint Set_NextScript();
 	_uint Set_Script(EScript eScript);
+	_bool Get_IsScriptEnd();
 
-private:
-	void Lock_Cursor();
-	void BlackBar_Start(_float fDeltaTime); // 대화의 시작
-	void BlackBar_End(_float fDeltaTime);
+private: //대화 순서
+	void BlackBar_Start(_float fDeltaTime);
 	_uint Script_Check();
+	void BlackBar_End(_float fDeltaTime);
+
+private: //대화
 	void Script_Tutorial();
 	void Script_Tutorial_Ring_Clear();
+	void Script_Tutorial_Target_Clear();
+
+private: // 기타
+	void Lock_Cursor();
+	void Portrait_Check();
 	HRESULT Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc);
 
 
@@ -75,6 +84,7 @@ private:
 private:
 	wstring m_wstrTexturePrototypeTag = L"";
 	TRANSFORM_DESC m_tTransformDesc;
+	wstring m_wstrTextureTag_Portrait = L"";
 	RECT m_tUIBounds;
 
 
@@ -92,7 +102,7 @@ private:
 
 	//Sound
 	_bool m_bSoundOnce = false;
-
+	EPortraitNumber m_ePortrait = EPortraitNumber::End;
 
 
 };

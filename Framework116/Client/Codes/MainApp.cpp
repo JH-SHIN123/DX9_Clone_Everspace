@@ -13,7 +13,7 @@
 #include "Loading.h"
 #include "Shield_Battery.h"
 
-CMainApp::CMainApp() //glhf
+CMainApp::CMainApp()
 	: m_pManagement(CManagement::Get_Instance())
 {
 }

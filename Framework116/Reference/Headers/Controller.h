@@ -21,6 +21,7 @@ BEGIN(Engine)
 #define KEY_R			0x00002000
 #define KEY_P			0x00004000
 #define KEY_F			0x00008000
+#define KEY_C			0x00010000
 
 class ENGINE_DLL CController final : public CComponent
 {
