@@ -48,6 +48,7 @@ protected:
 	TRANSFORM_DESC m_tTransformDesc;
 	RECT m_tUIBounds;
 	EPortraitNumber m_ePortraitNumber = EPortraitNumber::End;
+	D3DMATERIAL9 m_tMaterial;
 };
 
 #define __BACKUI_H__

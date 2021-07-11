@@ -116,7 +116,7 @@ _uint CScriptUI::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
 
-	//Lock_Cursor();
+	Lock_Cursor();
 
 	switch (m_eScriptFlow)
 	{

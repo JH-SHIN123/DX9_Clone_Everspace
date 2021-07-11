@@ -1,18 +1,25 @@
 #include "stdafx.h"
 #include "..\Headers\BackUI.h"
 #include"Pipeline.h"
+#include "MaterialHandler.h"
 
 USING(Engine)
 
 CBackUI::CBackUI(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
+	ZeroMemory(&m_tMaterial, sizeof(D3DMATERIAL9));
+	_float4 color = { 1.f, 1.f, 1.f, 1.f };
+
+	CMaterialHandler::Set_RGBA(color, &m_tMaterial);
 }
 
 CBackUI::CBackUI(const CBackUI& other)
 	: CGameObject(other)
 	, m_ePortraitNumber(other.m_ePortraitNumber)
+	, m_tMaterial(other.m_tMaterial)
 {
+
 }
 
 HRESULT CBackUI::Ready_GameObject_Prototype()
@@ -103,6 +110,8 @@ _uint CBackUI::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	TRANSFORM_DESC transformDesc = m_pTransform->Get_TransformDesc();
+
+	m_pDevice->SetMaterial(&m_tMaterial);
 
 	_float4x4 matView;
 	D3DXMatrixIdentity(&matView);
