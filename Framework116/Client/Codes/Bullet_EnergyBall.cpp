@@ -19,6 +19,15 @@ HRESULT CBullet_EnergyBall::Ready_GameObject_Prototype()
 {
 	CGameObject::Ready_GameObject_Prototype();
 
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Cylinder_EnergyBall",
+		CGeoMesh_Sphere::Create(m_pDevice, 0.8f))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_GeoMesh_Player_Lazer");
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -28,10 +37,10 @@ HRESULT CBullet_EnergyBall::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_VIBuffer_RectTexture",
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Cylinder_EnergyBall",
 		L"Com_CubeTexture",
-		(CComponent**)&m_pRect)))
+		(CComponent**)&m_pMesh)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_CubeTexture");
 		return E_FAIL;
@@ -125,12 +134,16 @@ _uint CBullet_EnergyBall::LateUpdate_GameObject(_float fDeltaTime)
 			m_pEffect = nullptr;
 		}
 
+		CEffectHandler::Add_Layer_Effect_BossBullet_EnergyBall_Dead(m_pTransform->Get_State(EState::Position), 1.f);
+
 		return DEAD_OBJECT;
 	}
 
 	m_fLiveTime -= fDeltaTime;
 	if (m_fLiveTime <= 0.f || m_IsCollide == true)
 		m_IsDead = true;
+
+	//BillBoard();
 
 	return _uint();
 }
@@ -141,7 +154,7 @@ _uint CBullet_EnergyBall::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pTexture->Set_Texture(0);
-	m_pRect->Render_VIBuffer();
+	m_pMesh->Render_Mesh();
 
 #ifdef _DEBUG // Render Collide
 	//m_pCollide->Render_Collide();
@@ -231,6 +244,34 @@ _uint CBullet_EnergyBall::Fire_Triger(_float fDeltaTime)
 	return _uint();
 }
 
+_uint CBullet_EnergyBall::BillBoard()
+{
+	_float4x4 matView;
+	D3DXMatrixIdentity(&matView);
+	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
+	ZeroMemory(&matView._41, sizeof(_float3));
+	D3DXMatrixInverse(&matView, 0, &matView);
+
+	_float3 vBillPos = m_pTransform->Get_State(EState::Position);
+
+	_float fScale[3];
+	fScale[0] = m_pTransform->Get_State(EState::Right).x;
+	fScale[1] = m_pTransform->Get_State(EState::Up).y;
+	fScale[2] = m_pTransform->Get_State(EState::Look).z;
+
+	memcpy(&matView._41, &vBillPos, sizeof(_float3));
+
+	for (_uint i = 0; i < 3; ++i)
+	{
+		for (_uint j = 0; j < 4; ++j)
+			matView(i, j) *= fScale[i];
+	}
+
+	m_pTransform->Set_WorldMatrix(matView);
+
+	return _uint();
+}
+
 CBullet_EnergyBall * CBullet_EnergyBall::Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData /*= nullptr*/)
 {
 	CBullet_EnergyBall* pInstance = new CBullet_EnergyBall(pDevice, pData);
@@ -259,7 +300,7 @@ void CBullet_EnergyBall::Free()
 {
 	Safe_Release(m_pTargetTransform);
 
-	Safe_Release(m_pRect);
+	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);

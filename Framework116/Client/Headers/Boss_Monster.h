@@ -3,9 +3,9 @@
 
 #include "GameObject.h"
 
-#define BOSSRANGE_NEAR		100.f
-#define BOSSRANGE_MIDDLE	300.f
-#define BOSSRANGE_FAR		500.f
+#define BOSSRANGE_NEAR		150.f
+#define BOSSRANGE_MIDDLE	350.f
+#define BOSSRANGE_FAR		450.f
 
 USING(Engine)
 class CBoss_Monster final : public CGameObject
@@ -36,7 +36,13 @@ private: // Move_AI
 	_uint Move_Far(_float fDeltaTime);
 	
 private: // Attack_AI
-	_uint Fire_Triger(_float fDeltaTime);
+	//좌 우 포신과 플레이어의길이를 서로 비교 더 짧은 쪽이 발사!~ 
+	_uint EnergyBallCannon_Target_Search(_float fDeltaTime);
+	_uint Left_EnergyBall(_float fDeltaTime);
+	_uint Right_EnergyBall(_float fDeltaTime);
+
+private:
+	_uint Fire_Triger(_float fDeltaTime); 
 	_uint Fire_Laser(_float fDeltaTime);
 	_uint Fire_EMP(_float fDeltaTime);
 	_uint Spawn_Monster(_float fDeltaTime);
@@ -69,11 +75,14 @@ private: /* AI */
 	ActionMode m_eActionMode = End;
 	_bool m_IsSpecialAction = false;
 
-	// 타겟 탐지 범위
-	//const _float m_fDetectionRange_Near = UNIT * 20.f;
-	//const _float m_fDetectionRange_Middle = UNIT * 50.f;
-	//const float m_fDetectionRange_Far = UNIT * 100.f;
-	
+private:
+	_float3 m_vRightCannonPosition;
+	_float3 m_vLeftCannonPosition;
+	_float m_fCannonLength = 40.f;
+	_float m_fLeftCannonCoolTime = 0.f;
+	_float m_fRightCannonCoolTime = 0.f;
+
+
 
 private: /* Skills */
 	// energyball

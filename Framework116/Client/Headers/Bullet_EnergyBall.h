@@ -21,6 +21,7 @@ public:
 private:
 	_uint Movement(_float fDeltaTime);
 	_uint Fire_Triger(_float fDeltaTime);
+	_uint BillBoard();
 
 public:
 	static CBullet_EnergyBall* Create(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData = nullptr);
@@ -28,7 +29,7 @@ public:
 	virtual void Free() override;
 
 private:
-	CVIBuffer_RectTexture*  m_pRect = nullptr;
+	CGeoMesh_Sphere*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
