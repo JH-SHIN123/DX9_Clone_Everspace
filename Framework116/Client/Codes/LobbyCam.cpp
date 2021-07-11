@@ -99,12 +99,17 @@ _uint CLobbyCam::OffSet(_float fDeltaTime)
 		else
 			return 0;
 	}
-	static _bool bStart = false;
-	if (!bStart)
+	
+	if (!m_bStart)
+	{
+		m_CameraDesc.vAt = m_pPlayerTransform->Get_TransformDesc().vPosition;
+		m_CameraDesc.vEye.y += m_fDistanceFromTarget / 2.f;
+		m_bStart = true;
+		return 0;
+	}
+	if (m_pLobby->Get_GotoNextScene())
 	{
 		m_CameraDesc.vAt = m_pPlayerTransform->Get_State(EState::Position);
-		m_CameraDesc.vEye.y += m_fDistanceFromTarget / 2.f;
-		bStart = true;
 		return 0;
 	}
 	if (m_pLobby->Get_GotoNextScene())
@@ -135,7 +140,6 @@ _uint CLobbyCam::OffSet(_float fDeltaTime)
 				return 0;
 		}
 			
-		
 		
 		fAngle *= fDeltaTime;
 		vAt = m_CameraDesc.vAt;
