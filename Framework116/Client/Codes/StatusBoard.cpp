@@ -63,6 +63,24 @@ HRESULT CStatusBoard::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
+	// For.Font - Atk
+	MYFONT_DESC tFontDesc;
+	tFontDesc.wstrText = L"°ø°Ý·Â";
+	tFontDesc.tTextColor = D3DXCOLOR(255, 255, 255, 255);
+
+	tFontDesc.tTransformDesc.vPosition = { 100.f,100.f,0.f };
+	tFontDesc.tTransformDesc.vScale = { 2.f,2.f,2.f };
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_MyFont",
+		L"Layer_Font_Status",
+		(void*)&tFontDesc,
+		(CGameObject**)&m_pFont_Atk)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add StatusBoard In Layer");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -231,6 +249,8 @@ CGameObject * CStatusBoard::Clone(void * pArg/* = nullptr*/)
 
 void CStatusBoard::Free()
 {
+	Safe_Release(m_pFont_Atk);
+
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);

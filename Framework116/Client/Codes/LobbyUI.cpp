@@ -339,7 +339,7 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 
 void CLobbyUI::Set_Text()
 {
-#ifndef _DEBUG
+#ifdef _DEBUG
 	wstring str;
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -391,7 +391,7 @@ void CLobbyUI::Set_Text()
 			, &rc, DT_LEFT | DT_TOP, D3DXCOLOR(255, 0, 0, 255));
 	}
 #elif _DEBUG
-	MYFONT_DESC 
+	 
 #endif
 }
 
