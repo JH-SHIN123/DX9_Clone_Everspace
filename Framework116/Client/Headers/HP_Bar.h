@@ -22,6 +22,8 @@ public:
 	virtual _uint Render_GameObject() override;
 
 public:
+	// 뒤야 앞이야!
+	void Set_IsBack(_bool bCheck) { m_IsBack = bCheck; }
 	// 피깎는용도!
 	void Set_ScaleX(_float _fDamage);
 	_uint Who_Make_Me(MAKERID _iMakerName);
@@ -39,6 +41,9 @@ private:
 	const list<class CGameObject*>* m_listCheckMonsters = nullptr;
 	_float3 vTargetPos = {};
 	MAKERID m_eMakerID = MAKER_END;
+
+private: // 뒤에있을땐 안나오게
+	_bool m_IsBack = false;
 	
 };
 

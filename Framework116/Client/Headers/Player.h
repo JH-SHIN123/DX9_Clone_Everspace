@@ -120,7 +120,7 @@ private:
 	//충돌후 밀려날 거리
 	_float m_fAfterCollisionDist = 0.f;
 	_float m_fSpeed = 5.f;
-
+	
 
 
 
