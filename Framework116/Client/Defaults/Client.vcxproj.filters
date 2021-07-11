@@ -220,6 +220,9 @@
     <Filter Include="02.GameObject\08.Bullet\01.Player_Observe_Missile">
       <UniqueIdentifier>{56eed6f8-b2dc-4d38-abca-147e087c3fbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\03.Monster\Drone">
+      <UniqueIdentifier>{c789007c-3e5b-4ee8-bc5e-c5f9ab10baaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -402,6 +405,9 @@
     <ClInclude Include="..\Headers\HP_Bar.h">
       <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Drone.h">
+      <Filter>02.GameObject\03.Monster\Drone</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -571,6 +577,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\HP_Bar.cpp">
       <Filter>02.GameObject\09.HUD\06.HP_Bar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Drone.cpp">
+      <Filter>02.GameObject\03.Monster\Drone</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

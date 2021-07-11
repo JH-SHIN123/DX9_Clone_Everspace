@@ -33,6 +33,7 @@
 #include "Planet.h"
 #include "Meteor.h"
 #include "TutorialUI.h"
+#include "Drone.h"
 #include "WingBoost_System.h"
 #include"Product.h"
 #include"StatusBoard.h"
@@ -282,6 +283,16 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_Drone */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Drone",
+		CDrone::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Drone");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 #pragma region Components
@@ -412,8 +423,39 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_Boss");
 		return E_FAIL;
 	}
-
-
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Drone",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/drone.X", L"../../Resources/Textures/Enemy/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+	/*로딩시간때문에 잠시 주석해놓음 지우지 말것!*/
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Delivery",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+	//	return E_FAIL;
+	//}
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Enemy1",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/enemy1.X", L"../../Resources/Textures/Enemy/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+	//	return E_FAIL;
+	//}
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Enemy2",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/enemy2.X", L"../../Resources/Textures/Enemy/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+	//	return E_FAIL;
+	//}
 
 	Ready_HUD_Resources();
 	Ready_StageEffect();

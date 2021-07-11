@@ -52,9 +52,9 @@ HRESULT CAsteroid::Ready_GameObject(void* pArg)
 	TransformDesc.fRotatePerSec = D3DXToRadian(randRotateSpeed);
 	TransformDesc.fSpeedPerSec = 4.f;
 
-	// 행성 움직임 AI 안하는 메시목록
+	// 운석 데코레이트 (충돌X)
 	if (pDesc->wstrMeshName == L"Component_Mesh_Rock_Cloud") {
-		m_bDontMove = true;
+		m_bDecorate = true;
 	}
 
 	if (FAILED(CGameObject::Add_Component(
@@ -68,7 +68,7 @@ HRESULT CAsteroid::Ready_GameObject(void* pArg)
 		return E_FAIL;
 	}
 
-	if (false == m_bDontMove) {
+	if (false == m_bDecorate) {
 		// For.Com_Collide
 		BOUNDING_SPHERE BoundingSphere;
 		if (pDesc->tTransformDesc.vScale.x >= 20.f)
@@ -107,7 +107,7 @@ _uint CAsteroid::Update_GameObject(_float fDeltaTime)
 	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
-	if (false == m_bDontMove)
+	if (false == m_bDecorate)
 		m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	return NO_EVENT;
 }
