@@ -39,6 +39,8 @@ HRESULT CLobby::Ready_Scene()
 		return E_FAIL;
 	if (FAILED(Add_Layer_Status(L"Layer_Status")))
 		return E_FAIL;
+	if (FAILED(Add_Layer_PlayerUnder(L"Layer_PlayerUnder")))
+		return E_FAIL;
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
@@ -256,6 +258,19 @@ HRESULT CLobby::Add_Layer_Status(const wstring & LayerTag)
 	}
 	CStatus* pBoard = (CStatus*)m_pManagement->Get_GameObject(LayerTag);
 	pBoard->Set_Scene(this);
+	return S_OK;
+}
+
+HRESULT CLobby::Add_Layer_PlayerUnder(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_PlayerUnder",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add StatusBoard In Layer");
+		return E_FAIL;
+	}
 	return S_OK;
 }
 

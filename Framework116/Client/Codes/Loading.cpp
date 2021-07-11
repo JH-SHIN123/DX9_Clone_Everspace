@@ -50,6 +50,7 @@
 #include "NaviArrow.h"
 #include "AimAssist.h"
 #include "AimAssist2.h"
+#include"PlayerUnder.h"
 #pragma endregion
 
 
@@ -147,7 +148,9 @@ void CLoading::Free()
 }
 
 unsigned CLoading::ThreadMain(void * pArg)
+
 {
+
 	CLoading* pLoading = (CLoading*)pArg;
 	EnterCriticalSection(&pLoading->m_CriticalSection);
 
@@ -155,6 +158,7 @@ unsigned CLoading::ThreadMain(void * pArg)
 	switch (pLoading->m_eNextSceneID)
 	{
 	case ESceneType::Stage:
+
 		hr = pLoading->Ready_StageResources();
 		break;
 	case ESceneType::Lobby:
@@ -646,6 +650,15 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_WingBoostSystem");
 		return E_FAIL;
 	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_PlayerUnder",
+		CPlayerUnder::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_PlayerUnder");
+		return E_FAIL;
+	}
+
 #pragma endregion
 	
 #pragma region Components

@@ -42,6 +42,7 @@ public:
 	HRESULT Add_Layer_GatchaBox(const wstring & LayerTag);
 	HRESULT Add_Layer_StatusBoard(const wstring & LayerTag);
 	HRESULT Add_Layer_Status(const wstring & LayerTag);
+	HRESULT Add_Layer_PlayerUnder(const wstring & LayerTag);
 
 private:
 

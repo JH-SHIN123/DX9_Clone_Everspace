@@ -129,7 +129,7 @@ _uint CLobbyUI::LateUpdate_GameObject(_float fDeltaTime)
 	}
 	
 
-	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::UI, this)))
+	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::AlphaUI, this)))
 		return UPDATE_ERROR;
 	
 	
@@ -137,21 +137,26 @@ _uint CLobbyUI::LateUpdate_GameObject(_float fDeltaTime)
 }
 
 _uint CLobbyUI::Render_GameObject()
+
 {
-	if (m_bClicked && !m_pLobby->Get_SceneSelect())
+	/*if (m_bClicked && !m_pLobby->Get_SceneSelect())
 	{
+
 		m_fClicked += m_pManagement->Get_DeltaTime();
 		if (m_fClicked >= 0.1f)
 			m_bClicked = false;
 		if(m_wstrTexturePrototypeTag != L"Component_Texture_SceneSelect")
 			return 0;
-	}
+	}*/
 	if (m_wstrTexturePrototypeTag != L"Component_Texture_X")
 	{
 		if (m_bGotoNextScene || m_bStartUnPacking)
 			return 0;
 	}
-	
+	if (m_wstrTexturePrototypeTag == L"Component_Texture_DecorationB")
+	{
+		m_pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	}
 	CGameObject::Render_GameObject();
 	TRANSFORM_DESC transformDesc = m_pTransform->Get_TransformDesc();
 
@@ -162,12 +167,16 @@ _uint CLobbyUI::Render_GameObject()
 	matView._41 = transformDesc.vPosition.x;
 	matView._42 = transformDesc.vPosition.y;
 	m_pDevice->SetTransform(D3DTS_VIEW, &matView);
-	/////////////////////////////////////////////////////////////////
+	////////////////////////////////////////
+	/////////////////////////
 	m_pTexture->Set_Texture(m_dwIdx);
 	m_pVIBuffer->Render_VIBuffer();
 	/////////////////////////////////////////////////////////////////
 
-
+	if (m_wstrTexturePrototypeTag == L"Component_Texture_DecorationB")
+	{
+		m_pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	}
 
 	if (m_wstrTexturePrototypeTag == L"Component_Texture_SceneSelect")
 	{
