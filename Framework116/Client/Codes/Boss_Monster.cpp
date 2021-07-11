@@ -103,7 +103,7 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	Move_AI(fDeltaTime);
-	//Attack_AI(fDeltaTime);
+	Attack_AI(fDeltaTime);
 
 	//Spawn_Monster(fDeltaTime);
 
@@ -249,15 +249,17 @@ _uint CBoss_Monster::Fire_Triger(_float fDeltaTime)
 		vPos += vLook * 8.f;
 
 		if (m_IsLeftFire == true)
-			vPos -= vRight * 8.f;
+			vPos -= vRight * 65.f;
 
 		if (m_IsLeftFire == false)
-			vPos += vRight * 8.f;
+			vPos += vRight * 65.f;
 
 		m_IsLeftFire = !m_IsLeftFire;
 
 		pArg->vPosition = vPos;
 		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
+
+		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(vPos, 1.f);
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::NonStatic,
@@ -404,27 +406,27 @@ _uint CBoss_Monster::Move_AI(_float fDeltaTime)
 		m_eActionMode = SpecialAction;
 
 
-	switch (m_eActionMode)
-	{
-	case CBoss_Monster::Near:
-		Move_Near(fDeltaTime);
-		break;
+	//switch (m_eActionMode)
+	//{
+	//case CBoss_Monster::Near:
+	//	Move_Near(fDeltaTime);
+	//	break;
 
-	case CBoss_Monster::Middle:
-		Move_Middle(fDeltaTime);
-		break;
+	//case CBoss_Monster::Middle:
+	//	Move_Middle(fDeltaTime);
+	//	break;
 
-	case CBoss_Monster::Far:
-		Move_Far(fDeltaTime);
-		break;
+	//case CBoss_Monster::Far:
+	//	Move_Far(fDeltaTime);
+	//	break;
 
-	case CBoss_Monster::SpecialAction:
-		break;
+	//case CBoss_Monster::SpecialAction:
+	//	break;
 
-	default:
-		return UPDATE_ERROR;
-		break;
-	}
+	//default:
+	//	return UPDATE_ERROR;
+	//	break;
+	//}
 
 
 

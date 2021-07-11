@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\Bullet_EnergyBall.h"
+#include "EffectHandler.h"
 
 CBullet_EnergyBall::CBullet_EnergyBall(LPDIRECT3DDEVICE9 pDevice, PASSDATA_OBJECT* pData)
 	: CGameObject(pDevice)
@@ -28,9 +29,9 @@ HRESULT CBullet_EnergyBall::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_VIBuffer_CubeTexture",
+		L"Component_VIBuffer_RectTexture",
 		L"Com_CubeTexture",
-		(CComponent**)&m_pCube)))
+		(CComponent**)&m_pRect)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_CubeTexture");
 		return E_FAIL;
@@ -39,7 +40,7 @@ HRESULT CBullet_EnergyBall::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
-		L"Component_Texture_TestCube",
+		L"Component_Texture_Bullet_EnergyBall",
 		L"Com_Texture",
 		(CComponent**)&m_pTexture)))
 	{
@@ -52,9 +53,9 @@ HRESULT CBullet_EnergyBall::Ready_GameObject(void * pArg/* = nullptr*/)
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;//_float3(10.f, 3.f, 20.f);
 	TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
-	TransformDesc.fSpeedPerSec = 15.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
-	TransformDesc.vScale = { 1.f, 1.f, 1.f };
+	TransformDesc.fSpeedPerSec = 40.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(90.f);
+	TransformDesc.vScale = { 2.f, 2.f, 2.f };
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -66,7 +67,7 @@ HRESULT CBullet_EnergyBall::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
 	}
-	// asdasd
+	
 
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
@@ -92,14 +93,8 @@ HRESULT CBullet_EnergyBall::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	//m_pParentTransform = (CTransform*)m_pManagement->Get_Component(L"GameObject_Boss_Monster", L"Com_Transform");
-	//Safe_AddRef(m_pParentTransform);
-	//if (nullptr == m_pParentTransform)
-	//{
-	//	PRINT_LOG(L"Error", L"m_pParentTransform is nullptr");
-	//	return E_FAIL;
-	//}
-
+	CEffectHandler::Add_Layer_Effect_BossBullet_EnergyBall_Trail(this,(CGameObject**)&m_pEffect);
+	//m_vEffectOffset = { 0.f,0.f,0.f };
 
 
 	return S_OK;
@@ -122,11 +117,20 @@ _uint CBullet_EnergyBall::LateUpdate_GameObject(_float fDeltaTime)
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
 		return UPDATE_ERROR;
 
+	if (m_IsDead == true)
+	{
+		if (m_pEffect)
+		{
+			m_pEffect->Set_IsDead(true);
+			m_pEffect = nullptr;
+		}
+
+		return DEAD_OBJECT;
+	}
 
 	m_fLiveTime -= fDeltaTime;
-	if (m_fLiveTime <= 0.f)
-		return DEAD_OBJECT;
-
+	if (m_fLiveTime <= 0.f || m_IsCollide == true)
+		m_IsDead = true;
 
 	return _uint();
 }
@@ -137,10 +141,10 @@ _uint CBullet_EnergyBall::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pTexture->Set_Texture(0);
-	m_pCube->Render_VIBuffer();
+	m_pRect->Render_VIBuffer();
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();
@@ -255,10 +259,17 @@ void CBullet_EnergyBall::Free()
 {
 	Safe_Release(m_pTargetTransform);
 
-	Safe_Release(m_pCube);
+	Safe_Release(m_pRect);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);
+
+	if (m_pEffect) 
+	{
+		m_pEffect->Set_IsDead(true);
+		m_pEffect = nullptr;
+	}
+
 
 	CGameObject::Free();
 }

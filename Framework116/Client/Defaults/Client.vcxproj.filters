@@ -88,21 +88,6 @@
     <Filter Include="02.GameObject\09.HUD\01.Weapons">
       <UniqueIdentifier>{fe21133b-9cea-4b43-a588-c27d7b949fb0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\08.Bullet\02.Boss">
-      <UniqueIdentifier>{8ac5797a-a195-456d-a81a-0db08aed7682}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\08.Bullet\02.Boss\02.EMP_Bomb">
-      <UniqueIdentifier>{478d85d1-2c7c-48a4-9e74-aa8aae3cb2c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\08.Bullet\02.Boss\02.EMP_Bomb\Bullet_EMP_Bomb_Explotion">
-      <UniqueIdentifier>{eea6f620-9d2d-4616-ba21-63ddd79ec6fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\08.Bullet\02.Boss\01.Laser">
-      <UniqueIdentifier>{20ac20a6-4343-4b16-a3bc-f8a01dc5f730}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\08.Bullet\02.Boss\00.EnergyBall">
-      <UniqueIdentifier>{9115b9a8-e38a-4a24-b2d9-2e4912cfbb46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Scene\02.Lobby">
       <UniqueIdentifier>{8d910698-dbf1-4df6-81a6-afc6d4f2e268}</UniqueIdentifier>
     </Filter>

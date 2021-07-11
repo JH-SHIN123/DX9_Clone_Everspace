@@ -1023,6 +1023,8 @@ HRESULT CLoading::Ready_Map_Effect_Resources()
 
 HRESULT CLoading::Ready_BossAndOthers()
 {
+
+#pragma region GameObjects
 	// boss
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -1061,14 +1063,6 @@ HRESULT CLoading::Ready_BossAndOthers()
 		return E_FAIL;
 	}
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"Component_Texture_Billboard_Warmhole",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Billboard_Warmhole%d.png"))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Billboard_Warmhole");
-		return E_FAIL;
-	}
 
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -1079,6 +1073,15 @@ HRESULT CLoading::Ready_BossAndOthers()
 		return E_FAIL;
 	}
 
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::NonStatic,
+	//	L"Component_Texture_Billboard_Warmhole",
+	//	CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Billboard_Warmhole%d.png"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Billboard_Warmhole");
+	//	return E_FAIL;
+	//}
+
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Boss_Spawn_Monster",
@@ -1087,6 +1090,48 @@ HRESULT CLoading::Ready_BossAndOthers()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Boss_Spawn_Monster");
 		return E_FAIL;
 	}
+
+#pragma endregion
+
+#pragma region Textures
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Fire_Effet",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/Fire_Effet.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Fire_Effet");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Dust_Effet",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/Dust_Effect.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Dust_Effet");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Bullet_Trail_Puple",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/Bullet_Trail_Puple.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet_Trail_Puple");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Bullet_EnergyBall",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Bullet/Boss_EnergyBall.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet_EnergyBall");
+		return E_FAIL;
+	}
+
+#pragma endregion
 
 	return S_OK;
 }

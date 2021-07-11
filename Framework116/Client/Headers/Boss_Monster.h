@@ -3,9 +3,9 @@
 
 #include "GameObject.h"
 
-#define BOSSRANGE_NEAR		30.f
-#define BOSSRANGE_MIDDLE	80.f
-#define BOSSRANGE_FAR		200.f
+#define BOSSRANGE_NEAR		100.f
+#define BOSSRANGE_MIDDLE	300.f
+#define BOSSRANGE_FAR		500.f
 
 USING(Engine)
 class CBoss_Monster final : public CGameObject
