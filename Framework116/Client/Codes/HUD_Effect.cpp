@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "HUD_Effect.h"
+#include "MaterialHandler.h"
 
 CHUD_Effect::CHUD_Effect(LPDIRECT3DDEVICE9 pDevice)
 	: CUI(pDevice)
@@ -47,6 +48,9 @@ _uint CHUD_Effect::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CHUD_Effect::Render_GameObject()
 {
+	//m_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+	//m_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
 	CUI::Render_GameObject();
 
 	return _uint();

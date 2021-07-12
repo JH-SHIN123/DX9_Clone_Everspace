@@ -325,16 +325,6 @@ HRESULT CMainApp::Ready_StaticResources()
 		return E_FAIL;
 	}
 
-	/* For.Component_Texture_AlertArrow */
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::Static,
-		L"Component_Texture_Effect_Warp",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD_Effect/warp.png", 1))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Warp");
-		return E_FAIL;
-	}
-
 #pragma endregion
 	return S_OK;
 }
