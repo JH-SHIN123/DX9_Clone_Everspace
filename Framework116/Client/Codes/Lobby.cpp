@@ -40,6 +40,8 @@ HRESULT CLobby::Ready_Scene()
 		return E_FAIL;
 	if (FAILED(Add_Layer_Status(L"Layer_Status")))
 		return E_FAIL;
+	if (FAILED(Add_Layer_Cursor(L"Layer_Cursor")))
+		return E_FAIL;
 	
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
@@ -293,6 +295,19 @@ HRESULT CLobby::Add_Layer_ScriptUI(const wstring & LayerTag)
 	return S_OK;
 }
 
+HRESULT CLobby::Add_Layer_Cursor(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyCursor",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add ScriptUI In Layer");
+		return E_FAIL;
+	}
+	return S_OK;
+}
+
 
 
 
@@ -376,6 +391,13 @@ void CLobby::Set_UnitInfo(UNIT_INFO _tUnitInfo)
 void CLobby::Set_Money(_uint _iMoney)
 {
 	m_iMoney += _iMoney;
+}
+
+_bool CLobby::GetStageLock(_uint iStageIdx)
+{
+	if (iStageIdx > 3)
+		return TRUE;
+	return m_bStageLock[iStageIdx];
 }
 
 

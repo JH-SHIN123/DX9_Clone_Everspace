@@ -103,10 +103,13 @@ _uint CLobbyScriptUI::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
 
-	if (m_pLobby->Get_IsGatcha())
+	if (m_pLobby->Get_StartUnPacking())
+		BlackBar_End(fDeltaTime);
+	else if (m_pLobby->Get_IsGatcha())
 		BlackBar_Start(fDeltaTime);
 	else 
 		BlackBar_End(fDeltaTime);
+
 
 	return m_pTransform->Update_Transform();
 }

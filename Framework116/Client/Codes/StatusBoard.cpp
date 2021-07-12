@@ -49,15 +49,9 @@ HRESULT CStatusBoard::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	TRANSFORM_DESC tTrans;
-<<<<<<< HEAD
-
-	tTrans.vScale = { 350.f,350.f,0.f };
-	tTrans.vPosition = _float3(-650.f, 50.f, 0.f);
-
-=======
 	tTrans.vScale = { 280.f,280.f,0.f };
 	tTrans.vPosition = _float3(650.f, 60.f, 0.f);
->>>>>>> origin/Main_Font
+
 	// For.Com_Transform
 
 

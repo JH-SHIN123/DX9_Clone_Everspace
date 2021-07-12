@@ -104,7 +104,8 @@ _uint CLobbyCam::OffSet(_float fDeltaTime)
 	{
 		m_CameraDesc.vAt = m_pPlayerTransform->Get_TransformDesc().vPosition;
 		m_CameraDesc.vEye.y += m_fDistanceFromTarget / 2.f;
-		m_bStart = true;
+		m_bStart = TRUE;
+		m_bStop = TRUE;
 		return 0;
 	}
 	if (m_pLobby->Get_GotoNextScene())

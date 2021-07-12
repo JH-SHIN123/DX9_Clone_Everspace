@@ -52,6 +52,7 @@
 #include "AimAssist2.h"
 #include"LobbyBackUI.h"
 #include"LobbyScriptUI.h"
+#include"LobbyCursor.h"
 #pragma endregion
 
 
@@ -669,6 +670,15 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
 		return E_FAIL;
 	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyCursor",
+		CLobbyCursor::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
+		return E_FAIL;
+	}
+
 #pragma endregion
 	
 #pragma region Components

@@ -220,6 +220,9 @@
     <Filter Include="01.Scene\02.Lobby\01.LobbyUI\04.LobbyScriptUI\00.LobbyBackUI">
       <UniqueIdentifier>{f8099ca6-272f-4edc-a003-d51ca795e50b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Scene\02.Lobby\02.LobbyCursor">
+      <UniqueIdentifier>{7e750ad3-0827-469d-86be-bc84b4fed4d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -420,6 +423,9 @@
     <ClInclude Include="..\Headers\LobbyBackUI.h">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\04.LobbyScriptUI\00.LobbyBackUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\LobbyCursor.h">
+      <Filter>01.Scene\02.Lobby\02.LobbyCursor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -607,6 +613,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\LobbyBackUI.cpp">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\04.LobbyScriptUI\00.LobbyBackUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\LobbyCursor.cpp">
+      <Filter>01.Scene\02.Lobby\02.LobbyCursor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
