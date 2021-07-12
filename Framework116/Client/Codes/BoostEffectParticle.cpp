@@ -67,12 +67,12 @@ _uint CBoostEffectParticle::Update_GameObject(_float fDeltaTime)
 	// 살짝 y축 회전 후
 	// 이펙트 발사(총알처럼)
 	_float3 vLook;
-	memcpy(&vLook, &m_matWorld._31, sizeof(_float3));
+	memcpy(&vLook, &m_matWorld._11, sizeof(_float3));
 	D3DXVec3Normalize(&vLook, &vLook);
 
 	_float3 vPos;
 	memcpy(&vPos, &m_matWorld._41, sizeof(_float3));
-	vPos += -vLook * 30.f * fDeltaTime;
+	vPos += vLook * 30.f * fDeltaTime;
 	memcpy(&m_matWorld._41, &vPos, sizeof(_float3));
 
 	return _uint();

@@ -74,8 +74,9 @@ _uint CBoostEffect::Update_GameObject(_float fDeltaTime)
 		_float4x4 matView;
 		m_pDevice->GetTransform(D3DTS_VIEW, &matView);
 
-		_float4x4 matScale, matRotate, matTrans;
-		D3DXMatrixScaling(&matScale, 10.f, 10.f, 10.f);
+		_float4x4 matWorld, matScale, matRotate, matTrans;
+		D3DXMatrixIdentity(&matTrans);
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
 
 		D3DXMatrixIdentity(&matRotate);
 		memcpy(&matRotate._11, &matView._11, sizeof(_float3));
@@ -83,35 +84,34 @@ _uint CBoostEffect::Update_GameObject(_float fDeltaTime)
 		memcpy(&matRotate._31, &matView._31, sizeof(_float3));
 		D3DXMatrixInverse(&matRotate, 0, &matRotate);
 
-		_float4x4 matRotateY;
-		D3DXMatrixRotationY(&matRotateY, 90.f);
-		matRotate *= matRotateY;
-
-		//matTrans
-		D3DXMatrixIdentity(&matTrans);
-		CMainCam* pMainCam = (CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
-		if (pMainCam)
-			memcpy(&matTrans._41, &pMainCam->Get_CameraDesc().vAt, sizeof(_float3));
 
 		// Build Particle World
 		// 위치세팅 (원모양으로)
 		for (float fAngle = 0.f; fAngle <= 360.f; fAngle += 360.f / m_iParticleCount)
 		{
-			_float4x4 matWorld;
-			matWorld = matScale * matRotate * matTrans;
+			matWorld = matScale * matRotate;
 
+			_float3 vPos;
 			// 원형으로 세팅
+			CMainCam* pMainCam = (CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
+			if (pMainCam)
+				vPos = pMainCam->Get_CameraDesc().vAt;
+
+			// 원형 오프셋이동
 			_float3 vRight;
 			_float3 vUp;
-			_float3 vPos;
 			memcpy(&vRight, &matWorld._11, sizeof(_float3));
 			memcpy(&vUp, &matWorld._21, sizeof(_float3));
-			memcpy(&vPos, &matWorld._41, sizeof(_float3));
-
 			vPos += vRight * m_fCircleRadius * cosf(D3DXToRadian(fAngle));
 			vPos += vUp * m_fCircleRadius * sinf(D3DXToRadian(fAngle));
-			memcpy(&matWorld._41, &vPos, sizeof(_float3));
 
+			// 최종 위치값 세팅
+			D3DXMatrixTranslation(&matTrans, vPos.x, vPos.y, vPos.z);
+			
+			_float4x4 matRotateY;
+			D3DXMatrixRotationY(&matRotateY, D3DXToRadian(90.f));
+
+			matWorld *= matRotateY * matTrans;
 			m_pTransform->Set_WorldMatrix(matWorld);
 
 			if (FAILED(m_pManagement->Add_GameObject_InLayer(

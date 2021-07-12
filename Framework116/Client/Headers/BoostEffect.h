@@ -36,7 +36,7 @@ private:
 	_float m_fSpawnDeltaT = 0.f;
 	_float m_fSpawnTime = 0.5f;
 	size_t m_iParticleCount = 30;
-	_float m_fCircleRadius = 0.1f;
+	_float m_fCircleRadius = 1.f;
 };
 
 #define __BOOST_EFFECT_H__ 
