@@ -52,18 +52,7 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 		return E_FAIL;
 
-	// TEST
-	UI_DESC test;
-	test.wstrTexturePrototypeTag = L"Component_Texture_Effect_Warp";
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::Static,
-		L"GameObject_HUD_Effect",
-		L"Layer_HUD_Effect_TEST",
-		(void*)&test)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Crosshair In Layer");
-		return E_FAIL;
-	}
+
 
 
 	return S_OK;
