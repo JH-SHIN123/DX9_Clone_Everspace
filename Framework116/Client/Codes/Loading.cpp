@@ -53,6 +53,7 @@
 
 // 3StageÇÊ¿ä
 #include "Sniper.h"
+#include "Sniper_Bullet.h"
 #pragma endregion
 
 
@@ -1207,6 +1208,16 @@ HRESULT CLoading::Ready_BossAndOthers()
 		return E_FAIL;
 	}
 
+	// For Sniper Bullet
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Sniper_Bullet",
+		CSniper_Bullet::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper_Bullet");
+		return E_FAIL;
+	}
+
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Bullet_Laser",
@@ -1299,6 +1310,24 @@ HRESULT CLoading::Ready_BossAndOthers()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Bullet/Boss_EnergyBall.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet_EnergyBall");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Sniper_Bullet",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Bullet/Sniper_Bullet.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Sniper_Bullet");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Sniper_Bullet_Trail",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/Sniper_Bullet_Trail.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Sniper_Bullet_Trail");
 		return E_FAIL;
 	}
 

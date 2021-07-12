@@ -21,12 +21,12 @@ public:
 	virtual _uint LateUpdate_GameObject(_float fDeltaTime) override;
 	virtual _uint Render_GameObject() override;
 
-private:
+public:
 	_uint	Movement(_float fDeltaTime);
-	_uint	Researching(_float fDeltaTime);
-
-private:
-	void	StateCheck();
+	_bool Get_IsLockOn() { return m_IsLockOn; }
+	_bool RotateToPlayer(_float fDeltaTime);
+	_uint Sniper_Battle(_float fDeltaTime);
+	_uint Lock_On(_float fDeltaTime);
 
 public:
 	static CSniper* Create(LPDIRECT3DDEVICE9 pDevice);
@@ -45,8 +45,16 @@ private:
 	CModelMesh*  m_pModelMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
-
 	CTransform* m_pPlayerTransform = nullptr;
+
+private:
+	_bool m_IsBattle = false;
+	_bool m_IsLookingPlayer = false;
+	_bool m_IsLockOn = false;
+	_bool m_IsTextile = false;
+
+	// 락온 -> 발사 까지의 딜레이.
+	_float m_fSniperShootDelay = 0.f;
 };
 
 #define __SNIPER_H__

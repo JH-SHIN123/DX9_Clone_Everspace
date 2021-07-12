@@ -99,6 +99,7 @@ private: // Wing Effect
 private: // AlertArrow 관련
 	_uint Make_Arrow();
 	const list<class CGameObject*>* m_listCheckMonsters = nullptr;
+	const list<class CGameObject*>* m_listCheckSnipers = nullptr;
 	_bool IsArrow = false;
 
 private: // HP, 스태미너 관련

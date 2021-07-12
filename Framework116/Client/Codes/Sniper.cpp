@@ -25,7 +25,7 @@ HRESULT CSniper::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Mesh_Monster",
+		L"Component_Mesh_Axis",
 		L"Com_Mesh",
 		(CComponent**)&m_pModelMesh)))
 	{
@@ -36,7 +36,9 @@ HRESULT CSniper::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.vPosition = _float3(0.5f, 0.f, 0.5f);	
-	TransformDesc.vScale = _float3(2.f, 2.f, 2.f);
+	TransformDesc.vScale = _float3(5.f, 5.f, 5.f);
+	TransformDesc.fSpeedPerSec = 40.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(60.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -65,10 +67,6 @@ HRESULT CSniper::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	// Init
-	m_eNextState = State::Research;
-	m_vCreatePosition = TransformDesc.vPosition;
-	m_vResearchRange = { 50.f,50.f,50.f };
 
 	m_pPlayerTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Player", L"Com_Transform");
 	Safe_AddRef(m_pPlayerTransform);
@@ -86,8 +84,11 @@ _uint CSniper::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
 	
-	Movement(fDeltaTime);
-	StateCheck();
+	//배틀모드가 아닐때는 그냥 돌아다니렴.
+	if (!m_IsBattle)
+		Movement(fDeltaTime);
+	else
+		Sniper_Battle(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
@@ -115,7 +116,6 @@ _uint CSniper::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pModelMesh->Render_Mesh(); 
-	// Test
 
 #ifdef _DEBUG // Render Collide
 	m_pCollide->Render_Collide();
@@ -126,39 +126,69 @@ _uint CSniper::Render_GameObject()
 
 _uint CSniper::Movement(_float fDeltaTime)
 {
-	if (m_eCurState = State::Research) {
-		Researching(fDeltaTime);
-	}
-	
+	//최초에 가만히 있을래 아니면 돌아다닐래? -> 돌아다니자 ㅋㅋ
+	m_pTransform->Go_Straight(fDeltaTime);
+	m_pTransform->RotateY(fDeltaTime);
+
+	// 플레이어와의 거리를 계속 계산해서 감지할지 말지 여부를 정함!
+	_float3 vPlayerPos = m_pPlayerTransform->Get_State(EState::Position);
+	_float3 vSniperPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vDir = (vPlayerPos - vSniperPos);
+	_float vDist = D3DXVec3Length(&vDir);
+
+	// 배틀 상태 On
+	if (vDist <= 400.f)
+		m_IsBattle = true;
 
 	return _uint();
 }
 
-_uint CSniper::Researching(_float fDeltaTime)
+
+_uint CSniper::Sniper_Battle(_float fDeltaTime)
 {
-	// if 범위보다 벗어났다. -> Create Pos로 돌아가기
+	// 플레이어 쪽으로 회전해! -> OK!
+	RotateToPlayer(fDeltaTime);
+
+	// 플레이어쪽을 바라보고 있으면 락온시작! 그게아니면 계속 회전이나 하렴
+	if (m_IsLookingPlayer)
+		Lock_On(fDeltaTime);
+	else
+		return _uint();
 
 
 	return _uint();
 }
 
-void CSniper::StateCheck()
+_uint CSniper::Lock_On(_float fDeltaTime)
 {
-	if (m_eCurState != m_eNextState) {
-		switch (m_eNextState)
+	// 락온 시작하면 락온 되었다는걸 알리기 위해서 플레이어로 향하는 레이저를 발사해야 할까?..
+	// 아니면 플레이어 HUD에서 퉁쳐야하나?
+	m_IsLockOn = true;
+
+	m_fSniperShootDelay += fDeltaTime;
+	// 락온을 4초동안 한다음에 투사체 하나 발사하자
+	if (m_fSniperShootDelay >= 4.f)
+	{
+		TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
+
+		pArg->vPosition = m_pTransform->Get_State(EState::Position);
+		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
+
+		if (FAILED(m_pManagement->Add_GameObject_InLayer(
+			EResourceType::NonStatic,
+			L"GameObject_Sniper_Bullet",
+			L"Layer_Sniper_Bullet", pArg)))
 		{
-		case State::Research:
-			break;
-		case State::Warning:
-			break;
-		case State::Attack:
-			break;
-		case State::Die:
-			break;
+			PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper_Bullet In Layer");
+			return E_FAIL;
 		}
-		m_eCurState = m_eNextState;
+		m_fSniperShootDelay = 0.f;
 	}
+
+	return _uint();
 }
+
 
 CSniper * CSniper::Create(LPDIRECT3DDEVICE9 pDevice)
 {
@@ -187,8 +217,62 @@ CGameObject * CSniper::Clone(void * pArg/* = nullptr*/)
 void CSniper::Free()
 {
 	Safe_Release(m_pModelMesh);
+	Safe_Release(m_pPlayerTransform);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pCollide);
 
 	CGameObject::Free();
+}
+
+_bool CSniper::RotateToPlayer(_float fDeltaTime)
+{
+	_float3 vTargetPos = m_pPlayerTransform->Get_State(EState::Position);
+	_float3 vSniperPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vTargetDir = vTargetPos - vSniperPos;
+	D3DXVec3Normalize(&vTargetDir, &vTargetDir);
+
+	_float3 vSniperLook = m_pTransform->Get_State(EState::Look);
+	_float3 vSniperUp = m_pTransform->Get_State(EState::Up);
+	D3DXVec3Normalize(&vSniperLook, &vSniperLook);
+
+	_float fCeta = D3DXVec3Dot(&vTargetDir, &vSniperLook);
+	_float fRadianMax = D3DXToRadian(95.f);
+	_float fRadianMin = D3DXToRadian(85.f);
+
+	_float3 vMyRight, vMyLeft, vMissileUp, vMissileDown;
+	D3DXVec3Cross(&vMyRight, &vSniperUp, &vSniperLook);
+	D3DXVec3Cross(&vMyLeft, &vSniperLook, &vSniperUp);
+	D3DXVec3Cross(&vMissileUp, &vMyRight, &vSniperLook);
+	D3DXVec3Cross(&vMissileDown, &vSniperLook, &vMyRight);
+
+	D3DXVec3Normalize(&vMyRight, &vMyRight);
+	D3DXVec3Normalize(&vMyLeft, &vMyLeft);
+	D3DXVec3Normalize(&vMissileUp, &vMissileUp);
+	D3DXVec3Normalize(&vMissileDown, &vMissileDown);
+
+	_float fRight = D3DXVec3Dot(&vTargetDir, &vMyRight);
+	_float fLeft = D3DXVec3Dot(&vTargetDir, &vMyLeft);
+	_float fUp = D3DXVec3Dot(&vTargetDir, &vMissileUp);
+	_float fDown = D3DXVec3Dot(&vTargetDir, &vMissileDown);
+
+	
+	if (fRight < fLeft)
+		m_pTransform->RotateY(-fDeltaTime);
+	else
+		m_pTransform->RotateY(fDeltaTime);
+
+	if (fUp < fDown)
+		m_pTransform->RotateX(-fDeltaTime);
+	else
+		m_pTransform->RotateX(fDeltaTime);
+
+	if (fabs(fRight - fLeft) < 10.f || fabs(fUp - fDown) < 10.f)
+	{
+		m_IsLookingPlayer = true;
+	}
+	else
+		m_IsLookingPlayer = false;
+
+	return m_IsLookingPlayer;
 }

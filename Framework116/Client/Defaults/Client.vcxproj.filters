@@ -217,6 +217,9 @@
     <Filter Include="02.GameObject\03.Monster\01.Sniper">
       <UniqueIdentifier>{e01bd318-fd70-46f8-aa3a-23506b2434b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\08.Bullet\04.Sniper_Bullet">
+      <UniqueIdentifier>{0181d743-2a18-46ba-8d2c-b332a7caeef6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -414,6 +417,9 @@
     <ClInclude Include="..\Headers\Sniper.h">
       <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Sniper_Bullet.h">
+      <Filter>02.GameObject\08.Bullet\04.Sniper_Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -598,6 +604,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Sniper.cpp">
       <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Sniper_Bullet.cpp">
+      <Filter>02.GameObject\08.Bullet\04.Sniper_Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

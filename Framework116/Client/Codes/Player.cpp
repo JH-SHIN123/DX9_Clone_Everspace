@@ -869,7 +869,7 @@ _uint CPlayer::Make_Arrow()
 	// 몬스터 pos - 플레이어 pos. => 
 	// 각도로 비교하자~
 	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size() == 0 
-		/*||m_pManagement->Get_GameObjectList(L"Layer_Monster")->size() == 0*/)
+		||m_pManagement->Get_GameObjectList(L"Layer_Sniper")->size() == 0)
 		return UPDATE_ERROR;
 
 	//Test
@@ -877,14 +877,19 @@ _uint CPlayer::Make_Arrow()
 	_float3 vPlayerLook = m_pTransform->Get_State(EState::Look);
 
 	m_listCheckMonsters = m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster");
-	if (nullptr == m_listCheckMonsters || m_listCheckMonsters->size() == 0) return NO_EVENT;
+	m_listCheckSnipers = m_pManagement->Get_GameObjectList(L"Layer_Sniper");
+	if (nullptr == m_listCheckMonsters 
+		|| nullptr == m_listCheckSnipers 
+		|| m_listCheckMonsters->size() == 0 
+		|| m_listCheckSnipers->size() == 0) return NO_EVENT;
 
+	// Boss_Monster
 	auto& iter = m_listCheckMonsters->begin();
 
 	for (; iter != m_listCheckMonsters->end(); ++iter)
 	{
-		_float3 v1 = vPlayerLook; // 얘는 방향벡턴데?
-		_float3 v2 = (*iter)->Get_Collides()->front()->Get_BoundingSphere().Get_Position() - m_pTransform->Get_State(EState::Position); // 위치벡터네?
+		_float3 v1 = vPlayerLook; 
+		_float3 v2 = (*iter)->Get_Collides()->front()->Get_BoundingSphere().Get_Position() - m_pTransform->Get_State(EState::Position); 
 		_float fCeta;
 		D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
 		_float v1v2 = D3DXVec3Dot(&v1, &v2);
@@ -913,6 +918,42 @@ _uint CPlayer::Make_Arrow()
 			}
 		}
 	}
+	// Snipers 
+	//auto& iter2 = m_listCheckSnipers->begin();
+
+	//for (; iter2 != m_listCheckSnipers->end(); ++iter)
+	//{
+	//	_float3 v1 = vPlayerLook; 
+	//	_float3 v2 = (*iter2)->Get_Collides()->front()->Get_BoundingSphere().Get_Position() - m_pTransform->Get_State(EState::Position);
+	//	_float fCeta;
+	//	D3DXVec3Normalize(&vPlayerLook, &vPlayerLook);
+	//	_float v1v2 = D3DXVec3Dot(&v1, &v2);
+	//	_float v1Length = D3DXVec3Length(&v1);
+	//	_float v2Length = D3DXVec3Length(&v2);
+	//	fCeta = acosf(v1v2 / (v1Length * v2Length));
+
+	//	_float fDegree = D3DXToDegree(fCeta);
+
+	//	// 각도가 이만큼 넘으면 화면밖에있음
+	//	if (fabs(fDegree) > 90.f)
+	//	{
+	//		if (IsArrow == false)
+	//		{
+	//			//wstring abc = to_wstring(fDegree);
+	//			//PRINT_LOG(L"", abc.c_str());
+	//			m_pManagement->Add_GameObject_InLayer(EResourceType::Static, L"GameObject_AlertArrow", L"Layer_AlertArrow", (void*)(*iter2));
+	//			IsArrow = true;
+	//		}
+	//	}
+	//	else if (fabs(fDegree) < 70.f)
+	//	{
+	//		if (IsArrow && m_pManagement->Get_GameObjectList(L"Layer_AlertArrow")->size() != 0)
+	//		{
+	//			m_pManagement->Get_GameObjectList(L"Layer_AlertArrow")->front()->Set_IsDead(TRUE);
+	//			IsArrow = false;
+	//		}
+	//	}
+	//}
 
 	
 

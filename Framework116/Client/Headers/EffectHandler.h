@@ -30,6 +30,8 @@ public:
 	static HRESULT Add_Layer_Effect_BossBullet_EnergyBall_Trail(class CGameObject* pTarget, class CGameObject** ppGameObject = nullptr);
 	static HRESULT Add_Layer_Effect_BossBullet_EnergyBall_Dead(const _float3& _vPos, const _float _fSize);
 
+	
+	static HRESULT Add_Layer_Effect_Sniper_Bullet_Trail(class CGameObject* pTarget, class CGameObject** ppGameObject = nullptr);
 
 
 };
