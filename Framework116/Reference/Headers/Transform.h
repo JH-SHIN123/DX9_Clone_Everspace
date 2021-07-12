@@ -64,6 +64,7 @@ public:
 	void Set_RotatePerSec(const _float fRotatePerSec);
 
 	void Set_WorldMatrix(const _float4x4& NewWorld);
+	void Set_Look(const _float3& vLook); // Quaternion¸¸ Àû¿ëµÊ
 
 public:
 	const TRANSFORM_DESC& Get_TransformDesc() const;

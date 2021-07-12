@@ -89,6 +89,11 @@ void CTransform::Set_WorldMatrix(const _float4x4 & NewWorld)
 	m_TransformDesc.matWorld = NewWorld;
 }
 
+void CTransform::Set_Look(const _float3& vLook)
+{
+	m_TransformDesc.vAxis[(_uint)EState::Look] = vLook;
+}
+
 const TRANSFORM_DESC & CTransform::Get_TransformDesc() const
 {
 	// TODO: 여기에 반환 구문을 삽입합니다.
