@@ -29,7 +29,6 @@ CProduct::CProduct(const CProduct & other)
 	, m_tPurpleMaterial(other.m_tPurpleMaterial)
 	,m_tRedMaterial(other.m_tRedMaterial)
 	, m_tGoldMaterial(other.m_tGoldMaterial)
-	, vColorRGBA(other.vColorRGBA)
 {
 
 }
@@ -373,6 +372,7 @@ void CProduct::Add_Font_InLayer(wstring strLayerTag, CGameObject *& pFont, wstri
 
 	if (pFont)
 		return;
+
 	MYFONT_DESC tFontDesc;
 
 	tFontDesc.wstrText = str;
@@ -420,12 +420,12 @@ CGameObject * CProduct::Clone(void * pArg/* = nullptr*/)
 
 void CProduct::Free()
 {
-
+	
 	Safe_Release(m_pProductTex);
+	Safe_Release(m_pTexture);
 	Safe_Release(m_pProductVIBuffer);
 	Safe_Release(m_pGeoMesh);
 	Safe_Release(m_pTransform);
-	Safe_Release(m_pTexture);
-	
+	Safe_Release(m_pFont);
 	CGameObject::Free();
 }

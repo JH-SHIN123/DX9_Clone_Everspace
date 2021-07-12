@@ -674,13 +674,6 @@ void CLobbyUI::Free()
 {
 	Safe_Release(m_pController);
 
-	Safe_Release(m_pFontAtkUpCount);
-	Safe_Release(m_pFontDefUpCount);
-	Safe_Release(m_pFontHpUpCount);
-	Safe_Release(m_pFontEnergyUpCount);
-	Safe_Release(m_pFontMissileCount);
-	Safe_Release(m_pFontVMaxCount);
-
 	CUI::Free();
 }
 
