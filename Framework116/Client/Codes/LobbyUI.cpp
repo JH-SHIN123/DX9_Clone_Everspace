@@ -57,6 +57,7 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 		return DEAD_OBJECT;
 	if (m_wstrTexturePrototypeTag == L"Component_Texture_SceneSelect")
 	{
+<<<<<<< HEAD
 		_float3 vPos = m_pTransform->Get_TransformDesc().vPosition;
 		if (!m_bCancelSceneChange)
 		{
@@ -78,6 +79,16 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 				m_pLobby->Set_SceneSelect(FALSE);
 			}
 			m_pTransform->Set_Position(vPos);
+=======
+		_float3 vScale = m_pTransform->Get_TransformDesc().vScale;
+		if (m_pTransform->Get_TransformDesc().vScale.x < 1171.f)
+		{
+			vScale.x += fDeltaTime * 1171.f;
+		}
+		if (m_pTransform->Get_TransformDesc().vScale.y < 683.f)
+		{
+			vScale.y += fDeltaTime* 683.f;
+>>>>>>> main
 		}
 	}
 	else if (m_wstrTexturePrototypeTag != L"Component_Texture_X"

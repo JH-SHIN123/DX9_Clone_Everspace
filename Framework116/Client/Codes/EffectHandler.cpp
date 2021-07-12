@@ -193,14 +193,14 @@ HRESULT CEffectHandler::Add_Layer_Effect_Bullet(CGameObject* pTarget, CGameObjec
 HRESULT CEffectHandler::Add_Layer_Effect_Gatling(CGameObject * pTarget, CGameObject ** ppGameObject)
 {
 	PARTICLESYSTEM_DESC pSystemDesc;
-	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Orange";
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Smoke";
 	pSystemDesc.iNumParticles = 1;
-	pSystemDesc.tResetAttribute.fParticleSize = 0.4f;
+	pSystemDesc.tResetAttribute.fParticleSize = 0.5f;
 	pSystemDesc.tResetAttribute.fParticleSpeed = 5.f;
-	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.4f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.05f;
 	pSystemDesc.tResetAttribute.fLifeTime = 0.2f;
 	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f, 1.f };
-	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 0.5f, 0.5f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f, 1.f };
 	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 0.f, 0.f };
 	pSystemDesc.pTarget = pTarget;
 
@@ -412,11 +412,11 @@ HRESULT CEffectHandler::Add_Layer_Effect_BossBullet_EnergyBall_Trail(CGameObject
 HRESULT CEffectHandler::Add_Layer_Effect_BossBullet_EnergyBall_Dead(const _float3 & _vPos, const _float _fSize)
 {
 	PARTICLESYSTEM_DESC pSystemDesc;
-	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Fire_Effet";
-	pSystemDesc.iNumParticles = 1;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Bullet_Trail_Puple";
+	pSystemDesc.iNumParticles = 5;
 	pSystemDesc.tResetAttribute.fParticleSize = 3.f * _fSize;
 	pSystemDesc.tResetAttribute.fParticleSpeed = 5.f;
-	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.001f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.1f;
 	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
 	pSystemDesc.tTransformDesc.vPosition = _vPos;
 	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };

@@ -11,8 +11,10 @@ public:
 	explicit CDrone(const CDrone& other);
 	virtual ~CDrone() = default;
 
-public:
-	enum State { Research, Die, End };
+public: 
+	enum State { Idle // 상하운동 전용
+		, Turn, Move, BackTurn, BackMove // 랜덤한 방향, 일정한 범위
+		, Die, End };
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -24,6 +26,13 @@ public:
 private:
 	_uint	Movement(_float fDeltaTime);
 	_uint	Researching(_float fDeltaTime);
+
+private:
+	_uint	State_Idle(_float fDelataTime);
+	_uint	State_Turn(_float fDelataTime);
+	_uint	State_Move(_float fDelataTime);
+	_uint	State_BackTurn(_float fDelataTime);
+	_uint	State_BackMove(_float fDelataTime);
 
 private:
 	void	StateCheck();
@@ -55,6 +64,14 @@ private:
 	CTransform* m_pTransform = nullptr;
 	CTransform* m_pTargetTransform = nullptr;
 
+private:
+	_float3 m_vSpawnPos;
+	_float m_fDis = 20.f;
+	_float m_fTurnSec = 0.f;
+	_float m_fAngle = 0.f;
+	_bool m_bAnglePlus = true;
+
+	// 왔다리 > 돌아왔다리 > 랜덤 값 만큼 회전 > 왔다리 > 돌아 왔다리....
 };
 
 #define __DRONE_H__

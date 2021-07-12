@@ -50,9 +50,15 @@
 #include "NaviArrow.h"
 #include "AimAssist.h"
 #include "AimAssist2.h"
+<<<<<<< HEAD
 #include"LobbyBackUI.h"
 #include"LobbyScriptUI.h"
 #include"LobbyCursor.h"
+=======
+
+// 3Stage필요
+#include "Sniper.h"
+>>>>>>> main
 #pragma endregion
 
 
@@ -197,6 +203,16 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_Sniper */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Sniper",
+		CSniper::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper");
+		return E_FAIL;
+	}
+
 	/* For.GameObject_Skybox */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -210,7 +226,7 @@ HRESULT CLoading::Ready_StageResources()
 	/* 임시 보스 몬스터 입니다. */
 	Ready_BossAndOthers();
 
-
+	//////////////////////////////3스테이지에도 필요!!/////////////////////////////////////////////////////////////////////////////////
 	/*  HUD Crosshair 입니다 */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -300,6 +316,8 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Stamina_Bar");
 		return E_FAIL;
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/* For.GameObject_Planet */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -413,6 +431,15 @@ HRESULT CLoading::Ready_StageResources()
 		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
+		return E_FAIL;
+	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
 		return E_FAIL;
 	}
 
@@ -1283,6 +1310,15 @@ HRESULT CLoading::Ready_BossAndOthers()
 #pragma endregion
 
 #pragma region Textures
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Bullet_Dead",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/Bullet_Dead.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Fire_Effet");
+		return E_FAIL;
+	}
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,

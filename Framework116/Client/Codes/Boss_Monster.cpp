@@ -13,11 +13,11 @@ CBoss_Monster::CBoss_Monster(const CBoss_Monster & other)
 	: CGameObject(other)
 	, m_eActionMode(other.m_eActionMode)
 	, m_IsSpecialAction(other.m_IsSpecialAction)
-	, m_IsLeftFire(other.m_IsLeftFire)
-	, m_fEnergyBall_CoolTime(other.m_fEnergyBall_CoolTime)
 	, m_fLaser_CoolTime(other.m_fLaser_CoolTime)
 	, m_fEmpBomb_CoolTime(other.m_fEmpBomb_CoolTime)
-{	
+	, m_fCannonLength(other.m_fCannonLength)
+	, m_fLaser_Degree(other.m_fLaser_Degree)
+{
 }
 
 HRESULT CBoss_Monster::Ready_GameObject_Prototype()
@@ -102,6 +102,10 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
 
+
+
+
+
 	Move_AI(fDeltaTime);
 	Attack_AI(fDeltaTime);
 
@@ -109,7 +113,7 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 
 	//Movement(fDeltaTime);
 
-	if(!m_IsHPBar)
+	if (!m_IsHPBar)
 		Add_Hp_Bar(fDeltaTime);
 
 	m_pTransform->Update_Transform();
@@ -138,7 +142,7 @@ _uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
 	}
 	if (m_IsCollide) {
 		// Bullet 데미지 만큼.
- 		m_pHp_Bar->Set_ScaleX(-100.f / m_fFullHp * m_fHpLength);
+		m_pHp_Bar->Set_ScaleX(-100.f / m_fFullHp * m_fHpLength);
 		m_fHp -= 100.f;
 		m_IsCollide = false;
 	}
@@ -225,41 +229,66 @@ _uint CBoss_Monster::Move_Far(_float fDeltaTime)
 	return _uint();
 }
 
-_uint CBoss_Monster::Fire_Triger(_float fDeltaTime)
+_uint CBoss_Monster::EnergyBallCannon_Target_Search(_float fDeltaTime)
 {
-	m_fEnergyBall_CoolTime += fDeltaTime;
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vPos = m_pTransform->Get_State(EState::Position);
+	_float3 vUp = m_pTransform->Get_State(EState::Up);
+	_float3 vLook = m_pTransform->Get_State(EState::Look);
+	_float3 vRight;
 
-	if (m_fEnergyBall_CoolTime >= 2.f)
+	D3DXVec3Normalize(&vLook, &vLook);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	D3DXVec3Cross(&vRight, &vUp, &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	vPos += vLook * 6.f;
+
+	m_vRight_EnergyBallCannon_Position = vPos - (vRight * 70.f);
+	m_vLeft_EnergyBallCannon_Position = vPos + (vRight * 70.f);
+
+	_float fRightCannonToTarget_Length = D3DXVec3Length(&(vTargetPos - m_vRight_EnergyBallCannon_Position));
+	_float fLeftCannonToTarget_Length = D3DXVec3Length(&(vTargetPos - m_vLeft_EnergyBallCannon_Position));
+	_float fOtherCannon = fabs(fRightCannonToTarget_Length - fLeftCannonToTarget_Length);
+
+	// 일단 짧은놈은 발사, 오른쪽 기준
+	if (fRightCannonToTarget_Length < fLeftCannonToTarget_Length)
 	{
-		m_fEnergyBall_CoolTime = 0.f;
+		Right_EnergyBall(fDeltaTime);
+
+		if (fOtherCannon <= m_fCannonLength)
+		{
+			Left_EnergyBall(fDeltaTime);
+		}
+
+	}
+	else
+	{
+		Left_EnergyBall(fDeltaTime);
+
+		if (fOtherCannon <= m_fCannonLength)
+		{
+			Right_EnergyBall(fDeltaTime);
+		}
+	}
+
+	return _uint();
+}
+
+_uint CBoss_Monster::Left_EnergyBall(_float fDeltaTime)
+{
+	m_fLeftCannonCoolTime += fDeltaTime;
+
+	if (m_fLeftCannonCoolTime >= 2.f)
+	{
+		m_fLeftCannonCoolTime = 0.f;
 
 		TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
-		_float3 vPos = m_pTransform->Get_State(EState::Position);
-		_float3 vUp = m_pTransform->Get_State(EState::Up);
-		_float3 vLook = m_pTransform->Get_State(EState::Look);
 
-		_float3 vRight, vLeft;
-
-		D3DXVec3Normalize(&vLook, &vLook);
-		D3DXVec3Normalize(&vUp, &vUp);
-
-		D3DXVec3Cross(&vRight, &vUp, &vLook);
-		D3DXVec3Normalize(&vRight, &vRight);
-
-		vPos += vLook * 8.f;
-
-		if (m_IsLeftFire == true)
-			vPos -= vRight * 65.f;
-
-		if (m_IsLeftFire == false)
-			vPos += vRight * 65.f;
-
-		m_IsLeftFire = !m_IsLeftFire;
-
-		pArg->vPosition = vPos;
+		pArg->vPosition = m_vLeft_EnergyBallCannon_Position;
 		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
-
-		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(vPos, 1.f);
+		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(pArg->vPosition, 1.f);
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::NonStatic,
@@ -271,7 +300,34 @@ _uint CBoss_Monster::Fire_Triger(_float fDeltaTime)
 		}
 	}
 
-	return _uint();
+	return S_OK;
+}
+
+_uint CBoss_Monster::Right_EnergyBall(_float fDeltaTime)
+{
+	m_fRightCannonCoolTime += fDeltaTime;
+
+	if (m_fRightCannonCoolTime >= 2.f)
+	{
+		m_fRightCannonCoolTime = 0.f;
+
+		TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
+
+		pArg->vPosition = m_vRight_EnergyBallCannon_Position;
+		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
+		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(pArg->vPosition, 1.f);
+
+		if (FAILED(m_pManagement->Add_GameObject_InLayer(
+			EResourceType::NonStatic,
+			L"GameObject_Bullet_EnergyBall",
+			L"Layer_Bullet_EnergyBall", pArg)))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add Bullet_EnergyBall In Layer");
+			return E_FAIL;
+		}
+	}
+
+	return S_OK;
 }
 
 _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
@@ -284,24 +340,39 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 
 	// 2초가 넘어가면 발사
 	// 2초의 쿨타임으로 1초동안 발사
-	if (m_fLaser_CoolTime >= 2.5f)
+	if (m_fLaser_CoolTime >= 2.7f)
 	{
 		TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
 
+		_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+		_float3 vPos = m_pTransform->Get_State(EState::Position);
+
+		_float3 vDir = vTargetPos - vPos;
+		D3DXVec3Normalize(&vDir, &vDir);
+
 		_float3 vUp = m_pTransform->Get_State(EState::Up);
+		_float3 vLook = m_pTransform->Get_State(EState::Look);
 		D3DXVec3Normalize(&vUp, &vUp);
+		D3DXVec3Normalize(&vLook, &vLook);
 
-		pArg->vPosition = m_pTransform->Get_State(EState::Position) + (vUp * 2.f);
+		_float fTheta = D3DXVec3Dot(&vDir, &vLook);
+		_float fDegree = D3DXToDegree(fTheta);
 
-		if (FAILED(m_pManagement->Add_GameObject_InLayer(
-			EResourceType::NonStatic,
-			L"GameObject_Bullet_Laser",
-			L"Layer_Bullet_Laser", pArg)))
+		if (m_fLaser_Degree <= fDegree)
 		{
-			PRINT_LOG(L"Error", L"Failed To Add Bullet_Laser In Layer");
-			return E_FAIL;
-		}
+			pArg->vPosition = vPos + (vLook * 130.f);
 
+
+			if (FAILED(m_pManagement->Add_GameObject_InLayer(
+				EResourceType::NonStatic,
+				L"GameObject_Bullet_Laser",
+				L"Layer_Bullet_Laser", pArg)))
+			{
+				PRINT_LOG(L"Error", L"Failed To Add Bullet_Laser In Layer");
+				return E_FAIL;
+			}
+		}
+		
 	}
 
 	return _uint();
@@ -333,7 +404,7 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 			return E_FAIL;
 		}
 	}
-	
+
 
 
 	return _uint();
@@ -438,11 +509,12 @@ _uint CBoss_Monster::Attack_AI(_float fDeltaTime)
 	switch (m_eActionMode)
 	{
 	case CBoss_Monster::Near:
-		Fire_Triger(fDeltaTime);
+		EnergyBallCannon_Target_Search(fDeltaTime);
+		Fire_Laser(fDeltaTime);
 		break;
 	case CBoss_Monster::Middle:
+		EnergyBallCannon_Target_Search(fDeltaTime);
 		Fire_Laser(fDeltaTime);
-		Fire_Triger(fDeltaTime);
 		//Spawn_Monster(fDeltaTime);
 		break;
 	case CBoss_Monster::Far:
@@ -517,11 +589,11 @@ void CBoss_Monster::RotateMy_Y(_float fDeltaTime)
 
 	//if (fCeta < fRadianMin)
 	//{
-		if (fRight < fLeft)
-			m_pTransform->RotateY(-fDeltaTime);
+	if (fRight < fLeft)
+		m_pTransform->RotateY(-fDeltaTime);
 
-		else
-			m_pTransform->RotateY(fDeltaTime);
+	else
+		m_pTransform->RotateY(fDeltaTime);
 	//}
 }
 
@@ -561,13 +633,13 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 			ptBoss.z = 0.f;
 			//////////////////////////////////////////////////////////////////
 			// 감지범위에 들어오게 되면 HP_Bar 생성!
-			
+
 			CGameObject* pGameObject = nullptr;
 			UI_DESC HUD_Hp_Bar;
 			HUD_Hp_Bar.tTransformDesc.vPosition = { ptBoss.x - 64.f, ptBoss.y - 50.f, 0.f };
-       		HUD_Hp_Bar.tTransformDesc.vScale = { m_fHp * (m_fHpLength / m_fFullHp), 8.f, 0.f };
+			HUD_Hp_Bar.tTransformDesc.vScale = { m_fHp * (m_fHpLength / m_fFullHp), 8.f, 0.f };
 			HUD_Hp_Bar.wstrTexturePrototypeTag = L"Component_Texture_HP_Bar";
- 			if (FAILED(m_pManagement->Add_GameObject_InLayer(
+			if (FAILED(m_pManagement->Add_GameObject_InLayer(
 				EResourceType::NonStatic,
 				L"GameObject_HP_Bar",
 				L"Layer_HP_Bar",
