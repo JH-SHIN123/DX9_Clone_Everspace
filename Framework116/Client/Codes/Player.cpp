@@ -288,6 +288,24 @@ _uint CPlayer::Render_GameObject()
 		, str.c_str(), -1
 		, &rc, DT_CENTER, D3DXCOLOR(255, 0, 0, 255));
 
+	// 카메라 스킵
+	if (m_IsCameraMove)
+	{
+		ESoloMoveMode eCheck = ((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Get_SoloMoveMode();
+		if (eCheck < ESoloMoveMode::Lock)
+		{
+			wstring mesage = L"C 키를 눌러 스킵";
+			RECT tUIBounds;
+			GetClientRect(g_hWnd, &tUIBounds);
+			//tUIBounds.top += 700;
+			tUIBounds.left += 1700;
+			m_pManagement->Get_Font()->DrawText(NULL
+				, mesage.c_str(), -1
+				, &tUIBounds, DT_CENTER, D3DXCOLOR(100, 100, 100, 255));
+		}
+	}
+
+
 #ifdef _DEBUG // Render Collide
 		//for (auto& collide : m_Collides)
 			//collide->Render_Collide();

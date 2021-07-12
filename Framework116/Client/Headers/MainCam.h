@@ -2,13 +2,13 @@
 #ifndef __MAINCAM_H__
 
 #include "Camera.h"
-
+#define CAMERA_SKIP -1
 USING(Engine)
 
-enum class ESoloMoveMode
+enum class ESoloMoveMode // Lock 보다 작아야 스킵 문구가 뜸
 {
-	Lock,
 	Stage1_Ring,
+	Lock,
 	End
 };
 

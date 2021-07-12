@@ -1,24 +1,25 @@
 #include "stdafx.h"
 #include "..\Headers\TargetMonster.h"
 #include "MaterialHandler.h"
+#include "QuestHandler.h"
 
 CTargetMonster::CTargetMonster(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
-	ZeroMemory(&m_tMaterial, sizeof(D3DMATERIAL9));
+	//ZeroMemory(&m_tMaterial, sizeof(D3DMATERIAL9));
 
-	CMaterialHandler::Set_RGBA(1.f, 0.0f, 1.f, 0.f, &m_tMaterial);
+	//CMaterialHandler::Set_RGBA(1.f, 0.0f, 1.f, 0.f, &m_tMaterial);
 
-	m_tMaterial.Power = 1.f;
+	//m_tMaterial.Power = 1.f;
 }
 
 CTargetMonster::CTargetMonster(const CTargetMonster & other)
 	: CGameObject(other)
 	, m_fReviveTime(other.m_fReviveTime)
 	, m_fColTime(other.m_fColTime)
-	, m_tMaterial(other.m_tMaterial)
 	, vColorRGBA(other.vColorRGBA) 
 {
+	//, m_tMaterial(other.m_tMaterial)
 }
 
 HRESULT CTargetMonster::Ready_GameObject_Prototype()
@@ -57,7 +58,7 @@ HRESULT CTargetMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = { 50.f, 0.f, 50.f };
+	TransformDesc.vPosition = { 50.f, 0.f, -50.f };
 	TransformDesc.fSpeedPerSec = 20.f;
 	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);
 	TransformDesc.vScale = { 2.f, 2.f, 2.f };
@@ -78,14 +79,6 @@ HRESULT CTargetMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	//m_pTerrainBuffer = (CVIBuffer_TerrainTexture*)m_pManagement->Get_Component(L"Layer_Terrain", L"Com_VIBuffer");
-	//Safe_AddRef(m_pTerrainBuffer);
-	//if (nullptr == m_pTerrainBuffer)
-	//{
-	//	PRINT_LOG(L"Error", L"m_pTerrainBuffer is nullptr");
-	//	return E_FAIL;
-	//}
-
 	// For.Com_Collide
 	PASSDATA_COLLIDE tCollide;
 	CStreamHandler::Load_PassData_Collide(L"Target_Cylinder", wstrMeshTag, tCollide);
@@ -105,6 +98,11 @@ HRESULT CTargetMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 			return E_FAIL;
 		}
 	}
+
+	// HP ¼¼ÆÃ
+	m_fHp = 100.f;
+	m_fFullHp = m_fHp;
+	m_IsDead = false;
 
 	return S_OK;
 }
@@ -130,6 +128,13 @@ _uint CTargetMonster::LateUpdate_GameObject(_float fDeltaTime)
 
 	Collide_Check(fDeltaTime);
 
+	if (m_IsDead == true)
+	{
+		CEffectHandler::Add_Layer_Effect_Particle_Yellow(m_pTransform->Get_State(EState::Position));
+		//CQuestHandler::Get_Instance()->Set_Counting();
+		return DEAD_OBJECT;
+	}
+
 	return _uint();
 }
 
@@ -138,7 +143,6 @@ _uint CTargetMonster::Render_GameObject()
 	CGameObject::Render_GameObject();
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	m_pDevice->SetMaterial(&m_tMaterial);
 	m_pTexture->Set_Texture(0);
 	m_pGeoMesh->Render_Mesh();
 	//m_pDevice->SetRenderState()
@@ -146,7 +150,8 @@ _uint CTargetMonster::Render_GameObject()
 	// Test
 
 #ifdef _DEBUG // Render Collide
-	//m_pCollide->Render_Collide();
+	for (auto& collide : m_Collides)
+		collide->Render_Collide();
 #endif
 
 	return _uint();
@@ -165,19 +170,25 @@ _bool CTargetMonster::Collide_Check(_float fDeltaTime)
 	{
 		if (m_fColTime == 0.f)
 		{
-			vColorRGBA.y += 0.1f;
-			CMaterialHandler::Set_RGBA(vColorRGBA, &m_tMaterial);
+			m_fHp -= 20.f;
+			//vColorRGBA.y += 0.1f;
+			//CMaterialHandler::Set_RGBA(vColorRGBA, &m_tMaterial);
 		}
 
 		m_fColTime += fDeltaTime; 
 
-		if (m_fColTime >= 0.5f)
+		if (m_fColTime >= 0.01f)
 		{
 			m_fColTime = 0.f;
 			m_IsCollide = false;
 		}
 
 	}
+
+	if (m_fHp <= 0)
+		m_IsDead = true;
+
+
 	return _bool();
 }
 

@@ -59,6 +59,11 @@ _uint CMainCam::Update_GameObject(_float fDeltaTime)
 
 	else
 	{
+		if (GetAsyncKeyState('C') & 0x8000)
+		{
+			m_byMoveCount = CAMERA_SKIP;
+		}
+
 		Check_SoloMoveMode(fDeltaTime);
 	}
 
@@ -70,6 +75,8 @@ _uint CMainCam::LateUpdate_GameObject(_float fDeltaTime)
 	CCamera::LateUpdate_GameObject(fDeltaTime);
 
 	// 카메라에도 스피어 달아야하나??
+
+
 
 
 

@@ -6,6 +6,13 @@
 
 USING(Engine)
 
+enum class EPortraitNumber
+{
+	Admiral = 0,
+	Player,
+	Friendly,
+	End
+};
 class CBackUI final : public CGameObject
 {
 
@@ -24,6 +31,7 @@ public:
 public:
 	const TRANSFORM_DESC Get_UI_TransformDesc();
 	HRESULT Change_Texture(const wstring& wstrTexturePrototypeTag);
+	HRESULT Change_TextureNumber(const EPortraitNumber& ePortraitNumber);
 
 public:
 	static CBackUI* Create(LPDIRECT3DDEVICE9 pDevice);
@@ -39,6 +47,8 @@ protected:
 	wstring m_wstrTexturePrototypeTag = L"";
 	TRANSFORM_DESC m_tTransformDesc;
 	RECT m_tUIBounds;
+	EPortraitNumber m_ePortraitNumber = EPortraitNumber::End;
+	D3DMATERIAL9 m_tMaterial;
 };
 
 #define __BACKUI_H__

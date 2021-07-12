@@ -280,3 +280,157 @@ HRESULT CEffectHandler::Add_Layer_Effect_WingBoost(CGameObject** ppGameObject)
 
 	return S_OK;
 }
+
+HRESULT CEffectHandler::Add_Layer_Effect_Ring_Pass(const _float3& _vPos)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Ring_Pass";
+	pSystemDesc.iNumParticles = 1;
+	pSystemDesc.tResetAttribute.fParticleSize = 5.f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 5.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.05f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+	pSystemDesc.tTransformDesc.vPosition = _vPos;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
+	}
+
+	return S_OK;
+}
+
+HRESULT CEffectHandler::Add_Layer_Effect_Particle_Yellow(const _float3 & _vPos)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Particle_Yellow";
+	pSystemDesc.iNumParticles = 10;
+	pSystemDesc.tResetAttribute.fParticleSize = 1.f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 20.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.1f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+	pSystemDesc.tTransformDesc.vPosition = _vPos;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Yellow In Layer");
+	}
+
+	return S_OK;
+}
+
+HRESULT CEffectHandler::Add_Layer_Effect_Boss_FireBullet(const _float3 & _vPos, const _float _fSize)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Fire_Effet";
+	pSystemDesc.iNumParticles = 2;
+	pSystemDesc.tResetAttribute.fParticleSize = 20.f * _fSize;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 5.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.001f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+	pSystemDesc.tTransformDesc.vPosition = _vPos;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Yellow In Layer");
+	}
+
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Dust_Effet";
+	pSystemDesc.iNumParticles = 5;
+	pSystemDesc.tResetAttribute.fParticleSize = 10.f * _fSize;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 10.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.01f;
+	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
+	}
+
+	return S_OK;
+}
+
+HRESULT CEffectHandler::Add_Layer_Effect_BossBullet_EnergyBall_Trail(CGameObject * pTarget, CGameObject ** ppGameObject)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Bullet_Trail_Puple";
+	pSystemDesc.iNumParticles = 1;
+	pSystemDesc.tResetAttribute.fParticleSize = 3.f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 3.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.1f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f, 1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f, 1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f, 1.f };
+	pSystemDesc.pTarget = pTarget;
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_FollowSystem",
+		L"Layer_FollowSystem",
+		(void*)&pSystemDesc,
+		(CGameObject**)ppGameObject)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Follow In Layer");
+	}
+
+	CGameObject* pGameObject = *ppGameObject;
+	Safe_Release(pGameObject);
+
+	return S_OK;
+}
+
+HRESULT CEffectHandler::Add_Layer_Effect_BossBullet_EnergyBall_Dead(const _float3 & _vPos, const _float _fSize)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Bullet_Trail_Puple";
+	pSystemDesc.iNumParticles = 5;
+	pSystemDesc.tResetAttribute.fParticleSize = 3.f * _fSize;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 5.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.1f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+	pSystemDesc.tTransformDesc.vPosition = _vPos;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Yellow In Layer");
+	}
+
+	return S_OK;
+}

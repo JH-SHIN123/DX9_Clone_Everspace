@@ -1,17 +1,25 @@
 #include "stdafx.h"
 #include "..\Headers\BackUI.h"
 #include"Pipeline.h"
+#include "MaterialHandler.h"
 
 USING(Engine)
 
 CBackUI::CBackUI(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
+	ZeroMemory(&m_tMaterial, sizeof(D3DMATERIAL9));
+	_float4 color = { 1.f, 1.f, 1.f, 1.f };
+
+	CMaterialHandler::Set_RGBA(color, &m_tMaterial);
 }
 
 CBackUI::CBackUI(const CBackUI& other)
 	: CGameObject(other)
+	, m_ePortraitNumber(other.m_ePortraitNumber)
+	, m_tMaterial(other.m_tMaterial)
 {
+
 }
 
 HRESULT CBackUI::Ready_GameObject_Prototype()
@@ -69,6 +77,11 @@ HRESULT CBackUI::Ready_GameObject(void* pArg)
 		return E_FAIL;
 	}
 
+	//if (m_wstrTexturePrototypeTag == L"Component_Texture_Portrait")
+	//{
+	//	m_ePortraitNumber = EPortraitNumber
+	//}
+
 	return S_OK;
 }
 
@@ -98,6 +111,8 @@ _uint CBackUI::Render_GameObject()
 
 	TRANSFORM_DESC transformDesc = m_pTransform->Get_TransformDesc();
 
+	m_pDevice->SetMaterial(&m_tMaterial);
+
 	_float4x4 matView;
 	D3DXMatrixIdentity(&matView);
 	matView._11 = transformDesc.vScale.x;
@@ -105,10 +120,18 @@ _uint CBackUI::Render_GameObject()
 	matView._41 = transformDesc.vPosition.x;
 	matView._42 = transformDesc.vPosition.y;
 	m_pDevice->SetTransform(D3DTS_VIEW, &matView);
+	
+	if(m_wstrTexturePrototypeTag == L"Component_Texture_Portrait")
+	{
+		if(m_ePortraitNumber != EPortraitNumber::End)
+			m_pTexture->Set_Texture((_int)m_ePortraitNumber);
+	}
 
-	m_pTexture->Set_Texture(0);
+	else
+		m_pTexture->Set_Texture(0);
+
+
 	m_pVIBuffer->Render_VIBuffer();
-
 
 
 	return _uint();
@@ -121,20 +144,32 @@ const TRANSFORM_DESC CBackUI::Get_UI_TransformDesc()
 
 HRESULT CBackUI::Change_Texture(const wstring & wstrTexturePrototypeTag)
 {
-	Safe_Release(m_pTransform);
-	m_wstrTexturePrototypeTag = wstrTexturePrototypeTag;
+	//Safe_Release(m_pTexture);
+	//m_wstrTexturePrototypeTag = wstrTexturePrototypeTag;
 
-	if (FAILED(CGameObject::Add_Component(
-		EResourceType::NonStatic,
-		wstrTexturePrototypeTag,
-		L"Com_Texture",
-		(CComponent**)&m_pTexture)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
-		return E_FAIL;
-	}
+	//if (FAILED(CGameObject::Add_Component(
+	//	EResourceType::NonStatic,
+	//	m_wstrTexturePrototypeTag,
+	//	L"Com_Texture",
+	//	(CComponent**)&m_pTexture)))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add_Component Com_Texture");
+	//	return E_FAIL;
+	//}
+	//Safe_AddRef(m_pTexture);
 	return S_OK;
 }
+
+HRESULT CBackUI::Change_TextureNumber(const EPortraitNumber & ePortraitNumber)
+{
+	if (ePortraitNumber == EPortraitNumber::End)
+		return E_FAIL;
+
+	m_ePortraitNumber = ePortraitNumber;
+
+	return S_OK;
+}
+
 
 CBackUI* CBackUI::Create(LPDIRECT3DDEVICE9 pDevice)
 {
