@@ -50,15 +50,12 @@
 #include "NaviArrow.h"
 #include "AimAssist.h"
 #include "AimAssist2.h"
-<<<<<<< HEAD
 #include"LobbyBackUI.h"
 #include"LobbyScriptUI.h"
 #include"LobbyCursor.h"
-=======
 
 // 3StageÇÊ¿ä
 #include "Sniper.h"
->>>>>>> main
 #pragma endregion
 
 

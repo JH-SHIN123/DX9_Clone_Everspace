@@ -214,7 +214,6 @@
     <Filter Include="02.GameObject\03.Monster\Drone">
       <UniqueIdentifier>{c789007c-3e5b-4ee8-bc5e-c5f9ab10baaf}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
     <Filter Include="01.Scene\02.Lobby\01.LobbyUI\04.LobbyScriptUI">
       <UniqueIdentifier>{7045d708-1c24-4c70-a703-b2c96c8f4899}</UniqueIdentifier>
     </Filter>
@@ -223,10 +222,9 @@
     </Filter>
     <Filter Include="01.Scene\02.Lobby\02.LobbyCursor">
       <UniqueIdentifier>{7e750ad3-0827-469d-86be-bc84b4fed4d0}</UniqueIdentifier>
-=======
+    </Filter>
     <Filter Include="02.GameObject\03.Monster\01.Sniper">
       <UniqueIdentifier>{e01bd318-fd70-46f8-aa3a-23506b2434b4}</UniqueIdentifier>
->>>>>>> main
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -422,7 +420,6 @@
     <ClInclude Include="..\Headers\Shield_Battery.h">
       <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="..\Headers\LobbyScriptUI.h">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\04.LobbyScriptUI</Filter>
     </ClInclude>
@@ -431,10 +428,9 @@
     </ClInclude>
     <ClInclude Include="..\Headers\LobbyCursor.h">
       <Filter>01.Scene\02.Lobby\02.LobbyCursor</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="..\Headers\Sniper.h">
       <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
->>>>>>> main
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -618,7 +614,6 @@
     <ClCompile Include="..\Codes\Shield_Battery.cpp">
       <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="..\Codes\LobbyScriptUI.cpp">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\04.LobbyScriptUI</Filter>
     </ClCompile>
@@ -627,10 +622,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\LobbyCursor.cpp">
       <Filter>01.Scene\02.Lobby\02.LobbyCursor</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="..\Codes\Sniper.cpp">
       <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
->>>>>>> main
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
