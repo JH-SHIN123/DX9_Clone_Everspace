@@ -85,7 +85,8 @@ private: // laser
 	_float3 m_vLaserCannon_Position;
 	_float m_fLaser_CoolTime = 0.f;
 	_float m_fLaser_Degree = 10.f;
-
+	_bool m_IsLaserAlert = false;
+	_bool m_IsLaserAttack = false;
 
 
 private:

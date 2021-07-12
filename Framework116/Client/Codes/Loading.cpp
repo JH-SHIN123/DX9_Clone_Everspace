@@ -1235,10 +1235,19 @@ HRESULT CLoading::Ready_BossAndOthers()
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
+		L"Component_Texture_BossLaserAlert",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/BossLaserAlert.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_BossLaserAlert");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
 		L"Component_Texture_Bullet_Dead",
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/Bullet_Dead.png"))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Fire_Effet");
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet_Dead");
 		return E_FAIL;
 	}
 

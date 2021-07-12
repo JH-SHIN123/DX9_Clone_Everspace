@@ -17,6 +17,7 @@ CBoss_Monster::CBoss_Monster(const CBoss_Monster & other)
 	, m_fEmpBomb_CoolTime(other.m_fEmpBomb_CoolTime)
 	, m_fCannonLength(other.m_fCannonLength)
 	, m_fLaser_Degree(other.m_fLaser_Degree)
+	, m_IsLaserAlert(other.m_IsLaserAlert)
 {
 }
 
@@ -338,11 +339,13 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 	if (m_fLaser_CoolTime >= 3.f)
 		m_fLaser_CoolTime = 0.f;
 
-	// 2초가 넘어가면 발사
-	// 2초의 쿨타임으로 1초동안 발사
-	if (m_fLaser_CoolTime >= 2.7f)
+	if (m_fLaser_CoolTime >= 2.2f)
+		m_IsLaserAlert = true;
+
+	if (m_IsLaserAlert == true)
 	{
-		TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
+		m_IsLaserAttack = false;
+		m_IsLaserAlert = false;
 
 		_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
 		_float3 vPos = m_pTransform->Get_State(EState::Position);
@@ -355,8 +358,7 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 		D3DXVec3Normalize(&vUp, &vUp);
 		D3DXVec3Normalize(&vLook, &vLook);
 
-		//_float fDegree = D3DXToDegree(fTheta); // Look 방향으로 1이 정면임을 확인
-		//_float fRadian = D3DXToRadian(90.f);
+		// Look 방향으로 1이 정면
 		_float fTheta_X = D3DXVec3Dot(&vDir, &vLook);
 		_float fLaser_Radian_X = D3DXToRadian(m_fLaser_Degree);
 		_float fRadian_Min_X = 1.f - fLaser_Radian_X;
@@ -370,24 +372,66 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 		_float fRadian_Min_Y = fLaser_Radian_Y - 1.f;
 
 		if (0.1f >= fTheta_Y &&
-			fTheta_Y >= -0.3f)
+			fTheta_Y >= -0.45f)
 		{
 			if (fRadian_Min_X <= fTheta_X &&
 				fTheta_X <= fRadian_Max_X)
 			{
-				vPos -= vUp * 20.f;
-				pArg->vPosition = vPos + (vLook * 125.f);
-				if (FAILED(m_pManagement->Add_GameObject_InLayer(
-					EResourceType::NonStatic,
-					L"GameObject_Bullet_Laser",
-					L"Layer_Bullet_Laser", pArg)))
-				{
-					PRINT_LOG(L"Error", L"Failed To Add Bullet_Laser In Layer");
-					return E_FAIL;
-				}
+				m_IsLaserAttack = true;
 			}
 		}
 
+
+		if (m_IsLaserAttack == true)
+		{
+			_float3 vPos = m_pTransform->Get_State(EState::Position);
+
+			_float3 vUp = m_pTransform->Get_State(EState::Up);
+			_float3 vLook = m_pTransform->Get_State(EState::Look);
+			D3DXVec3Normalize(&vUp, &vUp);
+			D3DXVec3Normalize(&vLook, &vLook);
+
+			vPos -= vUp * 20.f;
+			m_vLaserCannon_Position = vPos + (vLook * 125.f);
+			_float3 vEffectPos = m_vLaserCannon_Position + (vLook * 3.f);
+
+			CEffectHandler::Add_Layer_Effect_BossBullet_Laser_Alert(vEffectPos, 1.f);
+		}
+
+
+	}
+
+
+	// 2초가 넘어가면 발사
+	// 2초의 쿨타임으로 1초동안 발사
+	if (m_fLaser_CoolTime >= 2.7f)
+	{
+		if (m_IsLaserAttack == true)
+		{
+			TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
+
+			_float3 vPos = m_pTransform->Get_State(EState::Position);
+
+			_float3 vUp = m_pTransform->Get_State(EState::Up);
+			_float3 vLook = m_pTransform->Get_State(EState::Look);
+			D3DXVec3Normalize(&vUp, &vUp);
+			D3DXVec3Normalize(&vLook, &vLook);
+
+			vPos -= vUp * 20.f;
+			m_vLaserCannon_Position = vPos + (vLook * 125.f);
+
+
+			pArg->vPosition = m_vLaserCannon_Position;
+
+			if (FAILED(m_pManagement->Add_GameObject_InLayer(
+				EResourceType::NonStatic,
+				L"GameObject_Bullet_Laser",
+				L"Layer_Bullet_Laser", pArg)))
+			{
+				PRINT_LOG(L"Error", L"Failed To Add Bullet_Laser In Layer");
+				return E_FAIL;
+			}
+		}
 	}
 
 	return _uint();
