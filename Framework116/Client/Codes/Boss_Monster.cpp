@@ -362,6 +362,7 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 		{
 			pArg->vPosition = vPos + (vLook * 130.f);
 
+
 			if (FAILED(m_pManagement->Add_GameObject_InLayer(
 				EResourceType::NonStatic,
 				L"GameObject_Bullet_Laser",
