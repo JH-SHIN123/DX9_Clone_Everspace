@@ -50,6 +50,12 @@
 #include "NaviArrow.h"
 #include "AimAssist.h"
 #include "AimAssist2.h"
+#include"LobbyBackUI.h"
+#include"LobbyScriptUI.h"
+#include"LobbyCursor.h"
+
+// 3Stage필요
+#include "Sniper.h"
 #pragma endregion
 
 
@@ -147,7 +153,9 @@ void CLoading::Free()
 }
 
 unsigned CLoading::ThreadMain(void * pArg)
+
 {
+
 	CLoading* pLoading = (CLoading*)pArg;
 	EnterCriticalSection(&pLoading->m_CriticalSection);
 
@@ -155,6 +163,7 @@ unsigned CLoading::ThreadMain(void * pArg)
 	switch (pLoading->m_eNextSceneID)
 	{
 	case ESceneType::Stage:
+
 		hr = pLoading->Ready_StageResources();
 		break;
 	case ESceneType::Lobby:
@@ -191,6 +200,16 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
+	/* For.GameObject_Sniper */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Sniper",
+		CSniper::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper");
+		return E_FAIL;
+	}
+
 	/* For.GameObject_Skybox */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -204,7 +223,7 @@ HRESULT CLoading::Ready_StageResources()
 	/* 임시 보스 몬스터 입니다. */
 	Ready_BossAndOthers();
 
-
+	//////////////////////////////3스테이지에도 필요!!/////////////////////////////////////////////////////////////////////////////////
 	/*  HUD Crosshair 입니다 */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -294,6 +313,8 @@ HRESULT CLoading::Ready_StageResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Stamina_Bar");
 		return E_FAIL;
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/* For.GameObject_Planet */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -407,6 +428,15 @@ HRESULT CLoading::Ready_StageResources()
 		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
+		return E_FAIL;
+	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
 		return E_FAIL;
 	}
 
@@ -646,9 +676,54 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_WingBoostSystem");
 		return E_FAIL;
 	}
+	// 스크립트 UI
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyScriptUI",
+		CLobbyScriptUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_ScriptUI");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyBackUI",
+		CLobbyBackUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyCursor",
+		CLobbyCursor::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
+		return E_FAIL;
+	}
+
 #pragma endregion
 	
 #pragma region Components
+	// Script_UI blackbar
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_ScriptUI_BlackBar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Script/BlackBar.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_BlackBar");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_ScriptUI_Script",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Script/Script.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_BlackBar");
+		return E_FAIL;
+	}
+
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_GeoMesh_Ring",
@@ -839,6 +914,17 @@ HRESULT CLoading::Ready_StageEffect()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Particle_Yellow");
 		return E_FAIL;
 	}
+
+	/* For.Component_Texture_Effect_Warp */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Effect_Damage",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD_Effect/damage.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Warp");
+		return E_FAIL;
+	}
+
 #pragma endregion
 	return S_OK;
 }

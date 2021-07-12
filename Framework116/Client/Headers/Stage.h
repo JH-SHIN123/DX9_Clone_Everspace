@@ -43,6 +43,9 @@ private:
 	HRESULT Add_Layer_ScriptUI(const wstring& LayerTag, EScript eScript);
 	HRESULT Add_Layer_MissionUI(const wstring& LayerTag, EQuest eQuest);
 
+	//Sniper
+	HRESULT Add_Layer_Sniper(const wstring& LayerTag);
+
 public:
 	static CStage* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual void Free() override;
@@ -50,6 +53,7 @@ public:
 private:
 	_float m_fFlowTime = 1.f;
 	_uint m_iFlowCount = 0;
+
 };
 
 #define __STAGE_H__

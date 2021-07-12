@@ -51,14 +51,20 @@ HRESULT CStatusBoard::Ready_GameObject(void * pArg/* = nullptr*/)
 	TRANSFORM_DESC tTrans;
 	tTrans.vScale = { 280.f,280.f,0.f };
 	tTrans.vPosition = _float3(650.f, 60.f, 0.f);
+
 	// For.Com_Transform
+
+
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		L"Component_Transform",
 		L"Com_Transform",
 		(CComponent**)&m_pTransform,
 		&tTrans)))
+
 	{
+
+
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
 	}
@@ -118,7 +124,8 @@ _uint CStatusBoard::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CStatusBoard::Render_GameObject()
 {
-	
+	if (m_pLobby->Get_IsGatcha())
+		return 0;
 	CGatchaBox* pBox = (CGatchaBox*)m_pManagement->Get_GameObject(L"Layer_GatchaBox");
 	if (pBox)
 	{
@@ -131,7 +138,7 @@ _uint CStatusBoard::Render_GameObject()
 
 	CGameObject::Render_GameObject();
 	TRANSFORM_DESC transformDesc = m_pTransform->Get_TransformDesc();
-
+	
 	_float4x4 matView;
 	D3DXMatrixIdentity(&matView);
 	matView._11 = transformDesc.vScale.x;
@@ -165,6 +172,8 @@ void CStatusBoard::Render_AxisMean()
 	_float3 vPos = {0,0,0};
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
+	vPos.x -= 30.f;
+	vPos.y -= 10.f;
 	rc.left = (LONG)vPos.x;
 	rc.top = (LONG)(vPos.y - (vScale.y/2.f));
 
@@ -175,7 +184,8 @@ void CStatusBoard::Render_AxisMean()
 	str = L"방어력";
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
-
+	vPos.x -= 30.f;
+	vPos.y -= 20.f;
 	rc.left = (LONG)(vPos.x + (vScale.x/2.f));
 	rc.top = (LONG)(vPos.y - vScale.y /4.f);
 
@@ -187,7 +197,7 @@ void CStatusBoard::Render_AxisMean()
 	str = L"체력";
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
-
+	vPos.x -= 30.f;
 	rc.left = (LONG)(vPos.x + vScale.x/2.f);
 	rc.top = (LONG)(vPos.y + vScale.y /4.f);
 
@@ -198,7 +208,8 @@ void CStatusBoard::Render_AxisMean()
 	str = L"실드량";
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
-
+	vPos.x -= 10.f;
+	vPos.y -= 5.f;
 	rc.left = (LONG)(vPos.x - 20.f);
 	rc.top = (LONG)(vPos.y + vScale.y /2.f);
 
@@ -209,6 +220,7 @@ void CStatusBoard::Render_AxisMean()
 	str = L"스태미너";
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
+	vPos.x -= 45.f;
 
 	rc.left = (LONG)(vPos.x - vScale.x/2.f);
 	rc.top = (LONG)(vPos.y + vScale.y / 4.f);
@@ -221,7 +233,8 @@ void CStatusBoard::Render_AxisMean()
 	str = L"공격속도";
 	vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 	vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
-
+	vPos.x -= 25.f;
+	vPos.y -= 15.f;
 	rc.left = (LONG)(vPos.x - vScale.x /2.f - 30.f);
 	rc.top = (LONG)(vPos.y - vScale.y /4.f);
 
@@ -259,7 +272,6 @@ CGameObject * CStatusBoard::Clone(void * pArg/* = nullptr*/)
 void CStatusBoard::Free()
 {
 	Safe_Release(m_pFont_Atk);
-
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);

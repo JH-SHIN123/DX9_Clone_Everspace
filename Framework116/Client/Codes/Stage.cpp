@@ -45,26 +45,14 @@ HRESULT CStage::Ready_Scene()
 		return E_FAIL;
 
 	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+		//return E_FAIL;
+	//if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
 	//	return E_FAIL;
 
 	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 		return E_FAIL;
 
-	// TEST
-	//GAMEOBJECT_DESC tDesc;
-	//tDesc.tTransformDesc.vPosition = { 0.f,0.f,50.f };
-	//tDesc.tTransformDesc.vRotate = { 0.f,90.f,0.f };
 
-	//if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
-	//	EResourceType::NonStatic,
-	//	L"GameObject_Drone",
-	//	L"Layer_Drone",
-	//	&tDesc)))
-	//{
-	//	wstring errMsg = L"Failed to Add Layer ";
-	//	PRINT_LOG(L"Error", errMsg.c_str());
-	//	return E_FAIL;
-	//}
 
 
 	return S_OK;
@@ -622,5 +610,18 @@ HRESULT CStage::Add_Layer_MissionUI(const wstring & LayerTag, EQuest eQuest)
 	}
 
 
+	return S_OK;
+}
+
+HRESULT CStage::Add_Layer_Sniper(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Sniper",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+		return E_FAIL;
+	}
 	return S_OK;
 }
