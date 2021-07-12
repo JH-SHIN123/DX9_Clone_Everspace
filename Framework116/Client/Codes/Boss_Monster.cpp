@@ -355,23 +355,39 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 		D3DXVec3Normalize(&vUp, &vUp);
 		D3DXVec3Normalize(&vLook, &vLook);
 
-		_float fTheta = D3DXVec3Dot(&vDir, &vLook);
-		_float fDegree = D3DXToDegree(fTheta);
+		//_float fDegree = D3DXToDegree(fTheta); // Look 방향으로 1이 정면임을 확인
+		//_float fRadian = D3DXToRadian(90.f);
+		_float fTheta_X = D3DXVec3Dot(&vDir, &vLook);
+		_float fLaser_Radian_X = D3DXToRadian(m_fLaser_Degree);
+		_float fRadian_Min_X = 1.f - fLaser_Radian_X;
+		_float fRadian_Max_X = fLaser_Radian_X + 1.f;
 
-		if (m_fLaser_Degree <= fDegree)
+		// 위 아래로 한번 더 걸러야 함
+		// 기준이 Z축이니 Y와의 내적은 0이 나옴(법선 일때)
+		_float fTheta_Y = D3DXVec3Dot(&vDir, &vUp);
+		_float fLaser_Radian_Y = D3DXToRadian(m_fLaser_Degree);
+		_float fRadian_Max_Y = 1.f - fLaser_Radian_Y;
+		_float fRadian_Min_Y = fLaser_Radian_Y - 1.f;
+
+		if (0.1f >= fTheta_Y &&
+			fTheta_Y >= -0.3f)
 		{
-			pArg->vPosition = vPos + (vLook * 130.f);
-
-			if (FAILED(m_pManagement->Add_GameObject_InLayer(
-				EResourceType::NonStatic,
-				L"GameObject_Bullet_Laser",
-				L"Layer_Bullet_Laser", pArg)))
+			if (fRadian_Min_X <= fTheta_X &&
+				fTheta_X <= fRadian_Max_X)
 			{
-				PRINT_LOG(L"Error", L"Failed To Add Bullet_Laser In Layer");
-				return E_FAIL;
+				vPos -= vUp * 20.f;
+				pArg->vPosition = vPos + (vLook * 125.f);
+				if (FAILED(m_pManagement->Add_GameObject_InLayer(
+					EResourceType::NonStatic,
+					L"GameObject_Bullet_Laser",
+					L"Layer_Bullet_Laser", pArg)))
+				{
+					PRINT_LOG(L"Error", L"Failed To Add Bullet_Laser In Layer");
+					return E_FAIL;
+				}
 			}
 		}
-		
+
 	}
 
 	return _uint();
@@ -717,3 +733,4 @@ HRESULT CBoss_Monster::Add_InLayer_MyParts()
 
 	return S_OK;
 }
+
