@@ -35,14 +35,12 @@ private: // Move_AI
 	_uint Move_Middle(_float fDeltaTime);
 	_uint Move_Far(_float fDeltaTime);
 	
-private: // Attack_AI
-	//좌 우 포신과 플레이어의길이를 서로 비교 더 짧은 쪽이 발사!~ 
+private: // EnergyBall
 	_uint EnergyBallCannon_Target_Search(_float fDeltaTime);
 	_uint Left_EnergyBall(_float fDeltaTime);
 	_uint Right_EnergyBall(_float fDeltaTime);
 
-private:
-	_uint Fire_Triger(_float fDeltaTime); 
+private: //레이저는 맨 앞에서 발사 하지만 회전 범위가 있다.
 	_uint Fire_Laser(_float fDeltaTime);
 	_uint Fire_EMP(_float fDeltaTime);
 	_uint Spawn_Monster(_float fDeltaTime);
@@ -74,24 +72,23 @@ private: /* AI */
 	// 거리에 따라 행동을 다르게
 	ActionMode m_eActionMode = End;
 	_bool m_IsSpecialAction = false;
+	_float3 m_vMyPos;
 
-private:
-	_float3 m_vRightCannonPosition;
-	_float3 m_vLeftCannonPosition;
-	_float m_fCannonLength = 40.f;
+private: // EnergyBall
+	_float3 m_vRight_EnergyBallCannon_Position;
+	_float3 m_vLeft_EnergyBallCannon_Position;
+	_float m_fCannonLength = 26.f;
 	_float m_fLeftCannonCoolTime = 0.f;
 	_float m_fRightCannonCoolTime = 0.f;
 
-
-
-private: /* Skills */
-	// energyball
-	_bool m_IsLeftFire = false;
-	_float m_fEnergyBall_CoolTime = 0.f;
-
-	// laser
+private: // laser
+	_float3 m_vLaserCannon_Position;
 	_float m_fLaser_CoolTime = 0.f;
+	_float m_fLaser_Degree = 10.f;
 
+
+
+private:
 	// emp bomb
 	_float m_fEmpBomb_CoolTime = 0.f;
 
