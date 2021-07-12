@@ -12,6 +12,7 @@
 #include "HP_Bar.h"
 #include "Loading.h"
 #include "Shield_Battery.h"
+#include "HUD_Effect.h"
 
 CMainApp::CMainApp()
 	: m_pManagement(CManagement::Get_Instance())
@@ -95,6 +96,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		EResourceType::Static,
 		L"GameObject_UI",
 		CUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_HUD_Effect */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::Static,
+		L"GameObject_HUD_Effect",
+		CHUD_Effect::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
 		return E_FAIL;
@@ -314,14 +325,15 @@ HRESULT CMainApp::Ready_StaticResources()
 		return E_FAIL;
 	}
 
-	//if (FAILED(m_pManagement->Add_Component_Prototype(
-	//	EResourceType::Static,
-	//	L"Component_Texture_Player_Lazer",
-	//	CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Player_Lazer%d.dds", 1))))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet");
-	//	return E_FAIL;
-	//}
+	/* For.Component_Texture_AlertArrow */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Texture_Effect_Warp",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD_Effect/warp.png", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Warp");
+		return E_FAIL;
+	}
 
 #pragma endregion
 	return S_OK;
