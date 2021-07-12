@@ -26,6 +26,7 @@ public:
 	virtual _uint Render_GameObject() override;
 
 private: // Update 함수에 쓸 최상위 함수
+	_uint Transform_Check();
 	_uint Move_AI(_float fDeltaTime);
 	_uint Attack_AI(_float fDeltaTime);
 

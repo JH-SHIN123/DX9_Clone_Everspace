@@ -28,7 +28,7 @@ public:
 	virtual void Free() override;
 
 private:
-	CVIBuffer_CubeTexture*  m_pCube = nullptr;
+	CGeoMesh_Cylinder*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
 	CCollideSphere* m_pCollide = nullptr;

@@ -4,6 +4,7 @@
 CBullet_Laser::CBullet_Laser(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
+
 }
 
 CBullet_Laser::CBullet_Laser(const CBullet_Laser & other)
@@ -17,6 +18,17 @@ HRESULT CBullet_Laser::Ready_GameObject_Prototype()
 {
 	CGameObject::Ready_GameObject_Prototype();
 
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Boss_Bullet_Laser",
+		CGeoMesh_Cylinder::Create(m_pDevice, 1.f, 1.f, 10.f))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet_EnergyBall");
+		return E_FAIL;
+	}
+
+
 	return S_OK;
 }
 
@@ -26,12 +38,12 @@ HRESULT CBullet_Laser::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
-		EResourceType::Static,
-		L"Component_VIBuffer_CubeTexture",
-		L"Com_CubeTexture",
-		(CComponent**)&m_pCube)))
+		EResourceType::NonStatic,
+		L"Component_GeoMesh_Boss_Bullet_Laser",
+		L"Com_Cylinder",
+		(CComponent**)&m_pMesh)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add_Component Com_CubeTexture");
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Cylinder");
 		return E_FAIL;
 	}
 
@@ -48,10 +60,10 @@ HRESULT CBullet_Laser::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 
-	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
-	TransformDesc.fSpeedPerSec = 220.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
+	TRANSFORM_DESC TransformDesc = *((TRANSFORM_DESC*)pArg);
+	//TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;
+	TransformDesc.fSpeedPerSec = 20.f;
+	//TransformDesc.fRotatePerSec = D3DXToRadian(180.f);
 	TransformDesc.vScale = { 1.f, 1.f, 1.f };
 
 	if (FAILED(CGameObject::Add_Component(
@@ -105,6 +117,7 @@ HRESULT CBullet_Laser::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CBullet_Laser::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
+
 	Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
@@ -133,7 +146,7 @@ _uint CBullet_Laser::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 	m_pTexture->Set_Texture(0);
-	m_pCube->Render_VIBuffer();
+	m_pMesh->Render_Mesh();
 
 #ifdef _DEBUG // Render Collide
 	m_pCollide->Render_Collide();
@@ -151,19 +164,19 @@ _uint CBullet_Laser::Movement(_float fDeltaTime)
 		return DEAD_OBJECT;
 	}
 
-	if (m_IsTracking == false)
-	{
-		m_pTransform->Update_Transform();
+	//if (m_IsTracking == false)
+	//{
+	//	m_pTransform->Update_Transform();
 
-		_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
-		_float3 vMyPos = m_pTransform->Get_State(EState::Position);
-		m_vMoveDir = vTargetPos - vMyPos;
-		D3DXVec3Normalize(&m_vMoveDir, &m_vMoveDir);
-		//m_pTransform->Set_Rotate(m_vMoveDir);
-		m_IsTracking = true;
-	}
+	//	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	//	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
+	//	m_vMoveDir = vTargetPos - vMyPos;
+	//	D3DXVec3Normalize(&m_vMoveDir, &m_vMoveDir);
+	//	//m_pTransform->Set_Rotate(m_vMoveDir);
+	//	m_IsTracking = true;
+	//}
 
-	m_pTransform->Go_Dir(m_vMoveDir,fDeltaTime);
+	m_pTransform->Go_Straight(fDeltaTime);
 
 
 
@@ -203,7 +216,7 @@ void CBullet_Laser::Free()
 {
 	Safe_Release(m_pTargetTransform);
 
-	Safe_Release(m_pCube);
+	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);

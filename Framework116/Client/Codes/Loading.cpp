@@ -1289,5 +1289,10 @@ HRESULT CLoading::Ready_BossAndOthers()
 
 #pragma endregion
 
-	return S_OK;
+#pragma region Component/Mesh
+
+
+
+#pragma endregion
+
 }
