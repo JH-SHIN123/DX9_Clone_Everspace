@@ -235,6 +235,12 @@
     <Filter Include="02.GameObject\17.Effect">
       <UniqueIdentifier>{c2f6e0b6-ee03-4498-900b-9dc56b49a93b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\17.Effect\00.BoostEffect">
+      <UniqueIdentifier>{12d50f8d-d460-42b3-8d03-676e8b790b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\17.Effect\00.BoostEffect\BoostEffectParticle">
+      <UniqueIdentifier>{cb074bac-4c2f-4aa4-9fbd-3eaa2b518e34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -444,8 +450,11 @@
     <ClInclude Include="..\Headers\HUD_Effect_Damage.h">
       <Filter>02.GameObject\10.HUD_Effect\01.Damage</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\BoostEffectParticle.h">
+      <Filter>02.GameObject\17.Effect\00.BoostEffect\BoostEffectParticle</Filter>
+    </ClInclude>
     <ClInclude Include="..\Headers\BoostEffect.h">
-      <Filter>02.GameObject\17.Effect</Filter>
+      <Filter>02.GameObject\17.Effect\00.BoostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -644,8 +653,11 @@
     <ClCompile Include="..\Codes\HUD_Effect_Damage.cpp">
       <Filter>02.GameObject\10.HUD_Effect\01.Damage</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\BoostEffectParticle.cpp">
+      <Filter>02.GameObject\17.Effect\00.BoostEffect\BoostEffectParticle</Filter>
+    </ClCompile>
     <ClCompile Include="..\Codes\BoostEffect.cpp">
-      <Filter>02.GameObject\17.Effect</Filter>
+      <Filter>02.GameObject\17.Effect\00.BoostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

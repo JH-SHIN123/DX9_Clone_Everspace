@@ -30,9 +30,13 @@ public:
 private:
 	CVIBuffer* m_pVIBuffer = nullptr;
 	CTexture* m_pTexture = nullptr;
-	
 	CTransform* m_pTransform = nullptr;
-	CTransform* m_pPlayerTransform = nullptr;
+
+private:
+	_float m_fSpawnDeltaT = 0.f;
+	_float m_fSpawnTime = 0.5f;
+	size_t m_iParticleCount = 30;
+	_float m_fCircleRadius = 0.1f;
 };
 
 #define __BOOST_EFFECT_H__ 
