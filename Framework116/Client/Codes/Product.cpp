@@ -153,7 +153,7 @@ _uint CProduct::Update_GameObject(_float fDeltaTime)
 		if (m_pFont)
 		{
 			m_pFont->Set_IsDead(TRUE);
-			m_pFont = nullptr;
+			Safe_Release(m_pFont);
 		}
 		return DEAD_OBJECT;
 	}
@@ -419,11 +419,6 @@ CGameObject * CProduct::Clone(void * pArg/* = nullptr*/)
 
 void CProduct::Free()
 {
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> main
 	Safe_Release(m_pProductTex);
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pProductVIBuffer);

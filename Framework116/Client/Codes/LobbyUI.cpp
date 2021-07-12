@@ -480,32 +480,32 @@ _bool CLobbyUI::Render_ItemSlot()
 		if (m_pFontAtkUpCount)
 		{
 			m_pFontAtkUpCount->Set_IsDead(TRUE);
-			m_pFontAtkUpCount = nullptr;
+			Safe_Release(m_pFontAtkUpCount);
 		}
 		if (m_pFontDefUpCount)
 		{
 			m_pFontDefUpCount->Set_IsDead(TRUE);
-			m_pFontDefUpCount = nullptr;
+			Safe_Release(m_pFontDefUpCount);
 		}
 		if (m_pFontHpUpCount)
 		{
 			m_pFontHpUpCount->Set_IsDead(TRUE);
-			m_pFontHpUpCount = nullptr;
+			Safe_Release(m_pFontHpUpCount);
 		}
 		if (m_pFontEnergyUpCount)
 		{
 			m_pFontEnergyUpCount->Set_IsDead(TRUE);
-			m_pFontEnergyUpCount = nullptr;
+			Safe_Release(m_pFontEnergyUpCount);
 		}
 		if (m_pFontMissileCount)
 		{
 			m_pFontMissileCount->Set_IsDead(TRUE);
-			m_pFontMissileCount = nullptr;
+			Safe_Release(m_pFontMissileCount);
 		}
 		if (m_pFontVMaxCount)
 		{
 			m_pFontVMaxCount->Set_IsDead(TRUE);
-			m_pFontVMaxCount = nullptr;
+			Safe_Release(m_pFontVMaxCount);
 		}
 		return FALSE;
 	}
@@ -671,23 +671,16 @@ CGameObject* CLobbyUI::Clone(void* pArg)
 
 void CLobbyUI::Free()
 {
-<<<<<<< HEAD
 	
 	Safe_Release(m_pController);
-=======
-	Safe_Release(m_pController);
 
->>>>>>> main
 	Safe_Release(m_pFontAtkUpCount);
 	Safe_Release(m_pFontDefUpCount);
 	Safe_Release(m_pFontHpUpCount);
 	Safe_Release(m_pFontEnergyUpCount);
 	Safe_Release(m_pFontMissileCount);
 	Safe_Release(m_pFontVMaxCount);
-<<<<<<< HEAD
-=======
 
->>>>>>> main
 	CUI::Free();
 }
 
