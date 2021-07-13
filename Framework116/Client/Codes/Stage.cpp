@@ -71,8 +71,9 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 	
 	//Stage_Flow(fDeltaTime);
 	CTransform* pPlayerTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Player", L"Com_Transform");
-	if (AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 500.f, 200.f, pPlayerTransform,50,100.f,300.f))
+	if (AsteroidFlyingAway(fDeltaTime, 100.f, 100.f, 200.f, 200.f, pPlayerTransform,30,100.f,300.f))
 	{
+		
 		//스크립트
 	}
 	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
@@ -177,15 +178,16 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 }
 
 //TRUE반환시 끝났음
-_bool CStage::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fMaxYDist, _float fMaxZDist, _float fMinZDist,
-	CTransform* pTargetTransform, _uint iRockAmount,_float fRockSpeed, _float fDistFromTarget)
+_bool CStage::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fMaxYDist,
+	_float fMaxZDist, _float fMinZDist,CTransform* pTargetTransform, _uint iRockAmount,
+	_float fRockSpeed, _float fDistFromTarget)
 {
 	if (nullptr == pTargetTransform)
 	{
 		PRINT_LOG(L"Err", L"pTargetTransform is nullptr");
 		return FALSE;
 	}
-	_float fFinishTime = 1800.f;
+	_float fFinishTime = 300.f;
 	m_fFlyingAsteroidTime += fDeltaTime;
 	if (m_fFlyingAsteroidTime >= fFinishTime)
 		return TRUE;
@@ -213,18 +215,18 @@ _bool CStage::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fMa
 	}
 	
 
-	CTransform* pPlayerTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Player", L"Com_Transform");
-	_float3 vRockPos =pPlayerTransform->Get_TransformDesc().vPosition;
 	
+	
+	_float3 vTargetPos =pTargetTransform->Get_TransformDesc().vPosition;
 	_float3 vDir = { 0,0,-1 };
 	CTransform* pTransform = nullptr;
-
 	for (auto& pObj : *m_pManagement->Get_GameObjectList(L"Layer_Asteriod"))
 	{
+		_float3 vRockPos = vTargetPos;
 		pTransform = (CTransform*)pObj->Get_Component(L"Com_Transform");
 		pTransform->Go_Dir(vDir, fRockSpeed * fDeltaTime);
-		if (pTransform->Get_TransformDesc().vPosition.z <=
-			pPlayerTransform->Get_TransformDesc().vPosition.z - fDistFromTarget)
+		if (pTransform->Get_TransformDesc().vPosition.z
+			<= vTargetPos.z - fDistFromTarget)
 		{
 			vRockPos.x += CPipeline::GetRandomFloat(0, fMaxXDist / 2.f);
 			vRockPos.x -= CPipeline::GetRandomFloat(0, fMaxXDist / 2.f);
@@ -235,6 +237,8 @@ _bool CStage::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fMa
 			vRockPos.z += CPipeline::GetRandomFloat(0,fMaxZDist)+fMinZDist;
 			pTransform->Set_Position(vRockPos);
 		}
+		
+		
 	}
 
 	return FALSE;
