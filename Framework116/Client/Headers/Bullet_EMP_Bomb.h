@@ -19,7 +19,7 @@ public:
 	virtual _uint Render_GameObject() override;
 
 private:
-	_uint Turn(_float fDeltaTime);
+	_uint Down(_float fDeltaTime);
 	_uint Rotate_Ring(_float fDeltaTime);
 	_uint Movement(_float fDeltaTime);
 	_uint Homing(_float fDeltaTime);
@@ -51,7 +51,7 @@ private:
 	_bool	m_IsTracking	= false;
 	_bool	m_IsExplosion	= false;
 	_bool	m_IsMove		= false;
-	_float	m_fTurnTime		= 1.f;
+	_float	m_fTurnTime		= 1.25f;
 	_float	m_fLiveTime		= 11.25f;
 	_float	m_fExplosionTime = 10.f;
 	_float	m_fExplosionRadius = 1.f;

@@ -557,7 +557,7 @@ HRESULT CEffectHandler::Add_Layer_Effect_BossBullet_EMP_Exlposion(const _float3 
 	pSystemDesc.tResetAttribute.fParticleSize = 40.f * _fSize;
 	pSystemDesc.tResetAttribute.fParticleSpeed = 20.f;
 	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.1f;
-	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
+	pSystemDesc.tResetAttribute.fLifeTime = 2.5f;
 	pSystemDesc.tTransformDesc.vPosition = _vPos;
 	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
 	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };

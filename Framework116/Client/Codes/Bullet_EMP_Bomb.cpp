@@ -68,7 +68,7 @@ HRESULT CBullet_EMP_Bomb::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 
-	TRANSFORM_DESC TransformDesc;
+	TRANSFORM_DESC TransformDesc = *((TRANSFORM_DESC*)pArg);
 	TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;//_float3(10.f, 3.f, 20.f);
 	TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
 	TransformDesc.fSpeedPerSec = 30.f;
@@ -122,9 +122,28 @@ _uint CBullet_EMP_Bomb::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
 
-	Turn(fDeltaTime);
+	Down(fDeltaTime);
 	Rotate_Ring(fDeltaTime);
 	Movement(fDeltaTime);
+
+	if (m_fExplosionTime <= 0.f)
+	{
+		if (m_fExplosionRadius <= 1.05f)
+		{
+			m_IsExplosion = true;
+			m_fExplosionRadius *= 1.0015f;
+			m_pCollide->Resize_Shpere(m_fExplosionRadius);
+
+			if (m_IsBOOM == false)
+			{
+				CEffectHandler::Add_Layer_Effect_BossBullet_EMP_Exlposion(m_pTransform->Get_State(EState::Position), 1.f);
+				m_IsBOOM = true;
+			}
+		}
+	}
+
+	else
+		m_fExplosionTime -= fDeltaTime;
 
 
 	m_pTransform->Update_Transform();
@@ -194,17 +213,21 @@ _uint CBullet_EMP_Bomb::Render_GameObject()
 	return _uint();
 }
 
-_uint CBullet_EMP_Bomb::Turn(_float fDeltaTime)
+_uint CBullet_EMP_Bomb::Down(_float fDeltaTime)
 {
+	// 생성되고 몇초간 Down 방향으로 내리면 그만이잖아 씨발
 
 	if (m_fTurnTime >= 0.f)
 	{
 		m_IsMove = false;
 		m_fTurnTime -= fDeltaTime;
-		m_pTransform->RotateX(fDeltaTime);
+		m_pTransform->Go_Up(-fDeltaTime);
 	}
+
 	else
+	{
 		m_IsMove = true;
+	}
 
 
 	return _uint();
@@ -224,32 +247,7 @@ _uint CBullet_EMP_Bomb::Movement(_float fDeltaTime)
 {
 	Homing(fDeltaTime);
 
-	// Rotate 로 회전하며 다가오게 하자
 	Move_Rotate(fDeltaTime);
-
-
-	// Boom
-	if (m_fExplosionTime <= 0.f)
-	{
-		if (m_fExplosionRadius <= 1.05f)
-		{
-			m_IsExplosion = true;
-			m_fExplosionRadius *= 1.0015f;
-			m_pCollide->Resize_Shpere(m_fExplosionRadius);
-
-			if (m_IsBOOM == false)
-			{
-				CEffectHandler::Add_Layer_Effect_BossBullet_EMP_Exlposion(m_pTransform->Get_State(EState::Position), 1.f);
-				m_IsBOOM = true;
-			}
-		}
-	}
-
-	else
-		m_fExplosionTime -= fDeltaTime;
-
-
-
 
 	return _uint();
 }

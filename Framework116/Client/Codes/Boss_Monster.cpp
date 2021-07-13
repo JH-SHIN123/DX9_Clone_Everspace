@@ -105,8 +105,8 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	Transform_Check();
-	//Move_AI(fDeltaTime);
-	//Attack_AI(fDeltaTime);
+	Move_AI(fDeltaTime);
+	Attack_AI(fDeltaTime);
 	Fire_EMP(fDeltaTime);
 
 	if (!m_IsHPBar)
@@ -496,6 +496,9 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 			PRINT_LOG(L"Error", L"Failed To Add Bullet_EMP_Bomb In Layer");
 			return E_FAIL;
 		}
+
+		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(pArg->vPosition, 1.f);
+
 	}
 
 
