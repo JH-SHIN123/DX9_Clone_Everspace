@@ -337,6 +337,7 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 		m_IsLaserAlert = true;
 	}
 
+	// 경고 이펙트 / 조준
 	if (m_fLaser_CoolTime >= 2.2f)
 	{
 		if (m_IsLaserAlert == true)
@@ -403,9 +404,7 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 		}
 	}
 
-
-	// 2초가 넘어가면 발사
-	// 2초의 쿨타임으로 1초동안 발사
+	// 레이저 발사 2개
 	if (m_fLaser_CoolTime >= 2.7f)
 	{
 		if (m_IsLaserAttack == true)
@@ -459,6 +458,9 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 					PRINT_LOG(L"Error", L"Failed To Add Bullet_Laser In Layer");
 					return E_FAIL;
 				}
+				_float3 vEffectPos = m_vLaserCannon_Position + (vLook * 5.f);
+
+				CEffectHandler::Add_Layer_Effect_Boss_FireBullet(vEffectPos, 1.f);
 			}
 		}
 	}

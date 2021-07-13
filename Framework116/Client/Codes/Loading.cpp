@@ -1321,6 +1321,15 @@ HRESULT CLoading::Ready_BossAndOthers()
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
+		L"Component_Texture_BossLaser_Fire",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/BossLaser_Fire.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_BossLaser_Fire");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
 		L"Component_Texture_BossLaser_Trail",
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/BossLaser_Trail.png"))))
 	{
