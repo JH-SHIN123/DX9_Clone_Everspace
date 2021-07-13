@@ -473,7 +473,6 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 	m_fEmpBomb_CoolTime += fDeltaTime;
 
 
-
 	if (m_fEmpBomb_CoolTime >= 5.f)
 	{
 		m_fEmpBomb_CoolTime = 0.f;
@@ -483,7 +482,9 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 		_float3 vUp = m_pTransform->Get_State(EState::Up);
 		D3DXVec3Normalize(&vUp, &vUp);
 
-		pArg->vPosition = m_pTransform->Get_State(EState::Position) + (vUp * 2.f);
+		pArg->vPosition = m_pTransform->Get_State(EState::Position) + (vUp * 30.f);
+
+		m_vEmpBomb_Position;
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::NonStatic,
@@ -572,31 +573,6 @@ _uint CBoss_Monster::Move_AI(_float fDeltaTime)
 
 	if (m_IsSpecialAction == true)
 		m_eActionMode = SpecialAction;
-
-
-	//switch (m_eActionMode)
-	//{
-	//case CBoss_Monster::Near:
-	//	Move_Near(fDeltaTime);
-	//	break;
-
-	//case CBoss_Monster::Middle:
-	//	Move_Middle(fDeltaTime);
-	//	break;
-
-	//case CBoss_Monster::Far:
-	//	Move_Far(fDeltaTime);
-	//	break;
-
-	//case CBoss_Monster::SpecialAction:
-	//	break;
-
-	//default:
-	//	return UPDATE_ERROR;
-	//	break;
-	//}
-
-
 
 	return _uint();
 }
