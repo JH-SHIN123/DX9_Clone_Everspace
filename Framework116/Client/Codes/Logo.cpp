@@ -44,7 +44,7 @@ _uint CLogo::Update_Scene(_float fDeltaTime)
 	if (m_bLeaveScene)
 	{
 		if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
-			CLoading::Create(m_pDevice, ESceneType::Stage))))
+			CLoading::Create(m_pDevice, ESceneType::Lobby))))
 		{
 			PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
 			return E_FAIL;
@@ -86,6 +86,7 @@ void CLogo::Free()
 {
 	/* 자식의 소멸자 호출 순서처럼 Free도 같은 순서로 호출해주자*/
 	/* 1.자식 리소스 먼저 정리하고난 뒤 */
+	m_pManagement->StopAll();
 
 	CScene::Free(); // 2.부모 리소스 정리
 

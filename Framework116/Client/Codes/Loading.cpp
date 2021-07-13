@@ -73,8 +73,7 @@ HRESULT CLoading::Ready_Scene()
 	CScene::Ready_Scene();
 
 	::SetWindowText(g_hWnd, L"Loading");
-
-	m_pManagement->PlaySound(L"Loading_Ambience.ogg", CSoundMgr::BGM);
+	m_pManagement->StopSound(CSoundMgr::BGM);
 
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
@@ -92,7 +91,8 @@ HRESULT CLoading::Ready_Scene()
 _uint CLoading::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
-	
+	m_pManagement->PlaySound(L"Loading_Ambience.ogg", CSoundMgr::BGM);
+
 	if (m_bEnterScene)
 	{
 		m_hLoadingThread = (HANDLE)_beginthreadex(0, 0, ThreadMain, this, 0, 0);
@@ -188,7 +188,7 @@ void CLoading::Free()
 	CloseHandle(m_hLoadingThread);
 	DeleteCriticalSection(&m_CriticalSection);
 
-	m_pManagement->StopSound(CSoundMgr::BGM);
+	m_pManagement->StopAll();
 
 	CScene::Free(); // 2.何葛 府家胶 沥府
 
