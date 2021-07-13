@@ -4,6 +4,9 @@
 #include "GameObject.h"
 
 USING(Engine)
+enum class EPlanetType {
+	Basic, Ice, Gas, None
+};
 
 typedef struct tagPlanetDesc : public BASE_DESC {
 	wstring wstrTextureTag = L"";
@@ -14,7 +17,7 @@ typedef struct tagPlanetDesc : public BASE_DESC {
 class CPlanet final : public CGameObject
 {
 public:
-	explicit CPlanet(LPDIRECT3DDEVICE9 pDevice);
+	explicit CPlanet(LPDIRECT3DDEVICE9 pDevice, const EPlanetType ePlanentType);
 	explicit CPlanet(const CPlanet& other);
 	virtual ~CPlanet() = default;
 
@@ -29,19 +32,18 @@ private:
 	_uint Movement(_float fDeltaTime);
 
 public:
-	static CPlanet* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CPlanet* Create(LPDIRECT3DDEVICE9 pDevice, const EPlanetType ePlanentType);
 	virtual CGameObject* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
+
+private:
+	EPlanetType m_ePlanetType = EPlanetType::None;
 
 private:
 	CModelMesh*			m_pModelMesh = nullptr;
 	CTransform*			m_pTransform = nullptr;
 	CTexture*			m_pTexture = nullptr;
 	CCollideSphere*		m_pCollide = nullptr;
-//private:
-//	_float m_fSpawnTime = 2.f;
-//	D3DMATERIAL9 m_tMatrial;
-//	_float4 m_vRGBA = { 1.f,1.f,1.f,1.f };
 
 };
 

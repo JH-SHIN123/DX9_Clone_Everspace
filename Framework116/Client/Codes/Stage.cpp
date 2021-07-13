@@ -8,6 +8,7 @@
 #include "Ring.h"
 #include "ScriptUI.h"
 
+
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
 {
@@ -36,8 +37,8 @@ HRESULT CStage::Ready_Scene()
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	lightDesc.tLightColor = D3DCOLOR_XRGB(160, 160, 160);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(160, 160, 160);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -46,14 +47,12 @@ HRESULT CStage::Ready_Scene()
 
 	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 		//return E_FAIL;
-	//if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
-	//	return E_FAIL;
+
+	if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
+		return E_FAIL;
 
 	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 		return E_FAIL;
-
-
-
 
 	return S_OK;
 }
@@ -89,6 +88,10 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 
 	// Ring
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player", L"Layer_Ring");
+
+	//Sniper
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Sniper");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Sniper");
 
 	// TargetMonster
 	//CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_TargetMonster");
@@ -622,7 +625,7 @@ HRESULT CStage::Add_Layer_Sniper(const wstring & LayerTag)
 		L"GameObject_Sniper",
 		LayerTag)))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper In Layer");
 		return E_FAIL;
 	}
 	return S_OK;

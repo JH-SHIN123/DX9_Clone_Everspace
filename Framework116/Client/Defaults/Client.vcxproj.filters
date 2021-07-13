@@ -226,11 +226,32 @@
     <Filter Include="02.GameObject\03.Monster\01.Sniper">
       <UniqueIdentifier>{e01bd318-fd70-46f8-aa3a-23506b2434b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\08.Bullet\04.Sniper_Bullet">
+      <UniqueIdentifier>{0181d743-2a18-46ba-8d2c-b332a7caeef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\09.HUD\12.LockOnAlert">
+      <UniqueIdentifier>{e3af8796-db79-4dca-9d5b-0e52e859d017}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObject\10.HUD_Effect\00.Boost">
       <UniqueIdentifier>{2994f8c5-a28e-4b75-a40d-4e6c10fb8a97}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject\10.HUD_Effect\01.Damage">
       <UniqueIdentifier>{5cde8739-5cf1-4a99-8007-50fed94964c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\01.Stage\Stage2">
+      <UniqueIdentifier>{b53f2eaf-6e8a-4ffa-ae71-e11d3700aa70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\01.Stage\Stage3">
+      <UniqueIdentifier>{453270c1-c56e-408f-b054-d306cb379743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\01.Stage\Stage1">
+      <UniqueIdentifier>{479fc2ab-69eb-4045-9eab-8e500b54f736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14.Planet\Earth">
+      <UniqueIdentifier>{5421d0a9-5b60-493c-a038-b579d4ba52e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14.Planet\Ice">
+      <UniqueIdentifier>{60378cc2-ab7e-4870-9bdc-f599b1416ce0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +275,6 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Logo.h">
       <Filter>01.Scene\00.Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Headers\Stage.h">
-      <Filter>01.Scene\01.Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Client_Enum.h">
       <Filter>99.Headers</Filter>
@@ -390,9 +408,6 @@
     <ClInclude Include="..\Headers\QuestHandler.h">
       <Filter>97.Utilities\04.Quest</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Planet.h">
-      <Filter>02.GameObject\14.Planet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Asteroid.h">
       <Filter>02.GameObject\15.Asteroid</Filter>
     </ClInclude>
@@ -423,9 +438,6 @@
     <ClInclude Include="..\Headers\AimAssist2.h">
       <Filter>02.GameObject\09.HUD\10.AimAssist2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Shield_Battery.h">
-      <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\LobbyScriptUI.h">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\04.LobbyScriptUI</Filter>
     </ClInclude>
@@ -435,11 +447,35 @@
     <ClInclude Include="..\Headers\LobbyCursor.h">
       <Filter>01.Scene\02.Lobby\02.LobbyCursor</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Sniper.h">
-      <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
+    <ClInclude Include="..\Headers\Sniper_Bullet.h">
+      <Filter>02.GameObject\08.Bullet\04.Sniper_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\LockOnAlert.h">
+      <Filter>02.GameObject\09.HUD\12.LockOnAlert</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\HUD_Effect_Damage.h">
       <Filter>02.GameObject\10.HUD_Effect\01.Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\HUD_Effect_Boost.h">
+      <Filter>02.GameObject\10.HUD_Effect\00.Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Stage.h">
+      <Filter>01.Scene\01.Stage\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Stage2.h">
+      <Filter>01.Scene\01.Stage\Stage2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Stage3.h">
+      <Filter>01.Scene\01.Stage\Stage3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\14.Planet\Earth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Sniper.h">
+      <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Shield_Battery.h">
+      <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -454,9 +490,6 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Logo.cpp">
       <Filter>01.Scene\00.Logo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Codes\Stage.cpp">
-      <Filter>01.Scene\01.Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Player.cpp">
       <Filter>02.GameObject\00.Player</Filter>
@@ -587,9 +620,6 @@
     <ClCompile Include="..\Codes\QuestHandler.cpp">
       <Filter>97.Utilities\04.Quest</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Planet.cpp">
-      <Filter>02.GameObject\14.Planet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Asteroid.cpp">
       <Filter>02.GameObject\15.Asteroid</Filter>
     </ClCompile>
@@ -620,9 +650,6 @@
     <ClCompile Include="..\Codes\AimAssist2.cpp">
       <Filter>02.GameObject\09.HUD\10.AimAssist2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Shield_Battery.cpp">
-      <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\LobbyScriptUI.cpp">
       <Filter>01.Scene\02.Lobby\01.LobbyUI\04.LobbyScriptUI</Filter>
     </ClCompile>
@@ -632,11 +659,35 @@
     <ClCompile Include="..\Codes\LobbyCursor.cpp">
       <Filter>01.Scene\02.Lobby\02.LobbyCursor</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Sniper.cpp">
-      <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
+    <ClCompile Include="..\Codes\Sniper_Bullet.cpp">
+      <Filter>02.GameObject\08.Bullet\04.Sniper_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\LockOnAlert.cpp">
+      <Filter>02.GameObject\09.HUD\12.LockOnAlert</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\HUD_Effect_Damage.cpp">
       <Filter>02.GameObject\10.HUD_Effect\01.Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\HUD_Effect_Boost.cpp">
+      <Filter>02.GameObject\10.HUD_Effect\00.Boost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Stage.cpp">
+      <Filter>01.Scene\01.Stage\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Stage2.cpp">
+      <Filter>01.Scene\01.Stage\Stage2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Stage3.cpp">
+      <Filter>01.Scene\01.Stage\Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\14.Planet\Earth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Sniper.cpp">
+      <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Shield_Battery.cpp">
+      <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

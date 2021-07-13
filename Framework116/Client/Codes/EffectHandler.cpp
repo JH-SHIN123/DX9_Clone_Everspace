@@ -435,6 +435,36 @@ HRESULT CEffectHandler::Add_Layer_Effect_BossBullet_EnergyBall_Dead(const _float
 	return S_OK;
 }
 
+HRESULT CEffectHandler::Add_Layer_Effect_Sniper_Bullet_Trail(CGameObject * pTarget, CGameObject ** ppGameObject)
+{
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Sniper_Bullet_Trail";
+	pSystemDesc.iNumParticles = 1;
+	pSystemDesc.tResetAttribute.fParticleSize = 3.f;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 3.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.1f;
+	pSystemDesc.tResetAttribute.fLifeTime = 1.f;
+
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f, 1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f, 1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f, 1.f };
+	pSystemDesc.pTarget = pTarget;
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_FollowSystem",
+		L"Layer_FollowSystem",
+		(void*)&pSystemDesc,
+		(CGameObject**)ppGameObject)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Follow In Layer");
+	}
+
+	CGameObject* pGameObject = *ppGameObject;
+	Safe_Release(pGameObject);
+
+	return S_OK;
+}
 HRESULT CEffectHandler::Add_Layer_Effect_BossBullet_Laser_Alert(const _float3 & _vPos, const _float _fSize)
 {
 	PARTICLESYSTEM_DESC pSystemDesc;

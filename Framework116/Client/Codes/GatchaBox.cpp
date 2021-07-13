@@ -17,6 +17,7 @@ CGatchaBox::CGatchaBox(const CGatchaBox & other)
 
 HRESULT CGatchaBox::Ready_GameObject_Prototype()
 {
+
 	CGameObject::Ready_GameObject_Prototype();
 
 	return S_OK;
@@ -224,6 +225,7 @@ _bool CGatchaBox::StartUnPacking(_float fDeltaTime)
 
 		}
 		m_bBomb = TRUE;
+
 	}
 	if (m_bCancelUnPacking)
 	{
@@ -254,6 +256,11 @@ _bool CGatchaBox::StartUnPacking(_float fDeltaTime)
 
 void CGatchaBox::Add_Layer_Product(wstring & wstrLayerTag)
 {
+	if (m_pManagement->Get_GameObjectList(wstrLayerTag))
+	{
+		if (m_pManagement->Get_GameObjectList(wstrLayerTag)->size())
+			return;
+	}
 	TRANSFORM_DESC TransformDesc;
 	
 	TransformDesc.vPosition = m_pTransform->Get_State(EState::Position);
