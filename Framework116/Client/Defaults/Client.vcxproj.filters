@@ -232,6 +232,21 @@
     <Filter Include="02.GameObject\10.HUD_Effect\01.Damage">
       <UniqueIdentifier>{5cde8739-5cf1-4a99-8007-50fed94964c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Scene\01.Stage\Stage2">
+      <UniqueIdentifier>{b53f2eaf-6e8a-4ffa-ae71-e11d3700aa70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\01.Stage\Stage3">
+      <UniqueIdentifier>{453270c1-c56e-408f-b054-d306cb379743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Scene\01.Stage\Stage1">
+      <UniqueIdentifier>{479fc2ab-69eb-4045-9eab-8e500b54f736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14.Planet\Earth">
+      <UniqueIdentifier>{5421d0a9-5b60-493c-a038-b579d4ba52e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\14.Planet\Ice">
+      <UniqueIdentifier>{60378cc2-ab7e-4870-9bdc-f599b1416ce0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -254,9 +269,6 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Logo.h">
       <Filter>01.Scene\00.Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Headers\Stage.h">
-      <Filter>01.Scene\01.Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Client_Enum.h">
       <Filter>99.Headers</Filter>
@@ -390,9 +402,6 @@
     <ClInclude Include="..\Headers\QuestHandler.h">
       <Filter>97.Utilities\04.Quest</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Planet.h">
-      <Filter>02.GameObject\14.Planet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Asteroid.h">
       <Filter>02.GameObject\15.Asteroid</Filter>
     </ClInclude>
@@ -444,6 +453,18 @@
     <ClInclude Include="..\Headers\HUD_Effect_Boost.h">
       <Filter>02.GameObject\10.HUD_Effect\00.Boost</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Stage.h">
+      <Filter>01.Scene\01.Stage\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Stage2.h">
+      <Filter>01.Scene\01.Stage\Stage2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Stage3.h">
+      <Filter>01.Scene\01.Stage\Stage3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\14.Planet\Earth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -457,9 +478,6 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Logo.cpp">
       <Filter>01.Scene\00.Logo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Codes\Stage.cpp">
-      <Filter>01.Scene\01.Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Player.cpp">
       <Filter>02.GameObject\00.Player</Filter>
@@ -590,9 +608,6 @@
     <ClCompile Include="..\Codes\QuestHandler.cpp">
       <Filter>97.Utilities\04.Quest</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Planet.cpp">
-      <Filter>02.GameObject\14.Planet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Asteroid.cpp">
       <Filter>02.GameObject\15.Asteroid</Filter>
     </ClCompile>
@@ -643,6 +658,18 @@
     </ClCompile>
     <ClCompile Include="..\Codes\HUD_Effect_Boost.cpp">
       <Filter>02.GameObject\10.HUD_Effect\00.Boost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Stage.cpp">
+      <Filter>01.Scene\01.Stage\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Stage2.cpp">
+      <Filter>01.Scene\01.Stage\Stage2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Stage3.cpp">
+      <Filter>01.Scene\01.Stage\Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\14.Planet\Earth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -179,6 +179,8 @@
     <ClInclude Include="..\Headers\LobbyScriptUI.h" />
     <ClInclude Include="..\Headers\Shield_Battery.h" />
     <ClInclude Include="..\Headers\Sniper.h" />
+    <ClInclude Include="..\Headers\Stage2.h" />
+    <ClInclude Include="..\Headers\Stage3.h" />
     <ClInclude Include="..\Headers\Status.h" />
     <ClInclude Include="..\Headers\StatusBoard.h" />
     <ClInclude Include="..\Headers\Asteroid.h" />
@@ -210,7 +212,10 @@
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\MainCam.h" />
     <ClInclude Include="..\Headers\MaterialHandler.h" />
-    <ClInclude Include="..\Headers\Meteor.h" />
+    <ClInclude Include="..\Headers\Meteor.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Headers\MissionUI.h" />
     <ClInclude Include="..\Headers\Monster.h" />
     <ClInclude Include="..\Headers\NaviArrow.h" />
@@ -250,6 +255,8 @@
     <ClCompile Include="..\Codes\LobbyScriptUI.cpp" />
     <ClCompile Include="..\Codes\Shield_Battery.cpp" />
     <ClCompile Include="..\Codes\Sniper.cpp" />
+    <ClCompile Include="..\Codes\Stage2.cpp" />
+    <ClCompile Include="..\Codes\Stage3.cpp" />
     <ClCompile Include="..\Codes\Status.cpp" />
     <ClCompile Include="..\Codes\StatusBoard.cpp" />
     <ClCompile Include="..\Codes\Asteroid.cpp" />
@@ -279,7 +286,10 @@
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\MainCam.cpp" />
     <ClCompile Include="..\Codes\MaterialHandler.cpp" />
-    <ClCompile Include="..\Codes\Meteor.cpp" />
+    <ClCompile Include="..\Codes\Meteor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Codes\MissionUI.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />
     <ClCompile Include="..\Codes\NaviArrow.cpp" />

@@ -2,13 +2,15 @@
 #include "..\Headers\Planet.h"
 #include "MaterialHandler.h"
 
-CPlanet::CPlanet(LPDIRECT3DDEVICE9 pDevice)
+CPlanet::CPlanet(LPDIRECT3DDEVICE9 pDevice, const EPlanetType ePlanentType)
 	: CGameObject(pDevice)
+	, m_ePlanetType(ePlanentType)
 {
 }
 
 CPlanet::CPlanet(const CPlanet & other)
-	: CGameObject(other)
+	: CGameObject(other),
+	m_ePlanetType(other.m_ePlanetType)
 {
 }
 
@@ -37,6 +39,20 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 		}
 	}
 
+	wstring texTag = L"";
+	switch (m_ePlanetType)
+	{
+	case EPlanetType::Basic:
+		texTag = L"Component_Texture_Planet_Basic";
+		break;
+	case EPlanetType::Ice:
+		texTag = L"Component_Texture_Planet_Ice";
+		break;
+	case EPlanetType::Gas:
+		texTag = L"Component_Texture_Planet_Gas";
+		break;
+	}
+
 	// For.Com_Geo_Sphere
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -51,7 +67,7 @@ HRESULT CPlanet::Ready_GameObject(void* pArg)
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
-		L"Component_Texture_Earth",
+		texTag,
 		L"Com_Texture",
 		(CComponent**)&m_pTexture)))
 	{
@@ -160,9 +176,9 @@ _uint CPlanet::Movement(_float fDeltaTime)
 }
 
 
-CPlanet* CPlanet::Create(LPDIRECT3DDEVICE9 pDevice)
+CPlanet* CPlanet::Create(LPDIRECT3DDEVICE9 pDevice, const EPlanetType ePlanentType)
 {
-	CPlanet* pInstance = new CPlanet(pDevice);
+	CPlanet* pInstance = new CPlanet(pDevice, ePlanentType);
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Create Player");

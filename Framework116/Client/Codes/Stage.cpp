@@ -8,6 +8,7 @@
 #include "Ring.h"
 #include "ScriptUI.h"
 
+
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
 {
