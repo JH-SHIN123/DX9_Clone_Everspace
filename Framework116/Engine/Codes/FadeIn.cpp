@@ -99,15 +99,24 @@ _uint CFadeIn::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CFadeIn::Render_GameObject()
 {
-	//m_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
-	//m_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_INVDESTCOLOR);
+	m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	m_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 
 	m_pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 	m_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	m_pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
-	m_pDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB((int)m_fAlpha, 255, 255, 255));
+	m_pDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB((int)255, 255, 255, 255));
+
 
 	CUI::Render_GameObject();
+
+
+	//m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	//m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
 
 	return _uint();
 }
