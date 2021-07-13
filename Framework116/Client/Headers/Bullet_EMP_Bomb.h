@@ -19,9 +19,14 @@ public:
 	virtual _uint Render_GameObject() override;
 
 private:
+	_uint Turn(_float fDeltaTime);
 	_uint Movement(_float fDeltaTime);
-	_uint Fire_Triger(_float fDeltaTime);
-	_uint Move_Dir(_float fDeltaTime);
+	_uint Homing(_float fDeltaTime);
+	_uint Move_Rotate(_float fDeltaTime);
+
+private:
+	_uint Rotate_X(_float fDeltaTime);
+	_uint Rotate_Y(_float fDeltaTime);
 
 public:
 	static CBullet_EMP_Bomb* Create(LPDIRECT3DDEVICE9 pDevice);
@@ -29,7 +34,7 @@ public:
 	virtual void Free() override;
 
 private:
-	CVIBuffer_CubeTexture*  m_pCube = nullptr;
+	CVIBuffer_RectTexture*  m_pCube = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTexture*	m_pTexture = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
@@ -39,12 +44,14 @@ private:
 
 	//_float m_fTrackingTime = 1.f;
 	//_bool m_IsTracking = false;
-	_float m_fLiveTime = 5.25f;
-	_float m_fExplosionTime = 4.f;
-	_float m_fExplosionRadius = 1.f;
-	_float3 m_vMoveDir = {};
-	_bool m_IsTracking = false;
-	_bool m_IsExplosion = false;
+	_bool	m_IsTracking	= false;
+	_bool	m_IsExplosion	= false;
+	_bool	m_IsMove		= false;
+	_float	m_fTurnTime		= 1.f;
+	_float	m_fLiveTime		= 5.25f;
+	_float	m_fExplosionTime = 30.f;
+	_float	m_fExplosionRadius = 1.f;
+	_float3 m_vHomingDir = {};
 
 
 };

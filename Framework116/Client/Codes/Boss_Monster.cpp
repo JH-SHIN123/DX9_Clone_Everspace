@@ -105,9 +105,9 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 	CGameObject::Update_GameObject(fDeltaTime);
 
 	Transform_Check();
-	Move_AI(fDeltaTime);
-	Attack_AI(fDeltaTime);
-
+	//Move_AI(fDeltaTime);
+	//Attack_AI(fDeltaTime);
+	Fire_EMP(fDeltaTime);
 
 	if (!m_IsHPBar)
 		Add_Hp_Bar(fDeltaTime);
@@ -208,7 +208,7 @@ _uint CBoss_Monster::Move_Near(_float fDeltaTime)
 
 _uint CBoss_Monster::Move_Middle(_float fDeltaTime)
 {
-
+	RotateMy_Y(fDeltaTime);
 
 
 	return _uint();
@@ -472,7 +472,6 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 {
 	m_fEmpBomb_CoolTime += fDeltaTime;
 
-
 	if (m_fEmpBomb_CoolTime >= 5.f)
 	{
 		m_fEmpBomb_CoolTime = 0.f;
@@ -480,9 +479,12 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 		TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
 
 		_float3 vUp = m_pTransform->Get_State(EState::Up);
+		_float3 vLook = m_pTransform->Get_State(EState::Look);
 		D3DXVec3Normalize(&vUp, &vUp);
+		D3DXVec3Normalize(&vLook, &vLook);
 
-		pArg->vPosition = m_pTransform->Get_State(EState::Position) + (vUp * 30.f);
+		pArg->vPosition = m_pTransform->Get_State(EState::Position) + (vUp * -25.f) + (vLook * 40.f);
+		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
 
 		m_vEmpBomb_Position;
 
@@ -573,6 +575,24 @@ _uint CBoss_Monster::Move_AI(_float fDeltaTime)
 
 	if (m_IsSpecialAction == true)
 		m_eActionMode = SpecialAction;
+
+
+	switch (m_eActionMode)
+	{
+	case CBoss_Monster::Near:
+		Move_Near(fDeltaTime);
+		break;
+	case CBoss_Monster::Middle:
+		Move_Middle(fDeltaTime);
+		break;
+	case CBoss_Monster::Far:
+		Move_Far(fDeltaTime);
+		break;
+	case CBoss_Monster::SpecialAction:
+		break;
+	default:
+		break;
+	}
 
 	return _uint();
 }

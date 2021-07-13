@@ -13,6 +13,8 @@ CBullet_EMP_Bomb::CBullet_EMP_Bomb(const CBullet_EMP_Bomb & other)
 	, m_IsExplosion(other.m_IsExplosion)
 	, m_IsTracking(other.m_IsTracking)
 	, m_fLiveTime(other.m_fLiveTime)
+	, m_fTurnTime(other.m_fTurnTime)
+	, m_IsMove(other.m_IsMove)
 {
 }
 
@@ -30,7 +32,7 @@ HRESULT CBullet_EMP_Bomb::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_VIBuffer_CubeTexture",
+		L"Component_VIBuffer_RectColor",
 		L"Com_CubeTexture",
 		(CComponent**)&m_pCube)))
 	{
@@ -41,7 +43,7 @@ HRESULT CBullet_EMP_Bomb::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
-		L"Component_Texture_TestCube",
+		L"Component_Texture_BossEMP",
 		L"Com_Texture",
 		(CComponent**)&m_pTexture)))
 	{
@@ -54,8 +56,8 @@ HRESULT CBullet_EMP_Bomb::Ready_GameObject(void * pArg/* = nullptr*/)
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.vPosition = ((TRANSFORM_DESC*)pArg)->vPosition;//_float3(10.f, 3.f, 20.f);
 	TransformDesc.vRotate = ((TRANSFORM_DESC*)pArg)->vRotate;
-	TransformDesc.fSpeedPerSec = 40.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(10.f);
+	TransformDesc.fSpeedPerSec = 30.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(80.f);
 	TransformDesc.vScale = { 1.f, 1.f, 1.f };
 
 	if (FAILED(CGameObject::Add_Component(
@@ -110,7 +112,12 @@ HRESULT CBullet_EMP_Bomb::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CBullet_EMP_Bomb::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
-	Movement(fDeltaTime);
+
+	Turn(fDeltaTime);
+
+	m_pTransform->Go_Straight(fDeltaTime);
+
+	//Movement(fDeltaTime);
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
@@ -142,17 +149,35 @@ _uint CBullet_EMP_Bomb::Render_GameObject()
 	m_pCube->Render_VIBuffer();
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
+
+	return _uint();
+}
+
+_uint CBullet_EMP_Bomb::Turn(_float fDeltaTime)
+{
+	m_IsMove = true;
+
+	if (m_fTurnTime >= 0.f)
+	{
+		m_IsMove = false;
+		m_fTurnTime -= fDeltaTime;
+		m_pTransform->RotateX(fDeltaTime);
+	}
 
 	return _uint();
 }
 
 _uint CBullet_EMP_Bomb::Movement(_float fDeltaTime)
 {
-	Move_Dir(fDeltaTime);
+	Homing(fDeltaTime);
+
+	// Rotate 로 회전하며 다가오게 하자
+	Move_Rotate(fDeltaTime);
 
 
+	// Boom
 	if (m_fExplosionTime <= 0.f)
 	{
 		if (m_fExplosionRadius <= 1.05f)
@@ -161,7 +186,6 @@ _uint CBullet_EMP_Bomb::Movement(_float fDeltaTime)
 			m_fExplosionRadius *= 1.0015f;
 			m_pCollide->Resize_Shpere(m_fExplosionRadius);
 		}
-
 	}
 
 	else
@@ -173,26 +197,112 @@ _uint CBullet_EMP_Bomb::Movement(_float fDeltaTime)
 	return _uint();
 }
 
-_uint CBullet_EMP_Bomb::Fire_Triger(_float fDeltaTime)
+_uint CBullet_EMP_Bomb::Homing(_float fDeltaTime)
 {
-	return _uint();
-}
+	if (m_IsMove == false)
+		return 0;
 
-_uint CBullet_EMP_Bomb::Move_Dir(_float fDeltaTime)
-{
 	if (m_IsExplosion == false)
 	{
 		m_pTransform->Update_Transform();
 
 		_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
 		_float3 vMyPos = m_pTransform->Get_State(EState::Position);
-		m_vMoveDir = vTargetPos - vMyPos;
-		D3DXVec3Normalize(&m_vMoveDir, &m_vMoveDir);
+		m_vHomingDir = vTargetPos - vMyPos;
+		//D3DXVec3Normalize(&m_vMoveDir, &m_vMoveDir);
 
-		m_pTransform->Go_Dir(m_vMoveDir, fDeltaTime);
+		//m_pTransform->Go_Dir(m_vMoveDir, fDeltaTime);
 
 	//	m_IsTracking = true;
 	}
+
+	return _uint();
+}
+
+_uint CBullet_EMP_Bomb::Move_Rotate(_float fDeltaTime)
+{
+	// 난 플레이어의 방향을 알아
+
+	if (m_IsMove == false &&
+		m_IsExplosion == true)
+		return 0;
+
+	Rotate_X(fDeltaTime);
+	Rotate_Y(fDeltaTime);
+
+	m_pTransform->Go_Straight(fDeltaTime);
+
+
+	return _uint();
+}
+
+_uint CBullet_EMP_Bomb::Rotate_X(_float fDeltaTime)
+{
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vTargetDir = vTargetPos - vMyPos;
+
+	_float3 vMyLook = m_pTransform->Get_State(EState::Look);
+	_float3 vMyRight = m_pTransform->Get_State(EState::Right);
+
+	_float3 vMyUp, vMyDown;
+	D3DXVec3Cross(&vMyUp, &vMyLook, &vMyRight);
+	D3DXVec3Cross(&vMyDown, &vMyRight, &vMyLook);
+
+	D3DXVec3Normalize(&vMyUp, &vMyUp);
+	D3DXVec3Normalize(&vMyDown, &vMyDown);
+
+	_float fUpScala = D3DXVec3Dot(&vTargetDir, &vMyUp);
+	_float fDownScala = D3DXVec3Dot(&vTargetDir, &vMyDown);
+
+	_float fCeta = D3DXVec3Dot(&vTargetDir, &vMyLook);
+	_float fRadianMax = D3DXToRadian(95.f);
+	_float fRadianMin = D3DXToRadian(85.f);
+
+
+	if (fUpScala < fDownScala)
+		m_pTransform->RotateX(fDeltaTime);
+
+	else
+		m_pTransform->RotateX(-fDeltaTime);
+
+	return _uint();
+}
+
+_uint CBullet_EMP_Bomb::Rotate_Y(_float fDeltaTime)
+{
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMyPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vTargetDir = vTargetPos - vMyPos;
+	D3DXVec3Normalize(&vTargetDir, &vTargetDir);
+
+	_float3 vMyLook = m_pTransform->Get_State(EState::Look);
+	_float3 vMyUp = m_pTransform->Get_State(EState::Up);
+	D3DXVec3Normalize(&vMyLook, &vMyLook);
+
+	_float fCeta = D3DXVec3Dot(&vTargetDir, &vMyLook);
+	_float fRadianMax = D3DXToRadian(95.f);
+	_float fRadianMin = D3DXToRadian(85.f);
+
+	_float3 vMyRight, vMyLeft;
+	D3DXVec3Cross(&vMyRight, &vMyUp, &vMyLook);
+	D3DXVec3Cross(&vMyLeft, &vMyLook, &vMyUp);
+
+	D3DXVec3Normalize(&vMyRight, &vMyRight);
+	D3DXVec3Normalize(&vMyLeft, &vMyLeft);
+
+	_float fRight = D3DXVec3Dot(&vTargetDir, &vMyRight);
+	_float fLeft = D3DXVec3Dot(&vTargetDir, &vMyLeft);
+
+	//if (fCeta < fRadianMin)
+	//{
+	if (fRight < fLeft)
+		m_pTransform->RotateY(-fDeltaTime);
+
+	else
+		m_pTransform->RotateY(fDeltaTime);
 
 	return _uint();
 }
