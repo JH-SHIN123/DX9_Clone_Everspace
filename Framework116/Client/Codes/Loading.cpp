@@ -449,7 +449,6 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-
 	/* For.Component_Texture_Skybox */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -617,6 +616,11 @@ HRESULT CLoading::Ready_StageResources()
 
 HRESULT CLoading::Ready_Stage2Resources()
 {
+#pragma region GameObject
+#pragma endregion
+
+#pragma region Components
+#pragma endregion
 	return S_OK;
 }
 
