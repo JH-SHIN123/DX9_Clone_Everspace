@@ -134,6 +134,8 @@ HRESULT CStatus_Info::Ready_Component(void * pArg)
 {
 	CComponent::Ready_Component(pArg);
 
+	m_tStatusInfo = *((STAT_INFO*)pArg);
+
 	return S_OK;
 }
 

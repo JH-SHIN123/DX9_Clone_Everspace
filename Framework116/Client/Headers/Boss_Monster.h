@@ -68,6 +68,7 @@ private:
 	CModelMesh*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CTransform* m_pTargetTransform = nullptr;
+	CStatus_Info* m_pInfo = nullptr;
 
 private: /* AI */
 		 // 거리에 따라 행동을 다르게
