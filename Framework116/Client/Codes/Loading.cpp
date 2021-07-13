@@ -3,8 +3,10 @@
 #include "..\Headers\Loading.h"
 
 #pragma region Scenes
-#include "Stage.h"
 #include"Lobby.h"
+#include "Stage.h"
+#include "Stage2.h"
+#include "Stage3.h"
 #pragma endregion
 
 #pragma region GameObjects
@@ -31,7 +33,6 @@
 #include "EngineEffectSystem.h"
 #include "LockOn.h"
 #include "Planet.h"
-#include "Meteor.h"
 #include "TutorialUI.h"
 #include "Drone.h"
 #include "WingBoost_System.h"
@@ -39,7 +40,6 @@
 #include"StatusBoard.h"
 #include"Status.h"
 #include"VIBuffer_HexagonTex.h"
-#include "Meteor.h"
 #include "ScriptUI.h"
 #include "HP_Bar.h"
 #include "HP_Bar_Border.h"
@@ -50,6 +50,9 @@
 #include "NaviArrow.h"
 #include "AimAssist.h"
 #include "AimAssist2.h"
+#include"LobbyBackUI.h"
+#include"LobbyScriptUI.h"
+#include"LobbyCursor.h"
 
 // 3Stage필요
 #include "Sniper.h"
@@ -94,11 +97,17 @@ _uint CLoading::Update_Scene(_float fDeltaTime)
 		CScene* pNextScene = nullptr;
 		switch (m_eNextSceneID)
 		{
+		case ESceneType::Lobby:
+			pNextScene = CLobby::Create(m_pDevice);
+			break;
 		case ESceneType::Stage:
 			pNextScene = CStage::Create(m_pDevice);
 			break;
-		case ESceneType::Lobby:
-			pNextScene = CLobby::Create(m_pDevice);
+		case ESceneType::Stage2:
+			pNextScene = CStage2::Create(m_pDevice);
+			break;
+		case ESceneType::Stage3:
+			pNextScene = CStage3::Create(m_pDevice);
 			break;
 		}
 
@@ -148,7 +157,6 @@ void CLoading::Free()
 
 	CScene::Free(); // 2.부모 리소스 정리
 
-
 }
 
 unsigned CLoading::ThreadMain(void * pArg)
@@ -159,11 +167,17 @@ unsigned CLoading::ThreadMain(void * pArg)
 	HRESULT hr = 0;
 	switch (pLoading->m_eNextSceneID)
 	{
+	case ESceneType::Lobby:
+		hr = pLoading->Ready_LobbyResources();
+		break;
 	case ESceneType::Stage:
 		hr = pLoading->Ready_StageResources();
 		break;
-	case ESceneType::Lobby:
-		hr = pLoading->Ready_LobbyResources();
+	case ESceneType::Stage2:
+		hr = pLoading->Ready_Stage2Resources();
+		break;
+	case ESceneType::Stage3:
+		hr = pLoading->Ready_Stage3Resources();
 		break;
 	default:
 		break;
@@ -261,15 +275,36 @@ HRESULT CLoading::Ready_StageResources()
 	}
 
 
-	/* For.GameObject_Planet */
+	/* For.GameObject_Planet_Basic */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_Planet",
-		CPlanet::Create(m_pDevice))))
+		CPlanet::Create(m_pDevice, EPlanetType::Basic))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
 		return E_FAIL;
 	}
+
+	/* For.GameObject_Planet_Ice */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Planet_Ice",
+		CPlanet::Create(m_pDevice, EPlanetType::Ice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_Planet_Gas */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Planet_Gas",
+		CPlanet::Create(m_pDevice, EPlanetType::Gas))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
+		return E_FAIL;
+	}
+
 
 	/* For.GameObject_HP_Bar */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -426,7 +461,6 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-
 	/* For.Component_Texture_Skybox */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -466,11 +500,31 @@ HRESULT CLoading::Ready_StageResources()
 		return E_FAIL;
 	}
 
-	/* For.Component_Mesh_Earth */
+	/* For.Component_Texture_Planet */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
-		L"Component_Texture_Earth",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/Earth.png"))))
+		L"Component_Texture_Planet_Basic",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/Basic.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Planet */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Planet_Ice",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/Ice.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Planet */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Planet_Gas",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/Gas.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
 		return E_FAIL;
@@ -569,6 +623,21 @@ HRESULT CLoading::Ready_StageResources()
 	Ready_StageEffect();
 #pragma endregion
 
+	return S_OK;
+}
+
+HRESULT CLoading::Ready_Stage2Resources()
+{
+#pragma region GameObject
+#pragma endregion
+
+#pragma region Components
+#pragma endregion
+	return S_OK;
+}
+
+HRESULT CLoading::Ready_Stage3Resources()
+{
 	return S_OK;
 }
 
@@ -682,9 +751,54 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_WingBoostSystem");
 		return E_FAIL;
 	}
+	// 스크립트 UI
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyScriptUI",
+		CLobbyScriptUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_ScriptUI");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyBackUI",
+		CLobbyBackUI::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LobbyCursor",
+		CLobbyCursor::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
+		return E_FAIL;
+	}
+
 #pragma endregion
 	
 #pragma region Components
+	// Script_UI blackbar
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_ScriptUI_BlackBar",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Script/BlackBar.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_BlackBar");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_ScriptUI_Script",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/Script/Script.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_BlackBar");
+		return E_FAIL;
+	}
+
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
 		L"Component_GeoMesh_Ring",
@@ -875,6 +989,27 @@ HRESULT CLoading::Ready_StageEffect()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Particle_Yellow");
 		return E_FAIL;
 	}
+
+	/* For.Component_Texture_Effect_Warp */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Effect_Damage",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD_Effect/damage.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Warp");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Effect_Warp */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Effect_Boost",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD_Effect/boost.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Warp");
+		return E_FAIL;
+	}
+
 #pragma endregion
 	return S_OK;
 }
@@ -1186,16 +1321,6 @@ HRESULT CLoading::Ready_Stage1()
 		return E_FAIL;
 	}
 
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_Meteor",
-		CMeteor::Create(m_pDevice))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Meteor");
-		return E_FAIL;
-	}
-
-
 	return S_OK;
 }
 
@@ -1291,10 +1416,37 @@ HRESULT CLoading::Ready_BossAndOthers()
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
+		L"Component_Texture_BossLaser_Trail",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/BossLaser_Trail.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_BossLaser_Trail");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_BossLaser",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/BossLaser.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_BossLaser");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_BossLaserAlert",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/BossLaserAlert.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_BossLaserAlert");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
 		L"Component_Texture_Bullet_Dead",
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/Bullet_Dead.png"))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Fire_Effet");
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Bullet_Dead");
 		return E_FAIL;
 	}
 
@@ -1351,6 +1503,12 @@ HRESULT CLoading::Ready_BossAndOthers()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Sniper_Bullet_Trail");
 		return E_FAIL;
 	}
+
+#pragma endregion
+
+#pragma region Component/Mesh
+
+
 
 #pragma endregion
 

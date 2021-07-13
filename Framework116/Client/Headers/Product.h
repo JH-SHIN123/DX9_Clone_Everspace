@@ -7,6 +7,7 @@ enum class EProduct
 	ATK_UP, DEF_UP, 
 	MAX_HP_UP, MAX_SHIELD_UP,
 	MONEY, Atk_Buff,Def_Buff,Hp_Buff,Energy_Buff,
+	Missile,VMax_Buff,
 	PRODUCT_END
 };
 enum class ERank
@@ -35,6 +36,7 @@ private:
 	void Render_Product();
 	void Get_Product();
 	void Set_Text();
+	void Add_Font_InLayer(wstring strLayerTag, CGameObject*& pFont, wstring str, _float3 vPos, _float3 vScale, D3DXCOLOR tColor);
 public:
 	static CProduct* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
@@ -47,13 +49,11 @@ private:
 	CTexture*	m_pTexture = nullptr;
 	CTexture*	m_pProductTex = nullptr;
 	CVIBuffer_RectTexture* m_pProductVIBuffer = nullptr;
-
 	CTransform* m_pTransform = nullptr;
 	CGeoMesh_Torus* m_pGeoMesh = nullptr;
 
 private:
 	D3DMATERIAL9 m_tPurpleMaterial,m_tGoldMaterial,m_tRedMaterial;
-	_float4 vColorRGBA = { 0.004f, 0.002f, 0.005f, 0.f };
 	_bool m_bHitRing = false;
 
 	class CLobby* m_pLobby = nullptr;
@@ -69,6 +69,9 @@ private:
 
 	ERank m_eRank = ERank::Rank_End;
 
+	CGameObject* m_pFont = nullptr;
+
+	
 };
 
 #define __PRODUCT_H__ 

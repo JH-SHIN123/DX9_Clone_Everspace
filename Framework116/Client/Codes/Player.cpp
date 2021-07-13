@@ -10,6 +10,7 @@
 #include "ScriptUI.h"
 #include "MainCam.h"
 #include "LockOnAlert.h"
+#include "HUD_Effect_Boost.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -205,12 +206,24 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	m_vRightEngineOffset = { 1.4f, 0.9f, -6.7f };
 	
 	// Add Wing-Boost Effect
-
 	CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pLeftWingBoost);
 	m_vLeftWingOffset = { -8.2f, -1.5f, -2.f };
 	CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pRightWingBoost);
 	m_vRightWingOffset = { 8.2f, -1.5f, -2.f };
 	
+
+	// Add HUD Boost Effect
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_HUD_Effect_Boost",
+		L"Layer_HUD_Effect",
+		nullptr,
+		(CGameObject**)&m_pHUD_Effect_Boost)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_HUD_Effect_Damage In Layer");
+		return E_FAIL;
+	}
+	m_pHUD_Effect_Boost->Release();
 
 	return S_OK;
 }
@@ -394,12 +407,19 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			m_IsStaminaShrink = true;
 			m_fStamina -= 0.2f;
 			m_pStamina_Bar->Set_ScaleX(-0.2f / m_fFullStamina * m_fStaminaLength);
-			m_pManagement->PlaySound(L"Player_Boost_Loop.ogg", CSoundMgr::PLAYER_BOOST);
+
+			if (m_pHUD_Effect_Boost && (m_fStamina > m_fMinStamina * 2.f)) {
+				m_pManagement->PlaySound(L"Player_Boost_Loop.ogg", CSoundMgr::PLAYER_BOOST);
+				m_pHUD_Effect_Boost->Set_Operate(m_IsBoost);
+			}
 		}
 		else
 		{
 			m_IsBoost = false;
 			m_IsStaminaShrink = false;
+
+			if (m_pHUD_Effect_Boost)
+				m_pHUD_Effect_Boost->Set_Operate(m_IsBoost);
 		}
 	}
 	if (m_pController->Key_Up(KEY_SPACE))
@@ -408,6 +428,9 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		m_IsBoost = false;
 		//Stamina
 		m_IsStaminaShrink = false;
+
+		if (m_pHUD_Effect_Boost)
+			m_pHUD_Effect_Boost->Set_Operate(m_IsBoost);
 	}
 	// Rotate
 	if (GetAsyncKeyState('Q') & 0x8000)
@@ -477,6 +500,16 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	{
 		m_fHp -= 10.f;
 		m_pHp_Bar->Set_ScaleX(-10.f / m_fFullHp * m_fHpLength);
+
+		// HIT Effect
+		if (FAILED(m_pManagement->Add_GameObject_InLayer(
+			EResourceType::Static,
+			L"GameObject_HUD_Effect_Damage",
+			L"Layer_HUD_Effect")))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add GameObject_HUD_Effect_Damage In Layer");
+			return;
+		}
 	}
 	if (m_pController->Key_Down(KEY_F2))
 	{
@@ -684,7 +717,7 @@ _uint CPlayer::Movement(_float fDeltaTime)
 	rc.right = p2.x;
 	rc.bottom = p2.y;
 
-	ClipCursor(&rc);
+	//ClipCursor(&rc);
 	
 	_float3 vMouse = { (_float)pt.x, (_float)pt.y, 0.f };
 	_float3 vScreenCenter = { WINCX / 2.f, WINCY / 2.f, 0.f };
@@ -897,6 +930,11 @@ void CPlayer::Free()
 	}
 
 	Safe_Release(m_pLockOnAlert);
+	if (m_pHUD_Effect_Boost)
+	{
+		m_pHUD_Effect_Boost->Set_IsDead(true);
+		Safe_Release(m_pHUD_Effect_Boost);
+	}
 	Safe_Release(m_pStamina_Bar);
 	Safe_Release(m_pHp_Bar);
 	Safe_Release(m_pMesh);

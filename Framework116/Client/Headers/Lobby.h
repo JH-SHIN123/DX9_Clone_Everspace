@@ -42,7 +42,8 @@ public:
 	HRESULT Add_Layer_GatchaBox(const wstring & LayerTag);
 	HRESULT Add_Layer_StatusBoard(const wstring & LayerTag);
 	HRESULT Add_Layer_Status(const wstring & LayerTag);
-
+	HRESULT Add_Layer_ScriptUI(const wstring & LayerTag);
+	HRESULT Add_Layer_Cursor(const wstring & LayerTag);
 public:
 	void Set_GotoNextScene(_bool bSet);
 	void Set_IsGatcha(_bool bSet);
@@ -67,13 +68,19 @@ public:
 	_uint GetDefBuffItemCount() { return m_iDefBuffItem; }
 	_uint GetHpBuffItemCount() { return m_iHpBuffItem; }
 	_uint GetEnergyBuffItemCount() { return m_iEnergyBuffItem; }
-
+	_uint GetMissileCount() { return m_iMissileCount; }
+	_uint GetVMaxBuffItem() { return m_iVMaxBuffItem; }
+	_bool GetStageLock(_uint iStageIdx);
+	_bool GetIsStgClear() { return m_bIsStgClear; }
 
 	void SetAtkBuffItemCount(_uint iPlus) { m_iAtkBuffItem += iPlus; }
 	void SetDefBuffItemCount(_uint iPlus) { m_iDefBuffItem += iPlus; }
 	void SetHpBuffItemCount(_uint iPlus) { m_iHpBuffItem += iPlus; }
 	void SetEnergyBuffItemCount(_uint iPlus) { m_iEnergyBuffItem += iPlus;  }
+	void SetMissileCount(_uint iPlus) { m_iMissileCount += iPlus; }
+	void SetVMaxBuffItemCount(_uint iPlus) { m_iVMaxBuffItem += iPlus; }
 
+	
 
 public:
 	static CLobby* Create(LPDIRECT3DDEVICE9 pDevice);
@@ -97,6 +104,12 @@ private:
 	_uint m_iDefBuffItem = 0;
 	_uint m_iHpBuffItem = 0;
 	_uint m_iEnergyBuffItem = 0;
+	_uint m_iMissileCount = 0;
+	_uint m_iVMaxBuffItem = 0;
+
+	_bool m_bStageLock[3] = { 0,1,1 };
+	//for.StgClearProduction
+	_bool m_bIsStgClear = FALSE;
 };
 
 #define __LOBBY_H__

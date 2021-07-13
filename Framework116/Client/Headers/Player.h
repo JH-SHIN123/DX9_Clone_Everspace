@@ -139,7 +139,8 @@ private:
 	_bool m_bFirstLocked = false;
 	_bool  m_bLockOn = false;
 	
-
+private:
+	class CHUD_Effect_Boost* m_pHUD_Effect_Boost = nullptr;
 
 
 };

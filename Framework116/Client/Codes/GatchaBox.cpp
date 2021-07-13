@@ -17,6 +17,7 @@ CGatchaBox::CGatchaBox(const CGatchaBox & other)
 
 HRESULT CGatchaBox::Ready_GameObject_Prototype()
 {
+
 	CGameObject::Ready_GameObject_Prototype();
 
 	return S_OK;
@@ -67,7 +68,7 @@ HRESULT CGatchaBox::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 	BOUNDING_SPHERE BoundingSphere;
 	BoundingSphere.fRadius = 5.f;
-
+	
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		L"Component_CollideSphere",
@@ -92,6 +93,13 @@ _uint CGatchaBox::Update_GameObject(_float fDeltaTime)
 		m_pLobby->Set_StartUnPacking(FALSE);
 		m_bStartUnpacking = FALSE;
 	}
+	_float4x4 matWorld,matTrans,matScale;
+	_float3 vPos = m_pTransform->Get_TransformDesc().vPosition;
+	_float3 vSize = m_pTransform->Get_TransformDesc().vScale;
+	D3DXMatrixTranslation(&matTrans, vPos.x, vPos.y, vPos.z);
+	D3DXMatrixScaling(&matScale, vSize.x, vSize.y, vSize.z);
+	matWorld = matScale* matTrans;
+	m_pCollide->Update_Collide(matWorld);
 	m_pTransform->Update_Transform();
 	return NO_EVENT;
 }
@@ -142,7 +150,7 @@ _bool CGatchaBox::CheckPicking()
 		_float fDist;
 		CGameObject* pObj = CCollision::PickingObject(fDist, g_hWnd, WINCX, WINCY, 
 			m_pDevice, m_pManagement->Get_GameObjectList(L"Layer_GatchaBox"));
-		if (pObj && m_pLobby->Get_Money() >=1000)
+		if (pObj==this && m_pLobby->Get_Money() >=1000)
 		{
 			UI_DESC UiDesc;
 
@@ -217,6 +225,7 @@ _bool CGatchaBox::StartUnPacking(_float fDeltaTime)
 
 		}
 		m_bBomb = TRUE;
+
 	}
 	if (m_bCancelUnPacking)
 	{
@@ -247,6 +256,11 @@ _bool CGatchaBox::StartUnPacking(_float fDeltaTime)
 
 void CGatchaBox::Add_Layer_Product(wstring & wstrLayerTag)
 {
+	if (m_pManagement->Get_GameObjectList(wstrLayerTag))
+	{
+		if (m_pManagement->Get_GameObjectList(wstrLayerTag)->size())
+			return;
+	}
 	TRANSFORM_DESC TransformDesc;
 	
 	TransformDesc.vPosition = m_pTransform->Get_State(EState::Position);
