@@ -73,31 +73,11 @@ HRESULT CLobbyModel::Ready_GameObject(void * pArg/* = nullptr*/)
 _uint CLobbyModel::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
-	//if (!m_bPlayStgClearProduction)
-	//{
-	//	if (!m_bStartStgClearProduction)
-	//	{
-	//		CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pLeftEngineEffect);
-	//		m_vLeftEngineOffset = { -1.4f, 0.9f, -6.7f };
-	//		CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pRightEngineEffect);
-	//		m_vRightEngineOffset = { 1.4f, 0.9f, -6.7f };
-
-	//		// Add Wing-Boost Effect
-
-	//		CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pLeftWingBoost);
-	//		m_vLeftWingOffset = { -8.2f, -1.5f, -2.f };
-	//		CEffectHandler::Add_Layer_Effect_WingBoost((CGameObject**)&m_pRightWingBoost);
-	//		m_vRightWingOffset = { 8.2f, -1.5f, -2.f };
-	//		m_IsBoost = TRUE;
-	//	}
-	//	Update_Effect();
-	//	PlayStgClearProduction(fDeltaTime);
-	//}
-	if (!m_bGotoNextScene)
+if (!m_bGotoNextScene)
 	{
 		KeyProcess(fDeltaTime);
 		Movement(fDeltaTime);
-		m_pTransform->Update_Transform();
+		
 	}
 	else
 	{
@@ -286,32 +266,7 @@ void CLobbyModel::Update_Effect()
 	
 }
 
-void CLobbyModel::PlayStgClearProduction(_float fDeltaTime)
-{
-	if (m_bPlayStgClearProduction)
-		return;
-	_float3 vGoalPos = {20.f,0.f,20.f};
-	if (!m_pLobby->GetIsStgClear())
-	{
-		m_bPlayStgClearProduction = TRUE;
-		m_pTransform->Set_Position(vGoalPos);
-		return;
-	}
-	if (!m_bStartStgClearProduction)
-	{
-		m_pTransform->Set_Position(_float3(-100.f, 0.f, 0.f));
-		m_bStartStgClearProduction = TRUE;
-	}
-	m_fPlayProductionTime += fDeltaTime;
-	if (m_fPlayProductionTime >= 5.f)
-		m_pTransform->Go_Dir(_float3(0, 0, 1), fDeltaTime*10.f);
 
-
-	if (m_pTransform->Get_TransformDesc().vPosition == vGoalPos)
-	{
-		m_bPlayStgClearProduction = TRUE;
-	}
-}
 
 
 CLobbyModel * CLobbyModel::Create(LPDIRECT3DDEVICE9 pDevice)

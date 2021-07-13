@@ -113,11 +113,6 @@ _uint CLobbyCam::OffSet(_float fDeltaTime)
 		m_CameraDesc.vAt = m_pPlayerTransform->Get_State(EState::Position);
 		return 0;
 	}
-	if (m_pLobby->Get_GotoNextScene())
-	{
-		m_CameraDesc.vAt = m_pPlayerTransform->Get_State(EState::Position);
-		return 0;
-	}
 	_float3 vTargetPos = m_pPlayerTransform->Get_TransformDesc().vPosition;
 	_float3 vAt = m_CameraDesc.vAt;
 
