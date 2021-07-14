@@ -17,6 +17,7 @@ HRESULT CStage2::Ready_Scene()
 
 	if (FAILED(Add_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
+
 	// Fade Out
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
@@ -36,7 +37,7 @@ HRESULT CStage2::Ready_Scene()
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(105, 105, 105);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(135, 135, 135);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -432,8 +433,8 @@ void CStage2::Ready_Asteroid()
 }
 _uint CStage2::Stage2_Flow(_float fDeltaTime)
 {
-	if (!m_bEnterScene)
-		return TRUE;
+	//if (!m_bEnterScene)
+	//	return TRUE;
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player");
 	if (pPlayer)
 	{
