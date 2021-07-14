@@ -244,6 +244,15 @@
     <Filter Include="01.Scene\01.Stage\Stage1">
       <UniqueIdentifier>{479fc2ab-69eb-4045-9eab-8e500b54f736}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\12.EventObject">
+      <UniqueIdentifier>{5edd1823-857b-4ee7-bf2a-4c5f3b540443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12.EventObject\Broken">
+      <UniqueIdentifier>{c1968b52-89e8-4a7b-8f9f-552b45a97a74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12.EventObject\Delivery">
+      <UniqueIdentifier>{8c6cb597-0b78-4ee2-b3f3-57c70b0c3e3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -450,9 +459,6 @@
     <ClInclude Include="..\Headers\Stage3.h">
       <Filter>01.Scene\01.Stage\Stage3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Planet.h">
-      <Filter>02.GameObject\14.Planet\Earth</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Sniper.h">
       <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
     </ClInclude>
@@ -461,6 +467,10 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\14.Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h" />
+    <ClInclude Include="..\Headers\BrokenPlane.h">
+      <Filter>02.GameObject\12.EventObject\Broken</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -656,9 +666,6 @@
     <ClCompile Include="..\Codes\Stage3.cpp">
       <Filter>01.Scene\01.Stage\Stage3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Planet.cpp">
-      <Filter>02.GameObject\14.Planet\Earth</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Sniper.cpp">
       <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
     </ClCompile>
@@ -667,6 +674,10 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\14.Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp" />
+    <ClCompile Include="..\Codes\BrokenPlane.cpp">
+      <Filter>02.GameObject\12.EventObject\Broken</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -35,12 +35,27 @@ HRESULT CStage2::Ready_Scene()
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(55, 55, 55);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
+
+	//// TEST
+	//GAMEOBJECT_DESC tDesc;
+	//tDesc.wstrMeshName = L"Component_Mesh_Broken_Plane";
+
+	//if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Broken_Plane",
+	//	L"Layer_Broken_Plane",
+	//	&tDesc)))
+	//{
+	//	wstring errMsg = L"Failed to Add Layer ";
+	//	PRINT_LOG(L"Error", errMsg.c_str());
+	//	return E_FAIL;
+	//}
 
 	return S_OK;
 }

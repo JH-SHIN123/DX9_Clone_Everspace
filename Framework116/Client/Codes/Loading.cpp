@@ -51,6 +51,7 @@
 #include"LobbyBackUI.h"
 #include"LobbyScriptUI.h"
 #include"LobbyCursor.h"
+#include "BrokenPlane.h"
 
 // 3StageÇÊ¿ä
 #include "Sniper.h"
@@ -674,6 +675,16 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
 		return E_FAIL;
 	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Broken_Plane",
+		CBrokenPlane::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Broken_Plane");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 #pragma region Components
@@ -741,19 +752,17 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
-#pragma endregion
 
-#pragma endregion
-
-#pragma region Delivery
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
-		L"Component_Mesh_Delivery",
-		CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
+		L"Component_Mesh_Broken_Plane",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/broken.X", L"../../Resources/Textures/Broken/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
+#pragma endregion
+
 #pragma endregion
 
 #pragma region Monster
@@ -787,6 +796,8 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 HRESULT CLoading::Load_Stage3_Prop_Resources()
 {
 #pragma region Map
+
+#pragma region GameObjects
 	/* For.GameObject_Planet_Ice */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -796,6 +807,9 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
 		return E_FAIL;
 	}
+#pragma endregion
+
+#pragma region Components
 	/* For.Component_Texture_Planet */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -805,6 +819,15 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
 		return E_FAIL;
 	}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Delivery",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+#pragma endregion
 #pragma endregion
 
 #pragma region Boss

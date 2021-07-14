@@ -1,0 +1,150 @@
+#include "stdafx.h"
+#include "BrokenPlane.h"
+
+CBrokenPlane::CBrokenPlane(LPDIRECT3DDEVICE9 pDevice)
+	: CGameObject(pDevice)
+{
+}
+
+CBrokenPlane::CBrokenPlane(const CBrokenPlane& other)
+	: CGameObject(other)
+{
+}
+
+HRESULT CBrokenPlane::Ready_GameObject_Prototype()
+{
+	CGameObject::Ready_GameObject_Prototype();
+
+	return S_OK;
+}
+
+HRESULT CBrokenPlane::Ready_GameObject(void* pArg)
+{
+	CGameObject::Ready_GameObject(pArg);
+
+	GAMEOBJECT_DESC* pDesc = nullptr;
+	if (auto ptr = (BASE_DESC*)pArg)
+	{
+		if (pDesc = dynamic_cast<GAMEOBJECT_DESC*>(ptr))
+		{}
+		else
+		{
+			PRINT_LOG(L"Error", L"CBrokenPlane is nullptr");
+			return E_FAIL;
+		}
+	}
+
+	if (FAILED(CGameObject::Add_Component(
+		EResourceType::Static,
+		pDesc->wstrMeshName,
+		L"Com_Mesh",
+		(CComponent**)&m_pMesh)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Mesh");
+		return E_FAIL;
+	}
+
+	// For.Com_Transform
+	TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
+	TransformDesc.vRotate = { 0.f, 60.f, 0.f };
+	TransformDesc.fSpeedPerSec = 4.f;
+
+	if (FAILED(CGameObject::Add_Component(
+		EResourceType::Static,
+		L"Component_Transform",
+		L"Com_Transform",
+		(CComponent**)&m_pTransform,
+		&TransformDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+_uint CBrokenPlane::Update_GameObject(_float fDeltaTime)
+{
+	if (m_IsDead) return DEAD_OBJECT;
+
+	CGameObject::Update_GameObject(fDeltaTime);
+	Movement(fDeltaTime);
+
+	m_pTransform->Update_Transform();
+
+	return _uint();
+}
+
+_uint CBrokenPlane::LateUpdate_GameObject(_float fDeltaTime)
+{
+	if (m_IsDead) return DEAD_OBJECT;
+
+	CGameObject::LateUpdate_GameObject(fDeltaTime);
+
+	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
+		return UPDATE_ERROR;
+
+	return _uint();
+}
+
+_uint CBrokenPlane::Render_GameObject()
+{
+	CGameObject::Render_GameObject();
+
+	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
+	m_pMesh->Render_Mesh();
+
+	return _uint();
+}
+
+_uint CBrokenPlane::Movement(_float fDeltaTime)
+{
+	// 위아래로 둥둥 떠다니게
+	float fMoveSpeed = m_pTransform->Get_TransformDesc().fSpeedPerSec;
+	if(m_fMoveUpDeltaT <= 2.f)
+	{
+		m_pTransform->Move({ 0.f,fDeltaTime * fMoveSpeed ,0.f });
+		m_fMoveUpDeltaT += fDeltaTime;
+	}
+	else if (m_fMoveUpDeltaT <= 4.f) {
+		m_pTransform->Move({ 0.f,-fDeltaTime * fMoveSpeed,0.f });
+		m_fMoveUpDeltaT += fDeltaTime;
+	}
+	else {
+		m_fMoveUpDeltaT = 0.f;
+	}
+
+	return _uint();
+}
+
+CBrokenPlane* CBrokenPlane::Create(LPDIRECT3DDEVICE9 pDevice)
+{
+	CBrokenPlane* pInstance = new CBrokenPlane(pDevice);
+	if (FAILED(pInstance->Ready_GameObject_Prototype()))
+	{
+		PRINT_LOG(L"Error", L"Failed To Create Player");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CGameObject* CBrokenPlane::Clone(void* pArg)
+{
+	CBrokenPlane* pClone = new CBrokenPlane(*this); /* 복사 생성자 호출 */
+	if (FAILED(pClone->Ready_GameObject(pArg)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Clone Player");
+		Safe_Release(pClone);
+	}
+
+	return pClone;
+}
+
+void CBrokenPlane::Free()
+{
+	Safe_Release(m_pMesh);
+	Safe_Release(m_pTransform);
+
+	CGameObject::Free();
+}
