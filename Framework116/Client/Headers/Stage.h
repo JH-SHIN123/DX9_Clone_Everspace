@@ -55,6 +55,8 @@ private:
 
 private:
 	_bool m_bFadeIn = false;
+	_bool m_bSceneChange = false;
+
 };
 
 #define __STAGE_H__

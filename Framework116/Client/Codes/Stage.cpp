@@ -7,6 +7,7 @@
 #include "MainCam.h"
 #include "Ring.h"
 #include "ScriptUI.h"
+#include "Loading.h"
 
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
@@ -54,14 +55,19 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
-		return E_FAIL;
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
 
 	//if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
 	//	return E_FAIL;
 
 	//if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 	//	return E_FAIL;
+
+
+	m_bSceneChange = false;
+	m_bFadeIn = false;
+	m_bLeaveScene = false;
 
 	return S_OK;
 }
@@ -72,7 +78,7 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
 
 	CQuestHandler::Get_Instance()->Update_Quest();
-	
+
 	Stage_Flow(fDeltaTime);
 
 
@@ -83,7 +89,7 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
 
 	CScene::LateUpdate_Scene(fDeltaTime);
-	
+
 	// Monster
 	//CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Drone");
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Drone");
@@ -135,6 +141,7 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 			}
 		}
 		return S_OK;
+
 	case 1:
 		if (((CMainCam*)(m_pManagement->Get_GameObject(L"Layer_Cam")))->Get_SoloMoveMode() == ESoloMoveMode::End)
 		{
@@ -161,8 +168,8 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 			CQuestHandler::Get_Instance()->Set_Start_Quest(EQuest::Stage_1_Target);
 			++m_iFlowCount;
 		}
-	}
 		return S_OK;
+	}
 	case 4:
 	{
 		if (CQuestHandler::Get_Instance()->Get_IsClear())
@@ -171,6 +178,7 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 				return E_FAIL;
 			++m_iFlowCount;
 		}
+		return S_OK;
 	}
 	case 5:
 	{
@@ -180,9 +188,25 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 			CQuestHandler::Get_Instance()->Set_ClearStage(EStageClear::Stage_1);
 			++m_iFlowCount;
 		}
+		return S_OK;
 	}
 
 	case 6:
+	{
+		_bool Check = (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI"))->empty();
+		if (Check == true)
+		{
+			m_bSceneChange = true;
+			++m_iFlowCount;
+		}
+
+	}
+	return S_OK;
+	default:
+		break;
+	}
+
+	if (m_bSceneChange)
 	{
 		if (false == m_bFadeIn) {
 			if (FAILED(m_pManagement->Add_GameObject_InLayer(
@@ -197,11 +221,18 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 			m_bFadeIn = true;
 			return NO_EVENT;
 		}
-
-	}
-
-	default:
-		return S_OK;
+		if (m_bLeaveScene)
+		{
+			m_pManagement->Clear_NonStatic_Resources();
+			if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
+				CLoading::Create(m_pDevice, ESceneType::Lobby))))
+			{
+				PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
+				return E_FAIL;
+			}
+			return CHANGE_SCENE;
+			m_bLeaveScene = false;
+		}
 	}
 
 	return S_OK;
@@ -583,7 +614,7 @@ HRESULT CStage::Add_Layer_MissionUI(const wstring & LayerTag, EQuest eQuest)
 	Desc.tTransformDesc.vPosition = { 835.f, -50.f ,0.f };
 	Desc.tTransformDesc.vScale = { 201.f, 123.f,0.f };
 	Desc.wstrTexturePrototypeTag = L"Component_Texture_HUD_Mission";
-
+	
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
 		L"GameObject_MissionUI",

@@ -42,6 +42,7 @@ public:
 	_int  Get_CountMax();
 	_bool Get_IsClear();
 	const EStageClear Get_StageClear() const;
+	_bool Get_IsStageClear(EStageClear eStageClear);
 
 public: // 계속 돌려줘야함
 	_bool Update_Quest();

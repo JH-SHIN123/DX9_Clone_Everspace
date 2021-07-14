@@ -107,6 +107,14 @@ const EStageClear CQuestHandler::Get_StageClear() const
 	return m_eStageClear;
 }
 
+_bool CQuestHandler::Get_IsStageClear(EStageClear eStageClear)
+{
+	if (eStageClear <= m_eStageClear)
+		return true;
+
+	return false;
+}
+
 _bool CQuestHandler::Update_Quest()
 {
 	switch (m_eNowQuest)

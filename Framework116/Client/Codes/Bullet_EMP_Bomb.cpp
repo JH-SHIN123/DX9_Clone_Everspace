@@ -140,25 +140,8 @@ _uint CBullet_EMP_Bomb::Update_GameObject(_float fDeltaTime)
 	Down(fDeltaTime);
 	Rotate_Ring(fDeltaTime);
 	Movement(fDeltaTime);
+	Explosion(fDeltaTime);
 
-	if (m_fExplosionTime <= 0.f)
-	{
-		if (m_fExplosionRadius <= 1.05f)
-		{
-			m_IsExplosion = true;
-			m_fExplosionRadius *= 1.0015f;
-			m_pCollide->Resize_Shpere(m_fExplosionRadius);
-
-			if (m_IsBOOM == false)
-			{
-				CEffectHandler::Add_Layer_Effect_BossBullet_EMP_Exlposion(m_pTransform->Get_State(EState::Position), 1.f);
-				m_IsBOOM = true;
-			}
-		}
-	}
-
-	else
-		m_fExplosionTime -= fDeltaTime;
 
 
 	m_pTransform->Update_Transform();
@@ -230,8 +213,6 @@ _uint CBullet_EMP_Bomb::Render_GameObject()
 
 _uint CBullet_EMP_Bomb::Down(_float fDeltaTime)
 {
-	// 생성되고 몇초간 Down 방향으로 내리면 그만이잖아 씨발
-
 	if (m_fTurnTime >= 0.f)
 	{
 		m_IsMove = false;
@@ -373,6 +354,29 @@ _uint CBullet_EMP_Bomb::Rotate_Y(_float fDeltaTime)
 		m_pTransform->RotateY(fDeltaTime);
 
 	return _uint();
+}
+
+void CBullet_EMP_Bomb::Explosion(_float fDeltaTime)
+{
+	if (m_fExplosionTime <= 0.f)
+	{
+		if (m_fExplosionTime >= -0.525f)
+		{
+			m_IsExplosion = true;
+			m_fExplosionRadius *= 1.0015f;
+			m_pCollide->Resize_Shpere(m_fExplosionRadius);
+
+			if (m_IsBOOM == false)
+			{
+				CEffectHandler::Add_Layer_Effect_BossBullet_EMP_Exlposion(m_pTransform->Get_State(EState::Position), 1.f);
+				m_IsBOOM = true;
+			}
+		}
+	}
+
+	
+	m_fExplosionTime -= fDeltaTime;
+
 }
 
 HRESULT CBullet_EMP_Bomb::Ready_GameObject_EMP()
