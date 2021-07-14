@@ -244,6 +244,18 @@
     <Filter Include="01.Scene\01.Stage\Stage1">
       <UniqueIdentifier>{479fc2ab-69eb-4045-9eab-8e500b54f736}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\12.EventObject">
+      <UniqueIdentifier>{5edd1823-857b-4ee7-bf2a-4c5f3b540443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12.EventObject\Broken">
+      <UniqueIdentifier>{c1968b52-89e8-4a7b-8f9f-552b45a97a74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\12.EventObject\Delivery">
+      <UniqueIdentifier>{8c6cb597-0b78-4ee2-b3f3-57c70b0c3e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\06.Particle\LoopExplosion">
+      <UniqueIdentifier>{d77706c1-e1a7-45c3-b0ec-2f011542dfb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -456,12 +468,25 @@
     <ClInclude Include="..\Headers\Shield_Battery.h">
       <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h" />
+    <ClInclude Include="..\Headers\BrokenPlane.h">
+      <Filter>02.GameObject\12.EventObject\Broken</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\14.Planet</Filter>
+    </ClInclude>
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Planet.h" />
     <ClInclude Include="..\Headers\New_LockOn.h">
       <Filter>02.GameObject\09.HUD\02.LockOn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\LoopExplosionSystem.h">
+      <Filter>02.GameObject\06.Particle\LoopExplosion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Delivery.h">
+      <Filter>02.GameObject\12.EventObject\Delivery</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -663,12 +688,25 @@
     <ClCompile Include="..\Codes\Shield_Battery.cpp">
       <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp" />
+    <ClCompile Include="..\Codes\BrokenPlane.cpp">
+      <Filter>02.GameObject\12.EventObject\Broken</Filter>
+    </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\14.Planet</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp" />
     <ClCompile Include="..\Codes\New_LockOn.cpp">
       <Filter>02.GameObject\09.HUD\02.LockOn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\14.Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\LoopExplosionSystem.cpp">
+      <Filter>02.GameObject\06.Particle\LoopExplosion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Delivery.cpp">
+      <Filter>02.GameObject\12.EventObject\Delivery</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -142,8 +142,11 @@ _uint CRenderer::Render_Background()
 	pDevice->SetTransform(D3DTS_VIEW, &matPrevView);
 	pDevice->SetTransform(D3DTS_PROJECTION, &matPrevProj);
 
-	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
 
 	return iEvent;
 }
@@ -276,13 +279,14 @@ _uint CRenderer::Render_Particle()
 
 	m_GameObjects[iRenderIndex].clear();
 
-	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	pDevice->SetRenderState(D3DRS_POINTSCALEENABLE, false);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	
+	pDevice->SetRenderState(D3DRS_LIGHTING, true);
+	pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
 
 	return iEvent;
 }
@@ -339,7 +343,8 @@ _uint CRenderer::Render_UI()
 	pDevice->SetTransform(D3DTS_PROJECTION, &matPrevProj);
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-
+	pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
 	return iEvent;
 }
 
@@ -402,7 +407,8 @@ _uint CRenderer::Render_AlphaUI()
 	pDevice->SetTransform(D3DTS_PROJECTION, &matPrevProj);
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-
+	pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
 	return iEvent;
 }
 

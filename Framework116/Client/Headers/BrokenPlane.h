@@ -1,16 +1,17 @@
 #pragma once
-#ifndef __ASTEROID_H__
+
+#ifndef __BROKEN_PLANE_H__
 
 #include "GameObject.h"
 
 USING(Engine)
 
-class CAsteroid final : public CGameObject
+class CBrokenPlane final : public CGameObject
 {
 public:
-	explicit CAsteroid(LPDIRECT3DDEVICE9 pDevice);
-	explicit CAsteroid(const CAsteroid& other);
-	virtual ~CAsteroid() = default;
+	explicit CBrokenPlane(LPDIRECT3DDEVICE9 pDevice);
+	explicit CBrokenPlane(const CBrokenPlane& other);
+	virtual ~CBrokenPlane() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
@@ -21,8 +22,9 @@ public:
 
 private:
 	_uint Movement(_float fDeltaTime);
+
 public:
-	static CAsteroid* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CBrokenPlane* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
 
@@ -30,13 +32,11 @@ private:
 	CTransform* m_pTransform = nullptr;
 	CModelMesh* m_pMesh = nullptr;
 	CCollideSphere* m_pCollide = nullptr;
+	CGameObject* m_pSmokeEffect = nullptr;
 
 private:
-	_bool m_bDecorate = false;
-	_float3 m_vRandomRotateDir = { 0.f,0.f,0.f };
 	_float m_fMoveUpDeltaT = 0.f;
-
 };
 
-#define __ASTEROID_H__ 
+#define __BROKEN_PLANE_H__ 
 #endif
