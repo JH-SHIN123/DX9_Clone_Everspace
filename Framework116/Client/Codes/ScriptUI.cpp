@@ -435,18 +435,98 @@ void CScriptUI::Script_Stg2_Begin()
 	switch (m_dwScriptNext)
 	{
 	case 0:
-		m_ePortrait = EPortraitNumber::Admiral;
-		m_wstrScript = L"아아.";
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L".....";
 		break;
 	case 1:
-		m_ePortrait = EPortraitNumber::Admiral;
-		m_wstrScript = L"들리는가?";
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"...!!";
 		break;
 	case 2:
 		m_ePortrait = EPortraitNumber::Admiral;
-		m_wstrScript = L"신병.좋지 못한 소식이다.";
+		m_wstrScript = L"휘이이이이이이익!!";
 		break;
 	case 3:
+		m_ePortrait = EPortraitNumber::End;
+		m_wstrScript = L"무전기에서 호루라기 소리가 들린다!";
+		break;
+	case 4:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"각 소대 그대로 들어!";
+		break;
+	case 5:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"20XX년 X월 X일 금일 저녁점호는 본 사령관이 직접 실시한다.";
+		break;
+	case 6:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"각 소대 보고하도록!";
+		break;
+	case 7:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"이병 잭 한마!";
+		break;
+	case 8:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"신 세계 프로젝트를 수행하기 위해 현재 노르망디 대은하로 순항 중에 있습니다!";
+		break;
+	case 9:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"-좌표 : @ @ @, $ $ $ , ×××";
+		break;
+	case 10:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"-기체 : 이상 무!";
+		break;
+	case 11:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"20XX년 X월 X일 금일 저녁점호보고 끝!";
+		break;
+	case 12:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"필승!";
+		break;
+	case 13:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L".....";
+		break;
+	case 14:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"잭 한마 신병.";
+		break;
+	case 15:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"이병 잭 한마!";
+		break;
+	case 16:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"신세계 프로젝트는 우리군에 아주 중요한 인물을 구출해내 무사히 복귀시키고";
+		break;
+	case 17:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"적국과의 평화 회담을 진행해 이 전쟁을 끝내는 것이 최종목표이다.";
+		break;
+	case 18:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"아마 적국의 급진파 세력이 방해를 시도해올것이다.";
+		break;
+	case 19:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"만약  항해 중 적국의 병사를 만난다면....";
+		break;
+	case 20:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"모조리 말살하도록!!";
+		break;
+	case 21:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"예!알겠습니다!";
+		break;
+	case 22:
+		m_ePortrait = EPortraitNumber::Admiral;
+		m_wstrScript = L"그리고 또한가지,";
+		break;
+	case 23:
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"현재 자네의 위치쪽으로 향하는 유성군이 확인되었다.";
 		break;
@@ -475,6 +555,10 @@ void CScriptUI::Script_Stg2_AfterCamProduction()
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"무운을 빌지.";
 		break;
+	case 3:
+		m_ePortrait = EPortraitNumber::End;
+		m_wstrScript = L"통신이 끊겼다....";
+		break;
 	default:
 		m_wstrName = L"";
 		m_wstrScript = L"";
@@ -494,7 +578,7 @@ void CScriptUI::Script_Stg2_Finish_AsteroidFlyAway()
 		break;
 	case 1:
 		m_ePortrait = EPortraitNumber::Admiral;
-		m_wstrScript = L"훌륭한 실력이었다.";
+		m_wstrScript = L"훌륭한 실력이었다만.";
 		break;
 	case 2:
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -506,11 +590,11 @@ void CScriptUI::Script_Stg2_Finish_AsteroidFlyAway()
 		break;
 	case 4:
 		m_ePortrait = EPortraitNumber::Admiral;
-		m_wstrScript = L"!!";
+		m_wstrScript = L"쳇!!";
 		break;
 	case 5:
 		m_ePortrait = EPortraitNumber::Admiral;
-		m_wstrScript = L"항로에 적군의 전투기가 포착되었다!!";
+		m_wstrScript = L"전방에 적군이 포착되었다!!";
 		break;
 	case 6:
 		m_ePortrait = EPortraitNumber::Admiral;

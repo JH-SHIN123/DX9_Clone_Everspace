@@ -86,7 +86,7 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 	case TRUE:
 		break;
 	case UPDATE_FLYAWAY:
-		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 300.f);
+		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 30.f,20.f);
 		break;
 	case PLAYER_DEAD:
 		m_fDelaySceneChange += fDeltaTime;
@@ -124,8 +124,6 @@ _uint CStage2::LateUpdate_Scene(_float fDeltaTime)
 
 HRESULT CStage2::Add_Layer_Player(const wstring & LayerTag)
 {
-
-
 		GAMEOBJECT_DESC tDesc;
 		tDesc.wstrMeshName = L"Component_Mesh_BigShip";
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
@@ -432,8 +430,7 @@ void CStage2::Ready_Asteroid()
 }
 _uint CStage2::Stage2_Flow(_float fDeltaTime)
 {
-	if (!m_bEnterScene)
-		return TRUE;
+
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player");
 	if (pPlayer)
 	{
@@ -447,7 +444,7 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 		{
 			SetCursorPos(WINCX >> 1, (WINCY >> 1) - 5);
 
-			m_fFlowTime -= fDeltaTime;
+			m_fFlowTime -= fDeltaTime*4;
 
 			if (m_fFlowTime <= 0)
 			{
@@ -520,14 +517,13 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 //TRUE반환시 끝났음
 _bool CStage2::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fMaxYDist,
 	_float fMaxZDist, _float fMinZDist, CTransform* pTargetTransform, _uint iRockAmount,
-	_float fRockSpeed, _float fDistFromTarget)
+	_float fRockSpeed, _float fDistFromTarget, _float fFinishTime)
 {
 	if (nullptr == pTargetTransform)
 	{
 		PRINT_LOG(L"Err", L"pTargetTransform is nullptr");
 		return FALSE;
 	}
-	_float fFinishTime = 60.f;
 	m_fFlyingAsteroidTime += fDeltaTime;
 	if (m_fFlyingAsteroidTime >= fFinishTime)
 	{

@@ -36,7 +36,7 @@ private:
 	void Ready_Asteroid();
 	_bool AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fMaxYDist, _float fMaxZDist,
 		_float fMinZDist, CTransform* pTargetTransform, _uint iRockAmount, _float fRockSpeed,
-		_float fDistFromTarget);
+		_float fDistFromTarget,_float fFinishTime);
 
 	//HRESULT Add_Layer_Monster(const wstring& LayerTag);
 	HRESULT Add_Layer_Sniper(const wstring& LayerTag);
