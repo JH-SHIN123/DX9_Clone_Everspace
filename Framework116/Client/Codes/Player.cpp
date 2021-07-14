@@ -286,7 +286,10 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 		if (m_pHeadLight)
 		{
 			CTransform* pTransform = (CTransform*)m_pHeadLight->Get_Component(L"Com_Transform");
-			pTransform->Set_Position(m_pTransform->Get_State(EState::Position));
+
+			_float3 vLightLook = m_pTransform->Get_State(EState::Position);
+			vLightLook += m_pTransform->Get_State(EState::Look) * 5.f;
+			pTransform->Set_Position(vLightLook);
 			m_pHeadLight->Set_LightDir(m_pTransform->Get_State(EState::Look));
 		}
 	}
