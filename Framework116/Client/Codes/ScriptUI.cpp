@@ -531,7 +531,19 @@ void CScriptUI::Script_Stg2_PlayerDead()
 	{
 	case 0:
 		m_ePortrait = EPortraitNumber::Player;
-		m_wstrScript = L"MayDay!!MayDay!!";
+		m_wstrScript = L"메이데이!!메이데이!!";
+		break;
+	case 1:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"기체가 손상되어 구조를 요청한다!!";
+		break;
+	case 2:
+		m_ePortrait = EPortraitNumber::Player;
+		m_wstrScript = L"끄아아아악!!!!";
+		break;
+	case 3:
+		m_ePortrait = EPortraitNumber::End;
+		m_wstrScript = L".....";
 		break;
 	default:
 		m_wstrName = L"";

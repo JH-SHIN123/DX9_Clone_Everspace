@@ -19,6 +19,7 @@ public:
 	virtual _uint LateUpdate_Scene(_float fDeltaTime) override;
 
 public:
+	HRESULT Add_Layer_Player(const wstring& LayerTag);
 	HRESULT Add_Layer_Cam(const wstring& LayerTag);
 	HRESULT Add_Layer_Light(const wstring& LayerTag, const LIGHT_DESC* pLightDesc);
 	HRESULT Add_Layer_Skybox(const wstring& LayerTag);
@@ -48,6 +49,10 @@ private:
 	_bool m_bFinishFlyAway = FALSE;
 	_bool m_bPlayPlayerDeadScript = FALSE;
 #define UPDATE_FLYAWAY 3
+#define PLAYER_DEAD    4
+#define CLEAR_FLYAWAY  5
+	_float m_fDelaySceneChange = 0.f;
+	_bool m_bLoadMapNavi = FALSE;
 private:
 	_float m_fFlowTime = 1.f;
 	_uint m_iFlowCount = 0;

@@ -3,6 +3,7 @@
 #include "MainCam.h"
 #include"Player.h"
 #include"Pipeline.h"
+#include"Loading.h"
 CStage2::CStage2(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
 {
@@ -14,6 +15,8 @@ HRESULT CStage2::Ready_Scene()
 	::SetWindowText(g_hWnd, L"CStage2");
 	m_pManagement->StopSound(CSoundMgr::BGM);
 
+	if (FAILED(Add_Layer_Player(L"Layer_Player")))
+		return E_FAIL;
 	// Fade Out
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
@@ -24,9 +27,6 @@ HRESULT CStage2::Ready_Scene()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_FadeOut In Layer");
 		return E_FAIL;
 	}
-
-	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/Map/stage1.map");
-	CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/Navi/stage1.navi");
 	
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
@@ -62,6 +62,28 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 	case UPDATE_FLYAWAY:
 		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 300.f);
 		break;
+	case PLAYER_DEAD:
+		m_fDelaySceneChange += fDeltaTime;
+		if (m_fDelaySceneChange >= 5.f)
+		{
+			m_pManagement->Clear_NonStatic_Resources();
+			if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
+				CLoading::Create(m_pDevice, ESceneType::Stage2))))
+			{
+				PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
+				return E_FAIL;
+			}
+			return CHANGE_SCENE;
+		}
+		break;
+	case CLEAR_FLYAWAY:
+		if (!m_bLoadMapNavi)
+		{
+			CStreamHandler::Load_PassData_Map(L"../../Resources/Data/Map/stage1.map");
+			CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/Navi/stage1.navi");
+			m_bLoadMapNavi = TRUE;
+		}
+		break;
 	}
 
 	return _uint();
@@ -72,6 +94,24 @@ _uint CStage2::LateUpdate_Scene(_float fDeltaTime)
 	CScene::LateUpdate_Scene(fDeltaTime);
 
 	return _uint();
+}
+
+HRESULT CStage2::Add_Layer_Player(const wstring & LayerTag)
+{
+
+
+		GAMEOBJECT_DESC tDesc;
+		tDesc.wstrMeshName = L"Component_Mesh_BigShip";
+		if (FAILED(m_pManagement->Add_GameObject_InLayer(
+			EResourceType::Static,
+			L"GameObject_Player",
+			LayerTag, (void**)&tDesc)))
+		{
+			PRINT_LOG(L"Error", L"Failed To Add Player In Layer");
+			return E_FAIL;
+		}
+
+		return S_OK;
 }
 
 HRESULT CStage2::Add_Layer_Cam(const wstring& LayerTag)
@@ -369,7 +409,7 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 	if (pPlayer)
 	{
 		if (pPlayer->Get_IsDead())
-			m_iFlowCount = 4;
+			m_iFlowCount = PLAYER_DEAD;
 	}
 	switch (m_iFlowCount)
 	{
@@ -421,7 +461,7 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 			}
 			if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Stg2_Finish_AsteroidFlyAway)))
 				return -1;
-			m_iFlowCount++;
+			m_iFlowCount = CLEAR_FLYAWAY;
 			return TRUE;
 		}
 		return UPDATE_FLYAWAY;
@@ -434,7 +474,12 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 			m_bPlayPlayerDeadScript = TRUE;
 		}
 	}
-	return TRUE;
+	return PLAYER_DEAD;
+	case 5:
+		if (!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
+		{
+			return CLEAR_FLYAWAY;
+		}
 	default:
 		return TRUE;
 	}
