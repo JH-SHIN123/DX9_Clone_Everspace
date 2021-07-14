@@ -322,6 +322,8 @@ _uint CPlayer_Missile::Search_Shortest_Target(_float fDeltaTime)
 			else
 				m_fDistToBoss = 9999.f;
 		}
+		if (m_listCheckBoss->size() == 0)
+			m_fDistToBoss = 9999.f;
 	}
 	else
 	{
@@ -343,6 +345,8 @@ _uint CPlayer_Missile::Search_Shortest_Target(_float fDeltaTime)
 			if (Test > 0.f)
 				m_fDistToDrone = D3DXVec3Length(&vDir);
 		}
+		if (m_listCheckDrone->size() == 0)
+			m_fDistToDrone = 9999.f;
 	}
 	else
 	{
@@ -362,8 +366,9 @@ _uint CPlayer_Missile::Search_Shortest_Target(_float fDeltaTime)
 				m_fDistToSniper = D3DXVec3Length(&vDir);
 			else
 				m_fDistToSniper = 9999.f;
-
 		}
+		if (m_listCheckSniper->size() == 0)
+			m_fDistToSniper = 9999.f;
 	}
 	else
 	{
@@ -383,22 +388,17 @@ _uint CPlayer_Missile::Search_Shortest_Target(_float fDeltaTime)
 				m_fDistToNormalMonster = D3DXVec3Length(&vDir);
 			else
 				m_fDistToNormalMonster = 9999.f;
-
 		}
+		if (m_listCheckNormalMonster->size() == 0)
+			m_fDistToNormalMonster = 9999.f;
 	}
 	else
 	{
 		m_fDistToNormalMonster = 9999.f;
 	}
 
-	//if (m_listCheckBoss->size() == 0)
-	//	m_fDistToBoss = 9999.f;
-	//if (m_listCheckDrone->size() == 0)
-	//	m_fDistToDrone = 9999.f;
-	//if (m_listCheckSniper->size() == 0)
-	//	m_fDistToSniper = 9999.f;
-	//if (m_listCheckNormalMonster->size() == 0)
-	//	m_fDistToNormalMonster = 9999.f;
+
+
 
 	if (m_fDistToBoss < m_fDistToDrone && m_fDistToBoss < m_fDistToSniper && m_fDistToBoss < m_fDistToNormalMonster)
 	{
@@ -408,7 +408,7 @@ _uint CPlayer_Missile::Search_Shortest_Target(_float fDeltaTime)
 	{
 		m_pTargetTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Drone", L"Com_Transform");
 	}
-	else if (m_fDistToSniper < m_fDistToBoss && m_fDistToSniper < m_fDistToDrone && m_fDistToBoss < m_fDistToNormalMonster)
+	else if (m_fDistToSniper < m_fDistToBoss && m_fDistToSniper < m_fDistToDrone && m_fDistToSniper < m_fDistToNormalMonster)
 	{
 		m_pTargetTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Sniper", L"Com_Transform");
 	}

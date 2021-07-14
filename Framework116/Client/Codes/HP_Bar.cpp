@@ -51,17 +51,17 @@ _uint CHP_Bar::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CUI::LateUpdate_GameObject(fDeltaTime);
 
-	if (m_IsDead)
-		return DEAD_OBJECT;
-
 	return _uint();
 }
 
 _uint CHP_Bar::Render_GameObject()
 {
 	//Check_Degree();
-	if(!m_IsBack)
-		CUI::Render_GameObject();
+	if (!m_IsBack)
+	{
+		if (!m_IsFar)
+			CUI::Render_GameObject();
+	}
 
 	return _uint();
 }

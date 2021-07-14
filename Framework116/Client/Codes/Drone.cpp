@@ -181,7 +181,8 @@ _uint CDrone::LateUpdate_GameObject(_float fDeltaTime)
 			m_pHp_Bar->Set_IsDead(TRUE);
 		if (m_pHP_Bar_Border)
 			m_pHP_Bar_Border->Set_IsDead(TRUE);
-		m_pLockOn->Set_IsDead(TRUE);
+		if (m_pLockOn)
+			m_pLockOn->Set_IsDead(TRUE);
 		m_pManagement->PlaySound(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
 		return DEAD_OBJECT;
 	}
@@ -562,6 +563,22 @@ void CDrone::Set_Hp_Pos()
 
 	_float3 vDir = vMonsterPos - vPlayerPos;
 	_float fDist = D3DXVec3Length(&vDir);
+
+	// 너무 멀면 렌더하지마
+	if (fDist > 600.f)
+	{
+		if (m_pHp_Bar)
+			m_pHp_Bar->Set_Is_Far(true);
+		if (m_pHP_Bar_Border)
+			m_pHP_Bar_Border->Set_Is_Far(true);
+	}
+	else
+	{
+		if (m_pHp_Bar)
+			m_pHp_Bar->Set_Is_Far(false);
+		if (m_pHP_Bar_Border)
+			m_pHP_Bar_Border->Set_Is_Far(false);
+	}
 
 	D3DVIEWPORT9 vp2;
 	m_pDevice->GetViewport(&vp2);

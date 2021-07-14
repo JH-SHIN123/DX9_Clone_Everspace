@@ -62,6 +62,10 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Sniper");
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Sniper");
 
+	//Monster
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Monster");
+
 	return _uint();
 }
 
