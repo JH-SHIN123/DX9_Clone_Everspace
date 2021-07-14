@@ -42,8 +42,6 @@ private:
 private:
 	CModelMesh*  m_pModelMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
-	CCollideSphere* m_pCollide = nullptr;
-
 	CTransform* m_pTargetTransform = nullptr;
 
 	//

@@ -141,7 +141,9 @@ HRESULT CDrone::Ready_GameObject(void* pArg)
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
-	}	return S_OK;
+	}	
+	
+	return S_OK;
 }
 
 _uint CDrone::Update_GameObject(_float fDeltaTime)

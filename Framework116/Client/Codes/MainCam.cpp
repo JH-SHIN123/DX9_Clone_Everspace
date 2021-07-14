@@ -662,6 +662,7 @@ _uint CMainCam::Solo_Stage2FinishAsteroid(_float fDeltaTime)
 		break;
 	}
 
+	return NO_EVENT;
 }
 
 
