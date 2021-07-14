@@ -442,7 +442,10 @@ void CLobbyUI::Update_SceneSelect(_float fDeltaTime)
 	else if (m_pController->Key_Down(KEY_ENTER))
 	{
 		if (!m_pLobby->GetStageLock(m_iSelect))
+		{
+			m_pLobby->SetNextScene(m_iSelect);
 			m_pLobby->Set_GotoNextScene(TRUE);
+		}
 	}
 	else if (m_pController->Key_Down(KEY_P))
 	{
