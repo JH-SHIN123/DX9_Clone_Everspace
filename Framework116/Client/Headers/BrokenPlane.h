@@ -31,6 +31,7 @@ public:
 private:
 	CTransform* m_pTransform = nullptr;
 	CModelMesh* m_pMesh = nullptr;
+	CCollideSphere* m_pCollide = nullptr;
 
 private:
 	_float m_fMoveUpDeltaT = 0.f;
