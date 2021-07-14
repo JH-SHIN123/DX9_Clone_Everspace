@@ -162,6 +162,10 @@ _uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
 		m_pManagement->PlaySound(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
 		return DEAD_OBJECT;
 	}
+	if (nullptr == m_pHp_Bar)
+	{
+		m_IsCollide = false;
+	}
 	if (m_IsCollide) {
 		// Bullet 데미지 만큼.
 		m_pHp_Bar->Set_ScaleX(-100.f / m_pInfo->Get_MaxHp() * m_pInfo->Get_Hp());

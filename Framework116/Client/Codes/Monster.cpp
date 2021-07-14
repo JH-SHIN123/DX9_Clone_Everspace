@@ -152,6 +152,10 @@ _uint CMonster::LateUpdate_GameObject(_float fDeltaTime)
 		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Someone_Try_To_Kill_Me(false);
 		return DEAD_OBJECT;
 	}
+	if (nullptr == m_pHp_Bar)
+	{
+		m_IsCollide = false;
+	}
 	if (m_IsCollide) {
 		// Bullet 데미지 만큼.
 		CEffectHandler::Add_Layer_Effect_Bullet_Explosion(m_pTransform->Get_State(EState::Position));

@@ -186,6 +186,10 @@ _uint CDrone::LateUpdate_GameObject(_float fDeltaTime)
 		m_pManagement->PlaySound(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
 		return DEAD_OBJECT;
 	}
+	if (nullptr == m_pHp_Bar)
+	{
+		m_IsCollide = false;
+	}
 	if (m_IsCollide) {
 		// Bullet 데미지 만큼.
 		if (m_pHp_Bar)
