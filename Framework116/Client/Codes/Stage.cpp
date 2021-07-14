@@ -58,6 +58,7 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
+<<<<<<< HEAD
 	
 	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 		//return E_FAIL;
@@ -68,6 +69,8 @@ HRESULT CStage::Ready_Scene()
 	/*if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 		return E_FAIL;
 */
+=======
+>>>>>>> main
 
 	return S_OK;
 }
@@ -92,7 +95,7 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 	CScene::LateUpdate_Scene(fDeltaTime);
 	
 	// Monster
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Drone");
+	//CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Drone");
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Drone");
 
 	// Boss
@@ -116,6 +119,9 @@ _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 
 	// 몬스터Bullet과 플레이어의 실드배터리
 	//CCollisionHandler::Collision_SphereToSphere(L"Layer_Monster_Bullet", L"Layer_Shield_Battery");
+
+	// 데미지 Src가 데미지를 입는다
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Bullet", L"Layer_Drone");
 
 	return _uint();
 }
@@ -182,12 +188,11 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 		if (Check == true)
 		{
 			CQuestHandler::Get_Instance()->Set_ClearStage(EStageClear::Stage_1);
+			++m_iFlowCount;
 		}
 	}
-	default:
-		return E_FAIL;
-	}
 
+<<<<<<< HEAD
 	return S_OK;
 }
 
@@ -199,27 +204,35 @@ HRESULT CStage::Add_Layer_Player(const wstring & LayerTag)
 		EResourceType::Static,
 		L"GameObject_Player",
 		LayerTag,(void**)&tDesc)))
+=======
+	case 6:
+>>>>>>> main
 	{
-		PRINT_LOG(L"Error", L"Failed To Add Player In Layer");
-		return E_FAIL;
+		if (false == m_bFadeIn) {
+			if (FAILED(m_pManagement->Add_GameObject_InLayer(
+				EResourceType::Static,
+				L"GameObject_FadeIn",
+				L"Layer_Fade",
+				this)))
+			{
+				PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+				return E_FAIL;
+			}
+			m_bFadeIn = true;
+			return NO_EVENT;
+		}
+
+	}
+
+	default:
+		return S_OK;
 	}
 
 	return S_OK;
 }
 
-HRESULT CStage::Add_Layer_Terrain(const wstring & LayerTag)
-{
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Terrain",
-		LayerTag)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Player In Layer");
-		return E_FAIL;
-	}
 
-	return S_OK;
-}
+
 
 HRESULT CStage::Add_Layer_Cam(const wstring & LayerTag)
 {
@@ -236,20 +249,6 @@ HRESULT CStage::Add_Layer_Cam(const wstring & LayerTag)
 		&CameraDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Player In Main Cam");
-		return E_FAIL;
-	}
-
-	return S_OK;
-}
-
-HRESULT CStage::Add_Layer_Monster(const wstring & LayerTag)
-{
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Monster",
-		LayerTag)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Monster In Layer");
 		return E_FAIL;
 	}
 
@@ -294,112 +293,6 @@ HRESULT CStage::Add_Layer_Light(const wstring& LayerTag, const LIGHT_DESC* pLigh
 		(void*)pLightDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Light In Layer");
-		return E_FAIL;
-	}
-
-	return S_OK;
-}
-
-HRESULT CStage::Add_Layer_ExplosionSystem(const wstring& LayerTag, const PARTICLESYSTEM_DESC* pParticleSystemDesc)
-{
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_ExplosionSystem",
-		LayerTag,
-		(void*)pParticleSystemDesc)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
-		return E_FAIL;
-	}
-
-	return S_OK;
-}
-
-HRESULT CStage::Add_Layer_LaserSystem(const wstring& LayerTag, const PARTICLESYSTEM_DESC* pParticleSystemDesc)
-{
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_LaserSystem",
-		LayerTag,
-		(void*)pParticleSystemDesc)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
-		return E_FAIL;
-	}
-
-	return S_OK;
-}
-
-HRESULT CStage::Add_Layer_Boss_Monster(const wstring & LayerTag)
-{
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Boss_Monster",
-		LayerTag)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
-		return E_FAIL;
-	}
-
-	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
-	//	EResourceType::NonStatic,
-	//	L"GameObject_Boss_Warmhole",
-	//	L"Layer_Boss_Warmhole")))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
-	//	return E_FAIL;
-	//}
-
-	return S_OK;
-}
-
-HRESULT CStage::Add_Layer_Ring(const wstring & LayerTag)
-{
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Ring",
-		LayerTag)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
-		return E_FAIL;
-	}
-
-	TRANSFORM_DESC* pData = new TRANSFORM_DESC;
-	pData->vPosition = { 50.f, 0.f, 50.f };
-
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Ring",
-		LayerTag, pData)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
-		return E_FAIL;
-	}
-
-
-	pData->vPosition = { 130.f, 0.f, 90.f };
-
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_Ring",
-		LayerTag, pData)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Ring In Layer");
-		return E_FAIL;
-	}
-
-
-	return S_OK;
-}
-
-HRESULT CStage::Add_Layer_TargetMonster(const wstring & LayerTag)
-{
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_TargetMonster",
-		LayerTag)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_TargetMonster In Layer");
 		return E_FAIL;
 	}
 
@@ -605,6 +498,7 @@ HRESULT CStage::Add_Layer_MissionUI(const wstring & LayerTag, EQuest eQuest)
 
 	return S_OK;
 }
+<<<<<<< HEAD
 
 HRESULT CStage::Add_Layer_Sniper(const wstring & LayerTag)
 {
@@ -621,3 +515,5 @@ HRESULT CStage::Add_Layer_Sniper(const wstring & LayerTag)
 
 
 
+=======
+>>>>>>> main

@@ -51,6 +51,7 @@
 #include"LobbyBackUI.h"
 #include"LobbyScriptUI.h"
 #include"LobbyCursor.h"
+#include "BrokenPlane.h"
 
 // 3Stage필요
 #include "Sniper.h"
@@ -462,12 +463,21 @@ HRESULT CLoading::Ready_Stage2Resources()
 	Load_StageEffect_Resources();
 
 	Load_Stage2_Prop_Resources();
+	Load_Stage3_Prop_Resources();
 
 	return S_OK;
 }
 
 HRESULT CLoading::Ready_Stage3Resources()
 {
+	m_pManagement->Clear_NonStatic_Resources();
+
+	Load_HUD_Resources();
+	Load_ScriptUI_Resources();
+	Load_StageEffect_Resources();
+
+	Load_Stage3_Prop_Resources();
+
 	return S_OK;
 }
 
@@ -624,6 +634,32 @@ HRESULT CLoading::Load_Stage1_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
+	/*로딩시간때문에 잠시 주석해놓음 지우지 말것!*/
+	//if (FAILED(m_pManagement->Add_Component_Prototype(
+	//	EResourceType::Static,
+	//	L"Component_Mesh_Delivery",
+	//	CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+	//	return E_FAIL;
+	//}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Enemy1",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/enemy1.X", L"../../Resources/Textures/Enemy/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Enemy2",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/enemy2.X", L"../../Resources/Textures/Enemy/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 #pragma endregion
@@ -674,6 +710,16 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
 		return E_FAIL;
 	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Broken_Plane",
+		CBrokenPlane::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Broken_Plane");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 #pragma region Components
@@ -741,19 +787,17 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
-#pragma endregion
 
-#pragma endregion
-
-#pragma region Delivery
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
-		L"Component_Mesh_Delivery",
-		CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
+		L"Component_Mesh_Broken_Plane",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/broken.X", L"../../Resources/Textures/Broken/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
+#pragma endregion
+
 #pragma endregion
 
 #pragma region Monster
@@ -787,6 +831,17 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 HRESULT CLoading::Load_Stage3_Prop_Resources()
 {
 #pragma region Map
+
+#pragma region GameObjects
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Skybox",
+		CSkybox::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
+		return E_FAIL;
+	}
+
 	/* For.GameObject_Planet_Ice */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -796,6 +851,9 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
 		return E_FAIL;
 	}
+#pragma endregion
+
+#pragma region Components
 	/* For.Component_Texture_Planet */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -805,6 +863,26 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
 		return E_FAIL;
 	}
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Delivery",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
+		return E_FAIL;
+	}
+#pragma endregion
+
+
 #pragma endregion
 
 #pragma region Boss
@@ -1041,6 +1119,32 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 	}
 #pragma endregion
 #pragma endregion
+
+#pragma region Monster
+#pragma region GameObjects
+	/* For.GameObject_Monster */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Monster",
+		CMonster::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Monster");
+		return E_FAIL;
+	}
+#pragma endregion
+
+#pragma region Component
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Enemy1",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/enemy1.X", L"../../Resources/Textures/Enemy/"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
+		return E_FAIL;
+	}
+#pragma endregion
+#pragma endregion
+
 
 	return S_OK;
 }

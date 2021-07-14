@@ -51,7 +51,7 @@ void CPlayer::Update_Effect()
 			vWingPos += m_pTransform->Get_State(EState::Up) * m_vLeftWingOffset.y;
 			vWingPos += m_pTransform->Get_State(EState::Look) * m_vLeftWingOffset.z;
 			m_pLeftWingBoost->Set_WingOffset(vWingPos);
-			m_pLeftWingBoost->Set_IsBoost(m_IsBoost);
+			m_pLeftWingBoost->Set_IsBoost(m_IsMove);
 		}
 		if (m_pRightWingBoost) {
 			_float3 vWingPos = m_pTransform->Get_TransformDesc().vPosition;
@@ -59,7 +59,7 @@ void CPlayer::Update_Effect()
 			vWingPos += m_pTransform->Get_State(EState::Up) * m_vRightWingOffset.y;
 			vWingPos += m_pTransform->Get_State(EState::Look) * m_vRightWingOffset.z;
 			m_pRightWingBoost->Set_WingOffset(vWingPos);
-			m_pRightWingBoost->Set_IsBoost(m_IsBoost);
+			m_pRightWingBoost->Set_IsBoost(m_IsMove);
 		}
 	}
 }
@@ -141,14 +141,30 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	// HP 바.
-	m_fHp = 100.f;
-	m_fFullHp = m_fHp;
+	//// HP 바.
+	//m_fHp = 100.f;
+	//m_fFullHp = m_fHp;
+
+	// HP 세팅
+	STAT_INFO tStatus;
+	tStatus.iMaxHp = 100;
+	tStatus.iHp = tStatus.iMaxHp;
+
+	if (FAILED(CGameObject::Add_Component(
+		EResourceType::Static,
+		L"Component_Status_Info",
+		L"Com_StatInfo",
+		(CComponent**)&m_pInfo,
+		&tStatus)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
+		return E_FAIL;
+	}
 
 	CGameObject* pGameObject = nullptr;
 	UI_DESC HUD_Hp_Bar;
 	HUD_Hp_Bar.tTransformDesc.vPosition = { -828.5f, 455.f, 0.f };
-	HUD_Hp_Bar.tTransformDesc.vScale = { m_fHp * (m_fHpLength / m_fFullHp), 8.f, 0.f };
+	HUD_Hp_Bar.tTransformDesc.vScale = { m_pInfo->Get_Hp() * (m_fHpLength / m_pInfo->Get_MaxHp()), 8.f, 0.f };
 	HUD_Hp_Bar.wstrTexturePrototypeTag = L"Component_Texture_HP_Bar";
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::NonStatic,
@@ -225,6 +241,22 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 	m_pHUD_Effect_Boost->Release();
 
+
+	// Add Light
+	LIGHT_DESC lightDesc;
+	lightDesc.eLightType = ELightType::SpotLight;
+	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_Light",
+		L"Layer_Light",
+		(void*)&lightDesc,
+		(CGameObject**)&m_pHeadLight)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Light In Layer");
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -265,6 +297,17 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 
 		// (순서 중요!) 이펙트 업데이트
 		Update_Effect();
+
+		// Light 업데이트
+		if (m_pHeadLight)
+		{
+			CTransform* pTransform = (CTransform*)m_pHeadLight->Get_Component(L"Com_Transform");
+
+			_float3 vLightLook = m_pTransform->Get_State(EState::Position);
+			vLightLook += m_pTransform->Get_State(EState::Look) * 5.f;
+			pTransform->Set_Position(vLightLook);
+			m_pHeadLight->Set_LightDir(m_pTransform->Get_State(EState::Look));
+		}
 	}
 	return NO_EVENT;
 }
@@ -273,7 +316,7 @@ _uint CPlayer::LateUpdate_GameObject(_float fDeltaTime)
 {
 	CGameObject::LateUpdate_GameObject(fDeltaTime);
 	
-	if (m_fHp <= 0.f && !m_IsDead)
+	if (m_pInfo->Get_Hp() <= 0 && !m_IsDead)
 	{
 		CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_State(EState::Position), 1.f);
 
@@ -368,6 +411,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	{
 		m_pTransform->Go_Straight(fDeltaTime);
 		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+		m_IsMove = true;
 	}
 
 	
@@ -375,18 +419,21 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	{
 		m_pTransform->Go_Straight(-fDeltaTime);
 		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+		m_IsMove = true;
 	}
 
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
 		m_pTransform->Go_Side(fDeltaTime);
 		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+		m_IsMove = true;
 	}
 
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
 		m_pTransform->Go_Side(-fDeltaTime);
 		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+		m_IsMove = true;
 	}
 
 	if ((!GetAsyncKeyState('W') && 0x8000)
@@ -395,6 +442,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		&& (!GetAsyncKeyState('D') && 0x8000))
 	{
 		m_pManagement->StopSound(CSoundMgr::PLAYER_MOVE);
+		m_IsMove = false;
 	}
 
 	// Booster
@@ -499,8 +547,8 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	// 피깎는 !TEST!!!!!!!!!!!!!
 	if (m_pController->Key_Down(KEY_F1))
 	{
-		m_fHp -= 10.f;
-		m_pHp_Bar->Set_ScaleX(-10.f / m_fFullHp * m_fHpLength);
+		m_pInfo->Set_Damage(10);
+		m_pHp_Bar->Set_ScaleX(-10.f / m_pInfo->Get_MaxHp() * m_fHpLength);
 
 		// HIT Effect
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
@@ -957,9 +1005,11 @@ void CPlayer::Free()
 	}
 	Safe_Release(m_pStamina_Bar);
 	Safe_Release(m_pHp_Bar);
+	Safe_Release(m_pInfo);
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pController);
+	Safe_Release(m_pHeadLight);
 
 	CGameObject::Free();
 }

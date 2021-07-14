@@ -160,7 +160,8 @@ _uint CPlanet::Render_GameObject()
 #endif
 
 	m_pDevice->SetRenderState(D3DRS_LIGHTING, true);
-
+	m_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	m_pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
 
 	return _uint();
 }

@@ -48,11 +48,13 @@ public:
 
 private:
 	_bool m_IsBoost = false;
+	_bool m_IsMove = false;
 
 private: // For.Components
 	CMesh*  m_pMesh = nullptr;
 	CTransform* m_pTransform = nullptr;
 	CController* m_pController = nullptr;
+	CStatus_Info* m_pInfo = nullptr;
 
 	//CCamera* m_pCam = nullptr;
 	//_float m_fCameraDist = 5.f;
@@ -142,7 +144,8 @@ private:
 private:
 	class CHUD_Effect_Boost* m_pHUD_Effect_Boost = nullptr;
 
-
+private:
+	CLight* m_pHeadLight = nullptr;
 };
 
 #define __PLAYER_H__

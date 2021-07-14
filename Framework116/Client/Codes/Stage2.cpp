@@ -36,13 +36,38 @@ HRESULT CStage2::Ready_Scene()
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(105, 105, 105);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
+<<<<<<< HEAD
 	Ready_Asteroid();
+=======
+
+	//// TEST
+	//GAMEOBJECT_DESC tDesc;
+	//tDesc.wstrMeshName = L"Component_Mesh_Broken_Plane";
+
+	//if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+	//	EResourceType::NonStatic,
+	//	L"GameObject_Broken_Plane",
+	//	L"Layer_Broken_Plane",
+	//	&tDesc)))
+	//{
+	//	wstring errMsg = L"Failed to Add Layer ";
+	//	PRINT_LOG(L"Error", errMsg.c_str());
+	//	return E_FAIL;
+	//}
+
+	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
+	//	return E_FAIL;
+
+	/*if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
+		return E_FAIL;*/
+
+>>>>>>> main
 	return S_OK;
 }
 
@@ -310,6 +335,7 @@ HRESULT CStage2::Add_Layer_UI(const wstring& LayerTag, const UI_DESC* pUIDesc)
 	return S_OK;
 }
 
+<<<<<<< HEAD
 HRESULT CStage2::Add_Layer_ScriptUI(const wstring & LayerTag, EScript eScript)
 {
 	UI_DESC Desc;
@@ -356,6 +382,28 @@ HRESULT CStage2::Add_Layer_Asteroid(const wstring & LayerTag, GAMEOBJECT_DESC tD
 		EResourceType::NonStatic,
 		L"GameObject_Asteroid",
 		LayerTag, (void**)&tDesc)))
+=======
+//HRESULT CStage2::Add_Layer_Monster(const wstring & LayerTag)
+//{
+//	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+//		EResourceType::NonStatic,
+//		L"GameObject_Monster",
+//		LayerTag)))
+//	{
+//		PRINT_LOG(L"Error", L"Failed To Add Monster In Layer");
+//		return E_FAIL;
+//	}
+//
+//	return S_OK;
+//}
+
+HRESULT CStage2::Add_Layer_Sniper(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Sniper",
+		LayerTag)))
+>>>>>>> main
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper In Layer");
 		return E_FAIL;
@@ -363,6 +411,7 @@ HRESULT CStage2::Add_Layer_Asteroid(const wstring & LayerTag, GAMEOBJECT_DESC tD
 	return S_OK;
 }
 
+<<<<<<< HEAD
 void CStage2::Ready_Asteroid()
 {
 	GAMEOBJECT_DESC tDesc;
@@ -572,6 +621,8 @@ _bool CStage2::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fM
 }
 
 
+=======
+>>>>>>> main
 CStage2* CStage2::Create(LPDIRECT3DDEVICE9 pDevice)
 {
 	if (nullptr == pDevice)

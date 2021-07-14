@@ -38,6 +38,12 @@ private:
 		_float fMinZDist, CTransform* pTargetTransform, _uint iRockAmount, _float fRockSpeed,
 		_float fDistFromTarget);
 
+	//HRESULT Add_Layer_Monster(const wstring& LayerTag);
+	HRESULT Add_Layer_Sniper(const wstring& LayerTag);
+
+
+	// Stage3 생기기전까지만 사용하겠습니당~~
+
 public:
 	static CStage2* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual void Free() override;
