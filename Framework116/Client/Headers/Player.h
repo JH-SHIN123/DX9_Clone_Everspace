@@ -31,7 +31,7 @@ public:
 public:
 	_uint Get_Weapon_Type() { return m_iWeapon; }
 	_bool Get_Is_Fire() { return m_IsFire; }
-
+	class CHP_Bar* Get_HpBar() { return m_pHp_Bar; }
 
 private:
 	void	KeyProcess(_float fDeltaTime);
@@ -50,6 +50,7 @@ public:
 
 private:
 	_bool m_IsBoost = false;
+	_bool m_IsMove = false;
 
 private: // For.Components
 	CMesh*  m_pMesh = nullptr;
@@ -150,6 +151,8 @@ private: // 보스와 충돌
 	_float m_fCollideTime_Boss = 0.f;
 	_float3 m_vCollideDir_Boss;
 
+private:
+	CLight* m_pHeadLight = nullptr;
 };
 
 #define __PLAYER_H__

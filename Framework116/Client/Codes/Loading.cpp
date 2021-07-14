@@ -30,8 +30,9 @@
 #include "Ring.h"
 #include "FollowSystem.h"
 #include "EngineEffectSystem.h"
-#include "LockOn.h"
+#include "New_LockOn.h"
 #include "Planet.h"
+#include "LoopExplosionSystem.h"
 #include "Drone.h"
 #include "WingBoost_System.h"
 #include"Product.h"
@@ -51,6 +52,7 @@
 #include"LobbyBackUI.h"
 #include"LobbyScriptUI.h"
 #include"LobbyCursor.h"
+#include "BrokenPlane.h"
 
 // 3StageÇÊ¿ä
 #include "Sniper.h"
@@ -709,6 +711,16 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Asteroid");
 		return E_FAIL;
 	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Broken_Plane",
+		CBrokenPlane::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Broken_Plane");
+		return E_FAIL;
+	}
+
 #pragma endregion
 
 #pragma region Components
@@ -776,19 +788,17 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
-#pragma endregion
 
-#pragma endregion
-
-#pragma region Delivery
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
-		L"Component_Mesh_Delivery",
-		CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
+		L"Component_Mesh_Broken_Plane",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/broken.X", L"../../Resources/Textures/Broken/"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
+#pragma endregion
+
 #pragma endregion
 
 #pragma region Monster
@@ -822,6 +832,17 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 HRESULT CLoading::Load_Stage3_Prop_Resources()
 {
 #pragma region Map
+
+#pragma region GameObjects
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Skybox",
+		CSkybox::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
+		return E_FAIL;
+	}
+
 	/* For.GameObject_Planet_Ice */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -831,6 +852,9 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Planet");
 		return E_FAIL;
 	}
+#pragma endregion
+
+#pragma region Components
 	/* For.Component_Texture_Planet */
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::NonStatic,
@@ -840,13 +864,12 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
 		return E_FAIL;
 	}
-
-	if (FAILED(m_pManagement->Add_GameObject_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_Skybox",
-		CSkybox::Create(m_pDevice))))
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Mesh_Delivery",
+		CModelMesh::Create(m_pDevice, L"../../Resources/Models/delivery.X", L"../../Resources/Textures/Delivery/"))))
 	{
-		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
+		PRINT_LOG(L"Error", L"Failed To Add Component_Mesh_BigShip");
 		return E_FAIL;
 	}
 
@@ -858,6 +881,9 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
 		return E_FAIL;
 	}
+#pragma endregion
+
+
 #pragma endregion
 
 #pragma region Boss
@@ -1161,7 +1187,7 @@ HRESULT CLoading::Load_HUD_Resources()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_LockOn",
-		CLockOn::Create(m_pDevice))))
+		CNew_LockOn::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_LockOn");
 		return E_FAIL;
@@ -1524,6 +1550,16 @@ HRESULT CLoading::Load_StageEffect_Resources()
 		CExplosionSystem::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_ExplosionSystem");
+		return E_FAIL;
+	}
+
+	/* For.GameObject_ExplosionSystem */
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_LoopExplosionSystem",
+		CLoopExplosionSystem::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_LoopExplosionSystem");
 		return E_FAIL;
 	}
 

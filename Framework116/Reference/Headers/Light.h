@@ -55,6 +55,8 @@ protected:
 	class CTransform* m_pTransform = nullptr;
 	D3DLIGHT9 m_tLight;
 	ELightType m_eLightType = ELightType::End;
+
+	int m_iLightIndex = -1;
 };
 END
 

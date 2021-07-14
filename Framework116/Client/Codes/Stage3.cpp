@@ -54,15 +54,6 @@ HRESULT CStage3::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 	
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
-		return E_FAIL;
-
-	if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
-		return E_FAIL;
-
-	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
-		return E_FAIL;
-
 	return S_OK;
 }
 
