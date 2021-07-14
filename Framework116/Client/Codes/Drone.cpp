@@ -195,14 +195,9 @@ _uint CDrone::LateUpdate_GameObject(_float fDeltaTime)
 	}
 	if (m_IsCollide) {
 		// Bullet 데미지 만큼.
-<<<<<<< HEAD
-		//m_pHp_Bar->Set_ScaleX(-30.f / m_fFullHp * m_fHpLength);
-		//m_fHp -= 30.f;
-=======
 		if (m_pHp_Bar)
 			m_pHp_Bar->Set_ScaleX(-30.f / m_fFullHp * m_fHpLength);
 		m_fHp -= 30.f;
->>>>>>> origin/main
 		m_IsCollide = false;
 	}
 
