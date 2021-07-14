@@ -21,7 +21,6 @@ HRESULT CStage::Ready_Scene()
 	::SetWindowText(g_hWnd, L"Stage");
 	m_pManagement->StopSound(CSoundMgr::BGM);
 
-
 	// Fade Out
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
@@ -49,7 +48,6 @@ HRESULT CStage::Ready_Scene()
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
 	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	//lightDesc.tLightColor = D3DCOLOR_XRGB(160, 160, 160);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -59,21 +57,11 @@ HRESULT CStage::Ready_Scene()
 	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 		//return E_FAIL;
 
-	if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
-		return E_FAIL;
-
-	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
-		return E_FAIL;
-
-	//// TEST
-	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
-	//	EResourceType::Static,
-	//	L"GameObject_FadeIn",
-	//	L"Layer_Fade")))
-	//{
-	//	PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+	//if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
 	//	return E_FAIL;
-	//}
+
+	//if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -554,42 +542,6 @@ HRESULT CStage::Add_Layer_HUD(const wstring& LayerTag)
 	if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_HP_OutBar)))
 		return E_FAIL;
 
-
-	return S_OK;
-}
-
-HRESULT CStage::Add_Layer_TutorialUI(const wstring & LayerTag)
-{
-	wstring TargetLayerTag = L"Layer_Ring";
-
-	if (FAILED(m_pManagement->Add_GameObject_InLayer(
-		EResourceType::NonStatic,
-		L"GameObject_TutorialUI",
-		LayerTag, &TargetLayerTag)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add TutorialUI In Layer");
-		return E_FAIL;
-	}
-
-	//// Mission HUD
-	//UI_DESC HUD_Mission;
-	//HUD_Mission.tTransformDesc.vPosition = { 860.f, 500.f, 0.f };
-	//HUD_Mission.tTransformDesc.vScale = { 262.f, 14.f, 0.f };
-	//HUD_Mission.wstrTexturePrototypeTag = L"Component_Texture_HUD_Mission";
-	//if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_Mission)))
-	//	return E_FAIL;
-
-	/*
-	#define WINCX 1920
-	#define WINCY 1080
-	*/
-
-	//UI_DESC HUD_TutorialUI;
-	//HUD_TutorialUI.tTransformDesc.vPosition = { -700.f, 424.f, 0.f };
-	//HUD_TutorialUI.tTransformDesc.vScale = { 262.f, 14.f, 0.f };
-	//HUD_TutorialUI.wstrTexturePrototypeTag = L"Component_Texture_Tutorial_Nevi";
-	//if (FAILED(Add_Layer_UI(L"Layer_HUD", &HUD_TutorialUI)))
-	//	return E_FAIL;
 
 	return S_OK;
 }

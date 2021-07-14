@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "..\Headers\QuestHandler.h"
-#include "TutorialUI.h"
 #include "Player.h"
 
 IMPLEMENT_SINGLETON(CQuestHandler)
