@@ -276,7 +276,6 @@ _uint CBoss_Monster::EnergyBallCannon_Target_Search(_float fDeltaTime)
 		{
 			Left_EnergyBall(fDeltaTime);
 		}
-
 	}
 	else
 	{
@@ -428,7 +427,7 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 	{
 		if (m_IsLaserAttack == true)
 		{
-			if (m_iLaserCount <= 1)
+			if (m_iLaserCount == 0)
 			{
 				//m_IsLaserAttack = false;
 				//m_fLaser_CoolTime = 0.f;
@@ -653,7 +652,7 @@ _uint CBoss_Monster::Attack_AI(_float fDeltaTime)
 
 _uint CBoss_Monster::Check_NewPattern()
 {
-	_float fNowHp = m_pInfo->Get_Hp() / m_pInfo->Get_MaxHp();
+	_float fNowHp = _float(m_pInfo->Get_Hp()) / _float(m_pInfo->Get_MaxHp());
 
 	if (fNowHp <= 0.7f)
 	{
