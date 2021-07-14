@@ -142,7 +142,8 @@ private:
 private:
 	class CHUD_Effect_Boost* m_pHUD_Effect_Boost = nullptr;
 
-
+private:
+	CLight* m_pHeadLight = nullptr;
 };
 
 #define __PLAYER_H__

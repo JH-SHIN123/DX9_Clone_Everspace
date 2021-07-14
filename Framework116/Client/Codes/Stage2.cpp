@@ -35,7 +35,7 @@ HRESULT CStage2::Ready_Scene()
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(55, 55, 55);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(190, 190, 190);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 

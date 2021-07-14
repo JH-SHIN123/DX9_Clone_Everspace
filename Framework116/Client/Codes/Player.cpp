@@ -225,6 +225,22 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 	m_pHUD_Effect_Boost->Release();
 
+
+	// Add Light
+	LIGHT_DESC lightDesc;
+	lightDesc.eLightType = ELightType::SpotLight;
+	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_Light",
+		L"Layer_Light",
+		(void*)&lightDesc,
+		(CGameObject**)&m_pHeadLight)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Light In Layer");
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -265,6 +281,14 @@ _uint CPlayer::Update_GameObject(_float fDeltaTime)
 
 		// (순서 중요!) 이펙트 업데이트
 		Update_Effect();
+
+		// Light 업데이트
+		if (m_pHeadLight)
+		{
+			CTransform* pTransform = (CTransform*)m_pHeadLight->Get_Component(L"Com_Transform");
+			pTransform->Set_Position(m_pTransform->Get_State(EState::Position));
+			m_pHeadLight->Set_LightDir(m_pTransform->Get_State(EState::Look));
+		}
 	}
 	return NO_EVENT;
 }
@@ -940,6 +964,7 @@ void CPlayer::Free()
 	Safe_Release(m_pMesh);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pController);
+	Safe_Release(m_pHeadLight);
 
 	CGameObject::Free();
 }

@@ -465,12 +465,12 @@
     <ClInclude Include="..\Headers\Shield_Battery.h">
       <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Planet.h">
-      <Filter>02.GameObject\14.Planet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Planet.h" />
     <ClInclude Include="..\Headers\BrokenPlane.h">
       <Filter>02.GameObject\12.EventObject\Broken</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h">
+      <Filter>02.GameObject\14.Planet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -672,12 +672,12 @@
     <ClCompile Include="..\Codes\Shield_Battery.cpp">
       <Filter>02.GameObject\09.HUD\11.Shield_Battery</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Planet.cpp">
-      <Filter>02.GameObject\14.Planet</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp" />
     <ClCompile Include="..\Codes\BrokenPlane.cpp">
       <Filter>02.GameObject\12.EventObject\Broken</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp">
+      <Filter>02.GameObject\14.Planet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
