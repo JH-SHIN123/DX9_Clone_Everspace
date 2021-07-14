@@ -30,7 +30,7 @@
 #include "Ring.h"
 #include "FollowSystem.h"
 #include "EngineEffectSystem.h"
-#include "LockOn.h"
+#include "New_LockOn.h"
 #include "Planet.h"
 #include "Drone.h"
 #include "WingBoost_System.h"
@@ -1116,7 +1116,7 @@ HRESULT CLoading::Load_HUD_Resources()
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
 		L"GameObject_LockOn",
-		CLockOn::Create(m_pDevice))))
+		CNew_LockOn::Create(m_pDevice))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_LockOn");
 		return E_FAIL;

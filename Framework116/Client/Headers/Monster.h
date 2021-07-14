@@ -63,8 +63,11 @@ private:
 	_float m_fHpLength = 64.f;
 
 	_uint Check_Degree();
-	_uint Make_LockOn();
 
+	// Lock On Ãß°¡
+	class CNew_LockOn* m_pLockOn = nullptr;
+	_bool m_IsLockOn = false;
+	_uint Make_LockOn();
 	//////////////////////Effect///////////////////////////
 private:
 	void Update_Effect();

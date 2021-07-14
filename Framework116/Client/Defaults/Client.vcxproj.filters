@@ -450,9 +450,6 @@
     <ClInclude Include="..\Headers\Stage3.h">
       <Filter>01.Scene\01.Stage\Stage3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Planet.h">
-      <Filter>02.GameObject\14.Planet\Earth</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Sniper.h">
       <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
     </ClInclude>
@@ -461,6 +458,10 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Planet.h">
       <Filter>02.GameObject\14.Planet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Planet.h" />
+    <ClInclude Include="..\Headers\New_LockOn.h">
+      <Filter>02.GameObject\09.HUD\02.LockOn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -656,9 +657,6 @@
     <ClCompile Include="..\Codes\Stage3.cpp">
       <Filter>01.Scene\01.Stage\Stage3</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Planet.cpp">
-      <Filter>02.GameObject\14.Planet\Earth</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\Sniper.cpp">
       <Filter>02.GameObject\03.Monster\01.Sniper</Filter>
     </ClCompile>
@@ -667,6 +665,10 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Planet.cpp">
       <Filter>02.GameObject\14.Planet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Planet.cpp" />
+    <ClCompile Include="..\Codes\New_LockOn.cpp">
+      <Filter>02.GameObject\09.HUD\02.LockOn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

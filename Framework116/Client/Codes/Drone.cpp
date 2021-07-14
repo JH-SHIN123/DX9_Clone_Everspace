@@ -3,6 +3,8 @@
 #include "HP_Bar.h"
 #include "HP_Bar_Border.h"
 #include "Pipeline.h"
+#include "Collision.h"
+#include "New_LockOn.h"
 
 CDrone::CDrone(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
@@ -160,6 +162,7 @@ _uint CDrone::Update_GameObject(_float fDeltaTime)
 	{
 		if(p) p->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	}
+	Make_LockOn();
 	return NO_EVENT;
 }
 
@@ -178,6 +181,7 @@ _uint CDrone::LateUpdate_GameObject(_float fDeltaTime)
 			m_pHp_Bar->Set_IsDead(TRUE);
 		if (m_pHP_Bar_Border)
 			m_pHP_Bar_Border->Set_IsDead(TRUE);
+		m_pLockOn->Set_IsDead(TRUE);
 		m_pManagement->PlaySound(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
 		return DEAD_OBJECT;
 	}
@@ -469,6 +473,7 @@ void CDrone::Free()
 {
 	Safe_Release(m_pHP_Bar_Border);
 	Safe_Release(m_pHp_Bar);
+	Safe_Release(m_pLockOn);
 	Safe_Release(m_pTargetTransform);
 
 	Safe_Release(m_pModelMesh);
@@ -578,10 +583,14 @@ void CDrone::Set_Hp_Pos()
 	//////////////////////////////////////////////////////////////////
 
 	_float3 vPosition = { ptBoss.x - (WINCX / 2.f) - 29.f, -ptBoss.y + (WINCY / 2.f) + 30.f, 0.f };
-	//_float3 vPosition = { 0.f, 0.f, 0.f };
+	_float3 vLockOnPos = { ptBoss.x - (WINCX / 2.f), -ptBoss.y + (WINCY / 2.f), 0.f };
 
-	m_pHp_Bar->Set_Pos(vPosition);
-	m_pHP_Bar_Border->Set_Pos(vPosition);
+	if (m_pHp_Bar)
+		m_pHp_Bar->Set_Pos(vPosition);
+	if (m_pHP_Bar_Border)
+		m_pHP_Bar_Border->Set_Pos(vPosition);
+	if (m_pLockOn)
+		m_pLockOn->Set_Pos(vLockOnPos);
 }
 
 _uint CDrone::Check_Degree()
@@ -602,27 +611,95 @@ _uint CDrone::Check_Degree()
 	{
 		if (fDegree > 90.f)
 		{
-			m_pHp_Bar->Set_IsBack(true);
-			m_pHP_Bar_Border->Set_IsBack(true);
+			if (m_pHp_Bar)
+				m_pHp_Bar->Set_IsBack(true);
+			if (m_pHP_Bar_Border)
+				m_pHP_Bar_Border->Set_IsBack(true);
+			if (m_pLockOn)
+				m_pLockOn->Set_IsBack(true);
 		}
 		else if (fDegree <= 90.f)
 		{
-			m_pHp_Bar->Set_IsBack(false);
-			m_pHP_Bar_Border->Set_IsBack(false);
+			if (m_pHp_Bar)
+				m_pHp_Bar->Set_IsBack(false);
+			if (m_pHP_Bar_Border)
+				m_pHP_Bar_Border->Set_IsBack(false);
+			if (m_pLockOn)
+				m_pLockOn->Set_IsBack(false);
 		}
 	}
 	else
 	{
 		if (fDegree > 90.f)
 		{
-			m_pHp_Bar->Set_IsBack(true);
-			m_pHP_Bar_Border->Set_IsBack(true);
+			if (m_pHp_Bar)
+				m_pHp_Bar->Set_IsBack(true);
+			if (m_pHP_Bar_Border)
+				m_pHP_Bar_Border->Set_IsBack(true);
+			if (m_pLockOn)
+				m_pLockOn->Set_IsBack(true);
 		}
 		else if (fDegree <= 90.f)
 		{
-			m_pHp_Bar->Set_IsBack(false);
-			m_pHP_Bar_Border->Set_IsBack(false);
+			if (m_pHp_Bar)
+				m_pHp_Bar->Set_IsBack(false);
+			if (m_pHP_Bar_Border)
+				m_pHP_Bar_Border->Set_IsBack(false);
+			if (m_pLockOn)
+				m_pLockOn->Set_IsBack(false);
 		}
 	}
 	return _uint();
+}
+
+_uint CDrone::Make_LockOn()
+{
+	RAY ray;
+	CPipeline::CreatePickingRay(ray, g_hWnd, WINCX, WINCY, m_pDevice);
+	_float3 m_vLockOn;
+	m_vLockOn = ray.vDirection;
+
+	_float4x4 matView;
+	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixInverse(&matView, 0, &matView);
+	D3DXVec3TransformCoord(&ray.vPos, &ray.vPos, &matView);
+	D3DXVec3TransformNormal(&ray.vDirection, &ray.vDirection, &matView);
+	D3DXVec3Normalize(&ray.vDirection, &ray.vDirection);
+
+	m_vLockOn = ray.vDirection;
+	D3DXVec3Normalize(&m_vLockOn, &m_vLockOn);
+
+	// True¸é? - LockOn HUD »ý¼º
+
+	if (CCollision::IntersectRayToSphere(ray, m_Collides.front()->Get_BoundingSphere()))
+	{
+		if (m_pManagement->Get_GameObjectList(L"Layer_NewLockOn") != nullptr
+			&& m_pManagement->Get_GameObjectList(L"Layer_NewLockOn")->size() == 1)
+		{
+			m_pManagement->Get_GameObjectList(L"Layer_NewLockOn")->front()->Set_IsDead(true);
+			m_IsLockOn = false;
+		}
+		if (!m_IsLockOn)
+		{
+			CGameObject* pLockOn = nullptr;
+			UI_DESC HUD_Lock_On;
+			HUD_Lock_On.tTransformDesc.vPosition = { 11110.f, 0.f, 0.f };
+			HUD_Lock_On.tTransformDesc.vScale = { 50.f, 50.f, 0.f };
+			HUD_Lock_On.wstrTexturePrototypeTag = L"Component_Texture_LockOn";
+			if (FAILED(m_pManagement->Add_GameObject_InLayer(
+				EResourceType::NonStatic,
+				L"GameObject_LockOn",
+				L"Layer_NewLockOn",
+				&HUD_Lock_On, &pLockOn)))
+			{
+				PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
+				return E_FAIL;
+			}
+			m_IsLockOn = true;
+
+			m_pLockOn = static_cast<CNew_LockOn*>(pLockOn);
+			m_pLockOn->Who_Make_Me(m_pLockOn->MAKER_MONSTER);
+		}
+	}
+	return S_OK;
 }
