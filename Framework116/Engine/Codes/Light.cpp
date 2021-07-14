@@ -125,9 +125,6 @@ HRESULT CLight::Ready_GameObject(void* pArg)
 	m_pDevice->SetLight(s_iLightIndex, &m_tLight);
 	m_pDevice->LightEnable(s_iLightIndex, true);
 
-	m_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
-	m_pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
-
 	return S_OK;
 }
 
@@ -148,6 +145,9 @@ _uint CLight::LateUpdate_GameObject(_float fDeltaTime)
 
 _uint CLight::Render_GameObject()
 {
+	m_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	m_pDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
+
 	m_pDevice->SetLight(s_iLightIndex, &m_tLight);
 
 	return _uint();
