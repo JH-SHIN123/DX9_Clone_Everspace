@@ -17,10 +17,7 @@ HRESULT CStage2::Ready_Scene()
 
 	if (FAILED(Add_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
 	// Fade Out
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
@@ -47,31 +44,7 @@ HRESULT CStage2::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 
-<<<<<<< HEAD
 	Ready_Asteroid();
-
-	//// TEST
-	//GAMEOBJECT_DESC tDesc;
-	//tDesc.wstrMeshName = L"Component_Mesh_Broken_Plane";
-
-	//if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
-	//	EResourceType::NonStatic,
-	//	L"GameObject_Broken_Plane",
-	//	L"Layer_Broken_Plane",
-	//	&tDesc)))
-	//{
-	//	wstring errMsg = L"Failed to Add Layer ";
-	//	PRINT_LOG(L"Error", errMsg.c_str());
-=======
-	//if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
->>>>>>> origin/main
-	//	return E_FAIL;
-
-	//if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
-	//	return E_FAIL;
-
-	Ready_Asteroid();
-
 
 	return S_OK;
 }
@@ -79,8 +52,7 @@ HRESULT CStage2::Ready_Scene()
 _uint CStage2::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
-<<<<<<< HEAD
-=======
+
 	// Boss
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Boss_Monster");
@@ -93,7 +65,7 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Monster");
 
->>>>>>> origin/main
+
 	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
 
 	CQuestHandler::Get_Instance()->Update_Quest();
@@ -107,11 +79,7 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 	case TRUE:
 		break;
 	case UPDATE_FLYAWAY:
-<<<<<<< HEAD
 		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 30.f,20.f);
-=======
-		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 300.f);
->>>>>>> origin/main
 		break;
 	case PLAYER_DEAD:
 		m_fDelaySceneChange += fDeltaTime;
@@ -128,12 +96,6 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 		}
 		break;
 	case CLEAR_FLYAWAY:
-		if (!m_bLoadMapNavi)
-		{
-			CStreamHandler::Load_PassData_Map(L"../../Resources/Data/Map/stage1.map");
-			CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/Navi/stage1.navi");
-			m_bLoadMapNavi = TRUE;
-		}
 		break;
 	}
 
@@ -149,11 +111,6 @@ _uint CStage2::LateUpdate_Scene(_float fDeltaTime)
 
 HRESULT CStage2::Add_Layer_Player(const wstring & LayerTag)
 {
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/main
 		GAMEOBJECT_DESC tDesc;
 		tDesc.wstrMeshName = L"Component_Mesh_BigShip";
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
@@ -445,10 +402,6 @@ void CStage2::Ready_Asteroid()
 			{
 				vRockPos.x += CPipeline::GetRandomFloat(10, 100);
 				vRockPos.y -= CPipeline::GetRandomFloat(10, 100);
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
 			}
 			else
 			{
@@ -463,12 +416,7 @@ void CStage2::Ready_Asteroid()
 }
 _uint CStage2::Stage2_Flow(_float fDeltaTime)
 {
-<<<<<<< HEAD
 
-=======
-	//if (!m_bEnterScene)
-	//	return TRUE;
->>>>>>> origin/main
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player");
 	if (pPlayer)
 	{
@@ -481,13 +429,7 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 		if (m_fFlowTime >= 0)
 		{
 			SetCursorPos(WINCX >> 1, (WINCY >> 1) - 5);
-
-<<<<<<< HEAD
 			m_fFlowTime -= fDeltaTime*4;
-=======
-			m_fFlowTime -= fDeltaTime;
->>>>>>> origin/main
-
 			if (m_fFlowTime <= 0)
 			{
 				if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Stg2_Begin)))
@@ -543,11 +485,24 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 		}
 	}
 	return PLAYER_DEAD;
-	case 5:
-		if (!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
+	case CLEAR_FLYAWAY:
+		if (!m_bLoadMapNavi)
 		{
+			CStreamHandler::Load_PassData_Map(L"../../Resources/Data/Map/stage1.map");
+			CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/Navi/stage1.navi");
+			m_bLoadMapNavi = TRUE;
 			return CLEAR_FLYAWAY;
 		}
+		if (((CMainCam*)(m_pManagement->Get_GameObject(L"Layer_Cam")))->Get_SoloMoveMode() == ESoloMoveMode::End)
+		{
+			if (!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
+			{
+				if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Stg2_SearchTarget)))
+					return -1;
+			}
+			++m_iFlowCount;
+		}
+		return TRUE;
 	default:
 		return TRUE;
 	}
@@ -559,21 +514,13 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 //TRUE반환시 끝났음
 _bool CStage2::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fMaxYDist,
 	_float fMaxZDist, _float fMinZDist, CTransform* pTargetTransform, _uint iRockAmount,
-<<<<<<< HEAD
 	_float fRockSpeed, _float fDistFromTarget, _float fFinishTime)
-=======
-	_float fRockSpeed, _float fDistFromTarget)
->>>>>>> origin/main
 {
 	if (nullptr == pTargetTransform)
 	{
 		PRINT_LOG(L"Err", L"pTargetTransform is nullptr");
 		return FALSE;
 	}
-<<<<<<< HEAD
-=======
-	_float fFinishTime = 60.f;
->>>>>>> origin/main
 	m_fFlyingAsteroidTime += fDeltaTime;
 	if (m_fFlyingAsteroidTime >= fFinishTime)
 	{
