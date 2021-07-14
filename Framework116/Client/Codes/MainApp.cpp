@@ -14,6 +14,8 @@
 #include "Shield_Battery.h"
 #include "HUD_Effect_Damage.h"
 #include "HUD_Effect_Boost.h"
+#include "QuestHandler.h"
+#include "Status_Info.h"
 #include "FadeIn.h"
 #include "FadeOut.h"
 
@@ -355,6 +357,16 @@ HRESULT CMainApp::Ready_StaticResources()
 		return E_FAIL;
 	}
 
+	// m_tInfo
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::Static,
+		L"Component_Status_Info",
+		CStatus_Info::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Status_Info");
+		return E_FAIL;
+	}
+
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
 		L"Component_Texture_FadeOut",
@@ -422,6 +434,8 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
+	CQuestHandler::Get_Instance()->Release_Ref();
+	
 	Safe_Release(m_pDevice);
 	
 	if (Safe_Release(m_pManagement))

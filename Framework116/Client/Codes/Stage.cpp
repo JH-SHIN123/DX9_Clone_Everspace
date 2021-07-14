@@ -169,6 +169,14 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 			++m_iFlowCount;
 		}
 	}
+	case 5:
+	{
+		_bool Check = (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI"))->empty();
+		if (Check == true)
+		{
+			CQuestHandler::Get_Instance()->Set_ClearStage(EStageClear::Stage_1);
+		}
+	}
 	default:
 		return E_FAIL;
 	}
@@ -411,8 +419,8 @@ void CStage::Free()
 {
 	/* 자식의 소멸자 호출 순서처럼 Free도 같은 순서로 호출해주자*/
 	/* 1.자식 리소스 먼저 정리하고난 뒤 */
+
 	m_pManagement->StopAll();
-	CQuestHandler::Get_Instance()->Release_Ref();
 	CScene::Free(); // 2.부모 리소스 정리	
 }
 
