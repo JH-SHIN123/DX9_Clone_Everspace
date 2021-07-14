@@ -468,6 +468,14 @@ HRESULT CLoading::Ready_Stage2Resources()
 
 HRESULT CLoading::Ready_Stage3Resources()
 {
+	m_pManagement->Clear_NonStatic_Resources();
+
+	Load_HUD_Resources();
+	Load_ScriptUI_Resources();
+	Load_StageEffect_Resources();
+
+	Load_Stage3_Prop_Resources();
+
 	return S_OK;
 }
 
@@ -803,6 +811,24 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Planet/Ice.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Earth");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_GameObject_Prototype(
+		EResourceType::NonStatic,
+		L"GameObject_Skybox",
+		CSkybox::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
 		return E_FAIL;
 	}
 #pragma endregion
