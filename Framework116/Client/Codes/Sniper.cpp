@@ -143,7 +143,7 @@ _uint CSniper::Render_GameObject()
 	m_pModelMesh->Render_Mesh(); 
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();

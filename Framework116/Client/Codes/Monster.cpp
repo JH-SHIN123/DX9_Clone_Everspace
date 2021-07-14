@@ -35,8 +35,10 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = _float3(0.5f, 0.f, 0.5f);	
-	TransformDesc.vScale = _float3(2.f, 2.f, 2.f);
+	TransformDesc.vPosition = _float3(150.f, 0.f, 150.f);	
+	TransformDesc.vScale = _float3(20.f, 20.f, 20.f);
+	TransformDesc.fSpeedPerSec = 30.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(45.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -66,7 +68,6 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// Init
-	m_eNextState = State::Research;
 	m_vCreatePosition = TransformDesc.vPosition;
 	m_vResearchRange = { 50.f,50.f,50.f };
 
@@ -84,8 +85,13 @@ _uint CMonster::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
 	
-	Movement(fDeltaTime);
-	StateCheck();
+	Search_Target(fDeltaTime);
+
+	if(!m_bBattle)
+		Movement(fDeltaTime);
+	else
+		
+		
 
 	m_pTransform->Update_Transform();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
@@ -124,46 +130,42 @@ _uint CMonster::Render_GameObject()
 
 _uint CMonster::Movement(_float fDeltaTime)
 {
-	if (m_eCurState = State::Research) {
-		Researching(fDeltaTime);
+	// 그냥 와리가리하면서 정찰
+	m_fMoveDist += fDeltaTime;
+
+	if (m_fMoveDist > 0.f && m_fMoveDist < 6.f)
+	{
+		m_pTransform->Go_Straight(fDeltaTime);
+	}
+	else if (m_fMoveDist >= 6.f && m_fMoveDist < 10.f)
+	{
+		m_pTransform->RotateY(fDeltaTime);
+		
+	}
+	else if (m_fMoveDist >= 10.f)
+	{
+		m_fMoveDist = 0.f;
 	}
 	
-
 	return _uint();
 }
 
-_uint CMonster::Researching(_float fDeltaTime)
+_uint CMonster::Search_Target(_float fDeltaTime)
 {
-	// if 범위보다 벗어났다. -> Create Pos로 돌아가기
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMonsterPos = m_pTransform->Get_State(EState::Position);
 
+	_float3 vDir = vTargetPos - vMonsterPos;
+	_float fDist = D3DXVec3Length(&vDir);
 
-	return _uint();
-}
-
-_uint CMonster::Dog_Fight(_float fDeltaTime)
-{
-	// 뒤잡기
-
-	return _uint();
-}
-
-void CMonster::StateCheck()
-{
-	if (m_eCurState != m_eNextState) {
-		switch (m_eNextState)
-		{
-		case State::Research:
-			break;
-		case State::Warning:
-			break;
-		case State::Attack:
-			break;
-		case State::Die:
-			break;
-		}
-		m_eCurState = m_eNextState;
+		// 배틀상태 On
+	if (fDist <= 50.f && fDist != 0.f)
+	{
+		m_bBattle = true;
 	}
+	return _uint();
 }
+
 
 CMonster * CMonster::Create(LPDIRECT3DDEVICE9 pDevice)
 {

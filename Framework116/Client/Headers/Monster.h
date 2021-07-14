@@ -12,9 +12,6 @@ public:
 	virtual ~CMonster() = default;
 
 public:
-	enum State { Research, Warning, Attack, Die, End };
-
-public:
 	virtual HRESULT Ready_GameObject_Prototype() override;
 	virtual HRESULT Ready_GameObject(void * pArg = nullptr) override;
 	virtual _uint Update_GameObject(_float fDeltaTime) override;
@@ -23,20 +20,13 @@ public:
 
 private:
 	_uint	Movement(_float fDeltaTime);
-	_uint	Researching(_float fDeltaTime);
-	_uint	Dog_Fight(_float fDeltaTime);
-
-private:
-	void	StateCheck();
+	_uint	Search_Target(_float fDeltaTime);
+	_uint	Monster_Battle(_float fDeltaTime);
 
 public:
 	static CMonster* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
-
-private:
-	State m_eCurState = State::End;
-	State m_eNextState = State::End;
 
 private:
 	_float3 m_vCreatePosition = { 0.f,0.f,0.f };
@@ -48,6 +38,10 @@ private:
 	CCollideSphere* m_pCollide = nullptr;
 
 	CTransform* m_pTargetTransform = nullptr;
+
+	//
+	_bool	m_bBattle = false;
+	_float	m_fMoveDist = 0.f;
 };
 
 #define __MONSTER_H__
