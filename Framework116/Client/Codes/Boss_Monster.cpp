@@ -151,7 +151,7 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 		collide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 
 	/* ¾ê°¡ ¹®Á¦ */
-	Make_LockOn();
+	//Make_LockOn();
 
 	return NO_EVENT;
 }
