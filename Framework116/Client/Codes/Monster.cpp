@@ -25,7 +25,7 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Mesh_Monster",
+		L"Component_Mesh_Enemy1",
 		L"Com_Mesh",
 		(CComponent**)&m_pModelMesh)))
 	{
@@ -35,8 +35,10 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
-	TransformDesc.vPosition = _float3(0.5f, 0.f, 0.5f);	
-	TransformDesc.vScale = _float3(2.f, 2.f, 2.f);
+	TransformDesc.vPosition = _float3(300.f, 0.f, 300.f);	
+	TransformDesc.vScale = _float3(5.f, 5.f, 5.f);
+	TransformDesc.fSpeedPerSec = 60.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(45.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -51,7 +53,7 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
-	BoundingSphere.fRadius = 1.f;
+	BoundingSphere.fRadius = 6.f;
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -66,9 +68,14 @@ HRESULT CMonster::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// Init
-	m_eNextState = State::Research;
 	m_vCreatePosition = TransformDesc.vPosition;
-	m_vResearchRange = { 50.f,50.f,50.f };
+
+	m_pTargetTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Player", L"Com_Transform");
+	if (nullptr == m_pTargetTransform)
+	{
+		PRINT_LOG(L"Error", L"m_pTargetTransform is nullptr");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -77,10 +84,17 @@ _uint CMonster::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
 	
-	Movement(fDeltaTime);
-	StateCheck();
+	Search_Target(fDeltaTime);
+
+	if (!m_bBattle)
+		Movement(fDeltaTime);
+	else
+		Monster_Battle(fDeltaTime);
+		
+		
 
 	m_pTransform->Update_Transform();
+	//m_pTransform->Update_Transform_Quaternion();
 	m_pCollide->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
 	return NO_EVENT;
 }
@@ -109,7 +123,7 @@ _uint CMonster::Render_GameObject()
 	// Test
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();
@@ -117,39 +131,185 @@ _uint CMonster::Render_GameObject()
 
 _uint CMonster::Movement(_float fDeltaTime)
 {
-	if (m_eCurState = State::Research) {
-		Researching(fDeltaTime);
+	// 그냥 와리가리하면서 정찰
+	m_fMoveDist += fDeltaTime;
+
+	if (m_fMoveDist > 0.f && m_fMoveDist < 6.f)
+	{
+		m_pTransform->Go_Straight(fDeltaTime);
+	}
+	else if (m_fMoveDist >= 6.f && m_fMoveDist < 10.f)
+	{
+		m_pTransform->RotateY(fDeltaTime);
+		
+	}
+	else if (m_fMoveDist >= 10.f)
+	{
+		m_fMoveDist = 0.f;
+	}
+	
+	return _uint();
+}
+
+_uint CMonster::Search_Target(_float fDeltaTime)
+{
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMonsterPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vDir = vTargetPos - vMonsterPos;
+	_float fDist = D3DXVec3Length(&vDir);
+
+		// 배틀상태 On
+	if (fDist <= 200.f && fDist != 0.f)
+	{
+		m_bBattle = true;
+	}
+	return _uint();
+}
+
+_uint CMonster::Monster_Battle(_float fDeltaTime)
+{
+	// 배틀상태가 On일때 뭐할랭
+	// 플레이어 공전하면서 공격?
+	m_fPatternTime += fDeltaTime;
+
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vMonsterPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vDir = vTargetPos - vMonsterPos;
+	_float fDist = D3DXVec3Length(&vDir);
+	D3DXVec3Normalize(&vDir, &vDir);
+
+
+	
+	if (m_fPatternTime > 0.f && m_fPatternTime <= 7.f)
+	{
+		if (fDist > 200.f)
+		{
+			m_pTransform->Go_Dir(vDir, fDeltaTime * 4.f);
+		}
+		RotateToPlayer(fDeltaTime * 3.f);
+		m_pTransform->Go_Side(fDeltaTime * 2.f);
+		m_bAttack = true;
+	}
+	else if (m_fPatternTime > 7.f && m_fPatternTime <= 8.f)
+	{
+		m_pTransform->Go_Up(-fDeltaTime);
+		m_bAttack = false;
+	}
+	else if (m_fPatternTime > 8.f && m_fPatternTime <= 10.f)
+	{
+		// 플레이어 안바라보고 그 각도에서 회전이 안먹어요 하면서 직진
+		if (fDist < 500.f)
+		{
+			m_pTransform->Go_Straight(fDeltaTime * 10.f);
+		}
+		m_bAttack = false;
+	}
+	else if (m_fPatternTime > 10.f)
+	{
+		// 다시 플레이어를 바라보렴
+		RotateToPlayer(fDeltaTime * 3.f);
+		m_fPatternTime = 0.f;
 	}
 	
 
-	return _uint();
-}
+	m_fAttackDelay += fDeltaTime;
 
-_uint CMonster::Researching(_float fDeltaTime)
-{
-	// if 범위보다 벗어났다. -> Create Pos로 돌아가기
+	if (m_fAttackDelay > 1.f && m_bAttack == true)
+	{
+		TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
 
+		pArg->vPosition = m_pTransform->Get_State(EState::Position);
+		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
 
-	return _uint();
-}
-
-void CMonster::StateCheck()
-{
-	if (m_eCurState != m_eNextState) {
-		switch (m_eNextState)
+		if (FAILED(m_pManagement->Add_GameObject_InLayer(
+			EResourceType::NonStatic,
+			L"GameObject_Sniper_Bullet",
+			L"Layer_Sniper_Bullet", pArg)))
 		{
-		case State::Research:
-			break;
-		case State::Warning:
-			break;
-		case State::Attack:
-			break;
-		case State::Die:
-			break;
+			PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper_Bullet In Layer");
+			return E_FAIL;
 		}
-		m_eCurState = m_eNextState;
+		m_fAttackDelay = 0.f;
 	}
+
+
+	return _uint();
 }
+
+_uint CMonster::Shoot_Bullet(_float fDeltaTime)
+{
+	TRANSFORM_DESC* pArg = new TRANSFORM_DESC;
+
+	pArg->vPosition = m_pTransform->Get_State(EState::Position);
+	pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Sniper_Bullet",
+		L"Layer_Sniper_Bullet", pArg)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper_Bullet In Layer");
+		return E_FAIL;
+	}
+	m_fAttackDelay = 0.f;
+	return _uint();
+}
+
+_bool CMonster::RotateToPlayer(_float fDeltaTime)
+{
+	_float3 vTargetPos = m_pTargetTransform->Get_State(EState::Position);
+	_float3 vSniperPos = m_pTransform->Get_State(EState::Position);
+
+	_float3 vTargetDir = vTargetPos - vSniperPos;
+	D3DXVec3Normalize(&vTargetDir, &vTargetDir);
+
+	_float3 vSniperLook = m_pTransform->Get_State(EState::Look);
+	_float3 vSniperUp = m_pTransform->Get_State(EState::Up);
+	D3DXVec3Normalize(&vSniperLook, &vSniperLook);
+
+	_float fCeta = D3DXVec3Dot(&vTargetDir, &vSniperLook);
+	_float fRadianMax = D3DXToRadian(95.f);
+	_float fRadianMin = D3DXToRadian(85.f);
+
+	_float3 vMyRight, vMyLeft, vMissileUp, vMissileDown;
+	D3DXVec3Cross(&vMyRight, &vSniperUp, &vSniperLook);
+	D3DXVec3Cross(&vMyLeft, &vSniperLook, &vSniperUp);
+	D3DXVec3Cross(&vMissileUp, &vMyRight, &vSniperLook);
+	D3DXVec3Cross(&vMissileDown, &vSniperLook, &vMyRight);
+
+	D3DXVec3Normalize(&vMyRight, &vMyRight);
+	D3DXVec3Normalize(&vMyLeft, &vMyLeft);
+	D3DXVec3Normalize(&vMissileUp, &vMissileUp);
+	D3DXVec3Normalize(&vMissileDown, &vMissileDown);
+
+	_float fRight = D3DXVec3Dot(&vTargetDir, &vMyRight);
+	_float fLeft = D3DXVec3Dot(&vTargetDir, &vMyLeft);
+	_float fUp = D3DXVec3Dot(&vTargetDir, &vMissileUp);
+	_float fDown = D3DXVec3Dot(&vTargetDir, &vMissileDown);
+
+
+	if (fRight < fLeft)
+		m_pTransform->RotateY(-fDeltaTime);
+	else
+		m_pTransform->RotateY(fDeltaTime);
+
+	if (fUp < fDown)
+		m_pTransform->RotateX(-fDeltaTime);
+	else
+		m_pTransform->RotateX(fDeltaTime);
+
+	if (fabs(fRight - fLeft) < 10.f || fabs(fUp - fDown) < 10.f)
+	{
+		m_IsLookingPlayer = true;
+	}
+	else
+		m_IsLookingPlayer = false;
+
+	return m_IsLookingPlayer;
+}
+
 
 CMonster * CMonster::Create(LPDIRECT3DDEVICE9 pDevice)
 {
