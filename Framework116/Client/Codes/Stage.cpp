@@ -19,8 +19,19 @@ HRESULT CStage::Ready_Scene()
 	CScene::Ready_Scene();
 
 	::SetWindowText(g_hWnd, L"Stage");
-
 	m_pManagement->StopSound(CSoundMgr::BGM);
+
+
+	// Fade Out
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::Static,
+		L"GameObject_FadeOut",
+		L"Layer_Fade",
+		this)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_FadeOut In Layer");
+		return E_FAIL;
+	}
 
 	CStreamHandler::Load_PassData_Map(L"../../Resources/Data/Map/tutorial.map");
 	CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/Navi/guide.navi");
@@ -54,24 +65,35 @@ HRESULT CStage::Ready_Scene()
 	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
 		return E_FAIL;
 
+	//// TEST
+	//if (FAILED(m_pManagement->Add_GameObject_InLayer(
+	//	EResourceType::Static,
+	//	L"GameObject_FadeIn",
+	//	L"Layer_Fade")))
+	//{
+	//	PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+	//	return E_FAIL;
+	//}
+
 	return S_OK;
 }
 
 _uint CStage::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
+	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
 
 	CQuestHandler::Get_Instance()->Update_Quest();
 	
-	//Stage_Flow(fDeltaTime);
+	Stage_Flow(fDeltaTime);
 
-	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
 
 	return _uint();
 }
 
 _uint CStage::LateUpdate_Scene(_float fDeltaTime)
 {
+
 	CScene::LateUpdate_Scene(fDeltaTime);
 	
 	// Monster
@@ -410,7 +432,7 @@ void CStage::Free()
 	/* 자식의 소멸자 호출 순서처럼 Free도 같은 순서로 호출해주자*/
 	/* 1.자식 리소스 먼저 정리하고난 뒤 */
 
-
+	m_pManagement->StopAll();
 	CScene::Free(); // 2.부모 리소스 정리	
 }
 
