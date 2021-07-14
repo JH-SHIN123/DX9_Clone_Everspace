@@ -178,10 +178,30 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 		if (Check == true)
 		{
 			CQuestHandler::Get_Instance()->Set_ClearStage(EStageClear::Stage_1);
+			++m_iFlowCount;
 		}
 	}
+
+	case 6:
+	{
+		if (false == m_bFadeIn) {
+			if (FAILED(m_pManagement->Add_GameObject_InLayer(
+				EResourceType::Static,
+				L"GameObject_FadeIn",
+				L"Layer_Fade",
+				this)))
+			{
+				PRINT_LOG(L"Error", L"Failed To Add Boss_Monster In Layer");
+				return E_FAIL;
+			}
+			m_bFadeIn = true;
+			return NO_EVENT;
+		}
+
+	}
+
 	default:
-		return E_FAIL;
+		return S_OK;
 	}
 
 	return S_OK;

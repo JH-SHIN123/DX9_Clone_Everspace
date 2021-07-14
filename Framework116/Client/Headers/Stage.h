@@ -53,6 +53,8 @@ private:
 	_float m_fFlowTime = 1.f;
 	_uint m_iFlowCount = 0;
 
+private:
+	_bool m_bFadeIn = false;
 };
 
 #define __STAGE_H__

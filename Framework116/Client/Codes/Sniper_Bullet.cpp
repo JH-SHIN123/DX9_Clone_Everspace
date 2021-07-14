@@ -320,6 +320,7 @@ void CSniper_Bullet::Free()
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
 	Safe_Release(m_pCollide);
+	Safe_Release(m_pInfo);
 
 	if (m_pEffect) 
 	{
