@@ -28,7 +28,7 @@ HRESULT CSniper::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_VIBuffer
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
-		L"Component_Mesh_Axis",
+		L"Component_Mesh_Enemy2",
 		L"Com_Mesh",
 		(CComponent**)&m_pModelMesh)))
 	{
@@ -56,7 +56,7 @@ HRESULT CSniper::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// For.Com_Collide
 	BOUNDING_SPHERE BoundingSphere;
-	BoundingSphere.fRadius = 10.f;
+	BoundingSphere.fRadius = 4.f;
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -135,6 +135,7 @@ _uint CSniper::LateUpdate_GameObject(_float fDeltaTime)
 		m_pHp_Bar->Set_IsDead(TRUE);
 		m_pHP_Bar_Border->Set_IsDead(TRUE);
 		m_pManagement->PlaySound(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
+		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Someone_Try_To_Kill_Me(false);
 		return DEAD_OBJECT;
 	}
 	if (m_IsCollide) {
@@ -156,7 +157,7 @@ _uint CSniper::Render_GameObject()
 	m_pModelMesh->Render_Mesh(); 
 
 #ifdef _DEBUG // Render Collide
-	m_pCollide->Render_Collide();
+	//m_pCollide->Render_Collide();
 #endif
 
 	return _uint();

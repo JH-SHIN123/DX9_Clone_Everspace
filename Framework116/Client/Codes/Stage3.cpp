@@ -5,6 +5,7 @@
 #include "Asteroid.h"
 #include "MissionUI.h"
 #include "MainCam.h"
+#include "Ring.h"
 #include "ScriptUI.h"
 
 CStage3::CStage3(LPDIRECT3DDEVICE9 pDevice)
@@ -28,18 +29,21 @@ HRESULT CStage3::Ready_Scene()
 		return E_FAIL;
 	}
 
-
-	// 임시
+	//stage3 map 들어오기 전까지는 ㅜㅜ
+	//CStreamHandler::Load_PassData_Map(L"../../Resources/Data/Map/tutorial.map");
+	//CStreamHandler::Load_PassData_Navi(L"../../Resources/Data/Navi/guide.navi");
 	if (FAILED(Add_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
-	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss")))
-		return E_FAIL;
-
-
 
 	if (FAILED(Add_Layer_Cam(L"Layer_Cam")))
 		return E_FAIL;
 
+	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
+		return E_FAIL;
+
+	// 전역조명 : Directional Light
+	// 행성조명 : Point Light
+	// 플레이어 조명 : Sport Light
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
@@ -49,10 +53,15 @@ HRESULT CStage3::Ready_Scene()
 
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
-
-	if (FAIELD(Add_Layer_Skybox(L"Layer_SkyBox")))
+	
+	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
 		return E_FAIL;
 
+	if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
+		return E_FAIL;
+
+	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -87,10 +96,7 @@ HRESULT CStage3::Add_Layer_Player(const wstring & LayerTag)
 		L"GameObject_Player",
 		LayerTag,
 		&tDesc)))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Player In Layer");
 		return E_FAIL;
-	}
 
 	return S_OK;
 }
@@ -110,6 +116,20 @@ HRESULT CStage3::Add_Layer_Cam(const wstring & LayerTag)
 		&CameraDesc)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Player In Main Cam");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStage3::Add_Layer_Monster(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Monster",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Monster In Layer");
 		return E_FAIL;
 	}
 
@@ -201,7 +221,7 @@ HRESULT CStage3::Add_Layer_Boss_Monster(const wstring & LayerTag)
 		return E_FAIL;
 	}
 
-	return S_OK;	
+	return S_OK;
 }
 
 HRESULT CStage3::Add_Layer_HUD(const wstring & LayerTag)
@@ -331,6 +351,62 @@ HRESULT CStage3::Add_Layer_HUD(const wstring & LayerTag)
 		return E_FAIL;
 
 
+	return S_OK;
+}
+
+HRESULT CStage3::Add_Layer_ScriptUI(const wstring & LayerTag, EScript eScript)
+{
+	UI_DESC Desc;
+	Desc.tTransformDesc.vPosition = { 0.f, 0.f ,0.f };
+	Desc.tTransformDesc.vScale = { 1.f, 1.f,0.f };
+	Desc.wstrTexturePrototypeTag = L"Component_Texture_ScriptUI_Script";
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ScriptUI",
+		LayerTag, &Desc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add ScriptUI In Layer");
+		return E_FAIL;
+	}
+
+	((CScriptUI*)m_pManagement->Get_GameObject(LayerTag))->Set_Script(eScript);
+
+	return S_OK;
+}
+
+HRESULT CStage3::Add_Layer_MissionUI(const wstring & LayerTag, EQuest eQuest)
+{
+	CQuestHandler::Get_Instance()->Set_Start_Quest(eQuest);
+
+	UI_DESC Desc;
+	Desc.tTransformDesc.vPosition = { 835.f, -50.f ,0.f };
+	Desc.tTransformDesc.vScale = { 201.f, 123.f,0.f };
+	Desc.wstrTexturePrototypeTag = L"Component_Texture_HUD_Mission";
+
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_MissionUI",
+		LayerTag, &Desc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add ScriptUI In Layer");
+		return E_FAIL;
+	}
+
+
+	return S_OK;
+}
+
+HRESULT CStage3::Add_Layer_Sniper(const wstring & LayerTag)
+{
+	if (FAILED(m_pManagement->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_Sniper",
+		LayerTag)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add GameObject_Sniper In Layer");
+		return E_FAIL;
+	}
 	return S_OK;
 }
 
