@@ -328,6 +328,8 @@ _uint CPlayer::LateUpdate_GameObject(_float fDeltaTime)
 	if (FAILED(m_pManagement->Add_GameObject_InRenderer(ERenderType::NonAlpha, this)))
 		return UPDATE_ERROR;
 
+	Collide_Boss(fDeltaTime);
+
 	return _uint();
 }
 
@@ -385,6 +387,13 @@ _uint CPlayer::Set_IsCameraMove(_bool IsCameraMove)
 	m_IsCameraMove = IsCameraMove;
 
 	return _uint();
+}
+
+void CPlayer::Set_Collide_Boss(_float3 vDir, _bool bCollide)
+{
+	m_IsCollide_Boss = bCollide;
+	m_vCollideDir_Boss = vDir;
+	m_fCollideTime_Boss = 0.f;
 }
 
 void CPlayer::KeyProcess(_float fDeltaTime)
@@ -951,6 +960,23 @@ _uint CPlayer::Collide_Planet_Or_Astroid(const _float fDeltaTime)
 	}
 
 	return _uint();
+}
+
+void CPlayer::Collide_Boss(_float fDeltaTime)
+{
+	if (m_IsCollide_Boss == true)
+	{
+		m_fCollideTime_Boss += fDeltaTime;
+
+		if (m_fCollideTime_Boss <= 0.2f)
+		{
+			_float3 vMyPos = m_pTransform->Get_State(EState::Position);
+			vMyPos -= m_vCollideDir_Boss /** 2.f*/;
+			m_pTransform->Set_Position(vMyPos);
+		}
+		else
+			m_IsCollide_Boss = false;
+	}
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)

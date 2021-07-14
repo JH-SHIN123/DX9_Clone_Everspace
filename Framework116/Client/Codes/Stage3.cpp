@@ -54,15 +54,6 @@ HRESULT CStage3::Ready_Scene()
 	if (FAILED(Add_Layer_HUD(L"Layer_HUD")))
 		return E_FAIL;
 	
-	if (FAILED(Add_Layer_Monster(L"Layer_Monster")))
-		return E_FAIL;
-
-	if (FAILED(Add_Layer_Sniper(L"Layer_Sniper")))
-		return E_FAIL;
-
-	if (FAILED(Add_Layer_Boss_Monster(L"Layer_Boss_Monster")))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -77,6 +68,17 @@ _uint CStage3::Update_Scene(_float fDeltaTime)
 _uint CStage3::LateUpdate_Scene(_float fDeltaTime)
 {
 	CScene::LateUpdate_Scene(fDeltaTime);
+
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Missile", L"Layer_Boss_Monster");
+
+
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Bullet_EnergyBall", L"Layer_Player");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Bullet_Laser", L"Layer_Player");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Bullet_EMP_Bomb", L"Layer_Player");
+
+
+	CCollisionHandler::Collision_PlayerToBoss(L"Layer_Player", L"Layer_Boss_Monster");
 
 	return _uint();
 }

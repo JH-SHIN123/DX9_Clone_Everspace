@@ -22,6 +22,7 @@ CBoss_Monster::CBoss_Monster(const CBoss_Monster & other)
 	, m_fLaser_Degree(other.m_fLaser_Degree)
 	, m_IsLaserAlert(other.m_IsLaserAlert)
 	, m_IsLaserTarget(other.m_IsLaserTarget)
+	, m_IsFireEmp(other.m_IsFireEmp)
 {
 }
 
@@ -53,8 +54,8 @@ HRESULT CBoss_Monster::Ready_GameObject(void * pArg/* = nullptr*/)
 	// For.Com_Transform
 	TRANSFORM_DESC TransformDesc;
 	TransformDesc.vPosition = _float3(500.f, 3.f, 50.f);
-	TransformDesc.fSpeedPerSec = 2.f;
-	TransformDesc.fRotatePerSec = D3DXToRadian(10.f);
+	TransformDesc.fSpeedPerSec = 10.f;
+	TransformDesc.fRotatePerSec = D3DXToRadian(30.f);
 
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
@@ -120,6 +121,7 @@ _uint CBoss_Monster::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);
 
+	Check_NewPattern();
 	Transform_Check();
 	Move_AI(fDeltaTime);
 	Attack_AI(fDeltaTime);
@@ -287,7 +289,6 @@ _uint CBoss_Monster::EnergyBallCannon_Target_Search(_float fDeltaTime)
 		{
 			Left_EnergyBall(fDeltaTime);
 		}
-
 	}
 	else
 	{
@@ -439,7 +440,7 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 	{
 		if (m_IsLaserAttack == true)
 		{
-			if (m_iLaserCount <= 1)
+			if (m_iLaserCount == 0)
 			{
 				//m_IsLaserAttack = false;
 				//m_fLaser_CoolTime = 0.f;
@@ -632,26 +633,45 @@ _uint CBoss_Monster::Move_AI(_float fDeltaTime)
 
 _uint CBoss_Monster::Attack_AI(_float fDeltaTime)
 {
-	switch (m_eActionMode)
-	{
-	case CBoss_Monster::Near:
-		EnergyBallCannon_Target_Search(fDeltaTime);
-		Fire_Laser(fDeltaTime);
-		break;
-	case CBoss_Monster::Middle:
-		EnergyBallCannon_Target_Search(fDeltaTime);
-		Fire_Laser(fDeltaTime);
-		//Spawn_Monster(fDeltaTime);
-		break;
-	case CBoss_Monster::Far:
+	//switch (m_eActionMode)
+	//{
+	//case CBoss_Monster::Near:
+	//	EnergyBallCannon_Target_Search(fDeltaTime);
+	//	Fire_Laser(fDeltaTime);
+	//	break;
+	//case CBoss_Monster::Middle:
+	//	//Spawn_Monster(fDeltaTime);
+	//	break;
+	//case CBoss_Monster::Far:
+	//	Fire_EMP(fDeltaTime);
+	//	Fire_Laser(fDeltaTime);
+	//	break;
+	//case CBoss_Monster::SpecialAction:
+	//	break;
+	//default:
+	//	return UPDATE_ERROR;
+	//}
+
+
+	EnergyBallCannon_Target_Search(fDeltaTime);
+	Fire_Laser(fDeltaTime);
+
+	if (m_IsFireEmp == true)
 		Fire_EMP(fDeltaTime);
-		Fire_Laser(fDeltaTime);
-		break;
-	case CBoss_Monster::SpecialAction:
-		break;
-	default:
-		return UPDATE_ERROR;
+
+
+	return _uint();
+}
+
+_uint CBoss_Monster::Check_NewPattern()
+{
+	_float fNowHp = _float(m_pInfo->Get_Hp()) / _float(m_pInfo->Get_MaxHp());
+
+	if (fNowHp <= 0.7f)
+	{
+		m_IsFireEmp = true;
 	}
+
 	return _uint();
 }
 

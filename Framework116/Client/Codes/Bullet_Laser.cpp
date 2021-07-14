@@ -157,7 +157,7 @@ _uint CBullet_Laser::LateUpdate_GameObject(_float fDeltaTime)
 	BillBoard();
 
 	m_fLiveTime -= fDeltaTime;
-	if (m_fLiveTime <= 0.f)
+	if (m_fLiveTime <= 0.f && m_IsCollide == true)
 		m_IsDead = true;
 
 	if (m_IsDead == true)
@@ -202,9 +202,6 @@ _uint CBullet_Laser::Movement(_float fDeltaTime)
 			m_pEffect->Set_IsDead(true);
 			m_pEffect = nullptr;
 		}
-
-
-		return DEAD_OBJECT;
 	}
 
 	if (m_IsTracking == false)
