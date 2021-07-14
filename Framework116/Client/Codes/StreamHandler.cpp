@@ -257,6 +257,38 @@ HRESULT CStreamHandler::Load_PassData_Navi(const TCHAR* wstrFilePath)
 	return S_OK;
 }
 
+HRESULT CStreamHandler::Get_PassData_Navi(vector<PASSDATA_ROUTE>& vecOutRoutes, const TCHAR* wstrFilePath)
+{
+	HANDLE hFile = CreateFile(wstrFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (INVALID_HANDLE_VALUE == hFile) {
+		PRINT_LOG(L"Error", L"Failed to Load Map");
+		return E_FAIL;
+	}
+
+	DWORD dwByte = 0;
+
+	vector<PASSDATA_ROUTE> vecRoutes;
+	PASSDATA_ROUTE tRoute;
+
+	while (true)
+	{
+		// Mesh Transform
+		ReadFile(hFile, &tRoute, sizeof(tRoute), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vecRoutes.emplace_back(tRoute);
+	}
+
+	CloseHandle(hFile);
+
+	// 데이터 저장
+	vecOutRoutes.swap(vecRoutes);
+
+	return S_OK;
+}
+
 HRESULT CStreamHandler::Add_GameObject_Layer_Map(const PASSDATA_MAP* pPassData)
 {
 	if (nullptr == pPassData) {

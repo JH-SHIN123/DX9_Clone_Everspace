@@ -48,7 +48,7 @@ HRESULT CDelivery::Ready_GameObject(void* pArg)
 
     // For.Com_Transform
     TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
-
+    TransformDesc.fSpeedPerSec = 30.f;
     if (FAILED(CGameObject::Add_Component(
         EResourceType::Static,
         L"Component_Transform",
@@ -78,6 +78,12 @@ HRESULT CDelivery::Ready_GameObject(void* pArg)
             return E_FAIL;
         }
     }
+
+    // 네비 경로 지정
+    CStreamHandler::Get_PassData_Navi(m_vecNaviRoute, L"../../Resources/Data/Navi/stage3.navi");
+
+    // 네비 첫번째 위치와 방향 세팅
+    FindNextRoute();
 
     return S_OK;
 }
@@ -125,7 +131,63 @@ _uint CDelivery::Render_GameObject()
 
 _uint CDelivery::Movement(_float fDeltaTime)
 {
+    if (nullptr == m_pTransform) return NO_EVENT;
+    
+    // 현재위치와 다음 경로의 위치의 거리가 1일경우 다음 노드로 이동
+
+    // 마지막 노드 
+    if (m_iCurRouteIndex + 1 >= m_vecNaviRoute.size())
+        ;
+    else
+    {
+        _float3 vCurPos = m_pTransform->Get_State(EState::Position);
+        _float3 vNextPos = m_vecNaviRoute[m_iCurRouteIndex + 1].vNodePos;
+
+        // 거리비교
+        FLOAT vLength = D3DXVec3Length(&(vNextPos - vCurPos));
+        if (vLength <= 100.f) {
+            FindNextRoute();
+            ++m_iCurRouteIndex;
+        }
+    }
+
+    m_pTransform->Go_Straight(fDeltaTime);
+
     return _uint();
+}
+
+void CDelivery::FindNextRoute()
+{
+    if (m_iCurRouteIndex >= m_vecNaviRoute.size()) return;
+    if (m_pTransform == nullptr) return;
+
+    //m_pTransform->Set_Position(m_vecNaviRoute[m_iCurRouteIndex].vNodePos);
+
+    _float3 right = { 1.f,0.f,0.f };
+    _float3 up = { 0.f,1.f,0.f };
+    _float3 look = { 0.f,0.f,1.f };
+    _float3 dir = { 0.f,0.f,1.f };
+
+    //if (m_iCurRouteIndex == 0)
+    //{
+    //    dir = m_vecNaviRoute[m_iCurRouteIndex].vNodeDir;
+    //}
+    //else
+    //{
+        dir = m_vecNaviRoute[m_iCurRouteIndex + 1].vNodePos - m_vecNaviRoute[m_iCurRouteIndex].vNodePos;
+        D3DXVec3Normalize(&dir, &dir);
+    //}
+
+    D3DXVec3Cross(&up, &look, &dir);
+    D3DXVec3Normalize(&up, &up);
+
+    D3DXVec3Cross(&right, &up, &dir);
+    D3DXVec3Normalize(&right, &right);
+
+    m_pTransform->Set_State(EState::Right, right);
+    m_pTransform->Set_State(EState::Up, up);
+    m_pTransform->Set_State(EState::Look, dir);
+
 }
 
 CDelivery* CDelivery::Create(LPDIRECT3DDEVICE9 pDevice)

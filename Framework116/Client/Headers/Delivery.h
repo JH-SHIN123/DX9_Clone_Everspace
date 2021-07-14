@@ -22,6 +22,7 @@ public:
 
 private:
 	_uint Movement(_float fDeltaTime);
+	void FindNextRoute();
 
 public:
 	static CDelivery* Create(LPDIRECT3DDEVICE9 pDevice);
@@ -32,6 +33,9 @@ private:
 	CTransform* m_pTransform = nullptr;
 	CMesh* m_pMesh = nullptr;
 
+private:
+	vector<PASSDATA_ROUTE> m_vecNaviRoute;
+	_uint m_iCurRouteIndex = 0;
 };
 
 
