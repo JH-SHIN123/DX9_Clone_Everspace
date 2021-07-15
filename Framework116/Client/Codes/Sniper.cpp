@@ -405,7 +405,7 @@ void CSniper::Set_Hp_Pos()
 			{
 				POINT pt = { (LONG)ptBoss.x, (LONG)ptBoss.y };
 				//ScreenToClient(g_hWnd, &pt);
-				SetCursorPos((_int)pt.x + 8, (_int)pt.y + 13);
+				SetCursorPos((_int)pt.x + 7, (_int)pt.y + 13);
 			}
 			m_pLockOn->Set_Pos(vLockOnPos);
 		}
