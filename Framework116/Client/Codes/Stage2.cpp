@@ -75,7 +75,7 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 		{
 			//m_pManagement->Clear_NonStatic_Resources();
 			if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
-				CLoading::Create(m_pDevice, ESceneType::Stage2))))
+				CLoading::Create(m_pDevice, ESceneType::Lobby))))
 			{
 				PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
 				return E_FAIL;
