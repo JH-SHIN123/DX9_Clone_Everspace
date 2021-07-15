@@ -25,5 +25,7 @@ private:
 	CManagement*		m_pManagement = nullptr;
 	LPDIRECT3DDEVICE9	m_pDevice = nullptr;
 
+	// Thread 하나파서
+	// 로고띄우기
 };
 

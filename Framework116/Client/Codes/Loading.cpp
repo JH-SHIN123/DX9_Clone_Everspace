@@ -225,6 +225,7 @@ unsigned CLoading::ThreadMain(void * pArg)
 
 	if (FAILED(hr))
 	{
+		CManagement::Get_Instance()->Clear_NonStatic_Resources();
 		LeaveCriticalSection(&pLoading->m_CriticalSection);
 		return LOADING_ERROR;
 	}

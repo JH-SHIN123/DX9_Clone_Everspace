@@ -40,6 +40,12 @@ HRESULT CMainApp::Ready_MainApp()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pManagement->Setup_CurrentScene((_uint)ESceneType::Logo, CLogo::Create(m_pDevice))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Setup Logo Scene");
+		return E_FAIL;
+	}
+
 	if (FAILED(Ready_StaticResources()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Ready Static Resources");
@@ -49,12 +55,6 @@ HRESULT CMainApp::Ready_MainApp()
 	if (FAILED(Setup_DefaultSetting()))
 	{
 		PRINT_LOG(L"Error", L"Failed To Setup Default Setting");
-		return E_FAIL;
-	}
-
-	if (FAILED(m_pManagement->Setup_CurrentScene((_uint)ESceneType::Logo, CLogo::Create(m_pDevice))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Setup Logo Scene");
 		return E_FAIL;
 	}
 
