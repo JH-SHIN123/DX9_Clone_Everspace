@@ -820,8 +820,8 @@ _uint CBoss_Monster::Add_Hp_Bar(_float fDeltaTime)
 			m_pHp_Bar = static_cast<CHP_Bar*>(pGameObject);
 			m_pHp_Bar->Who_Make_Me(m_pHp_Bar->MAKER_BOSS_MONSTER);
 
-			Safe_Release(pGameObject);
-			Safe_Release(pGameObjectBorder);
+			//Safe_Release(pGameObject);
+			//Safe_Release(pGameObjectBorder);
 		}
 
 	}
@@ -919,9 +919,9 @@ CGameObject * CBoss_Monster::Clone(void * pArg/* = nullptr*/)
 
 void CBoss_Monster::Free()
 {
-	if(m_pLockOn)
-		m_pLockOn->Set_IsDead(TRUE);
-	Safe_Release(m_pLockOn);
+	//if(m_pLockOn)
+	//	m_pLockOn->Set_IsDead(TRUE);
+	//Safe_Release(m_pLockOn);
 
 	Safe_Release(m_pInfo);
 	Safe_Release(m_pHP_Bar_Border);

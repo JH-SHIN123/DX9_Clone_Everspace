@@ -340,8 +340,8 @@ _uint CSniper::Add_Hp_Bar(_float fDeltaTime)
 		m_pHp_Bar = static_cast<CHP_Bar*>(pGameObject);
 		m_pHp_Bar->Who_Make_Me(m_pHp_Bar->MAKER_SNIPER);
 
-		Safe_Release(pGameObjectBorder);
-		Safe_Release(pGameObject);
+		//Safe_Release(pGameObjectBorder);
+		//Safe_Release(pGameObject);
 
 	}
 	return _uint();
@@ -565,7 +565,7 @@ _uint CSniper::Make_LockOn()
 
 				m_pLockOn = static_cast<CNew_LockOn*>(pLockOn);
 				m_pLockOn->Who_Make_Me(m_pLockOn->MAKER_MONSTER);
-				Safe_Release(pLockOn);
+				/*Safe_Release(pLockOn);*/
 			}
 		}
 	}
