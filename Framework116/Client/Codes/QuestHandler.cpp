@@ -286,7 +286,6 @@ void CQuestHandler::Lock_MonsterAI(_bool bLock)
 		}
 	}
 
-
 	else if (false == bLock)
 	{
 		if (nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster") ||
