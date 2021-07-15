@@ -86,6 +86,9 @@ HRESULT CLoading::Ready_Scene()
 		return E_FAIL;
 	}
 
+	// 로딩할 객체 이미지 생성 -> UI
+ 
+
 	return S_OK;
 }
 
