@@ -38,12 +38,6 @@ private:
 		_float fMinZDist, CTransform* pTargetTransform, _uint iRockAmount, _float fRockSpeed,
 		_float fDistFromTarget,_float fFinishTime);
 
-
-
-	// Stage3 생기기전까지만 사용하겠습니당~~
-	//HRESULT Add_Layer_Sniper(const wstring& LayerTag);
-	//HRESULT Add_Layer_Monster(const wstring& LayerTag);
-
 public:
 	static CStage2* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual void Free() override;
@@ -64,6 +58,9 @@ private:
 private:
 	_float m_fFlowTime = 1.f;
 	_uint m_iFlowCount = 0;
+	
+private:
+	_bool m_bFPS = false;
 private:
 	_bool m_bFadeIn = false;
 	_bool m_bSceneChange = false;

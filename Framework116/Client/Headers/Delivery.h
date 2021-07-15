@@ -27,6 +27,9 @@ public:
 	_bool Get_IsArrive();
 
 private:
+	void Update_Effect();
+
+private:
 	_uint Movement(_float fDeltaTime);
 	void FindNextRoute();
 
@@ -42,6 +45,12 @@ private:
 private:
 	CTransform* m_pTransform = nullptr;
 	CMesh* m_pMesh = nullptr;
+
+private: // Engine Trail
+	_float3 m_vLeftEngineOffset = { 0.f, 0.f, 0.f };
+	_float3 m_vRightEngineOffset = { 0.f, 0.f, 0.f };
+	class CEngineEffectSystem* m_pLeftEngineEffect = nullptr;
+	class CEngineEffectSystem* m_pRightEngineEffect = nullptr;
 
 private:
 	vector<PASSDATA_ROUTE> m_vecNaviRoute;

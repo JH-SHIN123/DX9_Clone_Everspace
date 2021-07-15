@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Delivery.h"
+#include "EngineEffectSystem.h"
 
 CDelivery::CDelivery(LPDIRECT3DDEVICE9 pDevice) :
     CGameObject(pDevice)
@@ -50,6 +51,8 @@ HRESULT CDelivery::Ready_GameObject(void* pArg)
     // For.Com_Transform
     TRANSFORM_DESC TransformDesc = pDesc->tTransformDesc;
 	TransformDesc.fSpeedPerSec = 60.f;//30.f;
+    TransformDesc.fSpeedPerSec = 30.f;//30.f;
+
     if (FAILED(CGameObject::Add_Component(
         EResourceType::Static,
         L"Component_Transform",
@@ -86,6 +89,22 @@ HRESULT CDelivery::Ready_GameObject(void* pArg)
     // 네비 첫번째 위치와 방향 세팅
     FindNextRoute();
 
+    // Add Engine-Boost Effect
+    CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pLeftEngineEffect);
+    m_vLeftEngineOffset = { -3.7f, 0.f, -5.f };
+    CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pRightEngineEffect);
+    m_vRightEngineOffset = { 3.7f, 0.f, -5.f };
+
+    m_pLeftEngineEffect->Set_SizeRate(9.f);
+    m_pRightEngineEffect->Set_SizeRate(9.f);
+
+
+//#ifdef _DEBUG
+//    WritePrivateProfileString(L"Section_1", L"Key_1", L"1.4f", L"../test.ini");
+//    WritePrivateProfileString(L"Section_1", L"Key_2", L"0.9f", L"../test.ini");
+//    WritePrivateProfileString(L"Section_1", L"Key_3", L"-6.7f", L"../test.ini");
+//#endif // _DEBUG
+
     return S_OK;
 }
 
@@ -98,12 +117,13 @@ _uint CDelivery::Update_GameObject(_float fDeltaTime)
 		Movement(fDeltaTime);
 
 
-
     m_pTransform->Update_Transform_Quaternion();
     for (auto& p : m_Collides)
     {
         if (p) p->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);
     }
+
+    Update_Effect();
     return NO_EVENT;
 }
 
@@ -142,6 +162,46 @@ void CDelivery::Set_MoveStart(_bool bMove)
 _bool CDelivery::Get_IsArrive()
 {
 	return m_bArrive;
+}
+
+void CDelivery::Update_Effect()
+{
+
+//#ifdef _DEBUG
+//    _float3 vOffset;
+//
+//    TCHAR szBuff[256] = L"";
+//    GetPrivateProfileString(L"Section_1", L"Key_1", L"1.4f", szBuff, 256, L"../test.ini");
+//    float x = _ttof(szBuff);
+//    vOffset.x = x;
+//
+//    GetPrivateProfileString(L"Section_1", L"Key_2", L"0.9f", szBuff, 256, L"../test.ini");
+//    float y = _ttof(szBuff);
+//    vOffset.y = y;
+//
+//    GetPrivateProfileString(L"Section_1", L"Key_3", L"-6.7f", szBuff, 256, L"../test.ini");
+//    float z = _ttof(szBuff);
+//    vOffset.z = z;
+//#endif // _DEBUG
+//    m_vRightEngineOffset = vOffset;
+
+    // Engine-Boost Effect
+    if (m_pLeftEngineEffect) {
+        _float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
+        vEnginePos += m_pTransform->Get_State(EState::Right) * m_vLeftEngineOffset.x;
+        vEnginePos += m_pTransform->Get_State(EState::Up) * m_vLeftEngineOffset.y;
+        vEnginePos += m_pTransform->Get_State(EState::Look) * m_vLeftEngineOffset.z;
+        m_pLeftEngineEffect->Set_EngineOffset(vEnginePos);
+        m_pLeftEngineEffect->Set_IsBoost(true);
+    }
+    if (m_pRightEngineEffect) {
+        _float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
+        vEnginePos += m_pTransform->Get_State(EState::Right) * m_vRightEngineOffset.x;
+        vEnginePos += m_pTransform->Get_State(EState::Up) * m_vRightEngineOffset.y;
+        vEnginePos += m_pTransform->Get_State(EState::Look) * m_vRightEngineOffset.z;
+        m_pRightEngineEffect->Set_EngineOffset(vEnginePos);
+        m_pRightEngineEffect->Set_IsBoost(true);
+    }
 }
 
 _uint CDelivery::Movement(_float fDeltaTime)
@@ -233,6 +293,16 @@ CGameObject* CDelivery::Clone(void* pArg)
 
 void CDelivery::Free()
 {
+    if (m_pLeftEngineEffect) {
+        m_pLeftEngineEffect->Set_IsDead(true);
+        m_pLeftEngineEffect = nullptr;
+    }
+    if (m_pRightEngineEffect) {
+        m_pRightEngineEffect->Set_IsDead(true);
+        m_pRightEngineEffect = nullptr;
+    }
+
+
     Safe_Release(m_pTransform);
     Safe_Release(m_pMesh);
 

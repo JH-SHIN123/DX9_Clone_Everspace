@@ -220,9 +220,9 @@ _bool CGatchaBox::StartUnPacking(_float fDeltaTime)
 			pLobbyCam->Set_UnPacked(TRUE);
 			wstring strLayerTag = L"Layer_Product";
 			Add_Layer_Product(strLayerTag);
-			CEffectHandler::Add_Layer_Effect_Explosion(m_pTransform->Get_TransformDesc().vPosition,
-				20.f);
 
+			// °«Ã­¹Ú½º ÀÌÆåÆ®
+			CEffectHandler::Add_Layer_Effect_Explosion_GatchaBox(m_pTransform->Get_TransformDesc().vPosition, 20.f);
 		}
 		m_bBomb = TRUE;
 

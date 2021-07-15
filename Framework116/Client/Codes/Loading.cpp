@@ -76,6 +76,9 @@ HRESULT CLoading::Ready_Scene()
 	::SetWindowText(g_hWnd, L"Loading");
 	m_pManagement->StopSound(CSoundMgr::BGM);
 
+	// 클론들 비우기
+	m_pManagement->Clear_NonStatic_Resources();
+
 	// 씬 진입전 로딩쓰레드 생성
 	m_hLoadingThread = (HANDLE)_beginthreadex(0, 0, ThreadMain, this, 0, 0);
 	if (nullptr == m_hLoadingThread)
@@ -360,6 +363,15 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
 		return E_FAIL;
 	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
+		return E_FAIL;
+	}
 
 #pragma endregion
 
@@ -430,6 +442,17 @@ HRESULT CLoading::Ready_LobbyResources()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/smoke.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Smoke");
+		return E_FAIL;
+	}
+#pragma endregion
+
+#pragma region GatchaEffect
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Effect_Party",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/party.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_BlackBar");
 		return E_FAIL;
 	}
 #pragma endregion
@@ -544,6 +567,15 @@ HRESULT CLoading::Load_Stage1_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
 		return E_FAIL;
 	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
+		return E_FAIL;
+	}
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
@@ -655,6 +687,7 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
 		return E_FAIL;
 	}
+
 	/* For.GameObject_Planet_Gas */
 	// 맵정보 잘못들어감 (실제로 가스행성임)
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -704,6 +737,15 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
+		return E_FAIL;
+	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
 		return E_FAIL;
 	}
 
@@ -826,6 +868,7 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		return E_FAIL;
 	}
 
+
 	/* For.GameObject_Planet_Ice */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -909,6 +952,15 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
+		return E_FAIL;
+	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
 		return E_FAIL;
 	}
 	
@@ -1509,6 +1561,16 @@ HRESULT CLoading::Load_HUD_Resources()
 		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HeadUpDisplay.png"))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Head_Up_Display");
+		return E_FAIL;
+	}
+
+	/* For.Component_Texture_Head_Up_Display2 */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Head_Up_Display2",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/HeadUpDisplay2.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Head_Up_Display2");
 		return E_FAIL;
 	}
 
