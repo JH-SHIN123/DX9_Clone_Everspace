@@ -80,7 +80,7 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 	case TRUE:
 		break;
 	case UPDATE_FLYAWAY:
-		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 30.f,20.f);
+		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 30.f,15.f);
 		break;
 	case PLAYER_DEAD:
 		m_fDelaySceneChange += fDeltaTime;

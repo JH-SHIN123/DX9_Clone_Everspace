@@ -179,7 +179,7 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 		_bool Check = (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI"))->empty();
 		if (Check == true)
 		{
-			CQuestHandler::Get_Instance()->Set_ClearStage(EStageClear::Stage_1);
+			CQuestHandler::Get_Instance()->Set_ClearStage(EStageClear::Stage_2);
 			++m_iFlowCount;
 		}
 		return S_OK;
