@@ -588,7 +588,6 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		_float fDamage = _float(m_pInfo->Get_HittedDamage());
 		_float fMaxHp = _float(m_pInfo->Get_MaxHp());
 		m_pHp_Bar->Set_ScaleX((-10 / fMaxHp) * m_fHpLength);
-		m_pInfo->Set_Hp(-10);
 
 		// HIT Effect
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
@@ -774,6 +773,11 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			m_pManagement->PlaySound(L"Gatling_Stop.ogg", CSoundMgr::PLAYER_WEAPON);
 		}
 	}
+	if (m_pController->Key_Down(KEY_P))
+	{
+		m_pInfo->Set_MaxHp(1000);
+		m_pInfo->Set_Hp(1000);
+	}
 
 	// 마우스 고정시켜서 끄기 불편해서.. ES쓰세용
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
@@ -910,7 +914,6 @@ _uint CPlayer::Collide_Planet_Or_Astroid(const _float fDeltaTime)
 		_float fDamage = (_float)m_pInfo->Get_HittedDamage();
 		_float fMaxHp = (_float)m_pInfo->Get_MaxHp();
 		Get_HpBar()->Set_ScaleX(fDamage / fMaxHp * m_fHpLength);
-		m_pInfo->Set_Hp(-10);
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::Static,
