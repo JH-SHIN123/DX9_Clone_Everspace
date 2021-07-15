@@ -94,16 +94,16 @@ _uint CStage2::LateUpdate_Scene(_float fDeltaTime)
 	CScene::LateUpdate_Scene(fDeltaTime);
 
 	// Boss
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Boss_Monster");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Bullet", L"Layer_Boss_Monster");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Missile", L"Layer_Boss_Monster");
 	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Asteroid");
 	//Sniper
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Sniper");
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Sniper");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Bullet", L"Layer_Sniper");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Missile", L"Layer_Sniper");
 
 	//Monster
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Bullet", L"Layer_Monster");
-	CCollisionHandler::Collision_SphereToSphere(L"Layer_Player_Missile", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Bullet", L"Layer_Monster");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Player_Missile", L"Layer_Monster");
 
 	return _uint();
 }
@@ -468,6 +468,15 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 	case 3:
 		if (m_bFinishFlyAway)
 		{
+			// 끝났으면 플레이어 IsAstroidStage를 꺼라!
+			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsAstroidStage(false);
+			if (m_pManagement->Get_GameObjectList(L"Layer_HUD_FPS")->size())
+			{
+				for (auto& pDst : *m_pManagement->Get_GameObjectList(L"Layer_HUD_FPS"))
+				{
+					pDst->Set_IsDead(TRUE);
+				}
+			}
 			if (m_pManagement->Get_GameObjectList(L"Layer_Asteroid")->size())
 			{
 				for (auto& pDst : *m_pManagement->Get_GameObjectList(L"Layer_Asteroid"))
@@ -479,6 +488,25 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 				return -1;
 			m_iFlowCount = CLEAR_FLYAWAY;
 			return TRUE;
+		}
+		else
+		{
+			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsAstroidStage(true);
+			if (!m_bFPS)
+			{
+				//for (auto& pHUD : *m_pManagement->Get_GameObjectList(L"Layer_HUD"))
+				//{
+				//	pHUD->Set_IsDead(true);
+				//}
+				UI_DESC HeadUpDisplay2;
+				HeadUpDisplay2.tTransformDesc.vPosition = { 0.f, 0.f, 0.f };
+				HeadUpDisplay2.tTransformDesc.vScale = { 1920.f, 1080.f, 0.f };
+				HeadUpDisplay2.wstrTexturePrototypeTag = L"Component_Texture_Head_Up_Display2";
+				if (FAILED(Add_Layer_UI(L"Layer_HUD_FPS", &HeadUpDisplay2)))
+					return E_FAIL;
+
+				m_bFPS = true;
+			}
 		}
 		return UPDATE_FLYAWAY;
 	case 4:

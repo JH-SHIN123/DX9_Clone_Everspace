@@ -62,6 +62,9 @@ private:
 private:
 	_float m_fFlowTime = 1.f;
 	_uint m_iFlowCount = 0;
+	
+private:
+	_bool m_bFPS = false;
 };
 
 #define __STAGE2_H__

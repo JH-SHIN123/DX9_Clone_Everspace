@@ -149,7 +149,6 @@ _uint CMonster::Update_GameObject(_float fDeltaTime)
 		}
 
 		m_pTransform->Update_Transform();
-		//m_pTransform->Update_Transform_Quaternion();
 		for (auto& p : m_Collides)
 		{
 			if (p) p->Update_Collide(m_pTransform->Get_TransformDesc().matWorld);

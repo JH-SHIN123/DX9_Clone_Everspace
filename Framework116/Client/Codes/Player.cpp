@@ -356,42 +356,49 @@ _uint CPlayer::LateUpdate_GameObject(_float fDeltaTime)
 _uint CPlayer::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
-
-	if (!m_IsDead)
+	// 운석 날아오는중이면 메쉬 렌더하지 마!
+	if (!m_IsAstroidStage)
 	{
-		m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-		m_pMesh->Render_Mesh();
-
-
-	wstring str = L"궁서";
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
-	m_pManagement->Get_Font()->DrawText(NULL
-		, str.c_str(), -1
-		, &rc, DT_CENTER, D3DXCOLOR(255, 0, 0, 255));
-
-	// 카메라 스킵
-	if (m_IsCameraMove)
-	{
-		ESoloMoveMode eCheck = ((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Get_SoloMoveMode();
-		if (eCheck < ESoloMoveMode::Lock)
+		if (!m_IsDead)
 		{
-			wstring mesage = L"C 키를 눌러 스킵";
-			RECT tUIBounds;
-			GetClientRect(g_hWnd, &tUIBounds);
-			//tUIBounds.top += 700;
-			tUIBounds.left += 1700;
-			m_pManagement->Get_Font()->DrawText(NULL
-				, mesage.c_str(), -1
-				, &tUIBounds, DT_CENTER, D3DXCOLOR(100, 100, 100, 255));
-		}
-	}
+			m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
+			m_pMesh->Render_Mesh();
+
+
+			//wstring str = L"궁서";
+			//RECT rc;
+			//GetClientRect(g_hWnd, &rc);
+			//m_pManagement->Get_Font()->DrawText(NULL
+			//	, str.c_str(), -1
+			//	, &rc, DT_CENTER, D3DXCOLOR(255, 0, 0, 255));
+
+			// 카메라 스킵
+			if (m_IsCameraMove)
+			{
+				ESoloMoveMode eCheck = ((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Get_SoloMoveMode();
+				if (eCheck < ESoloMoveMode::Lock)
+				{
+					wstring mesage = L"C 키를 눌러 스킵";
+					RECT tUIBounds;
+					GetClientRect(g_hWnd, &tUIBounds);
+					//tUIBounds.top += 700;
+					tUIBounds.left += 1700;
+					m_pManagement->Get_Font()->DrawText(NULL
+						, mesage.c_str(), -1
+						, &tUIBounds, DT_CENTER, D3DXCOLOR(100, 100, 100, 255));
+				}
+			}
 
 
 #ifdef _DEBUG // Render Collide
-		//for (auto& collide : m_Collides)
-			//collide->Render_Collide();
+			//for (auto& collide : m_Collides)
+				//collide->Render_Collide();
 #endif
+		}
+	}
+	else // 대신 텍스처를 렌더하렴.
+	{
+
 	}
 	return _uint();
 }
