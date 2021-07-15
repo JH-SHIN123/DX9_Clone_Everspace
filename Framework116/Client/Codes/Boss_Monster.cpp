@@ -182,8 +182,9 @@ _uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
 	}
 	if (m_IsCollide) {
 		// Bullet 데미지 만큼.
-		m_pHp_Bar->Set_ScaleX(-100.f / m_pInfo->Get_MaxHp() * m_pInfo->Get_Hp());
-		m_pInfo->Set_Damage(100);
+		_float fDamage = _float(m_pInfo->Get_HittedDamage());
+		_float fMaxHp = _float(m_pInfo->Get_MaxHp());
+		m_pHp_Bar->Set_ScaleX((-fDamage / fMaxHp) * m_fHpLength);
 		m_IsCollide = false;
 	}
 
