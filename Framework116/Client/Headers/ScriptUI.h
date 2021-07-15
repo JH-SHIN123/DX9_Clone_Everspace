@@ -15,9 +15,12 @@ enum class EScript {
 	Stg2_Finish_AsteroidFlyAway,
 	Stg2_SearchTarget,
 	Stg2_PlayerDead,
+	Stg2_Clear,
 	Stage3_Opening,
 	Stage3_Boss_Opening,
 	Stage3_Boss_Clear,
+	Stage3_Player_Dead,
+	Stage3_Delivery_Dead,
 	End
 };
 
@@ -63,9 +66,12 @@ private: //대화
 	void Script_Stg2_Finish_AsteroidFlyAway();
 	void Script_Stg2_Search_Target();
 	void Script_Stg2_PlayerDead();
+	void Script_Stg2_Clear();
 	void Script_Stage3_Opening();
 	void Script_Stage3_Boss_Opening();
 	void Script_Stage3_Boss_Clear();
+	void Script_Stage3_Player_Dead();
+	void Script_Stage3_Delivery_Dead();
 
 private: // 기타
 	void Lock_Cursor();
