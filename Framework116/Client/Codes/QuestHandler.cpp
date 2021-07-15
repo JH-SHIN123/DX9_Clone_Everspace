@@ -225,7 +225,7 @@ void CQuestHandler::Update_Quest_Stage1_Target()
 
 void CQuestHandler::Update_Quest_Stage2_Dodge()
 {
-	if (m_IsClear == false)
+	if (m_IsClear == true)
 		return;
 
 	_float fTime = CManagement::Get_Instance()->Get_DeltaTime();
