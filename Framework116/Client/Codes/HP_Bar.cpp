@@ -39,7 +39,7 @@ _uint CHP_Bar::Update_GameObject(_float fDeltaTime)
 
 _uint CHP_Bar::LateUpdate_GameObject(_float fDeltaTime)
 {
-	CGameObject::LateUpdate_GameObject(fDeltaTime);
+	CUI::LateUpdate_GameObject(fDeltaTime);
 
 	if (m_IsDead == true)
 		return DEAD_OBJECT;
