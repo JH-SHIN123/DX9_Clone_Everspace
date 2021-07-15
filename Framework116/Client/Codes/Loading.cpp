@@ -434,6 +434,17 @@ HRESULT CLoading::Ready_LobbyResources()
 	}
 #pragma endregion
 
+#pragma region GatchaEffect
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Effect_Party",
+		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/Effect/party.png"))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_ScriptUI_BlackBar");
+		return E_FAIL;
+	}
+#pragma endregion
+
 	return S_OK;
 }
 

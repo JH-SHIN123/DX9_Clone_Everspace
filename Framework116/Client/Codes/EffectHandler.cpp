@@ -46,6 +46,53 @@ HRESULT CEffectHandler::Add_Layer_Effect_Explosion(const _float3& _vPos, const _
 	return S_OK;
 }
 
+HRESULT CEffectHandler::Add_Layer_Effect_Explosion_GatchaBox(const _float3& _vPos, const _float _fSize)
+{
+	// ¿¬±â + ÆøÁ×
+
+	PARTICLESYSTEM_DESC pSystemDesc;
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Effect_Party";
+	pSystemDesc.iNumParticles = 40;
+	pSystemDesc.tResetAttribute.fParticleSize = 2.f * _fSize;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 10.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.01f;
+	pSystemDesc.tResetAttribute.fLifeTime = 3.f;
+	pSystemDesc.tTransformDesc.vPosition = _vPos;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 1.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 1.f,1.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
+	}
+
+	pSystemDesc.wstrTexturePrototypeTag = L"Component_Texture_Plasma";
+	pSystemDesc.iNumParticles = 30;
+	pSystemDesc.tResetAttribute.fParticleSize = 3.f * _fSize;
+	pSystemDesc.tResetAttribute.fParticleSpeed = 10.f;
+	pSystemDesc.tResetAttribute.fParticleAlphaFadeSpeed = 0.01f;
+	pSystemDesc.tResetAttribute.fLifeTime = 2.f;
+	pSystemDesc.tResetAttribute.vColorRed_RandomRange = { 0.f,1.f };
+	pSystemDesc.tResetAttribute.vColorGreen_RandomRange = { 0.f,1.f };
+	pSystemDesc.tResetAttribute.vColorBlue_RandomRange = { 0.f,1.f };
+
+	if (FAILED(CManagement::Get_Instance()->Add_GameObject_InLayer(
+		EResourceType::NonStatic,
+		L"GameObject_ExplosionSystem",
+		L"Layer_ExplosionSystem",
+		(void*)&pSystemDesc)))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Particle Explosion In Layer");
+	}
+
+	return S_OK;
+}
+
 HRESULT CEffectHandler::Add_Layer_Effect_Bullet_Explosion(const _float3& _vPos)
 {
 	PARTICLESYSTEM_DESC pSystemDesc;
