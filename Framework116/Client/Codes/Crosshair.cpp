@@ -80,18 +80,6 @@ HRESULT CCrosshair::Ready_GameObject(void * pArg/* = nullptr*/)
 		return E_FAIL;
 	}
 
-	// 일단 보스만 
-	if (m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster") && m_pManagement->Get_GameObjectList(L"Layer_Boss_Monster")->size())
-	{
-		m_pBossMonsterCollide = (CCollideSphere*)m_pManagement->Get_Component(L"Layer_Boss_Monster", L"Com_CollideSphere");
-		Safe_AddRef(m_pBossMonsterCollide);
-		if (nullptr == m_pBossMonsterCollide)
-		{
-			PRINT_LOG(L"Error", L"m_pMonsterCollide is nullptr");
-			return E_FAIL;
-		}
-	}
-
 	return S_OK;
 }
 
@@ -99,7 +87,7 @@ _uint CCrosshair::Update_GameObject(_float fDeltaTime)
 {
 	CGameObject::Update_GameObject(fDeltaTime);	
 	Movement(fDeltaTime);	
-	Searching_Target(fDeltaTime);
+	//Searching_Target(fDeltaTime);
 
 	return m_pTransform->Update_Transform();
 }
@@ -187,7 +175,6 @@ CGameObject * CCrosshair::Clone(void * pArg/* = nullptr*/)
 
 void CCrosshair::Free()
 {
-	Safe_Release(m_pBossMonsterCollide);
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pTransform);
 	Safe_Release(m_pTexture);
