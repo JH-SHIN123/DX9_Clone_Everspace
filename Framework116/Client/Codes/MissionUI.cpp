@@ -89,7 +89,6 @@ _uint CMissionUI::Update_GameObject(_float fDeltaTime)
 	m_IsClear = CQuestHandler::Get_Instance()->Get_IsClear();
 
 
-
 	return m_pTransform->Update_Transform();
 }
 
