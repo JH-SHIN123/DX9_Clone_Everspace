@@ -284,32 +284,32 @@ void CStage3::All_Monster_Boom(_float fDeltaTime)
 
 
 
-	//_bool bCheck = m_pManagement->Get_GameObjectList(L"Layer_Monster")->empty();
+	_bool bCheck = m_pManagement->Get_GameObjectList(L"Layer_Monster")->empty();
 
-	//if (bCheck == TRUE)
-	//	return;
+	if (bCheck == TRUE)
+		return;
 
-	//list<class CGameObject*> listObjectList = *(m_pManagement->Get_GameObjectList(L"Layer_Monster"));
+	list<class CGameObject*> listObjectList = *(m_pManagement->Get_GameObjectList(L"Layer_Monster"));
 
-	//for (auto& iter : listObjectList)
-	//{
-	//	iter->Set_IsDead(TRUE);
-	//}
-
-
+	for (auto& iter : listObjectList)
+	{
+		iter->Set_IsDead(TRUE);
+	}
 
 
-	//bCheck = m_pManagement->Get_GameObjectList(L"Layer_Sniper")->empty();
 
-	//if (bCheck == TRUE)
-	//	return;
 
-	//listObjectList = *(m_pManagement->Get_GameObjectList(L"Layer_Sniper"));
+	bCheck = m_pManagement->Get_GameObjectList(L"Layer_Sniper")->empty();
 
-	//for (auto& iter : listObjectList)
-	//{
-	//	iter->Set_IsDead(TRUE);
-	//}
+	if (bCheck == TRUE)
+		return;
+
+	listObjectList = *(m_pManagement->Get_GameObjectList(L"Layer_Sniper"));
+
+	for (auto& iter : listObjectList)
+	{
+		iter->Set_IsDead(TRUE);
+	}
 
 
 	m_IsAllBoom = true;

@@ -7,6 +7,10 @@
 #include "Monster.h"
 #include "Sniper.h"
 #include "Boss_Monster.h"
+#include "Sniper_Bullet.h"
+#include "Bullet_EMP_Bomb.h"
+#include "Bullet_EnergyBall.h"
+#include "Bullet_Laser.h"
 
 IMPLEMENT_SINGLETON(CQuestHandler)
 
@@ -237,12 +241,12 @@ void CQuestHandler::Lock_MonsterAI(_bool bLock)
 	// true 일떄 움직임을 false로 멈춘다
 	if (true == bLock)
 	{
-		if (nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster") ||
-			nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper") ||
-			nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper"))
-		{
-			return;
-		}
+		//if (nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster") ||
+		//	nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper") ||
+		//	nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper"))
+		//{
+		//	return;
+		//}
 
 		list<CGameObject*> pList;
 
@@ -289,16 +293,69 @@ void CQuestHandler::Lock_MonsterAI(_bool bLock)
 				}
 			}
 		}
+
+		// 몬스터 총알 지우기
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall") != nullptr)
+		{
+			if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall")->empty() == false)
+			{
+				pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall"));
+
+				for (auto& iter : pList)
+				{
+					iter->Set_IsDead(TRUE);
+				}
+			}
+		}
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_Laser") != nullptr)
+		{
+			if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_Laser")->empty() == false)
+			{
+				pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_Laser"));
+
+				for (auto& iter : pList)
+				{
+					static_cast<CBoss_Monster*>(iter)->Set_BossFight(false);
+				}
+			}
+		}
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall") != nullptr)
+		{
+			if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall")->empty() == false)
+			{
+				pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall"));
+
+				for (auto& iter : pList)
+				{
+					static_cast<CBoss_Monster*>(iter)->Set_BossFight(false);
+				}
+			}
+		}
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall") != nullptr)
+		{
+			if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall")->empty() == false)
+			{
+				pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Bullet_EnergyBall"));
+
+				for (auto& iter : pList)
+				{
+					static_cast<CBoss_Monster*>(iter)->Set_BossFight(false);
+				}
+			}
+		}
 	}
 
 	else if (false == bLock)
 	{
-		if (nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster") ||
-			nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper") ||
-			nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper"))
-		{
-			return;
-		}
+		//if (nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster") ||
+		//	nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper") ||
+		//	nullptr == CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper"))
+		//{
+		//	return;
+		//}
 
 		list<CGameObject*> pList;
 
