@@ -240,8 +240,6 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_HUD_Effect_Damage In Layer");
 		return E_FAIL;
 	}
-	//m_pHUD_Effect_Boost->Release();
-
 
 	// Add Light
 	LIGHT_DESC lightDesc;
