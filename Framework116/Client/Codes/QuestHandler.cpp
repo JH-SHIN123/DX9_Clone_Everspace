@@ -384,7 +384,11 @@ void CQuestHandler::Update_Quest_Stage2_Dodge()
 {
 	if (m_IsClear == true)
 		return;
-
+	if (CManagement::Get_Instance()->Get_GameObject(L"Layer_Player"))
+	{
+		if (CManagement::Get_Instance()->Get_GameObject(L"Layer_Player")->Get_IsDead())
+			return;
+	}
 	_float fTime = CManagement::Get_Instance()->Get_DeltaTime();
 
 	m_fTimer += fTime;
