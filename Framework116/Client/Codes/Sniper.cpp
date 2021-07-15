@@ -400,7 +400,7 @@ void CSniper::Set_Hp_Pos()
 		{
 			if (GetAsyncKeyState(L'R') & 0x8000)
 			{
-				POINT pt = { ptBoss.x, ptBoss.y };
+				POINT pt = { (LONG)ptBoss.x, (LONG)ptBoss.y };
 				//ScreenToClient(g_hWnd, &pt);
 				SetCursorPos((_int)pt.x + 7, (_int)pt.y + 13);
 			}
