@@ -16,6 +16,7 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pDevice)
 
 CMonster::CMonster(const CMonster & other)
 	: CGameObject(other)
+	, m_IsFight(other.m_IsFight)
 {
 }
 
@@ -140,10 +141,13 @@ _uint CMonster::Update_GameObject(_float fDeltaTime)
 	Search_Target(fDeltaTime);
 	if (!m_IsDead)
 	{
-		if (!m_bBattle)
-			Movement(fDeltaTime);
-		else
-			Monster_Battle(fDeltaTime);
+		if (m_IsFight == true)
+		{
+			if (!m_bBattle)
+				Movement(fDeltaTime);
+			else
+				Monster_Battle(fDeltaTime);
+		}
 
 		if (m_pHp_Bar != nullptr && m_pHP_Bar_Border != nullptr)
 		{
@@ -257,6 +261,11 @@ _uint CMonster::Render_GameObject()
 #endif
 
 	return _uint();
+}
+
+void CMonster::Set_IsFight(_bool bFight)
+{
+	m_IsFight = bFight;
 }
 
 _uint CMonster::Movement(_float fDeltaTime)

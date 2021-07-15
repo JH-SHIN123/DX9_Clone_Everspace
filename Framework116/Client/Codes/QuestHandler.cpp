@@ -4,6 +4,9 @@
 #include "CollisionHandler.h"
 #include "Delivery.h"
 #include "Player.h"
+#include "Monster.h"
+#include "Sniper.h"
+#include "Boss_Monster.h"
 
 IMPLEMENT_SINGLETON(CQuestHandler)
 
@@ -230,6 +233,83 @@ void CQuestHandler::Release_Ref()
 
 	if (m_pPlayerTransform != nullptr)
 		Safe_Release(m_pPlayerTransform);
+
+}
+
+void CQuestHandler::Lock_MonsterAI(_bool bLock)
+{
+	// true ¿œãö øÚ¡˜¿”¿ª false∑Œ ∏ÿ√·¥Ÿ
+	if (true == bLock)
+	{
+		list<CGameObject*> pList;
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster")->empty() == false)
+		{
+			pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster"));
+
+			for (auto& iter : pList)
+			{
+				static_cast<CMonster*>(iter)->Set_IsFight(false);
+			}
+		}
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper")->empty() == false)
+		{
+			pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper"));
+
+			for (auto& iter : pList)
+			{
+				static_cast<CSniper*>(iter)->Set_IsFight(false);
+			}
+		}
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Boss_Monster")->empty() == false)
+		{
+			pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Boss_Monster"));
+
+			for (auto& iter : pList)
+			{
+				static_cast<CBoss_Monster*>(iter)->Set_BossFight(false);
+			}
+		}
+	}
+
+
+	else if (false == bLock)
+	{
+		list<CGameObject*> pList;
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster")->empty() == false)
+		{
+			pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Monster"));
+
+			for (auto& iter : pList)
+			{
+				static_cast<CMonster*>(iter)->Set_IsFight(true);
+			}
+		}
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper")->empty() == false)
+		{
+			pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Sniper"));
+
+			for (auto& iter : pList)
+			{
+				static_cast<CSniper*>(iter)->Set_IsFight(true);
+			}
+		}
+
+		if (CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Boss_Monster")->empty() == false)
+		{
+			pList = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Boss_Monster"));
+
+			for (auto& iter : pList)
+			{
+				static_cast<CBoss_Monster*>(iter)->Set_BossFight(true);
+			}
+		}
+	}
+
 
 }
 

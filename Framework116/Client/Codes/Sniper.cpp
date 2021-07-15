@@ -125,10 +125,13 @@ _uint CSniper::Update_GameObject(_float fDeltaTime)
 		return DEAD_OBJECT;
 	
 	//배틀모드가 아닐때는 그냥 돌아다니렴.
-	if (!m_IsBattle)
-		Movement(fDeltaTime);
-	else
-		Sniper_Battle(fDeltaTime);
+	if (m_IsFight == true)
+	{
+		if (!m_IsBattle)
+			Movement(fDeltaTime);
+		else
+			Sniper_Battle(fDeltaTime);
+	}
 
 	if (m_pHp_Bar != nullptr && m_pHP_Bar_Border != nullptr)
 	{
@@ -196,6 +199,11 @@ _uint CSniper::Render_GameObject()
 #endif
 
 	return _uint();
+}
+
+void CSniper::Set_IsFight(_bool bFight)
+{
+	m_IsFight = bFight;
 }
 
 _uint CSniper::Movement(_float fDeltaTime)

@@ -53,6 +53,9 @@ public: // 계속 돌려줘야함
 	_bool Update_Quest();
 	void Release_Ref();
 
+public: // 몬스터 AI 관련
+	void Lock_MonsterAI(_bool bLock); // true일때 안움직임
+
 private:
 	void Update_Quest_Stage1_Ring();
 	void Update_Quest_Stage1_Target();

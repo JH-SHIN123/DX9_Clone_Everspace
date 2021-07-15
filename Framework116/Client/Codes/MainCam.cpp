@@ -2,6 +2,7 @@
 #include "..\Headers\MainCam.h"
 #include "Pipeline.h"
 #include "Player.h"
+#include "QuestHandler.h"
 
 CMainCam::CMainCam(LPDIRECT3DDEVICE9 pDevice)
 	: CCamera(pDevice)
@@ -467,6 +468,7 @@ _uint CMainCam::Solo_Stage1_Ring(_float fDeletaTime)
 		// 플레이어 무빙 허용
 		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
 		m_eSoloMoveMode = ESoloMoveMode::End;
+		CQuestHandler::Get_Instance()->Lock_MonsterAI(false); // 몬스터 AI 다시 움직임
 		break;
 	}
 
@@ -567,6 +569,7 @@ _uint CMainCam::Solo_Stage2_Asteroid(_float fDeltaTime)
 		// 플레이어 무빙 허용
 		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
 		m_eSoloMoveMode = ESoloMoveMode::End;
+		CQuestHandler::Get_Instance()->Lock_MonsterAI(false); // 몬스터 AI 다시 움직임
 		break;
 	}
 
@@ -712,6 +715,7 @@ _uint CMainCam::Solo_Stage2FinishAsteroid(_float fDeltaTime)
 		if (m_pManagement->Get_GameObjectList(L"Layer_Player"))
 		{
 			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
+			CQuestHandler::Get_Instance()->Lock_MonsterAI(false); // 몬스터 AI 다시 움직임
 		}
 		else
 		{
@@ -837,6 +841,7 @@ _uint CMainCam::Solo_Stage3_Dilevery(_float fDeltaTime)
 		// 플레이어 무빙 허용
 		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
 		m_eSoloMoveMode = ESoloMoveMode::End;
+		CQuestHandler::Get_Instance()->Lock_MonsterAI(false); // 몬스터 AI 다시 움직임
 		break;
 	}
 
@@ -983,6 +988,7 @@ _uint CMainCam::Solo_Stage3_Boss(_float fDeltaTime)
 		// 플레이어 무빙 허용
 		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
 		m_eSoloMoveMode = ESoloMoveMode::End;
+		CQuestHandler::Get_Instance()->Lock_MonsterAI(false); // 몬스터 AI 다시 움직임
 		break;
 	}
 	return _uint();

@@ -7,6 +7,7 @@
 #include "MainCam.h"
 #include "QuestHandler.h"
 
+
 CScriptUI::CScriptUI(LPDIRECT3DDEVICE9 pDevice)
 	: CGameObject(pDevice)
 {
@@ -109,6 +110,9 @@ HRESULT CScriptUI::Ready_GameObject(void * pArg/* = nullptr*/)
 	((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Lock);
 
 
+	// ¸ó½ºÅÍ °ø°Ý/ÀÌµ¿ ¸ØÃç
+	CQuestHandler::Get_Instance()->Lock_MonsterAI(true);
+
 	return S_OK;
 }
 
@@ -160,11 +164,13 @@ _uint CScriptUI::LateUpdate_GameObject(_float fDeltaTime)
 		case EScript::Tutorial_Ring_Clear:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::End);
 			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
+			CQuestHandler::Get_Instance()->Lock_MonsterAI(false);
 			break;
 
 		case EScript::Tutorial_Target_Clear:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::End);
 			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
+			CQuestHandler::Get_Instance()->Lock_MonsterAI(false);
 			break;
 		case  EScript::Stg2_Begin:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Stage2_Asteroid);
@@ -172,6 +178,7 @@ _uint CScriptUI::LateUpdate_GameObject(_float fDeltaTime)
 		case EScript::Stg2_AfterCamProduction:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::End);
 			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
+			CQuestHandler::Get_Instance()->Lock_MonsterAI(false);
 			break;
 		case EScript::Stg2_Finish_AsteroidFlyAway:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Stage2_FinishAsteroid);
@@ -179,6 +186,7 @@ _uint CScriptUI::LateUpdate_GameObject(_float fDeltaTime)
 		case EScript::Stg2_SearchTarget:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::End);
 			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsCameraMove(false);
+			CQuestHandler::Get_Instance()->Lock_MonsterAI(false);
 			break;
 		case EScript::Stage3_Opening:
 			((CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam"))->Set_IsSoloMove(ESoloMoveMode::Stage3_Delivery);
