@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Delivery.h"
+#include "EngineEffectSystem.h"
 
 CDelivery::CDelivery(LPDIRECT3DDEVICE9 pDevice) :
     CGameObject(pDevice)
@@ -86,6 +87,12 @@ HRESULT CDelivery::Ready_GameObject(void* pArg)
     // 네비 첫번째 위치와 방향 세팅
     FindNextRoute();
 
+    // Add Engine-Boost Effect
+    CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pLeftEngineEffect);
+    m_vLeftEngineOffset = { -1.4f, 0.9f, -6.7f };
+    CEffectHandler::Add_Layer_Effect_EngineBoost((CGameObject**)&m_pRightEngineEffect);
+    m_vRightEngineOffset = { 1.4f, 0.9f, -6.7f };
+
     return S_OK;
 }
 
@@ -142,6 +149,27 @@ void CDelivery::Set_MoveStart(_bool bMove)
 _bool CDelivery::Get_IsArrive()
 {
 	return m_bArrive;
+}
+
+void CDelivery::Update_Effect()
+{
+    // Engine-Boost Effect
+    if (m_pLeftEngineEffect) {
+        _float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
+        vEnginePos += m_pTransform->Get_State(EState::Right) * m_vLeftEngineOffset.x;
+        vEnginePos += m_pTransform->Get_State(EState::Up) * m_vLeftEngineOffset.y;
+        vEnginePos += m_pTransform->Get_State(EState::Look) * m_vLeftEngineOffset.z;
+        m_pLeftEngineEffect->Set_EngineOffset(vEnginePos);
+        m_pLeftEngineEffect->Set_IsBoost(true);
+    }
+    if (m_pRightEngineEffect) {
+        _float3 vEnginePos = m_pTransform->Get_TransformDesc().vPosition;
+        vEnginePos += m_pTransform->Get_State(EState::Right) * m_vRightEngineOffset.x;
+        vEnginePos += m_pTransform->Get_State(EState::Up) * m_vRightEngineOffset.y;
+        vEnginePos += m_pTransform->Get_State(EState::Look) * m_vRightEngineOffset.z;
+        m_pRightEngineEffect->Set_EngineOffset(vEnginePos);
+        m_pRightEngineEffect->Set_IsBoost(true);
+    }
 }
 
 _uint CDelivery::Movement(_float fDeltaTime)
@@ -233,6 +261,16 @@ CGameObject* CDelivery::Clone(void* pArg)
 
 void CDelivery::Free()
 {
+    if (m_pLeftEngineEffect) {
+        m_pLeftEngineEffect->Set_IsDead(true);
+        m_pLeftEngineEffect = nullptr;
+    }
+    if (m_pRightEngineEffect) {
+        m_pRightEngineEffect->Set_IsDead(true);
+        m_pRightEngineEffect = nullptr;
+    }
+
+
     Safe_Release(m_pTransform);
     Safe_Release(m_pMesh);
 
