@@ -89,7 +89,6 @@ _uint CMissionUI::Update_GameObject(_float fDeltaTime)
 	m_IsClear = CQuestHandler::Get_Instance()->Get_IsClear();
 
 
-
 	return m_pTransform->Update_Transform();
 }
 
@@ -108,7 +107,16 @@ _uint CMissionUI::Render_GameObject()
 	CUI::Render_GameObject();
 
 	wstring Info = to_wstring(m_iMissionCount) + L" / " + to_wstring(m_iMissionMaxCount);
-
+	if (L"운석을 피하라" == CQuestHandler::Get_Instance()->Get_QusetName())
+	{
+		wstring strCount = L"";
+		if (m_iMissionCount > 10)
+			strCount = L"00 : " + to_wstring(m_iMissionCount);
+		else
+			strCount = L"00 : 0" + to_wstring(m_iMissionCount);
+		wstring strMaxCount = L"00 : " + to_wstring(m_iMissionMaxCount);
+		Info = strCount + L" / " + strMaxCount;
+	}
 	RECT m_tUIBounds;
 	GetClientRect(g_hWnd, &m_tUIBounds);
 	m_tUIBounds.top += 517;

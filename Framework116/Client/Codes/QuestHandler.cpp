@@ -20,9 +20,6 @@ CQuestHandler::~CQuestHandler()
 
 HRESULT CQuestHandler::Set_Start_Quest(EQuest eQuest)
 {
-	//if (m_IsClear == TRUE)
-	//	return E_FAIL;
-
 	Release_Ref();
 
 	m_eNowQuest = eQuest;
@@ -51,7 +48,6 @@ HRESULT CQuestHandler::Set_Start_Quest(EQuest eQuest)
 		m_listTargetObject = *(CManagement::Get_Instance()->Get_GameObjectList(L"Layer_Drone"));
 	}
 	break;
-
 	case EQuest::Stage_2_Dodge:
 	{
 		m_wstrQuestName = L"운석을 피하라";
@@ -83,7 +79,7 @@ HRESULT CQuestHandler::Set_Start_Quest(EQuest eQuest)
 	}
 
 	// 여기서 레퍼런스 카운팅
-	if (m_listTargetObject.empty())
+	if (m_listTargetObject.empty() && m_eNowQuest != EQuest::Stage_2_Dodge&&m_eNowQuest != EQuest::Stage_2_Rescue)
 	{
 		if (m_eNowQuest == EQuest::Stage_3_Delivery ||
 			m_eNowQuest == EQuest::Stage_3_Boss)
@@ -358,6 +354,7 @@ void CQuestHandler::Update_Quest_Stage2_Dodge()
 	_float fTime = CManagement::Get_Instance()->Get_DeltaTime();
 
 	m_fTimer += fTime;
+	
 	m_iCount = (_uint)m_fTimer;
 
 	if (m_fTimer >= (_float)m_iCount_Max)
