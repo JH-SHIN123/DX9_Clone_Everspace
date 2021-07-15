@@ -666,10 +666,20 @@ _uint CMainCam::Solo_Stage2FinishAsteroid(_float fDeltaTime)
 			else
 				m_byMoveCount++;
 		}
-		vDir.y += 10.f;
 		D3DXVec3Normalize(&vDir, &vDir);
 		m_CameraDesc.vEye += vDir * fSpeedPerSec * fDeltaTime;
-		m_CameraDesc.vAt = m_CameraDesc.vEye + vDir*10.f;
+		_float3 vCurAt = m_CameraDesc.vAt;
+		_float3 vNextAt =m_pTargetTransform->Get_State(EState::Look);
+		D3DXVec3Normalize(&vCurAt, &vCurAt);
+		D3DXVec3Normalize(&vNextAt, &vNextAt);
+		_float fAngel = acosf(D3DXVec3Dot(&vCurAt, &vNextAt));
+		_float3 vAxis;
+		D3DXVec3Cross(&vAxis, &vCurAt, &vNextAt);
+		_float4x4 matRot;
+		D3DXMatrixRotationAxis(&matRot, &vAxis,D3DXToRadian(fAngel));
+		_float3 vRot;
+		D3DXVec3TransformNormal(&vRot, &vRot, &matRot);
+		m_CameraDesc.vAt = m_CameraDesc.vEye + vRot*20.f;
 	}
 	break;
 	case 2:
