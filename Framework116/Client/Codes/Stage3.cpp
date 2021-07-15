@@ -57,6 +57,7 @@ HRESULT CStage3::Ready_Scene()
 
 	m_IsAllMonsterBoom = false;
 	m_IsAllBoom = false;
+	m_IsGameOver = false;
 	m_fBoomTime = 0.f;
 
 	return S_OK;
@@ -89,8 +90,9 @@ _uint CStage3::LateUpdate_Scene(_float fDeltaTime)
 	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Bullet_EnergyBall", L"Layer_Player");
 	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Bullet_Laser", L"Layer_Player");
 	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Bullet_EMP_Bomb", L"Layer_Player");
+	CCollisionHandler::Collision_SphereToSphere_Damage(L"Layer_Sniper_Bullet", L"Layer_Player");
 
-
+	//CCollisionHandler::Collision_PlayerToObstacle(L"Layer_Player", L"Layer_Asteroid");
 	CCollisionHandler::Collision_PlayerToBoss(L"Layer_Player", L"Layer_Boss_Monster");
 
 	return _uint();
@@ -98,11 +100,20 @@ _uint CStage3::LateUpdate_Scene(_float fDeltaTime)
 
 void CStage3::Stage_Flow(_float fDeltaTime)
 {
-	if (CQuestHandler::Get_Instance()->Get_IsPlayer_Dead() == true)
-		m_iFlowCount = PLAYER_STAGE3_DEAD;
+	if (m_IsGameOver == false)
+	{
+		if (CQuestHandler::Get_Instance()->Get_IsPlayer_Dead() == true)
+		{
+			m_IsGameOver = true;
+			m_iFlowCount = PLAYER_STAGE3_DEAD;
+		}
 
-	if (CQuestHandler::Get_Instance()->Get_IsPlayer_Dead() == true)
-		m_iFlowCount = QUEST_FAILED;
+		if (CQuestHandler::Get_Instance()->Get_IsObject_Dead() == true)
+		{
+			m_IsGameOver = true;
+			m_iFlowCount = QUEST_FAILED;
+		}
+	}
 
 
 	switch (m_iFlowCount)
@@ -216,7 +227,7 @@ void CStage3::Stage_Flow(_float fDeltaTime)
 
 	case PLAYER_STAGE3_DEAD:
 	{
-		if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Stage3_Delivery_Dead)))
+		if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Stage3_Player_Dead)))
 			return;
 		++m_iFlowCount;
 	}
@@ -273,32 +284,32 @@ void CStage3::All_Monster_Boom(_float fDeltaTime)
 
 
 
-	//_bool bCheck = m_pManagement->Get_GameObjectList(L"Layer_Monster")->empty();
+	_bool bCheck = m_pManagement->Get_GameObjectList(L"Layer_Monster")->empty();
 
-	//if (bCheck == TRUE)
-	//	return;
+	if (bCheck == TRUE)
+		return;
 
-	//list<class CGameObject*> listObjectList = *(m_pManagement->Get_GameObjectList(L"Layer_Monster"));
+	list<class CGameObject*> listObjectList = *(m_pManagement->Get_GameObjectList(L"Layer_Monster"));
 
-	//for (auto& iter : listObjectList)
-	//{
-	//	iter->Set_IsDead(TRUE);
-	//}
-
-
+	for (auto& iter : listObjectList)
+	{
+		iter->Set_IsDead(TRUE);
+	}
 
 
-	//bCheck = m_pManagement->Get_GameObjectList(L"Layer_Sniper")->empty();
 
-	//if (bCheck == TRUE)
-	//	return;
 
-	//listObjectList = *(m_pManagement->Get_GameObjectList(L"Layer_Sniper"));
+	bCheck = m_pManagement->Get_GameObjectList(L"Layer_Sniper")->empty();
 
-	//for (auto& iter : listObjectList)
-	//{
-	//	iter->Set_IsDead(TRUE);
-	//}
+	if (bCheck == TRUE)
+		return;
+
+	listObjectList = *(m_pManagement->Get_GameObjectList(L"Layer_Sniper"));
+
+	for (auto& iter : listObjectList)
+	{
+		iter->Set_IsDead(TRUE);
+	}
 
 
 	m_IsAllBoom = true;
