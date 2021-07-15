@@ -215,10 +215,10 @@ _bool CCollisionHandler::Collision_PlayerToObject(const wstring & wstrDstLayerTa
 	const list<CGameObject*>* Dst_Layer = CManagement::Get_Instance()->Get_GameObjectList(wstrDstLayerTag);
 	const list<CGameObject*>* Src_Layer = CManagement::Get_Instance()->Get_GameObjectList(wstrSrcLayerTag);
 
-	if (nullptr == Dst_Layer) return;
-	if (nullptr == Src_Layer) return;
-
 	_bool Is_Collide = false;
+
+	if (nullptr == Dst_Layer) return Is_Collide;
+	if (nullptr == Src_Layer) return Is_Collide;
 
 	for (auto & dst : *Dst_Layer)
 	{
