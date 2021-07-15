@@ -24,5 +24,6 @@ public:
 private:
 	CManagement*		m_pManagement = nullptr;
 	LPDIRECT3DDEVICE9	m_pDevice = nullptr;
+
 };
 

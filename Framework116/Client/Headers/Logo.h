@@ -20,10 +20,12 @@ public:
 	virtual void Free() override;
 
 private:
-	_bool m_bFadeIn = false;
+	_bool	m_bFadeIn = false;
 
 private:
 	// ¿µ»ó
+	HWND	m_hVideo;
+
 };
 
 #define __LOGO_H__

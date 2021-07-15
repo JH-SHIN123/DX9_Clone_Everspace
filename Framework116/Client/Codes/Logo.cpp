@@ -15,6 +15,11 @@ HRESULT CLogo::Ready_Scene()
 	::SetWindowText(g_hWnd, L"Logo");
 
 	// 동영상 재생
+	//m_hVideo = MCIWndCreate(g_hWnd, NULL, WS_CHILD | WS_VISIBLE | MCIWNDF_NOPLAYBAR
+	//	, L"../../Resources/Video/logo.wmv");
+
+	//MoveWindow(m_hVideo, 0, 0, WINCX, WINCY, FALSE);
+	//MCIWndPlay(m_hVideo);
 
 	return S_OK;
 }
@@ -23,7 +28,7 @@ _uint CLogo::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
 
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	if ((GetAsyncKeyState(VK_RETURN) & 0x8000) || MCIWndGetLength(m_hVideo) <= MCIWndGetPosition(m_hVideo))
 	{
 		if (false == m_bFadeIn) {
 			if (FAILED(m_pManagement->Add_GameObject_InLayer(
@@ -87,8 +92,8 @@ void CLogo::Free()
 	/* 자식의 소멸자 호출 순서처럼 Free도 같은 순서로 호출해주자*/
 	/* 1.자식 리소스 먼저 정리하고난 뒤 */
 	m_pManagement->StopAll();
+	//MCIWndClose(m_hVideo);
 
 	CScene::Free(); // 2.부모 리소스 정리
-
 	
 }

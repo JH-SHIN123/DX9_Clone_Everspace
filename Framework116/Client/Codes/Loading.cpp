@@ -87,7 +87,8 @@ HRESULT CLoading::Ready_Scene()
 	}
 
 	// 로딩할 객체 이미지 생성 -> UI
- 
+	// 동영상 재생
+
 
 	return S_OK;
 }
@@ -193,6 +194,7 @@ void CLoading::Free()
 	DeleteCriticalSection(&m_CriticalSection);
 
 	m_pManagement->StopAll();
+	//MCIWndClose(m_hVideo);
 
 	CScene::Free(); // 2.부모 리소스 정리
 

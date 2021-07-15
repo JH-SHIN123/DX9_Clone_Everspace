@@ -48,6 +48,10 @@ private:
 
 	HANDLE m_hLoadingThread = nullptr;
 	CRITICAL_SECTION m_CriticalSection;
+
+private:
+	//HWND	m_hVideo;
+
 };
 
 #define __LOADING_H__
