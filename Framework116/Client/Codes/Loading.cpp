@@ -194,7 +194,6 @@ void CLoading::Free()
 	DeleteCriticalSection(&m_CriticalSection);
 
 	m_pManagement->StopAll();
-	//MCIWndClose(m_hVideo);
 
 	CScene::Free(); // 2.何葛 府家胶 沥府
 
