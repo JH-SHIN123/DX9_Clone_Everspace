@@ -64,7 +64,7 @@ HRESULT CSkybox::Ready_GameObject(void * pArg/* = nullptr*/)
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::NonStatic,
 		L"Component_Texture_Skybox_Stage3",
-		L"Com_Texture",
+		L"Com_Texture2",
 		(CComponent**)&m_pStage3Texture)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Component_Texture_Skybox_Stage3");
@@ -134,17 +134,17 @@ _uint CSkybox::Render_GameObject()
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
-	//_uint iStage = m_pManagement->Get_Current_Scene_Type();
-	//switch(iStage)
-	//{
-	//case (_uint)ESceneType::Stage:
-	//	m_pTexture->Set_Texture(0);
-	//	break;
-	//case (_uint)ESceneType::Stage3:
-	//	m_pStage3Texture->Set_Texture();
-	//	break;
-	//}
-	m_pTexture->Set_Texture(0);
+	_uint iStage = m_pManagement->Get_Current_Scene_Type();
+	switch(iStage)
+	{
+	case (_uint)ESceneType::Stage:
+		m_pTexture->Set_Texture(0);
+		break;
+	case (_uint)ESceneType::Stage3:
+		m_pStage3Texture->Set_Texture();
+		break;
+	}
+	//m_pTexture->Set_Texture(0);
 	
 	m_pDevice->SetMaterial(&m_tMaterial);
 	m_pVIBuffer->Render_VIBuffer();

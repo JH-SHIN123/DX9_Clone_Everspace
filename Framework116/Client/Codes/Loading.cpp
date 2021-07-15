@@ -541,6 +541,15 @@ HRESULT CLoading::Load_Stage1_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
 		return E_FAIL;
 	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
+		return E_FAIL;
+	}
 
 	if (FAILED(m_pManagement->Add_Component_Prototype(
 		EResourceType::Static,
@@ -652,6 +661,7 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_Skybox");
 		return E_FAIL;
 	}
+
 	/* For.GameObject_Planet_Gas */
 	// 맵정보 잘못들어감 (실제로 가스행성임)
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
@@ -701,6 +711,15 @@ HRESULT CLoading::Load_Stage2_Prop_Resources()
 		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
+		return E_FAIL;
+	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
 		return E_FAIL;
 	}
 
@@ -823,6 +842,7 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		return E_FAIL;
 	}
 
+
 	/* For.GameObject_Planet_Ice */
 	if (FAILED(m_pManagement->Add_GameObject_Prototype(
 		EResourceType::NonStatic,
@@ -906,6 +926,15 @@ HRESULT CLoading::Load_Stage3_Prop_Resources()
 		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox%d.dds", 1))))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox");
+		return E_FAIL;
+	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
 		return E_FAIL;
 	}
 	
