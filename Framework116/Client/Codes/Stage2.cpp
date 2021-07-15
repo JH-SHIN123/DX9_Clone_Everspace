@@ -470,6 +470,25 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 		{
 			// 끝났으면 플레이어 IsAstroidStage를 꺼라!
 			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsAstroidStage(false);
+
+			// HUD 다시 만들엉
+			Add_Layer_HUD(L"Layer_HUD");
+
+			/////////////////////// 최초 무기(펄스) HUD 생성.
+			UI_DESC LaserHUD;
+			LaserHUD.tTransformDesc.vPosition = { -300.f, 435.f, 0.f };
+			LaserHUD.tTransformDesc.vScale = { 130.f, 90.f, 0.f };
+			LaserHUD.wstrTexturePrototypeTag = L"Component_Texture_Laser_HUD";
+			if (FAILED(m_pManagement->Add_GameObject_InLayer(
+				EResourceType::Static,
+				L"GameObject_UI",
+				L"Layer_HUD_Weapon",
+				(void*)&LaserHUD)))
+			{
+				PRINT_LOG(L"Error", L"Failed To Add UI In Layer");
+				return E_FAIL;
+			}
+			///////////////////////////////
 			if (m_pManagement->Get_GameObjectList(L"Layer_HUD_FPS")->size())
 			{
 				for (auto& pDst : *m_pManagement->Get_GameObjectList(L"Layer_HUD_FPS"))
@@ -494,10 +513,14 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 			((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Set_IsAstroidStage(true);
 			if (!m_bFPS)
 			{
-				//for (auto& pHUD : *m_pManagement->Get_GameObjectList(L"Layer_HUD"))
-				//{
-				//	pHUD->Set_IsDead(true);
-				//}
+				for (auto& pHUD : *m_pManagement->Get_GameObjectList(L"Layer_HUD"))
+				{
+					pHUD->Set_IsDead(true);
+				}
+				for (auto& pHUD : *m_pManagement->Get_GameObjectList(L"Layer_HUD_Weapon"))
+				{
+					pHUD->Set_IsDead(true);
+				}
 				UI_DESC HeadUpDisplay2;
 				HeadUpDisplay2.tTransformDesc.vPosition = { 0.f, 0.f, 0.f };
 				HeadUpDisplay2.tTransformDesc.vScale = { 1920.f, 1080.f, 0.f };

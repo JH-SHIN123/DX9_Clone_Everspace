@@ -360,6 +360,15 @@ HRESULT CLoading::Ready_LobbyResources()
 		PRINT_LOG(L"Error", L"Failed To Add GameObject_UI");
 		return E_FAIL;
 	}
+	/* For.Component_Texture_Skybox */
+	if (FAILED(m_pManagement->Add_Component_Prototype(
+		EResourceType::NonStatic,
+		L"Component_Texture_Skybox_Stage3",
+		CTexture::Create(m_pDevice, ETextureType::Cube, L"../../Resources/Textures/Skybox_Stage3.dds", 1))))
+	{
+		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Skybox_Stage3");
+		return E_FAIL;
+	}
 
 #pragma endregion
 
