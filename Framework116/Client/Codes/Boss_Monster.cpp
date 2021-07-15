@@ -1035,7 +1035,7 @@ _uint CBoss_Monster::Make_LockOn()
 
 			m_pLockOn = static_cast<CNew_LockOn*>(pLockOn);
 			m_pLockOn->Who_Make_Me(m_pLockOn->MAKER_BOSS_MONSTER);
-			Safe_Release(pLockOn);
+			//Safe_Release(pLockOn);
 		}
 	}
 	return S_OK;
