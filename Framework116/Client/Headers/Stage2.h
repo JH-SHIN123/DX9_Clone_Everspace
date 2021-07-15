@@ -57,6 +57,7 @@ private:
 #define UPDATE_FLYAWAY 3
 #define PLAYER_DEAD    4
 #define CLEAR_FLYAWAY  5
+#define UPDATE_RESQUE  6
 	_float m_fDelaySceneChange = 0.f;
 	_bool m_bLoadMapNavi = FALSE;
 private:

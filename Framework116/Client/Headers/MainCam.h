@@ -62,7 +62,7 @@ private:
 	CTransform* m_pPlayerTransform = nullptr;
 	_float m_fDistanceFromTarget = 20.f;
 	_float m_fCamAngle = 15.f;
-
+	vector<PASSDATA_ROUTE> m_vecNaviRoute;
 private:
 	D3DXQUATERNION m_qCameraRot;
 

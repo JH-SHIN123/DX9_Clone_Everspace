@@ -2,7 +2,7 @@
 #include "..\Headers\MainCam.h"
 #include "Pipeline.h"
 #include "Player.h"
-
+#include"StreamHandler.h"
 CMainCam::CMainCam(LPDIRECT3DDEVICE9 pDevice)
 	: CCamera(pDevice)
 {
@@ -583,6 +583,7 @@ _uint CMainCam::Solo_Stage2FinishAsteroid(_float fDeltaTime)
 			return UPDATE_ERROR;
 		}
 		Safe_AddRef(m_pTargetTransform);
+		CStreamHandler::Get_PassData_Navi(m_vecNaviRoute, L"../../Resources/Data/Navi/stage1.navi");
 	}
 	_float fSpeedPerSec = 120.f;
 	switch (m_byMoveCount)
@@ -637,15 +638,15 @@ _uint CMainCam::Solo_Stage2FinishAsteroid(_float fDeltaTime)
 		_float3 vTargetPos = m_pTargetTransform->Get_TransformDesc().vPosition;
 		_float3 vDir = vTargetPos - m_CameraDesc.vEye;
 		_float fLength = D3DXVec3Length(&vDir);
+		if (nullptr == m_pManagement->Get_GameObjectList(L"Layer_NaviArrow"))
+		{
+			PRINT_LOG(L"Err", L"Layer_NaviArrow is nullptr");
+			return UPDATE_ERROR;
+		}
+		_uint iSize = m_pManagement->Get_GameObjectList(L"Layer_NaviArrow")->size();
 
 		if (fLength <= 20.f)
 		{
-			if (nullptr == m_pManagement->Get_GameObjectList(L"Layer_NaviArrow"))
-			{
-				PRINT_LOG(L"Err", L"Layer_NaviArrow is nullptr");
-				return UPDATE_ERROR;
-			}
-			_uint iSize = m_pManagement->Get_GameObjectList(L"Layer_NaviArrow")->size();
 			if (iCount < iSize - 1)
 			{
 				iCount++;
@@ -668,20 +669,43 @@ _uint CMainCam::Solo_Stage2FinishAsteroid(_float fDeltaTime)
 			else
 				m_byMoveCount++;
 		}
-		D3DXVec3Normalize(&vDir, &vDir);
-		m_CameraDesc.vEye += vDir * fSpeedPerSec * fDeltaTime;
-		_float3 vCurAt = m_CameraDesc.vAt;
-		_float3 vNextAt =m_pTargetTransform->Get_State(EState::Look);
-		D3DXVec3Normalize(&vCurAt, &vCurAt);
-		D3DXVec3Normalize(&vNextAt, &vNextAt);
-		_float fAngel = acosf(D3DXVec3Dot(&vCurAt, &vNextAt));
-		_float3 vAxis;
-		D3DXVec3Cross(&vAxis, &vCurAt, &vNextAt);
-		_float4x4 matRot;
-		D3DXMatrixRotationAxis(&matRot, &vAxis,D3DXToRadian(fAngel));
-		_float3 vRot;
-		D3DXVec3TransformNormal(&vRot, &vRot, &matRot);
-		m_CameraDesc.vAt = m_CameraDesc.vEye + vRot*20.f;
+		if (iCount < iSize-1)
+		{
+			_float3 vNodePos = m_vecNaviRoute[iCount].vNodePos;
+			_float3 vNodeDir = m_vecNaviRoute[iCount].vNodeDir;
+			_float3 vEyeDir = vNodePos - m_CameraDesc.vEye;
+			D3DXVec3Normalize(&vEyeDir,&vEyeDir);
+			_float3 vUp = { 0.f,1.f,0.f };
+			
+			_float4x4 matRot;
+			D3DXMatrixRotationYawPitchRoll(&matRot, vNodeDir.x*fDeltaTime
+				, vNodeDir.y*fDeltaTime, vNodeDir.z*fDeltaTime);
+			D3DXVec3TransformNormal(&vUp, &vUp, &matRot);
+			
+			m_CameraDesc.vEye += vEyeDir * fDeltaTime*80.f;
+			_float3 vCurAt = m_CameraDesc.vAt;
+			_float3 vTargetAt = vNodePos + vNodeDir*10.f;
+
+			_float3 vAtDir = vTargetAt - vCurAt;
+			D3DXVec3Normalize(&vAtDir, &vAtDir);
+			m_CameraDesc.vAt += vAtDir*fDeltaTime*80.f;
+			m_CameraDesc.vUp = vUp;
+
+		}
+		else if(iCount >= iSize-1)
+		{
+			_float3 vTargetPos = m_pTargetTransform->Get_TransformDesc().vPosition;
+			_float3 vDir = vTargetPos - m_CameraDesc.vEye;
+			_float vLength = D3DXVec3Length(&vDir);
+			D3DXVec3Normalize(&vDir, &vDir);
+
+			m_CameraDesc.vEye += vDir * fSpeedPerSec * fDeltaTime;
+			m_CameraDesc.vAt = vTargetPos;
+
+			if (vLength <= 20.f)
+				++m_byMoveCount;
+		}
+
 	}
 	break;
 	case 2:

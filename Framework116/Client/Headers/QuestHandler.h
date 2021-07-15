@@ -59,7 +59,7 @@ private:
 private: // Äù½ºÆ® 
 	EQuest	m_eNowQuest = EQuest::End;
 	wstring m_wstrQuestName = L"";
-	_bool	m_IsClear = true;
+	_bool	m_IsClear = TRUE;
 	_int	m_iCount = 0;
 	_int	m_iCount_Max = 0;
 	_float	m_fTimer = 0.f;
