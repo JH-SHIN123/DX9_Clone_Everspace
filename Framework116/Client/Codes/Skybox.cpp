@@ -135,20 +135,20 @@ _uint CSkybox::Render_GameObject()
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_TransformDesc().matWorld);
 
-	_uint iStage = m_pManagement->Get_Current_Scene_Type();
-	switch(iStage)
-	{
-	case (_uint)ESceneType::Stage:
-		m_pTexture->Set_Texture(0);
-		break;
-	case (_uint)ESceneType::Stage2:
-		m_pTexture->Set_Texture(0);
-		break;
-	case (_uint)ESceneType::Stage3:
-		m_pStage3Texture->Set_Texture();
-		break;
-	}
-	//m_pTexture->Set_Texture(0);
+	//_uint iStage = m_pManagement->Get_Current_Scene_Type();
+	//switch(iStage)
+	//{
+	//case (_uint)ESceneType::Stage:
+	//	m_pTexture->Set_Texture(0);
+	//	break;
+	//case (_uint)ESceneType::Stage2:
+	//	m_pTexture->Set_Texture(0);
+	//	break;
+	//case (_uint)ESceneType::Stage3:
+	//	m_pStage3Texture->Set_Texture();
+	//	break;
+	//}
+	m_pTexture->Set_Texture(0);
 	
 	m_pDevice->SetMaterial(&m_tMaterial);
 	m_pVIBuffer->Render_VIBuffer();
