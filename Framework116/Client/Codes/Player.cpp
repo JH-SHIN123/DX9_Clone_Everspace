@@ -892,9 +892,6 @@ void CPlayer::Make_LockOn_Alert(_float fDeltaTime)
 			m_bFirstLocked = false;
 		}
 	}
-
-
-
 }
 
 _uint CPlayer::Collide_Planet_Or_Astroid(const _float fDeltaTime)
@@ -910,8 +907,12 @@ _uint CPlayer::Collide_Planet_Or_Astroid(const _float fDeltaTime)
 	
 	if (m_IsAstroidCollide&& fDelayTime > 1.f)
 	{
-		m_pInfo->Set_Damage(10);
-		Get_HpBar()->Set_ScaleX(-10.f / m_pInfo->Get_MaxHp() * m_fHpLength);
+
+		//Set_Damage(10.f);
+		_float fDamage = (_float)m_pInfo->Get_HittedDamage();
+		_float fMaxHp = (_float)m_pInfo->Get_MaxHp();
+		Get_HpBar()->Set_ScaleX(fDamage / fMaxHp * m_fHpLength);
+
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::Static,
 			L"GameObject_HUD_Effect_Damage",
