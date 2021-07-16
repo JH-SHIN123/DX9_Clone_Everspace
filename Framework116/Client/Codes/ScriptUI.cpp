@@ -323,29 +323,62 @@ _uint CScriptUI::Script_Check()
 
 void CScriptUI::Script_Tutorial()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
+		
 	switch (m_dwScriptNext)
 	{
 	case 0:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->PlaySound(L"Tutorial_Dialogue1.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"오, 자네가 이번에 새로 들어왔다던 신병인가?";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->PlaySound(L"Tutorial_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"자네가 임무를 수행 하기 전 거쳐야 할 훈련이 하나 있지";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->PlaySound(L"Tutorial_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"오늘의 훈련을 진행 할 헥터 도일 사령관이라고 하네, 잘 부탁하네 제군";
 		break;
 	case 3:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->PlaySound(L"Tutorial_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"자 우선 고리를 통과해 보겠나?";
 		break;
 	case 4:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->PlaySound(L"Tutorial_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"그 전에 주위를 한번 둘러보게나";

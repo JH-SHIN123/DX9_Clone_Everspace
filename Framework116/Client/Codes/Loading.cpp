@@ -1880,7 +1880,6 @@ HRESULT CLoading::Load_StageEffect_Resources()
 	return S_OK;
 }
 
-
 HRESULT CLoading::Ready_LoadingResources()
 {
 	UI_DESC uiDesc;
