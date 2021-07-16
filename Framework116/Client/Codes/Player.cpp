@@ -285,7 +285,8 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// Add Light
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::SpotLight;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(227, 204, 178);
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
 		L"GameObject_Light",

@@ -35,9 +35,11 @@ HRESULT CStage2::Ready_Scene()
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
+	// 135 0.9f, 0.8f, 0.7f
+	// 227 204  178
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(135, 135, 135);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(227, 204, 178); 
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
