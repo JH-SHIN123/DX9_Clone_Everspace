@@ -285,7 +285,8 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// Add Light
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::SpotLight;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(227, 204, 178);
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
 		L"GameObject_Light",
@@ -483,11 +484,9 @@ void CPlayer::Set_Collide_Boss(_float3 vDir, _bool bCollide)
 
 void CPlayer::KeyProcess(_float fDeltaTime)
 {
-	if (m_IsDead) return;
+	// 대화
 	if (nullptr == m_pController) return;
 	m_pController->Update_Controller();
-
-	// 대화
 	if (m_IsScript == true)
 	{
 		if (m_pController->Key_Down(KEY_F))
@@ -497,6 +496,8 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		}
 		return;
 	}
+	if (m_IsDead) return;
+
 
 	if (m_IsCameraMove == true)
 		return;
@@ -540,7 +541,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		m_IsMove = false;
 	}
 
-	// Booster
+	// Booste
 	if (m_pController->Key_Pressing(KEY_SPACE))
 	{
 		if (m_fStamina > m_fMinStamina)

@@ -35,9 +35,11 @@ HRESULT CStage2::Ready_Scene()
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
+	// 135 0.9f, 0.8f, 0.7f
+	// 227 204  178
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(135, 135, 135);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(227, 204, 178); 
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -45,6 +47,7 @@ HRESULT CStage2::Ready_Scene()
 		return E_FAIL;
 
 	Ready_Asteroid();
+	//m_bSceneChange = true;
 
 	return S_OK;
 }
@@ -70,17 +73,14 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 30.f,15.f);
 		break;
 	case PLAYER_DEAD:
-		m_fDelaySceneChange += fDeltaTime;
+		if (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI"))
+		{
+			if(!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
+				m_fDelaySceneChange += fDeltaTime;
+		}
 		if (m_fDelaySceneChange >= 2.f)
 		{
-			//m_pManagement->Clear_NonStatic_Resources();
-			if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
-				CLoading::Create(m_pDevice, ESceneType::Lobby))))
-			{
-				PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
-				return E_FAIL;
-			}
-			return CHANGE_SCENE;
+			m_bSceneChange = TRUE;
 		}
 		break;
 	case CLEAR_RESQUE:
@@ -97,9 +97,9 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 	}
 		break;
 	}
+
 	if (m_bSceneChange)
 	{
-
 		if (false == m_bFadeIn) {
 			if (FAILED(m_pManagement->Add_GameObject_InLayer(
 				EResourceType::Static,
@@ -115,15 +115,15 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 		}
 		if (m_bLeaveScene)
 		{
-			//m_pManagement->Clear_NonStatic_Resources();
+			m_bLeaveScene = false;
 			if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
 				CLoading::Create(m_pDevice, ESceneType::Lobby))))
 			{
 				PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
 				return E_FAIL;
 			}
+
 			return CHANGE_SCENE;
-			m_bLeaveScene = false;
 		}
 	}
 
@@ -471,7 +471,6 @@ void CStage2::Ready_Asteroid()
 }
 _uint CStage2::Stage2_Flow(_float fDeltaTime)
 {
-
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player");
 	if (pPlayer)
 	{
@@ -587,7 +586,7 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 			}
 		}
 		return UPDATE_FLYAWAY;
-	case 4:
+	case PLAYER_DEAD:
 	{
 		if (!m_bPlayPlayerDeadScript&& pPlayer->Get_IsDead())
 		{
@@ -600,14 +599,10 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 						pDst->Set_IsDead(TRUE);
 					}
 				}
-			}
+			}	
 			if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Stg2_PlayerDead)))
 				return -1;
-			if (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI"))
-			{
-				if(!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
-					m_bPlayPlayerDeadScript = TRUE;
-			}
+			m_bPlayPlayerDeadScript = TRUE;
 		}
 	}
 	return PLAYER_DEAD;
@@ -636,9 +631,9 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 	case UPDATE_RESQUE:
 		if (CQuestHandler::Get_Instance()->Get_IsClear())
 		{
-			CMainCam* pCam = (CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
-			CTransform* pTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Broken_Plane", L"Com_Transform");
-			pCam->Set_Transform(pTransform);
+			//CMainCam* pCam = (CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
+			//CTransform* pTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Broken_Plane", L"Com_Transform");
+			//pCam->Set_Transform(pTransform);
 			if (!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
 
 			{
