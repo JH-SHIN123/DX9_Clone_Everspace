@@ -961,6 +961,7 @@ _uint CMainCam::Solo_Stage3_Boss(_float fDeltaTime)
 		m_CameraDesc.vAt = vCameraLookAt;
 		vCameraLookAt += vLeft * 70.f;
 		m_CameraDesc.vEye = vCameraLookAt;
+		m_CameraDesc.vUp = { 0.f,1.f,0.f };
 		m_vCameraMovePos = vCameraLookAt;
 
 		m_fCameraMoveTime = 2.f;
