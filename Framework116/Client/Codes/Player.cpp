@@ -841,8 +841,8 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	}
 
 	// 마우스 고정시켜서 끄기 불편해서.. ES쓰세용
-	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
-		DestroyWindow(g_hWnd);
+	//if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+	//	DestroyWindow(g_hWnd);
 }
 
 _uint CPlayer::Movement(_float fDeltaTime)
