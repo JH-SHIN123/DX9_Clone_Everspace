@@ -71,23 +71,10 @@ _uint CLoadingIcon::Render_GameObject()
 {
 	CGameObject::Render_GameObject();
 
-	//TRANSFORM_DESC transformDesc = m_pTransform->Get_TransformDesc();
-
-	//_float4x4 matScale, matRotate, matTrans;
-	//D3DXMatrixScaling(&matScale, transformDesc.vScale.x, transformDesc.vScale.y, 1.f);
-	//D3DXMatrixRotationZ(&matRotate, transformDesc.vRotate.z);
-	//D3DXMatrixTranslation(&matTrans, transformDesc.vPosition.x, transformDesc.vPosition.y, 0.f);
-
-	//_float4x4 matView;
-	//D3DXMatrixIdentity(&matView);
-	//matView = matScale * matRotate * matTrans;
-
 	m_pDevice->SetTransform(D3DTS_VIEW, &m_pTransform->Get_TransformDesc().matWorld);
 
-	/////////////////////////////////////////////////////////////////
 	m_pTexture->Set_Texture(0);
 	m_pVIBuffer->Render_VIBuffer();
-	/////////////////////////////////////////////////////////////////
 
 	return _uint();
 }
