@@ -25,10 +25,15 @@ private:
 	_bool	m_bFadeIn = false;
 
 private:
+	_bool m_bStart = true;
+
+private:
 	_bool m_bSkipVideo = false;
 	_float m_fSkipDeltaT = 0.f;
 	_float m_fSkipTime = 5.f;
 
+private:
+	TCHAR* m_pAudioFileName = L"";
 };
 
 

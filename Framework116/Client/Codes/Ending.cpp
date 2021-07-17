@@ -13,22 +13,24 @@ HRESULT CEnding::Ready_Scene()
 	CScene::Ready_Scene();
 
 	::SetWindowText(g_hWnd, L"Logo");
+	m_pManagement->StopSound(CSoundMgr::BGM);
+
+	m_pManagement->Clear_NonStatic_Resources();
 
 	const TCHAR* videoPath = nullptr;
-	TCHAR* audioFileName = nullptr;
 	switch (m_eSceneType)
 	{
 	case ESceneType::Stage:
 		videoPath = L"../../Resources/Video/ending_stage1.wmv";
-		audioFileName = L"Ending_Video_Stage1.ogg";
+		m_pAudioFileName = L"Ending_Video_Stage1.ogg";
 		break;
 	case ESceneType::Stage2:
 		videoPath = L"../../Resources/Video/ending_stage2.wmv";
-		audioFileName = L"Ending_Video_Stage2.ogg";
+		m_pAudioFileName = L"Ending_Video_Stage2.ogg";
 		break;
 	case ESceneType::Stage3:
 		videoPath = L"../../Resources/Video/ending_stage3.wmv";
-		audioFileName = L"Ending_Video_Stage3.ogg";
+		m_pAudioFileName = L"Ending_Video_Stage3.ogg";
 		break;
 	default:
 		PRINT_LOG(L"Error", L"Ending Error");
@@ -36,8 +38,6 @@ HRESULT CEnding::Ready_Scene()
 	} 
 
 	m_pManagement->Create_MCIVideoEx(g_hWnd, videoPath, WINCX, WINCY);
-	m_pManagement->Play_MCIVideoEx();
-	m_pManagement->PlaySound(audioFileName, CSoundMgr::BGM);
 
 	return S_OK;
 }
@@ -45,6 +45,12 @@ HRESULT CEnding::Ready_Scene()
 _uint CEnding::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
+	if (m_bStart)
+	{
+		m_pManagement->Play_MCIVideoEx();
+		m_pManagement->PlaySound(m_pAudioFileName, CSoundMgr::BGM);
+		m_bStart = false;
+	}
 
 	if (false == m_bSkipVideo)
 	{
