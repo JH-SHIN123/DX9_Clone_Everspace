@@ -188,16 +188,14 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	}
 
 	// HP ¼¼ÆÃ
-	STAT_INFO tStatus;
-	tStatus.iMaxHp = 1;
-	tStatus.iHp = tStatus.iMaxHp;
 
+	STAT_INFO tStat = *CDataBase::Get_Instance()->Get_StatInfo();
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		L"Component_Status_Info",
 		L"Com_StatInfo",
 		(CComponent**)&m_pInfo,
-		&tStatus)))
+		&tStat)))
 	{
 		PRINT_LOG(L"Error", L"Failed To Add_Component Com_Transform");
 		return E_FAIL;
