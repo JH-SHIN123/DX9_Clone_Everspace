@@ -8,8 +8,8 @@
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
-HWND g_hWnd;
-HINSTANCE hInst;                                // 현재 인스턴스입니다.
+HWND g_hWnd = NULL;
+HINSTANCE g_hInst = NULL;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -114,7 +114,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+   g_hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    RECT rc = { 0, 0, WINCX, WINCY };
 

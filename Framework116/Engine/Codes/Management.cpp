@@ -353,12 +353,12 @@ void CManagement::StopAll()
 	return m_pSound_Manager->StopAll();
 }
 
-HRESULT CManagement::Create_MCIVideoEx(HWND hWnd, const TCHAR* pPath, const _uint iWinCx, const _uint iWinCy)
+HRESULT CManagement::Create_MCIVideoEx(HWND hWnd, HINSTANCE hInstance, const TCHAR* pPath, const _uint iWinCx, const _uint iWinCy)
 {
 	if (NULL != m_hVideo)
 		Release_MCIVideoEx();
 
-	m_hVideo = MCIWndCreate(hWnd, NULL, WS_CHILD | WS_VISIBLE | MCIWNDF_NOPLAYBAR
+	m_hVideo = MCIWndCreate(hWnd, hInstance, WS_CHILD | WS_VISIBLE | MCIWNDF_NOPLAYBAR
 		, pPath);
 
 	MoveWindow(m_hVideo, 0, 0, iWinCx, iWinCy, FALSE);

@@ -3,6 +3,7 @@
 #ifndef __CLIENT_DEFINE_H__
 
 extern HWND g_hWnd;
+extern HINSTANCE g_hInst;
 
 #define WINCX 1920
 #define WINCY 1080

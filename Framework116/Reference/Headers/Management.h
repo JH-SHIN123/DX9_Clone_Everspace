@@ -66,7 +66,7 @@ public: /* For.Sound_Manager*/
 	void StopAll();
 	
 public: /* For.Play Video*/
-	HRESULT Create_MCIVideoEx(HWND hWnd, const TCHAR* pPath, const _uint iWinCx, const _uint iWinCy);
+	HRESULT Create_MCIVideoEx(HWND hWnd, HINSTANCE hInstance, const TCHAR* pPath, const _uint iWinCx, const _uint iWinCy);
 	HRESULT Play_MCIVideoEx();
 	HRESULT Release_MCIVideoEx();
 

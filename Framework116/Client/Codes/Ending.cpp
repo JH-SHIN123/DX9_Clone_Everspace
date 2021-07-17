@@ -37,7 +37,7 @@ HRESULT CEnding::Ready_Scene()
 		break;
 	} 
 
-	m_pManagement->Create_MCIVideoEx(g_hWnd, videoPath, WINCX, WINCY);
+	m_pManagement->Create_MCIVideoEx(g_hWnd, g_hInst, videoPath, WINCX, WINCY);
 
 	return S_OK;
 }
