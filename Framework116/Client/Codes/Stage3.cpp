@@ -72,6 +72,9 @@ _uint CStage3::Update_Scene(_float fDeltaTime)
 	CQuestHandler::Get_Instance()->Update_Quest();
 	Stage_Flow(fDeltaTime);
 
+	if (m_bLeaveScene)
+		return CHANGE_SCENE;
+	
 	switch (m_eStageBGM)
 	{
 	case STAGE_BGM::Delivery:
@@ -163,6 +166,8 @@ void CStage3::Stage_Flow(_float fDeltaTime)
 				return;
 
 			((CDelivery*)(m_pManagement->Get_GameObject(L"Layer_Delivery")))->Set_MoveStart(TRUE);
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"ship_horn.mp3", CSoundMgr::DIALOGUE1);
 
 			++m_iFlowCount;
 		}
@@ -307,7 +312,7 @@ void CStage3::Stage_Flow(_float fDeltaTime)
 					return;
 				}
 			}
-			m_bLeaveScene = false;
+			//m_bLeaveScene = false;
 			return;
 //			m_bLeaveScene = false;
 		}
