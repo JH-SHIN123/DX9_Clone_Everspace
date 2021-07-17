@@ -153,6 +153,7 @@ _bool CGatchaBox::CheckPicking()
 			m_pDevice, m_pManagement->Get_GameObjectList(L"Layer_GatchaBox"));
 		if (pObj==this && CDataBase::Get_Instance()->Get_Money() >=1000)
 		{
+			m_pManagement->PlaySoundW(L"DingDong.mp3", CSoundMgr::LOBBY_EFFECT);
 			UI_DESC UiDesc;
 
 			_float PosX = 880.f;
