@@ -369,7 +369,11 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetAtkBuffItemCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetAtkBuffItemCount(-1);
+<<<<<<< HEAD
 						tUnitInfo.iAtk += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+=======
+						tUnitInfo.iAtk += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+>>>>>>> main
 						
 						if (m_pFontAtkUpCount)
 						{
@@ -386,7 +390,11 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetDefBuffItemCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetDefBuffItemCount(-1);
+<<<<<<< HEAD
 						tUnitInfo.iDef += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+=======
+						tUnitInfo.iDef += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+>>>>>>> main
 
 						if (m_pFontDefUpCount)
 						{
@@ -403,7 +411,11 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetHpBuffItemCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetHpBuffItemCount(-1);
+<<<<<<< HEAD
 						tUnitInfo.iMaxHp += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+=======
+						tUnitInfo.iMaxHp += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+>>>>>>> main
 
 						if (m_pFontHpUpCount)
 						{
@@ -420,7 +432,11 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetEnergyBuffItemCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetEnergyBuffItemCount(-1);
+<<<<<<< HEAD
 						tUnitInfo.iMaxEnergy += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+=======
+						tUnitInfo.iMaxEnergy += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+>>>>>>> main
 
 						if (m_pFontEnergyUpCount)
 						{
@@ -437,7 +453,11 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetMissileCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetMissileCount(-1);
+<<<<<<< HEAD
 						tUnitInfo.iFireRate += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+=======
+						tUnitInfo.iFireRate += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+>>>>>>> main
 
 						if (m_pFontMissileCount)
 						{
@@ -454,7 +474,11 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetVMaxBuffItem() >= 1)
 					{
 						CDataBase::Get_Instance()->SetVMaxBuffItemCount(-1);
+<<<<<<< HEAD
 						tUnitInfo.iMaxShield += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+=======
+						tUnitInfo.iMaxShield += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+>>>>>>> main
 
 						if (m_pFontVMaxCount)
 						{
