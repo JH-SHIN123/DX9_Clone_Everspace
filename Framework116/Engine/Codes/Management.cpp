@@ -309,7 +309,7 @@ HRESULT CManagement::Add_GameObject_InRenderer(ERenderType eType, CGameObject * 
 	return m_pRenderer->Add_GameObject(eType, pObject);
 }
 
-void CManagement::PlaySound(TCHAR * pSoundKey, CSoundMgr::CHANNELID eID)
+void CManagement::PlaySoundEx(TCHAR * pSoundKey, CSoundMgr::CHANNELID eID)
 {
 	if (nullptr == m_pSound_Manager)
 	{
@@ -317,7 +317,7 @@ void CManagement::PlaySound(TCHAR * pSoundKey, CSoundMgr::CHANNELID eID)
 		return;
 	}
 
-	return m_pSound_Manager->PlaySoundW(pSoundKey, eID);
+	return m_pSound_Manager->PlaySoundEx(pSoundKey, eID);
 }
 
 void CManagement::PlayBGM(TCHAR * pSoundKey)

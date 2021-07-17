@@ -358,7 +358,7 @@ _uint CPlayer::LateUpdate_GameObject(_float fDeltaTime)
 
 	if (m_IsCollide == true)
 	{
-		m_pManagement->PlaySound(L"Dialog_Im_Hit.ogg", CSoundMgr::DIALOGUE2);
+		m_pManagement->PlaySoundEx(L"Dialog_Im_Hit.ogg", CSoundMgr::DIALOGUE2);
 		_float fDamage = _float(m_pInfo->Get_HittedDamage());
 		_float fMaxHp = _float(m_pInfo->Get_MaxHp());
 		m_pHp_Bar->Set_ScaleX((-fDamage / fMaxHp) * m_fHpLength);
@@ -476,7 +476,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
 		m_pTransform->Go_Straight(fDeltaTime);
-		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+		m_pManagement->PlaySoundEx(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
 		m_IsMove = true;
 	}
 
@@ -484,21 +484,21 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
 		m_pTransform->Go_Straight(-fDeltaTime);
-		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+		m_pManagement->PlaySoundEx(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
 		m_IsMove = true;
 	}
 
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
 		m_pTransform->Go_Side(fDeltaTime);
-		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+		m_pManagement->PlaySoundEx(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
 		m_IsMove = true;
 	}
 
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
 		m_pTransform->Go_Side(-fDeltaTime);
-		m_pManagement->PlaySound(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
+		m_pManagement->PlaySoundEx(L"Player_Move.ogg", CSoundMgr::PLAYER_MOVE);
 		m_IsMove = true;
 	}
 
@@ -524,7 +524,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			m_pStamina_Bar->Set_ScaleX(-0.2f / m_fFullStamina * m_fStaminaLength);
 
 			if (m_pHUD_Effect_Boost && (m_fStamina > m_fMinStamina * 2.f)) {
-				m_pManagement->PlaySound(L"Player_Boost_Loop.ogg", CSoundMgr::PLAYER_BOOST);
+				m_pManagement->PlaySoundEx(L"Player_Boost_Loop.ogg", CSoundMgr::PLAYER_BOOST);
 				m_pHUD_Effect_Boost->Set_Operate(m_IsBoost);
 			}
 		}
@@ -636,7 +636,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	if (m_pController->Key_Down(KEY_F2))
 	{
 		//반짝이게 하는 Effect How?
-		m_pManagement->PlaySound(L"Overdrive.ogg", CSoundMgr::PLAYER_SKILL);
+		m_pManagement->PlaySoundEx(L"Overdrive.ogg", CSoundMgr::PLAYER_SKILL);
 		m_fOverDrive = 2.f;
 		m_bOverDrive = true;
 	}
@@ -644,7 +644,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 	{
 		if (!m_IsShield)
 		{
-			m_pManagement->PlaySound(L"Shield_Boost.ogg", CSoundMgr::PLAYER_SKILL);
+			m_pManagement->PlaySoundEx(L"Shield_Boost.ogg", CSoundMgr::PLAYER_SKILL);
 			// 실드활성화.
 			if (FAILED(m_pManagement->Add_GameObject_InLayer(
 				EResourceType::Static,
@@ -683,7 +683,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 					return;
 				}
 				m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
-				m_pManagement->PlaySound(L"Pulse_Laser.ogg", CSoundMgr::PLAYER_WEAPON);
+				m_pManagement->PlaySoundEx(L"Pulse_Laser.ogg", CSoundMgr::PLAYER_WEAPON);
 				m_fMachinegunFireDelay = 0.f;
 			}
 			else
@@ -698,7 +698,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 			{
 				m_IsFire = false;
 				m_fMachinegunDelay += fDeltaTime;
-				m_pManagement->PlaySound(L"Gatling_StartUp.ogg", CSoundMgr::PLAYER_GATLING);
+				m_pManagement->PlaySoundEx(L"Gatling_StartUp.ogg", CSoundMgr::PLAYER_GATLING);
 			}
 			if (m_fMachinegunDelay > 0.4f)
 			{
@@ -722,7 +722,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 						return;
 					}
 					m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
-					m_pManagement->PlaySound(L"Gatling_Fire_Loop.ogg", CSoundMgr::PLAYER_WEAPON);
+					m_pManagement->PlaySoundEx(L"Gatling_Fire_Loop.ogg", CSoundMgr::PLAYER_WEAPON);
 					m_fMachinegunFireDelay = 0.f;
 				}
 			}
@@ -735,7 +735,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		{
 			if (!m_IsMissile)
 			{
-				m_pManagement->PlaySound(L"Dialog_Launch_Missile.ogg", CSoundMgr::DIALOGUE2);
+				m_pManagement->PlaySoundEx(L"Dialog_Launch_Missile.ogg", CSoundMgr::DIALOGUE2);
 				for (int i = 0; i < 4; ++i)
 				{
 					switch (i)
@@ -788,7 +788,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 
 				}
 					m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
-					m_pManagement->PlaySound(L"Launch_Missile.ogg", CSoundMgr::PLAYER_WEAPON);
+					m_pManagement->PlaySoundEx(L"Launch_Missile.ogg", CSoundMgr::PLAYER_WEAPON);
 			}
 			if (m_pManagement->Get_GameObjectList(L"Layer_Player_Missile")->size() == 4)
 				m_IsMissile = true;
@@ -803,7 +803,7 @@ void CPlayer::KeyProcess(_float fDeltaTime)
 		if (m_iWeapon == WEAPON_MACHINEGUN)
 		{
 			m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
-			m_pManagement->PlaySound(L"Gatling_Stop.ogg", CSoundMgr::PLAYER_WEAPON);
+			m_pManagement->PlaySoundEx(L"Gatling_Stop.ogg", CSoundMgr::PLAYER_WEAPON);
 		}
 	}
 	if (m_pController->Key_Down(KEY_P))
@@ -902,8 +902,8 @@ void CPlayer::Make_LockOn_Alert(_float fDeltaTime)
 		if (!m_bFirstLocked)
 		{
 			m_pManagement->StopSound(CSoundMgr::LOCKON_ALERT);
-			m_pManagement->PlaySound(L"Dialogue_When_LockedOn.ogg", CSoundMgr::DIALOGUE2);
-			m_pManagement->PlaySound(L"LockOnAlert.ogg", CSoundMgr::LOCKON_ALERT);
+			m_pManagement->PlaySoundEx(L"Dialogue_When_LockedOn.ogg", CSoundMgr::DIALOGUE2);
+			m_pManagement->PlaySoundEx(L"LockOnAlert.ogg", CSoundMgr::LOCKON_ALERT);
 			CGameObject* pGameObject = nullptr;
 			//알림생성
    			UI_DESC LockOnAlert;

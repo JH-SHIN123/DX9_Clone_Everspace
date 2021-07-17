@@ -183,7 +183,7 @@ _uint CDelivery::LateUpdate_GameObject(_float fDeltaTime)
 			m_pHp_Bar->Set_IsDead(TRUE);
 		if (m_pHP_Bar_Border)
 			m_pHP_Bar_Border->Set_IsDead(TRUE);
-		m_pManagement->PlaySound(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
+		m_pManagement->PlaySoundEx(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
 		return DEAD_OBJECT;
 	}
 	if (m_IsCollide) {

@@ -78,10 +78,10 @@ _uint CStage3::Update_Scene(_float fDeltaTime)
 	switch (m_eStageBGM)
 	{
 	case STAGE_BGM::Delivery:
-		m_pManagement->PlaySound(L"Delivery_Opening.ogg", CSoundMgr::BGM);
+		m_pManagement->PlaySoundEx(L"Delivery_Opening.ogg", CSoundMgr::BGM);
 		break;
 	case STAGE_BGM::Boss:
-		m_pManagement->PlaySound(L"Boss_Opening.mp3", CSoundMgr::BGM);
+		m_pManagement->PlaySoundEx(L"Boss_Opening.mp3", CSoundMgr::BGM);
 		break;
 	default:
 		break;
@@ -167,7 +167,7 @@ void CStage3::Stage_Flow(_float fDeltaTime)
 
 			((CDelivery*)(m_pManagement->Get_GameObject(L"Layer_Delivery")))->Set_MoveStart(TRUE);
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"ship_horn.mp3", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"ship_horn.mp3", CSoundMgr::DIALOGUE1);
 
 			++m_iFlowCount;
 		}

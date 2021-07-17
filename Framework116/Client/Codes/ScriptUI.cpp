@@ -347,7 +347,7 @@ void CScriptUI::Script_Tutorial()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue1.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue1.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -358,7 +358,7 @@ void CScriptUI::Script_Tutorial()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -369,7 +369,7 @@ void CScriptUI::Script_Tutorial()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -380,7 +380,7 @@ void CScriptUI::Script_Tutorial()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -391,7 +391,7 @@ void CScriptUI::Script_Tutorial()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -429,7 +429,7 @@ void CScriptUI::Script_Tutorial_ChangeBGM()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -439,7 +439,7 @@ void CScriptUI::Script_Tutorial_ChangeBGM()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -449,7 +449,7 @@ void CScriptUI::Script_Tutorial_ChangeBGM()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Radio_Off.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Radio_Off.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -460,7 +460,7 @@ void CScriptUI::Script_Tutorial_ChangeBGM()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -470,7 +470,7 @@ void CScriptUI::Script_Tutorial_ChangeBGM()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -480,7 +480,7 @@ void CScriptUI::Script_Tutorial_ChangeBGM()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -513,7 +513,7 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue6.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue6.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -523,7 +523,7 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue7.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue7.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -533,7 +533,7 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -546,7 +546,7 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 	case 4:
 		if (m_iPreSound != m_iCurSound)
 		{
-			m_pManagement->PlaySound(L"Tutorial_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -587,7 +587,7 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -597,7 +597,7 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue10.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue10.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -607,7 +607,7 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue11.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue11.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -617,7 +617,7 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue12.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue12.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -635,7 +635,7 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue13.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue13.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -645,7 +645,7 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue14.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue14.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -675,7 +675,7 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Tutorial_Dialogue15.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Tutorial_Dialogue15.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -716,7 +716,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue1.mp3", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue1.mp3", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -730,7 +730,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -740,7 +740,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -750,7 +750,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -784,7 +784,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -798,7 +798,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue6.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue6.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -808,7 +808,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue7.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue7.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -818,7 +818,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -828,7 +828,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -838,7 +838,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue10.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue10.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -848,7 +848,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue11.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue11.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -862,7 +862,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue12.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue12.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -872,7 +872,7 @@ void CScriptUI::Script_Stg2_Begin()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue13.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue13.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -903,7 +903,7 @@ void CScriptUI::Script_Stg2_AfterCamProduction()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue14.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue14.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -913,7 +913,7 @@ void CScriptUI::Script_Stg2_AfterCamProduction()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue15.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue15.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -923,7 +923,7 @@ void CScriptUI::Script_Stg2_AfterCamProduction()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue16.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue16.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -933,7 +933,7 @@ void CScriptUI::Script_Stg2_AfterCamProduction()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue17.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue17.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::End;
@@ -964,7 +964,7 @@ void CScriptUI::Script_Stg2_Finish_AsteroidFlyAway()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue18.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue18.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -974,7 +974,7 @@ void CScriptUI::Script_Stg2_Finish_AsteroidFlyAway()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue19.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue19.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -984,7 +984,7 @@ void CScriptUI::Script_Stg2_Finish_AsteroidFlyAway()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue20.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue20.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1023,7 +1023,7 @@ void CScriptUI::Script_Stg2_Search_Target()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue21.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue21.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1033,7 +1033,7 @@ void CScriptUI::Script_Stg2_Search_Target()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue22.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue22.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1043,7 +1043,7 @@ void CScriptUI::Script_Stg2_Search_Target()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue23.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue23.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1074,7 +1074,7 @@ void CScriptUI::Script_Stg2_PlayerDead()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Dialog_Im_Hit.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Dialog_Im_Hit.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -1084,7 +1084,7 @@ void CScriptUI::Script_Stg2_PlayerDead()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Dialog_Rescue_Me.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Dialog_Rescue_Me.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -1094,7 +1094,7 @@ void CScriptUI::Script_Stg2_PlayerDead()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Dialog_Scream.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Dialog_Scream.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -1129,7 +1129,7 @@ void CScriptUI::Script_Stg2_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue24.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue24.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -1139,7 +1139,7 @@ void CScriptUI::Script_Stg2_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue25.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue25.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Politician;
@@ -1149,7 +1149,7 @@ void CScriptUI::Script_Stg2_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue26.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue26.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Politician;
@@ -1159,7 +1159,7 @@ void CScriptUI::Script_Stg2_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue27.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue27.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -1169,7 +1169,7 @@ void CScriptUI::Script_Stg2_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue27.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue27.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Player;
@@ -1179,7 +1179,7 @@ void CScriptUI::Script_Stg2_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue28.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue28.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Politician;
@@ -1189,7 +1189,7 @@ void CScriptUI::Script_Stg2_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage2_Dialogue28.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage2_Dialogue28.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Politician;
@@ -1222,7 +1222,7 @@ void CScriptUI::Script_Stage3_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue1.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue1.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1244,7 +1244,7 @@ void CScriptUI::Script_Stage3_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1254,7 +1254,7 @@ void CScriptUI::Script_Stage3_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1264,7 +1264,7 @@ void CScriptUI::Script_Stage3_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1274,7 +1274,7 @@ void CScriptUI::Script_Stage3_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1284,7 +1284,7 @@ void CScriptUI::Script_Stage3_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue6.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue6.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1298,7 +1298,7 @@ void CScriptUI::Script_Stage3_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue7.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue7.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Delivery;
@@ -1335,7 +1335,7 @@ void CScriptUI::Script_Stage3_Boss_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Delivery;
@@ -1349,7 +1349,7 @@ void CScriptUI::Script_Stage3_Boss_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Delivery;
@@ -1359,7 +1359,7 @@ void CScriptUI::Script_Stage3_Boss_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue10.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue10.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Delivery;
@@ -1381,7 +1381,7 @@ void CScriptUI::Script_Stage3_Boss_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue11.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue11.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Delivery;
@@ -1391,7 +1391,7 @@ void CScriptUI::Script_Stage3_Boss_Opening()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue12.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue12.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Delivery;
@@ -1452,7 +1452,7 @@ void CScriptUI::Script_Stage3_Boss_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue13.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue13.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1474,7 +1474,7 @@ void CScriptUI::Script_Stage3_Boss_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue14.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue14.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1500,7 +1500,7 @@ void CScriptUI::Script_Stage3_Boss_Clear()
 		if (m_iPreSound != m_iCurSound)
 		{
 			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
-			m_pManagement->PlaySound(L"Stage3_Dialogue15.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Stage3_Dialogue15.ogg", CSoundMgr::DIALOGUE1);
 			m_iCurSound = m_dwScriptNext;
 		}
 		m_ePortrait = EPortraitNumber::Admiral;
@@ -1668,7 +1668,7 @@ void CScriptUI::BlackBar_Start(_float fDeltaTime)
 	{
 		if (!m_bSoundOnce)
 		{
-			m_pManagement->PlaySound(L"PopUp_Quest2.ogg", CSoundMgr::SCRIPT_POPUP);
+			m_pManagement->PlaySoundEx(L"PopUp_Quest2.ogg", CSoundMgr::SCRIPT_POPUP);
 			m_bSoundOnce = true;
 		}
 		m_eScriptFlow = EScriptFlow::Script;

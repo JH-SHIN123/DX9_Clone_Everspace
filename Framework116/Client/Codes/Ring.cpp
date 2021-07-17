@@ -162,7 +162,7 @@ _bool CRing::CollideCheck()
 			CEffectHandler::Add_Layer_Effect_Ring_Pass(m_pTransform->Get_State(EState::Position));
 
 			m_pManagement->StopSound(CSoundMgr::RINGCOLLISION);
-			m_pManagement->PlaySound(L"PopUp_Quest.ogg", CSoundMgr::RINGCOLLISION);
+			m_pManagement->PlaySoundEx(L"PopUp_Quest.ogg", CSoundMgr::RINGCOLLISION);
 		}
 		m_bSoundOnce = true;
 		CMaterialHandler::Set_RGBA(vColorRGBA.x, vColorRGBA.y, vColorRGBA.z, vColorRGBA.w, &m_tMaterial);

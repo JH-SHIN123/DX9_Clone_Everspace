@@ -75,7 +75,7 @@ HRESULT CLobby::Ready_Scene()
 
 _uint CLobby::Update_Scene(_float fDeltaTime)
 {
-	m_pManagement->PlaySound(L"Garage_BGM.ogg", CSoundMgr::BGM);
+	m_pManagement->PlaySoundEx(L"Garage_BGM.ogg", CSoundMgr::BGM);
 
 	if (false == m_bEnterScene)
 		return _uint();

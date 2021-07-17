@@ -186,7 +186,7 @@ _uint CBoss_Monster::LateUpdate_GameObject(_float fDeltaTime)
 			m_pHP_Bar_Border->Set_IsDead(TRUE);
 		if (m_pLockOn)
 			m_pLockOn->Set_IsDead(TRUE);
-		m_pManagement->PlaySound(L"Boss_Dead1.ogg", CSoundMgr::SHIP_EXPLOSION);
+		m_pManagement->PlaySoundEx(L"Boss_Dead1.ogg", CSoundMgr::SHIP_EXPLOSION);
 
 		return DEAD_OBJECT;
 	}
@@ -349,7 +349,7 @@ _uint CBoss_Monster::Left_EnergyBall(_float fDeltaTime)
 		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
 		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(pArg->vPosition, 1.f);
 
-		m_pManagement->PlaySound(L"Boss_Energy_Ball.ogg", CSoundMgr::BOSS_ATTACK_1);
+		m_pManagement->PlaySoundEx(L"Boss_Energy_Ball.ogg", CSoundMgr::BOSS_ATTACK_1);
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::NonStatic,
@@ -378,7 +378,7 @@ _uint CBoss_Monster::Right_EnergyBall(_float fDeltaTime)
 		pArg->vRotate = m_pTransform->Get_TransformDesc().vRotate;
 		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(pArg->vPosition, 1.f);
 
-		m_pManagement->PlaySound(L"Boss_Energy_Ball.ogg", CSoundMgr::BOSS_ATTACK_1);
+		m_pManagement->PlaySoundEx(L"Boss_Energy_Ball.ogg", CSoundMgr::BOSS_ATTACK_1);
 
 		if (FAILED(m_pManagement->Add_GameObject_InLayer(
 			EResourceType::NonStatic,
@@ -526,7 +526,7 @@ _uint CBoss_Monster::Fire_Laser(_float fDeltaTime)
 					return E_FAIL;
 				}
 				_float3 vEffectPos = m_vLaserCannon_Position + (vLook * 5.f);
-				m_pManagement->PlaySound(L"Boss_Laser.ogg", CSoundMgr::BOSS_ATTACK_2);
+				m_pManagement->PlaySoundEx(L"Boss_Laser.ogg", CSoundMgr::BOSS_ATTACK_2);
 				CEffectHandler::Add_Layer_Effect_Boss_FireBullet(vEffectPos, 1.f);
 			}
 		}
@@ -564,7 +564,7 @@ _uint CBoss_Monster::Fire_EMP(_float fDeltaTime)
 			return E_FAIL;
 		}
 
-		m_pManagement->PlaySound(L"Boss_EMP_Bomb.ogg", CSoundMgr::BOSS_ATTACK_3);
+		m_pManagement->PlaySoundEx(L"Boss_EMP_Bomb.ogg", CSoundMgr::BOSS_ATTACK_3);
 		CEffectHandler::Add_Layer_Effect_Boss_FireBullet(pArg->vPosition, 1.f);
 
 	}

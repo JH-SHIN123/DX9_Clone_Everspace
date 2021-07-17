@@ -187,12 +187,12 @@ _uint CMonster::LateUpdate_GameObject(_float fDeltaTime)
 			m_pHP_Bar_Border->Set_IsDead(TRUE);
 		if (m_pLockOn)
 			m_pLockOn->Set_IsDead(TRUE);
-		m_pManagement->PlaySound(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
+		m_pManagement->PlaySoundEx(L"Ship_Explosion.ogg", CSoundMgr::SHIP_EXPLOSION);
 		((CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player"))->Someone_Try_To_Kill_Me(false);
 		_int iRand = rand() % 2;
 		if (iRand == 0)
 		{
-			m_pManagement->PlaySound(L"Dialog_Kill.ogg", CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySoundEx(L"Dialog_Kill.ogg", CSoundMgr::DIALOGUE1);
 		}
 		return DEAD_OBJECT;
 	}
@@ -920,7 +920,7 @@ _uint CMonster::Make_LockOn()
 
 			if (!m_IsLockOn)
 			{
-				m_pManagement->PlaySound(L"Lock_On.ogg", CSoundMgr::LOCKON);
+				m_pManagement->PlaySoundEx(L"Lock_On.ogg", CSoundMgr::LOCKON);
 				CGameObject* pLockOn = nullptr;
 				UI_DESC HUD_Lock_On;
 				HUD_Lock_On.tTransformDesc.vPosition = { 11110.f, 0.f, 0.f };

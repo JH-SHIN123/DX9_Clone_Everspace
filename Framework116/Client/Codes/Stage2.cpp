@@ -61,17 +61,17 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 
 	if (m_bStartStage)
 	{
-		m_pManagement->PlaySound(L"Stage2_BGM.ogg", CSoundMgr::BGM);
+		m_pManagement->PlaySoundEx(L"Stage2_BGM.ogg", CSoundMgr::BGM);
 		m_bStartStage = false;
 	}
 	else if (m_bStartFlyAwaySound)
 	{
-		m_pManagement->PlaySound(L"Stone_IsComming.mp3", CSoundMgr::BGM);
+		m_pManagement->PlaySoundEx(L"Stone_IsComming.mp3", CSoundMgr::BGM);
 		m_bStartFlyAwaySound = false;
 	}
 	else if (m_bFinishFlyAwaySound)
 	{
-		m_pManagement->PlaySound(L"Stage2_Fight.mp3", CSoundMgr::BGM);
+		m_pManagement->PlaySoundEx(L"Stage2_Fight.mp3", CSoundMgr::BGM);
 		m_bFinishFlyAwaySound = false;
 	}
 

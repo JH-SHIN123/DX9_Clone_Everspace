@@ -220,7 +220,7 @@ _uint CCrosshair::Searching_Target(_float fDeltaTime)
 					return E_FAIL;
 				}
 				m_IsBossLockOn = true;
-				m_pManagement->PlaySound(L"Lock_On.ogg", CSoundMgr::LOCKON);
+				m_pManagement->PlaySoundEx(L"Lock_On.ogg", CSoundMgr::LOCKON);
 
 			}
 			else if (!m_IsDistOn)

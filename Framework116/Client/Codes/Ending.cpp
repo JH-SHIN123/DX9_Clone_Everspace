@@ -48,7 +48,7 @@ _uint CEnding::Update_Scene(_float fDeltaTime)
 	if (m_bStart)
 	{
 		m_pManagement->Play_MCIVideoEx();
-		m_pManagement->PlaySound(m_pAudioFileName, CSoundMgr::LOADING);
+		m_pManagement->PlaySoundEx(m_pAudioFileName, CSoundMgr::LOADING);
 		m_bStart = false;
 	}
 

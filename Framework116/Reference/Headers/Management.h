@@ -60,7 +60,7 @@ public: /* For.Renderer */
 	HRESULT Add_GameObject_InRenderer(ERenderType eType, class CGameObject* pObject);
 
 public: /* For.Sound_Manager*/
-	void PlaySound(TCHAR* pSoundKey, CSoundMgr::CHANNELID eID);
+	void PlaySoundEx(TCHAR* pSoundKey, CSoundMgr::CHANNELID eID);
 	void PlayBGM(TCHAR* pSoundKey);
 	void StopSound(CSoundMgr::CHANNELID eID);
 	void StopAll();

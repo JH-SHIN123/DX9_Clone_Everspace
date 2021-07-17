@@ -16,7 +16,7 @@ HRESULT CSoundMgr::Ready_SoundManager()
 	return S_OK;
 }
 
-void CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID)
+void CSoundMgr::PlaySoundEx(TCHAR * pSoundKey, CHANNELID eID)
 {
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 

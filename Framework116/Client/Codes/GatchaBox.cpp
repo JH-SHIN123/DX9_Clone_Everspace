@@ -153,7 +153,7 @@ _bool CGatchaBox::CheckPicking()
 			m_pDevice, m_pManagement->Get_GameObjectList(L"Layer_GatchaBox"));
 		if (pObj==this && CDataBase::Get_Instance()->Get_Money() >=1000)
 		{
-			m_pManagement->PlaySoundW(L"DingDong.mp3", CSoundMgr::LOBBY_EFFECT);
+			m_pManagement->PlaySoundEx(L"DingDong.mp3", CSoundMgr::LOBBY_EFFECT);
 			UI_DESC UiDesc;
 
 			_float PosX = 880.f;
@@ -223,7 +223,7 @@ _bool CGatchaBox::StartUnPacking(_float fDeltaTime)
 			wstring strLayerTag = L"Layer_Product";
 			Add_Layer_Product(strLayerTag);
 			// °«Ã­¹Ú½º ÀÌÆåÆ®
-			m_pManagement->PlaySound(L"fireworkexplosion.wav", CSoundMgr::LOBBY_EFFECT);
+			m_pManagement->PlaySoundEx(L"fireworkexplosion.wav", CSoundMgr::LOBBY_EFFECT);
 			CEffectHandler::Add_Layer_Effect_Explosion_GatchaBox(m_pTransform->Get_TransformDesc().vPosition, 20.f);
 		}
 		m_bBomb = TRUE;

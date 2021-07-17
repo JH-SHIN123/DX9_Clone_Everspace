@@ -31,7 +31,7 @@ public:
 	HRESULT Ready_SoundManager();
 
 public:
-	void PlaySound(TCHAR* pSoundKey, CHANNELID eID);
+	void PlaySoundEx(TCHAR* pSoundKey, CHANNELID eID);
 	void PlayBGM(TCHAR* pSoundKey);
 	void StopSound(CHANNELID eID);
 	void StopAll();

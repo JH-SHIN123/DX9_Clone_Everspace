@@ -83,15 +83,15 @@ _uint CStage::Update_Scene(_float fDeltaTime)
 	case STAGE1_BGM::Opening:
 		if (m_IsRadioOff == false)
 		{
-			m_pManagement->PlaySound(L"Tutorial_Opening.mp3", CSoundMgr::BGM);
+			m_pManagement->PlaySoundEx(L"Tutorial_Opening.mp3", CSoundMgr::BGM);
 		}
 
 		break;
 	case STAGE1_BGM::Change:
-		m_pManagement->PlaySound(L"Tutorial_ChangeBGM.ogg", CSoundMgr::BGM);
+		m_pManagement->PlaySoundEx(L"Tutorial_ChangeBGM.ogg", CSoundMgr::BGM);
 		break;
 	case STAGE1_BGM::Ring:
-		m_pManagement->PlaySound(L"Tutorial_Ring.ogg", CSoundMgr::BGM);
+		m_pManagement->PlaySoundEx(L"Tutorial_Ring.ogg", CSoundMgr::BGM);
 		break;
 	default:
 		break;

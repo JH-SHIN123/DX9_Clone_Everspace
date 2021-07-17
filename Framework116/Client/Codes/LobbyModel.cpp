@@ -198,7 +198,7 @@ void CLobbyModel::StartSceneChange(_float fDeltaTime)
 		if (0.1>= fAngle)
 		{
 			m_fSoundTiming += fDeltaTime;
-			m_pManagement->PlaySound(L"Jump_Gate.ogg", CSoundMgr::LOBBY_EFFECT);
+			m_pManagement->PlaySoundEx(L"Jump_Gate.ogg", CSoundMgr::LOBBY_EFFECT);
 
 			vTargetDir = _float3(0.f, 1.f, 1.f);
 			vDir = m_pTransform->Get_State(EState::Look);

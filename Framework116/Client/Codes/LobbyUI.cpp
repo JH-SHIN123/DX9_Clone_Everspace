@@ -66,7 +66,7 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 			
 			if (m_pTransform->Get_TransformDesc().vPosition.x > 0.f)
 			{
-				m_pManagement->PlaySoundW(L"Large Door Slam Sound.mp3", CSoundMgr::LOBBY_EFFECT);
+				m_pManagement->PlaySoundEx(L"Large Door Slam Sound.mp3", CSoundMgr::LOBBY_EFFECT);
 				vPos.x -= fDeltaTime *1000.f;
 			}
 			else
@@ -83,7 +83,7 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 			if (m_pTransform->Get_TransformDesc().vPosition.x < 1756.f)
 			{
 
-				m_pManagement->PlaySoundW(L"Large Door Slam Sound.mp3", CSoundMgr::LOBBY_EFFECT);
+				m_pManagement->PlaySoundEx(L"Large Door Slam Sound.mp3", CSoundMgr::LOBBY_EFFECT);
 				vPos.x += fDeltaTime *1000.f;
 			}
 			else
@@ -328,7 +328,7 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 			if (i == 0)
 				continue;
 
-			m_pManagement->PlaySoundW(L"Parts_Upgrade.ogg", CSoundMgr::LOBBY_EFFECT);
+			m_pManagement->PlaySoundEx(L"Parts_Upgrade.ogg", CSoundMgr::LOBBY_EFFECT);
 		
 			m_fShowUsingItemFrame -= fDeltaTime*120.f*4.f;
 			if (m_fShowUsingItemFrame <= 0.f)
@@ -489,12 +489,12 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 			if (m_wstrTexturePrototypeTag == L"Component_Texture_RepairIcon")
 			{
 				m_pManagement->StopSound(CSoundMgr::UI);
-				m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
+				m_pManagement->PlaySoundEx(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 			}
 			else if (m_wstrTexturePrototypeTag == L"Component_Texture_ShopIcon")
 			{
 				m_pManagement->StopSound(CSoundMgr::UI);
-				m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
+				m_pManagement->PlaySoundEx(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 				if(!m_pLobby->Get_IsGatcha())
 					m_pLobby->Set_IsGatcha(TRUE);
 				else if (!m_pLobby->Get_IsSetPlayerModel())
@@ -503,7 +503,7 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 			else if (m_wstrTexturePrototypeTag == L"Component_Texture_PlaneTemplete")
 			{
 				m_pManagement->StopSound(CSoundMgr::UI);
-				m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
+				m_pManagement->PlaySoundEx(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 				if (!m_pLobby->Get_IsSetPlayerModel())
 					m_pLobby->Set_IsSetPlayerModel(TRUE);
 			}
@@ -644,7 +644,7 @@ void CLobbyUI::Update_SceneSelect(_float fDeltaTime)
 	if (m_pController->Key_Down(KEY_LEFT))
 	{
 		m_pManagement->StopSound(CSoundMgr::UI);
-		m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
+		m_pManagement->PlaySoundEx(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 		if (m_iSelect)
 			m_iSelect--;
 		else
@@ -653,13 +653,13 @@ void CLobbyUI::Update_SceneSelect(_float fDeltaTime)
 	else if (m_pController->Key_Down(KEY_RIGHT))
 	{
 		m_pManagement->StopSound(CSoundMgr::UI);
-		m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
+		m_pManagement->PlaySoundEx(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 			m_iSelect++;
 	}
 	else if (m_pController->Key_Down(KEY_ENTER))
 	{
 		m_pManagement->StopSound(CSoundMgr::UI);
-		m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
+		m_pManagement->PlaySoundEx(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 		if (!m_pLobby->GetStageLock(m_iSelect))
 		{
 			m_pLobby->SetNextScene(m_iSelect);

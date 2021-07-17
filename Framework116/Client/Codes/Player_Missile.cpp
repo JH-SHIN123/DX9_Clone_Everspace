@@ -201,7 +201,7 @@ _uint CPlayer_Missile::LateUpdate_GameObject(_float fDeltaTime)
 		}
 		CEffectHandler::Add_Layer_Effect_Missile_Explosion(m_pTransform->Get_State(EState::Position));
 		m_pManagement->StopSound(CSoundMgr::PLAYER_WEAPON);
-		m_pManagement->PlaySound(L"Missile_Explosion.ogg", CSoundMgr::PLAYER_MISSILE_EXPLOSION);
+		m_pManagement->PlaySoundEx(L"Missile_Explosion.ogg", CSoundMgr::PLAYER_MISSILE_EXPLOSION);
 		return DEAD_OBJECT;
 	}
 
