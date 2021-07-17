@@ -1,0 +1,9 @@
+﻿  Player.cpp
+  MeshTool.cpp
+d:\jusin\sr_everspace\framework116\tool\codes\meshtool.cpp(222): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\jusin\sr_everspace\framework116\tool\codes\meshtool.cpp(238): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\jusin\sr_everspace\framework116\tool\codes\meshtool.cpp(254): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  MainFrm.cpp
+  MainForm.cpp
+  Generating Code...
+  Tool.vcxproj -> D:\Jusin\SR_Everspace\Framework116\Tool\Default\../Bin/Tool.exe

@@ -1,0 +1,72 @@
+﻿  Base.cpp
+  Camera.cpp
+  Collide.cpp
+  CollideSphere.cpp
+  Collision.cpp
+  Component.cpp
+  Component_Manager.cpp
+D:\Jusin\SR_Everspace\Framework116\Engine\Headers\Texture.h(27,38): warning C4267: 'return': 'size_t'에서 'const Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Controller.cpp
+  Device_Manager.cpp
+  FadeIn.cpp
+D:\Jusin\SR_Everspace\Framework116\Engine\Headers\Texture.h(27,38): warning C4267: 'return': 'size_t'에서 'const Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  FadeOut.cpp
+D:\Jusin\SR_Everspace\Framework116\Engine\Headers\Texture.h(27,38): warning C4267: 'return': 'size_t'에서 'const Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Frame_Manager.cpp
+  GameObject.cpp
+D:\Jusin\SR_Everspace\Framework116\Engine\Headers\Texture.h(27,38): warning C4267: 'return': 'size_t'에서 'const Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  GameObject_Manager.cpp
+  GeoMesh.cpp
+  GeoMesh_Cube.cpp
+  GeoMesh_Cylinder.cpp
+  GeoMesh_Sphere.cpp
+  GeoMesh_Torus.cpp
+  Layer.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  Light.cpp
+  Management.cpp
+  Mesh.cpp
+  ModelMesh.cpp
+D:\Jusin\SR_Everspace\Framework116\Engine\Codes\ModelMesh.cpp(135,24): warning C4267: '인수': 'size_t'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  MyFont.cpp
+D:\Jusin\SR_Everspace\Framework116\Engine\Codes\MyFont.cpp(100,132): warning C4267: '인수': 'size_t'에서 'INT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  ParticleSystem.cpp
+  Pipeline.cpp
+  Renderer.cpp
+  Scene.cpp
+  Scene_Manager.cpp
+  SoundMgr.cpp
+D:\Jusin\SR_Everspace\Framework116\Engine\Codes\SoundMgr.cpp(72,14): warning C4244: '초기화 중': 'intptr_t'에서 'long'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Jusin\SR_Everspace\Framework116\Engine\Codes\SoundMgr.cpp(92,37): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  SpriteTexture.cpp
+  Status_Info.cpp
+  Texture.cpp
+  Time_Manager.cpp
+  Transform.cpp
+  UI.cpp
+  VIBuffer.cpp
+  VIBuffer_CubeTexture.cpp
+  VIBuffer_RectColor.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  VIBuffer_RectTexture.cpp
+  VIBuffer_RectTexture_HP_Bar.cpp
+  VIBuffer_TerrainColor.cpp
+  VIBuffer_TerrainTexture.cpp
+  VIBuffer_TriColor.cpp
+  코드를 생성하고 있습니다...
+     D:\Jusin\SR_Everspace\Framework116\x64\Debug\Engine.lib 라이브러리 및 D:\Jusin\SR_Everspace\Framework116\x64\Debug\Engine.exp 개체를 생성하고 있습니다.
+SoundMgr.obj : error LNK2019: FMOD_System_Create"public: long __cdecl Engine::CSoundMgr::Ready_SoundManager(void)" (?Ready_SoundManager@CSoundMgr@Engine@@QEAAJXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_System_Release"public: virtual void __cdecl Engine::CSoundMgr::Free(void)" (?Free@CSoundMgr@Engine@@UEAAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_System_Init"public: long __cdecl Engine::CSoundMgr::Ready_SoundManager(void)" (?Ready_SoundManager@CSoundMgr@Engine@@QEAAJXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_System_Close"public: virtual void __cdecl Engine::CSoundMgr::Free(void)" (?Free@CSoundMgr@Engine@@UEAAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_System_Update"private: void __cdecl Engine::CSoundMgr::LoadSoundFile(void)" (?LoadSoundFile@CSoundMgr@Engine@@AEAAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_System_CreateSound"private: void __cdecl Engine::CSoundMgr::LoadSoundFile(void)" (?LoadSoundFile@CSoundMgr@Engine@@AEAAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_System_PlaySound"public: void __cdecl Engine::CSoundMgr::PlayBGM(wchar_t *)" (?PlayBGM@CSoundMgr@Engine@@QEAAXPEA_W@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_Sound_Release"public: virtual void __cdecl Engine::CSoundMgr::Free(void)" (?Free@CSoundMgr@Engine@@UEAAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_Channel_Stop"public: void __cdecl Engine::CSoundMgr::StopAll(void)" (?StopAll@CSoundMgr@Engine@@QEAAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_Channel_IsPlaying"public: void __cdecl Engine::CSoundMgr::PlaySoundW(wchar_t *,enum Engine::CSoundMgr::CHANNELID)" (?PlaySoundW@CSoundMgr@Engine@@QEAAXPEA_WW4CHANNELID@12@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
+SoundMgr.obj : error LNK2019: FMOD_Channel_SetMode"public: void __cdecl Engine::CSoundMgr::PlayBGM(wchar_t *)" (?PlayBGM@CSoundMgr@Engine@@QEAAXPEA_W@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
+fmodex_vc.lib : warning LNK4272: 'x86' 라이브러리 컴퓨터 종류가 'x64' 대상 컴퓨터 종류와 충돌합니다.
+D:\Jusin\SR_Everspace\Framework116\x64\Debug\Engine.dll : fatal error LNK1120: 11개의 확인할 수 없는 외부 참조입니다.

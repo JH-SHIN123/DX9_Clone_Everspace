@@ -1,0 +1,76 @@
+﻿  Boss_Monster.cpp
+  Generating code
+  47 of 2103 functions ( 2.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    14 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+DataBase.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Delivery.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Drone.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Ending.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+HP_Bar.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LoadingIcon.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LoadingUI.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LockOnAlert.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+New_LockOn.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LoopExplosionSystem.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Shield_Battery.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Sniper.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Sniper_Bullet.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+HUD_Effect_Boost.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+HUD_Effect_Damage.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LobbyBackUI.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LobbyCursor.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LobbyScriptUI.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Stage2.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Stage3.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Status.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+StatusBoard.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Asteroid.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Boss_Monster.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Boss_Spawn_Monster.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Boss_Warmhole.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+CollisionHandler.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Bullet_EMP_Bomb.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Bullet_EnergyBall.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Bullet_Laser.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Crosshair.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+EffectHandler.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ExplosionSystem.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+GatchaBox.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Grass.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+HP_Bar_Border.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LaserSystem.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Lobby.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LobbyCam.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LobbyModel.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LobbyUI.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+FollowSystem.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Loading.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LockOn.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Logo.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+EngineEffectSystem.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+MainApp.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+MainCam.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+MaterialHandler.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+MissionUI.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Monster.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+NaviArrow.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Planet.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Player.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Player_Bullet.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Player_Missile.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Product.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+QuestHandler.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Ring.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ScriptUI.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Skybox.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Stage.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Stamina_Bar.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+StreamHandler.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Terrain.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+VIBuffer_HexagonTex.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+WingBoost_System.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Client.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+stdafx.obj : warning LNK4020: a type record in 'd:\jusin\sr_everspace\framework116\client\defaults\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+  Client.vcxproj -> D:\Jusin\SR_Everspace\Framework116\Client\Defaults\../Bin/Client.exe

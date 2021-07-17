@@ -1,0 +1,87 @@
+﻿  FadeIn.cpp
+  FadeOut.cpp
+  GameObject.cpp
+  Light.cpp
+  Management.cpp
+  MyFont.cpp
+  Renderer.cpp
+  Scene.cpp
+  Scene_Manager.cpp
+  SoundMgr.cpp
+  SpriteTexture.cpp
+  UI.cpp
+     Creating library ../Bin/Engine.lib and object ../Bin/Engine.exp
+  Generating code
+  6 of 2585 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    6 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Engine.vcxproj -> D:\Jusin\SR_Everspace\Framework116\Engine\Defaults\../Bin/Engine.dll
+  ..\Headers\Base.h
+  ..\Headers\Mesh.h
+  ..\Headers\Component.h
+  ..\Headers\Engine_Struct.h
+  ..\Headers\Device_Manager.h
+  ..\Headers\Engine_Define.h
+  ..\Headers\Camera.h
+  ..\Headers\Engine_Function.h
+  ..\Headers\Engine_Include.h
+  ..\Headers\Component_Manager.h
+  ..\Headers\Engine_Typedef.h
+  ..\Headers\CollideSphere.h
+  ..\Headers\Collide.h
+  ..\Headers\Controller.h
+  ..\Headers\Collision.h
+  ..\Headers\Texture.h
+  ..\Headers\Management.h
+  ..\Headers\Scene.h
+  ..\Headers\Scene_Manager.h
+  ..\Headers\GameObject.h
+  ..\Headers\Time_Manager.h
+  ..\Headers\Light.h
+  ..\Headers\VIBuffer.h
+  ..\Headers\VIBuffer_CubeTexture.h
+  ..\Headers\VIBuffer_RectColor.h
+  ..\Headers\VIBuffer_RectTexture.h
+  ..\Headers\VIBuffer_TerrainColor.h
+  ..\Headers\VIBuffer_TerrainTexture.h
+  ..\Headers\VIBuffer_TriColor.h
+  ..\Headers\GameObject_Manager.h
+  ..\Headers\Layer.h
+  ..\Headers\Engine_Enum.h
+  ..\Headers\Renderer.h
+  ..\Headers\Pipeline.h
+  ..\Headers\Frame_Manager.h
+  ..\Headers\ParticleSystem.h
+  ..\Headers\Transform.h
+  ..\Headers\SpriteTexture.h
+  ..\Headers\UI.h
+  ..\Headers\GeoMesh.h
+  ..\Headers\GeoMesh_Cube.h
+  ..\Headers\GeoMesh_Cylinder.h
+  ..\Headers\GeoMesh_Sphere.h
+  ..\Headers\GeoMesh_Torus.h
+  ..\Headers\ModelMesh.h
+  ..\Headers\FadeIn.h
+  ..\Headers\FadeOut.h
+  ..\Headers\MyFont.h
+  ..\Headers\VIBuffer_RectTexture_HP_Bar.h
+  ..\Headers\fmod.h
+  ..\Headers\fmod_codec.h
+  ..\Headers\fmod_dsp.h
+  ..\Headers\fmod_errors.h
+  ..\Headers\fmod_memoryinfo.h
+  ..\Headers\fmod_output.h
+  ..\Headers\Status_Info.h
+  ..\Headers\SoundMgr.h
+  57개 파일이 복사되었습니다.
+  ..\Bin\Engine.lib
+  1개 파일이 복사되었습니다.
+  ..\Bin\fmodex.dll
+  ..\Bin\fmodexL.dll
+  ..\Bin\Engine.dll
+  3개 파일이 복사되었습니다.
+  ..\Bin\fmodex.dll
+  ..\Bin\fmodexL.dll
+  ..\Bin\Engine.dll
+  3개 파일이 복사되었습니다.
