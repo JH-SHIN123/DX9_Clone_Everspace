@@ -89,6 +89,6 @@ CLogo * CLogo::Create(LPDIRECT3DDEVICE9 pDevice)
 void CLogo::Free()
 {
 	m_pManagement->StopAll();
+	m_pManagement->Release_MCIVideoEx();
 	CScene::Free(); // 2.何葛 府家胶 沥府
-	
 }
