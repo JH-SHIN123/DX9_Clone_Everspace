@@ -260,7 +260,6 @@ void CLobbyUI::CheckItemBounds()
 {
 	if (m_pLobby->Get_IsGatcha() || m_pLobby->Get_SceneSelect() || m_pLobby->Get_StartUnPacking())
 		return;
-<<<<<<< HEAD
 	if (m_wstrTexturePrototypeTag != L"Component_Texture_PlaneTemplete")
 		return;
 	if (m_pController->Key_Down(KEY_LBUTTON))
@@ -268,29 +267,18 @@ void CLobbyUI::CheckItemBounds()
 		POINT pt;
 		GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
-=======
-	if (m_wstrTexturePrototypeTag != L"Component_Texture_Product")
-		return;
-	if (m_pController->Key_Down(KEY_LBUTTON))
-	{
->>>>>>> main
 		_float3 vPos = _float3(0.f, 0.f, 0.f);
 		_float3 vDecartPos = m_pTransform->Get_TransformDesc().vPosition;
 		_float3 vSize = m_pTransform->Get_TransformDesc().vScale;
 		vPos.x = vDecartPos.x + _float(WINCX / 2.f);
 		vPos.y = _float(WINCY / 2.f) - vDecartPos.y;
 		vPos.y -= 30.f;
-<<<<<<< HEAD
 		RECT rc;
-=======
->>>>>>> main
 		for(int  i = 0 ; i <3 ; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
 				int iIndex = i * 3 + j;
-
-<<<<<<< HEAD
 				rc.left		= (LONG)(vPos.x - (vSize.x / 2.f) + (j*160.f));
 				rc.right	= (LONG)(vPos.x + (vSize.x / 2.f) +	(j* 160.f));
 				rc.top		= (LONG)(vPos.y - (vSize.y / 2.f) + (i* 160.f));
@@ -305,13 +293,6 @@ void CLobbyUI::CheckItemBounds()
 				}
 				else
 					m_iItemClicked[iIndex] = FALSE;
-=======
-				m_tUIBounds.left = (LONG)(vPos.x - (vSize.x / 2.f) + (j*vSize.x));
-				m_tUIBounds.top = (LONG)(vPos.y - (vSize.y / 2.f) + (i*vSize.y));
-				m_tUIBounds.right = (LONG)(vPos.x + (vSize.x / 2.f)+(j*vSize.x));
-				m_tUIBounds.bottom = (LONG)(vPos.y + (vSize.y / 2.f) + (i*vSize.y));
-				
->>>>>>> main
 
 			}
 		}
@@ -339,7 +320,7 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 	{
 		if (m_iItemClicked[i] == 3)
 		{
-			m_fShowUsingItemFrame -= fDeltaTime*120.f;
+			m_fShowUsingItemFrame -= fDeltaTime*120.f*4.f;
 			if (m_fShowUsingItemFrame <= 0.f)
 			{
 				m_fShowUsingItemFrame = 120.f;
@@ -749,7 +730,6 @@ _bool CLobbyUI::Render_ItemSlot()
 			switch (iIndex)
 			{
 			case 1:
-<<<<<<< HEAD
 				if (!m_pFontAtkUpCount)
 				{
 					_itow_s(CDataBase::Get_Instance()->GetAtkBuffItemCount(), szBuf, 10);
@@ -802,42 +782,6 @@ _bool CLobbyUI::Render_ItemSlot()
 					, szBuf, vFontPos, vFontSize
 					, D3DXCOLOR{ 255,255,255,255 });
 				}
-=======
-				_itow_s(CDataBase::Get_Instance()->GetAtkBuffItemCount(), szBuf, 10);
-				Add_Font_InLayer(L"Layer_Font_ItemCount", m_pFontAtkUpCount
-				, szBuf, vFontPos, vFontSize
-				, D3DXCOLOR{ 255,255,255,255 });
-				break;
-			case 2:
-				_itow_s(CDataBase::Get_Instance()->GetDefBuffItemCount(), szBuf, 10);
-				Add_Font_InLayer(L"Layer_Font_ItemCount", m_pFontDefUpCount
-				, szBuf, vFontPos, vFontSize
-				, D3DXCOLOR{ 255,255,255,255 });
-				break;
-			case 3:
-				_itow_s(CDataBase::Get_Instance()->GetHpBuffItemCount(), szBuf, 10);
-				Add_Font_InLayer(L"Layer_Font_ItemCount", m_pFontHpUpCount
-				, szBuf, vFontPos, vFontSize
-				, D3DXCOLOR{ 255,255,255,255 });
-				break;
-			case 4:	
-				_itow_s(CDataBase::Get_Instance()->GetEnergyBuffItemCount(), szBuf, 10);
-				Add_Font_InLayer(L"Layer_Font_ItemCount", m_pFontEnergyUpCount
-				, szBuf, vFontPos, vFontSize
-				, D3DXCOLOR{ 255,255,255,255 });
-				break;
-			case 5:
-				_itow_s(CDataBase::Get_Instance()->GetMissileCount(), szBuf, 10);
-				Add_Font_InLayer(L"Layer_Font_ItemCount", m_pFontMissileCount
-				, szBuf, vFontPos, vFontSize
-				, D3DXCOLOR{ 255,255,255,255 });		
-				break;
-			case 6:
-				_itow_s(CDataBase::Get_Instance()->GetVMaxBuffItem(), szBuf, 10);
-				Add_Font_InLayer(L"Layer_Font_ItemCount", m_pFontVMaxCount
-				, szBuf, vFontPos, vFontSize
-				, D3DXCOLOR{ 255,255,255,255 });
->>>>>>> main
 				break;
 				}
 			matView._11 = vScale.x;
@@ -848,6 +792,8 @@ _bool CLobbyUI::Render_ItemSlot()
 			/////////////////////////////////////////////////////////////////
 			m_pTexture->Set_Texture(iIndex);
 			m_pVIBuffer->Render_VIBuffer();
+			if (iIndex == 0)
+				continue;
 			if (m_iItemClicked[iIndex] == 1)
 			{
 				m_pTexture->Set_Texture(7);

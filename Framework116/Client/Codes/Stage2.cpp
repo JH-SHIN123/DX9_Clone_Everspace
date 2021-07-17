@@ -80,10 +80,6 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 		}
 		if (m_fDelaySceneChange >= 2.f)
 		{
-<<<<<<< HEAD
-			//m_pManagement->Clear_NonStatic_Resources();
-=======
->>>>>>> main
 			m_bSceneChange = TRUE;
 		}
 		break;
