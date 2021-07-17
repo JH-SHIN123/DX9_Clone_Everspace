@@ -259,14 +259,14 @@ _uint CSniper::Movement(_float fDeltaTime)
 	m_eAttackTarget = EAttackTarget::End;
 
 	// 배틀 상태 On
-	if (vDist <= 400.f && vDist != 0.f)
+	if (vDist <= 500.f && vDist != 0.f)
 	{
 		m_IsBattle = true;
 		m_eAttackTarget = EAttackTarget::Player;
 		Add_Hp_Bar(fDeltaTime);
 	}
 
-	if (fDist_D <= 400.f && fDist_D != 0.f)
+	if (fDist_D <= 500.f && fDist_D != 0.f)
 	{
 		m_IsBattle = true;
 		Add_Hp_Bar(fDeltaTime);
@@ -712,7 +712,7 @@ _uint CSniper::Make_LockOn()
 			}
 			if (!m_IsHUDLockOn)
 			{
-
+				m_pManagement->PlaySound(L"Lock_On.ogg", CSoundMgr::LOCKON);
 				CGameObject* pLockOn = nullptr;
 				UI_DESC HUD_Lock_On;
 				HUD_Lock_On.tTransformDesc.vPosition = { 11110.f, 0.f, 0.f };

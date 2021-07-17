@@ -58,13 +58,13 @@ void CLight::InitSpotLight(_float3* position, _float3* direction, D3DXCOLOR* col
 	m_tLight.Specular = *color * 0.6f;
 	m_tLight.Position = *position;
 	m_tLight.Direction = *direction;
-	m_tLight.Range = 350.f;
+	m_tLight.Range = 300.f;
 	m_tLight.Falloff = 1.0f;
 	m_tLight.Attenuation0 = 1.0f;
 	m_tLight.Attenuation1 = 0.0f;
 	m_tLight.Attenuation2 = 0.0f;
-	m_tLight.Theta = 4.f;
-	m_tLight.Phi = 9.f;
+	m_tLight.Theta = 3.f;
+	m_tLight.Phi = 7.f;
 }
 
 HRESULT CLight::Ready_GameObject_Prototype()

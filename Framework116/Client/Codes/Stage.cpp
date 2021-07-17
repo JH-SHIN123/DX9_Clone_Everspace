@@ -50,8 +50,7 @@ HRESULT CStage::Ready_Scene()
 
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
-	//lightDesc.tLightColor = D3DCOLOR_XRGB(160, 160, 160);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(227, 204, 178);
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -68,7 +67,7 @@ HRESULT CStage::Ready_Scene()
 _uint CStage::Update_Scene(_float fDeltaTime)
 {
 	CScene::Update_Scene(fDeltaTime);
-	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
+	m_pManagement->PlaySound(L"Kickstart_My_Heart.mp3", CSoundMgr::BGM);
 
 	CQuestHandler::Get_Instance()->Update_Quest();
 
@@ -220,8 +219,8 @@ _uint CStage::Stage_Flow(_float fDeltaTime)
 				PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
 				return E_FAIL;
 			}
-			return CHANGE_SCENE;
 			m_bLeaveScene = false;
+			return CHANGE_SCENE;
 		}
 	}
 

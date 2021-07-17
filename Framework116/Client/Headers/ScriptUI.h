@@ -123,6 +123,9 @@ private:
 
 	//Sound
 	_bool m_bSoundOnce = false;
+	_bool m_IsSoundFirst = true;
+	_int m_iPreSound = 0;
+	_int m_iCurSound = 0;
 	EPortraitNumber m_ePortrait = EPortraitNumber::End;
 
 
