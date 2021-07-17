@@ -85,9 +85,13 @@ private:
 	//For.ItemFrame
 	_bool m_bStart = false;
 	_float3 m_vStartPos = {0,0,0};
+<<<<<<< HEAD
 	_uint m_iItemClicked[9] = { 0,0,0,0,0,0,0,0,0 };
 	_float m_fShowUsingItemFrame = 120.f;
 
+=======
+	_bool m_bItemClicked[9] = { 0,0,0,0,0,0,0,0,0 };
+>>>>>>> main
 	CGameObject* m_pFontAtkUpCount = nullptr;
 	CGameObject* m_pFontDefUpCount = nullptr;
 	CGameObject* m_pFontHpUpCount = nullptr;

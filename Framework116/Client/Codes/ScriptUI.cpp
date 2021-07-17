@@ -323,34 +323,73 @@ _uint CScriptUI::Script_Check()
 
 void CScriptUI::Script_Tutorial()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
+		
 	switch (m_dwScriptNext)
 	{
 	case 0:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue1.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"오, 자네가 이번에 새로 들어왔다던 신병인가?";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"자네가 임무를 수행 하기 전 거쳐야 할 훈련이 하나 있지";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관";
 		m_wstrScript = L"오늘의 훈련을 진행 할 헥터 도일 사령관이라고 하네, 잘 부탁하네 제군";
 		break;
 	case 3:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"자 우선 고리를 통과해 보겠나?";
 		break;
 	case 4:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrName = L"사령관 헥터 도일";
 		m_wstrScript = L"그 전에 주위를 한번 둘러보게나";
 		break;
 	case 5:
+		m_IsSoundFirst = true;
 		m_ePortrait = EPortraitNumber::End;
 		m_wstrName = L"";
 		m_wstrScript = L"(WASD 키를 이용하여 움직일 수 있습니다.)";
@@ -366,17 +405,42 @@ void CScriptUI::Script_Tutorial()
 
 void CScriptUI::Script_Tutorial_Ring_Clear()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue6.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"아니 자네 경력있는 신입 뭐 그런건가?";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue7.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"비행 솜씨가 꽤 뛰어나군 그래!";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Player;
 		m_wstrScript = L"하하하 과찬이십니다.";
 		break;
@@ -385,10 +449,16 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 		m_wstrScript = L"주제를 넘을지 모르겠지만, 다음 임무는 무엇입니까?";
 		break;
 	case 4:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->PlaySound(L"Tutorial_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"이번에는 자유로이 움직이며 과녁을 모두 쏘면 된다네 그리 어렵진 않을걸세";
 		break;
 	case 5:
+		m_IsSoundFirst = true;
 		m_ePortrait = EPortraitNumber::End;
 		m_wstrScript = L"(마우스 좌클릭을 이용하여 무기를 발사 할 수 있습니다.)";
 		break;
@@ -405,6 +475,13 @@ void CScriptUI::Script_Tutorial_Ring_Clear()
 
 void CScriptUI::Script_Tutorial_Target_Clear()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
@@ -412,18 +489,42 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		m_wstrScript = L"모두 완수하였습니다!";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"썩 괜찮은 재능이군 그래";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue10.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"좋든 나쁘든 자네는 바로 작전에 투입될 예정이었네";
 		break;
 	case 3:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue11.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"자네도 알고 있을거라고 믿네";
 		break;
 	case 4:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue12.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"군번줄에 기스도 안난 신병이 바로 조종법을 익히는게 무엇을 의미 하는지";
 		break;	
@@ -436,10 +537,22 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		m_wstrScript = L"당연히 알고있습니다";
 		break;
 	case 7:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue13.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"죽음을 각오하게";
 		break;
 	case 8:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue14.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"작전 내용을 그쪽으로 전송하였네, 확인해 보게";
 		break;
@@ -464,10 +577,17 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 		m_wstrScript = L"항로 설정 완료, 명령만 내려주십시오.";
 		break;
 	case 14:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Tutorial_Dialogue15.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"좋아, 바로 출발 하도록";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -480,6 +600,13 @@ void CScriptUI::Script_Tutorial_Target_Clear()
 
 void CScriptUI::Script_Stg2_Begin()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
@@ -491,6 +618,12 @@ void CScriptUI::Script_Stg2_Begin()
 		m_wstrScript = L"...!!";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue1.mp3", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"휘이이이이이이익!!";
 		break;
@@ -499,14 +632,32 @@ void CScriptUI::Script_Stg2_Begin()
 		m_wstrScript = L"무전기에서 호루라기 소리가 들린다!";
 		break;
 	case 4:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue2.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"각 소대 그대로 들어!";
 		break;
 	case 5:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue3.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"20XX년 X월 X일 금일 저녁점호는 본 사령관이 직접 실시한다.";
 		break;
 	case 6:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue4.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"각 소대 보고하도록!";
 		break;
@@ -535,6 +686,12 @@ void CScriptUI::Script_Stg2_Begin()
 		m_wstrScript = L"필승!";
 		break;
 	case 13:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue5.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L".....필승...";
 		break;
@@ -543,26 +700,62 @@ void CScriptUI::Script_Stg2_Begin()
 		m_wstrScript = L"잭 한마 신병.";
 		break;
 	case 15:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue6.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Player;
 		m_wstrScript = L"이병 잭 한마!";
 		break;
 	case 16:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue7.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"신세계 프로젝트는 우리군에 아주 중요한 인물을 구출해내 무사히 복귀시키고";
 		break;
 	case 17:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue8.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"적국과의 평화 회담을 진행해 이 전쟁을 끝내는 것이 최종목표이다.";
 		break;
 	case 18:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue9.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"아마 적국의 급진파 세력이 방해를 시도해올것이다.";
 		break;
 	case 19:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue10.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"만약  항해 중 적국의 병사를 만난다면....";
 		break;
 	case 20:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue11.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"모조리 말살하도록!!";
 		break;
@@ -571,14 +764,27 @@ void CScriptUI::Script_Stg2_Begin()
 		m_wstrScript = L"예!알겠습니다!";
 		break;
 	case 22:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue12.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"그리고 또한가지,";
 		break;
 	case 23:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue13.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"현재 자네의 위치쪽으로 향하는 유성군이 확인되었다.";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -589,25 +795,57 @@ void CScriptUI::Script_Stg2_Begin()
 
 void CScriptUI::Script_Stg2_AfterCamProduction()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue14.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"모두 10m를 넘는 거대한 운석들이다.충돌한다면 추락을 피할 수는 없겠지...";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue15.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"자네가 훈련때 보여준 능숙한 솜씨면 무사히 넘어갈수 있을거라 생각한다.";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue16.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"무운을 빌지.";
 		break;
 	case 3:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue17.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::End;
 		m_wstrScript = L"통신이 끊겼다....";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -618,17 +856,42 @@ void CScriptUI::Script_Stg2_AfterCamProduction()
 
 void CScriptUI::Script_Stg2_Finish_AsteroidFlyAway()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue18.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"무사해서 다행이군.";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue19.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"훌륭한 실력이었다만.";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue20.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"속히 작전지로 이동하길 바란다.";
 		break;
@@ -637,8 +900,8 @@ void CScriptUI::Script_Stg2_Finish_AsteroidFlyAway()
 		m_wstrScript = L"....";
 		break;
 	case 4:
+		m_IsSoundFirst = true;
 		m_ePortrait = EPortraitNumber::Admiral;
-
 		m_wstrScript = L"쳇!!";
 		break;
 	default:
@@ -652,22 +915,47 @@ void CScriptUI::Script_Stg2_Finish_AsteroidFlyAway()
 
 void CScriptUI::Script_Stg2_Search_Target()
 {
-
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue21.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"목표가 근방이다만,";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue22.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"역시나 훼방을 놓으러 왔군!!";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue23.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Admiral;
 		m_wstrScript = L"쓰레기들을 처리하고 속히 작전지로 이동해 목표를 구출하도록!!";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -678,21 +966,47 @@ void CScriptUI::Script_Stg2_Search_Target()
 
 void CScriptUI::Script_Stg2_PlayerDead()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Dialog_Im_Hit.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Player;
-		m_wstrScript = L"메이데이!!메이데이!!";
+		m_wstrScript = L"당했다!";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Dialog_Rescue_Me.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Player;
 		m_wstrScript = L"기체가 손상되어 구조를 요청한다!!";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Dialog_Scream.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Player;
 		m_wstrScript = L"끄아아아악!!!!";
 		break;
 	case 3:
+		m_IsSoundFirst = true;
 		m_ePortrait = EPortraitNumber::End;
 		m_wstrScript = L".....";
 		break;
@@ -707,29 +1021,67 @@ void CScriptUI::Script_Stg2_PlayerDead()
 
 void CScriptUI::Script_Stg2_Clear()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue24.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Player;
 		m_wstrScript = L"구조하러 왔습니다!! 괜찮으십니까?";
 		break;
 	case 1:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue25.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Politician;
 		m_wstrScript = L"오오...주여..";
 		break;
 	case 2:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue26.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Politician;
 		m_wstrScript = L"이대로 꼼짝없이 죽는줄 알았습니다...";
 		break;
 	case 3:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue27.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Player;
 		m_wstrScript = L"이제 괜찮습니다!!어서 옮겨 타 본국으로 귀환하시지요!!";
 		break;
 	case 4:
+		if (m_iPreSound != m_iCurSound)
+		{
+			m_pManagement->StopSound(CSoundMgr::DIALOGUE1);
+			m_pManagement->PlaySound(L"Stage2_Dialogue28.ogg", CSoundMgr::DIALOGUE1);
+			m_iCurSound = m_dwScriptNext;
+		}
 		m_ePortrait = EPortraitNumber::Politician;
 		m_wstrScript = L"네!!";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -738,8 +1090,17 @@ void CScriptUI::Script_Stg2_Clear()
 	m_dwScriptCountMax = m_wstrScript.length();
 }
 
+///////////////////////////////
+
 void CScriptUI::Script_Stage3_Opening()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
@@ -791,6 +1152,7 @@ void CScriptUI::Script_Stage3_Opening()
 		m_wstrScript = L"맏겨만 주십시오!";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -803,6 +1165,13 @@ void CScriptUI::Script_Stage3_Opening()
 
 void CScriptUI::Script_Stage3_Boss_Opening()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
@@ -854,6 +1223,7 @@ void CScriptUI::Script_Stage3_Boss_Opening()
 		m_wstrScript = L"맏겨만 주십시오!";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -866,6 +1236,13 @@ void CScriptUI::Script_Stage3_Boss_Opening()
 
 void CScriptUI::Script_Stage3_Boss_Clear()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
@@ -925,6 +1302,7 @@ void CScriptUI::Script_Stage3_Boss_Clear()
 		m_wstrScript = L"하하하, 곧 구조선이 도착할것이니 조금만 기다리게나";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -938,6 +1316,13 @@ void CScriptUI::Script_Stage3_Boss_Clear()
 
 void CScriptUI::Script_Stage3_Player_Dead()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
@@ -965,6 +1350,7 @@ void CScriptUI::Script_Stage3_Player_Dead()
 		m_wstrScript = L"으아아아아아아!!!!!!!!!!!!!!";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;
@@ -977,6 +1363,13 @@ void CScriptUI::Script_Stage3_Player_Dead()
 
 void CScriptUI::Script_Stage3_Delivery_Dead()
 {
+	if (m_IsSoundFirst)
+	{
+		m_iPreSound = 1234;
+		m_IsSoundFirst = false;
+	}
+	else
+		m_iPreSound = m_dwScriptNext;
 	switch (m_dwScriptNext)
 	{
 	case 0:
@@ -1004,6 +1397,7 @@ void CScriptUI::Script_Stage3_Delivery_Dead()
 		m_wstrScript = L"으아아아아아아!!!!!!!!!!!!!!";
 		break;
 	default:
+		m_IsSoundFirst = true;
 		m_wstrName = L"";
 		m_wstrScript = L"";
 		m_eScriptFlow = EScriptFlow::BlackBar_End;

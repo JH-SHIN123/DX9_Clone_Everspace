@@ -189,7 +189,7 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 	// HP 세팅
 	STAT_INFO tStatus;
-	tStatus.iMaxHp = 100;
+	tStatus.iMaxHp = 300;
 	tStatus.iHp = tStatus.iMaxHp;
 
 	if (FAILED(CGameObject::Add_Component(
@@ -285,7 +285,8 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 	// Add Light
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::SpotLight;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	//lightDesc.tLightColor = D3DCOLOR_XRGB(255, 255, 255);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(227, 204, 178);
 	if (FAILED(m_pManagement->Add_GameObject_InLayer(
 		EResourceType::Static,
 		L"GameObject_Light",
@@ -929,6 +930,9 @@ void CPlayer::Make_LockOn_Alert(_float fDeltaTime)
 	{
 		if (!m_bFirstLocked)
 		{
+			m_pManagement->StopSound(CSoundMgr::LOCKON_ALERT);
+			m_pManagement->PlaySound(L"Dialogue_When_LockedOn.ogg", CSoundMgr::DIALOGUE2);
+			m_pManagement->PlaySound(L"LockOnAlert.ogg", CSoundMgr::LOCKON_ALERT);
 			CGameObject* pGameObject = nullptr;
 			//알림생성
    			UI_DESC LockOnAlert;

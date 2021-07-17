@@ -143,8 +143,8 @@ _uint CLoading::Update_Scene(_float fDeltaTime)
 				return UPDATE_ERROR;
 			}
 
-			return CHANGE_SCENE;
 			m_bLeaveScene = false;
+			return CHANGE_SCENE;
 		}
 	}
 
@@ -1612,15 +1612,6 @@ HRESULT CLoading::Load_HUD_Resources()
 		return E_FAIL;
 	}
 
-	if (FAILED(m_pManagement->Add_Component_Prototype(
-		EResourceType::NonStatic,
-		L"GameObject_LockOnAlert_Delivery",
-		CTexture::Create(m_pDevice, ETextureType::Normal, L"../../Resources/Textures/HUD/LockOnAlert_Delivery.png"))))
-	{
-		PRINT_LOG(L"Error", L"Failed To Add Component_Texture_Laser_HUD");
-		return E_FAIL;
-	}
-
 #pragma endregion
 
 	return S_OK;
@@ -1888,7 +1879,6 @@ HRESULT CLoading::Load_StageEffect_Resources()
 
 	return S_OK;
 }
-
 
 HRESULT CLoading::Ready_LoadingResources()
 {

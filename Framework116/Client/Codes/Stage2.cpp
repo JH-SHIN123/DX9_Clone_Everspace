@@ -35,9 +35,11 @@ HRESULT CStage2::Ready_Scene()
 	if (FAILED(Add_Layer_Skybox(L"Layer_Skybox")))
 		return E_FAIL;
 
+	// 135 0.9f, 0.8f, 0.7f
+	// 227 204  178
 	LIGHT_DESC lightDesc;
 	lightDesc.eLightType = ELightType::Directional;
-	lightDesc.tLightColor = D3DCOLOR_XRGB(135, 135, 135);
+	lightDesc.tLightColor = D3DCOLOR_XRGB(227, 204, 178); 
 	if (FAILED(Add_Layer_Light(L"Layer_Light", &lightDesc)))
 		return E_FAIL;
 
@@ -45,6 +47,7 @@ HRESULT CStage2::Ready_Scene()
 		return E_FAIL;
 
 	Ready_Asteroid();
+	//m_bSceneChange = true;
 
 	return S_OK;
 }
@@ -77,7 +80,10 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 		}
 		if (m_fDelaySceneChange >= 2.f)
 		{
+<<<<<<< HEAD
 			//m_pManagement->Clear_NonStatic_Resources();
+=======
+>>>>>>> main
 			m_bSceneChange = TRUE;
 		}
 		break;
@@ -95,9 +101,9 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 	}
 		break;
 	}
+
 	if (m_bSceneChange)
 	{
-
 		if (false == m_bFadeIn) {
 			if (FAILED(m_pManagement->Add_GameObject_InLayer(
 				EResourceType::Static,
@@ -120,6 +126,7 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 				PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
 				return E_FAIL;
 			}
+
 			return CHANGE_SCENE;
 		}
 	}
@@ -468,7 +475,6 @@ void CStage2::Ready_Asteroid()
 }
 _uint CStage2::Stage2_Flow(_float fDeltaTime)
 {
-
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player");
 	if (pPlayer)
 	{
@@ -629,9 +635,9 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 	case UPDATE_RESQUE:
 		if (CQuestHandler::Get_Instance()->Get_IsClear())
 		{
-			CMainCam* pCam = (CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
-			CTransform* pTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Broken_Plane", L"Com_Transform");
-			pCam->Set_Transform(pTransform);
+			//CMainCam* pCam = (CMainCam*)m_pManagement->Get_GameObject(L"Layer_Cam");
+			//CTransform* pTransform = (CTransform*)m_pManagement->Get_Component(L"Layer_Broken_Plane", L"Com_Transform");
+			//pCam->Set_Transform(pTransform);
 			if (!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
 
 			{
