@@ -63,13 +63,15 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 		_float3 vPos = m_pTransform->Get_TransformDesc().vPosition;
 		if (!m_bCancelSceneChange)
 		{
-
+			
 			if (m_pTransform->Get_TransformDesc().vPosition.x > 0.f)
 			{
+				m_pManagement->PlaySoundW(L"Large Door Slam Sound.mp3", CSoundMgr::LOBBY_EFFECT);
 				vPos.x -= fDeltaTime *1000.f;
 			}
 			else
 			{
+				m_pManagement->StopSound(CSoundMgr::LOBBY_EFFECT);
 				vPos.y = 0.f;
 				vPos.x = 0.f;
 			}
@@ -80,10 +82,13 @@ _uint CLobbyUI::Update_GameObject(_float fDeltaTime)
 		{
 			if (m_pTransform->Get_TransformDesc().vPosition.x < 1756.f)
 			{
+
+				m_pManagement->PlaySoundW(L"Large Door Slam Sound.mp3", CSoundMgr::LOBBY_EFFECT);
 				vPos.x += fDeltaTime *1000.f;
 			}
 			else
 			{
+				m_pManagement->StopSound(CSoundMgr::LOBBY_EFFECT);
 				m_bDead = TRUE;
 				m_pLobby->Set_SceneSelect(FALSE);
 			}
@@ -364,7 +369,8 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetAtkBuffItemCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetAtkBuffItemCount(-1);
-						tUnitInfo.iAtk += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+						tUnitInfo.iAtk += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+
 						
 						if (m_pFontAtkUpCount)
 						{
@@ -381,7 +387,7 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetDefBuffItemCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetDefBuffItemCount(-1);
-						tUnitInfo.iDef += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+						tUnitInfo.iDef += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
 
 						if (m_pFontDefUpCount)
 						{
@@ -398,7 +404,8 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetHpBuffItemCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetHpBuffItemCount(-1);
-						tUnitInfo.iMaxHp += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+						tUnitInfo.iMaxHp += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+
 
 						if (m_pFontHpUpCount)
 						{
@@ -415,7 +422,8 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetEnergyBuffItemCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetEnergyBuffItemCount(-1);
-						tUnitInfo.iMaxEnergy += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+						tUnitInfo.iMaxEnergy += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
+
 
 						if (m_pFontEnergyUpCount)
 						{
@@ -432,7 +440,7 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetMissileCount() >= 1)
 					{
 						CDataBase::Get_Instance()->SetMissileCount(-1);
-						tUnitInfo.iFireRate += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+						tUnitInfo.iFireRate += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
 
 						if (m_pFontMissileCount)
 						{
@@ -449,7 +457,7 @@ void CLobbyUI::UseItem(_float fDeltaTime)
 					if (CDataBase::Get_Instance()->GetVMaxBuffItem() >= 1)
 					{
 						CDataBase::Get_Instance()->SetVMaxBuffItemCount(-1);
-						tUnitInfo.iMaxShield += (_int)CPipeline::GetRandomFloat(1, 3) * 10;
+						tUnitInfo.iMaxShield += (_int)CPipeline::GetRandomFloat(1, 3) * 5;
 
 						if (m_pFontVMaxCount)
 						{
@@ -476,12 +484,17 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 	{
 		if (Get_IsPicking())
 		{
+		
 			m_bClicked = TRUE;
 			if (m_wstrTexturePrototypeTag == L"Component_Texture_RepairIcon")
 			{
+				m_pManagement->StopSound(CSoundMgr::UI);
+				m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 			}
 			else if (m_wstrTexturePrototypeTag == L"Component_Texture_ShopIcon")
 			{
+				m_pManagement->StopSound(CSoundMgr::UI);
+				m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 				if(!m_pLobby->Get_IsGatcha())
 					m_pLobby->Set_IsGatcha(TRUE);
 				else if (!m_pLobby->Get_IsSetPlayerModel())
@@ -489,11 +502,15 @@ void CLobbyUI::Key_Check(_float fDeltaTime)
 			}
 			else if (m_wstrTexturePrototypeTag == L"Component_Texture_PlaneTemplete")
 			{
+				m_pManagement->StopSound(CSoundMgr::UI);
+				m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 				if (!m_pLobby->Get_IsSetPlayerModel())
 					m_pLobby->Set_IsSetPlayerModel(TRUE);
 			}
 			else if (m_wstrTexturePrototypeTag == L"Component_Texture_achievement")
 			{
+		
+				m_pManagement->StopSound(CSoundMgr::LOBBY_EFFECT);
 				for (auto& pDst : *m_pManagement->Get_GameObjectList(L"Layer_UI"))
 				{
 					if (static_cast<CLobbyUI*>(pDst)->m_wstrTexturePrototypeTag == L"Component_Texture_SceneSelect")
@@ -626,15 +643,23 @@ void CLobbyUI::Update_SceneSelect(_float fDeltaTime)
 
 	if (m_pController->Key_Down(KEY_LEFT))
 	{
+		m_pManagement->StopSound(CSoundMgr::UI);
+		m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 		if (m_iSelect)
 			m_iSelect--;
 		else
 			m_iSelect = 2;
 	}
 	else if (m_pController->Key_Down(KEY_RIGHT))
+	{
+		m_pManagement->StopSound(CSoundMgr::UI);
+		m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 			m_iSelect++;
+	}
 	else if (m_pController->Key_Down(KEY_ENTER))
 	{
+		m_pManagement->StopSound(CSoundMgr::UI);
+		m_pManagement->PlaySoundW(L"PopUp_Quest2.ogg", CSoundMgr::UI);
 		if (!m_pLobby->GetStageLock(m_iSelect))
 		{
 			m_pLobby->SetNextScene(m_iSelect);
