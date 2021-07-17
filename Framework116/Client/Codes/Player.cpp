@@ -189,16 +189,8 @@ HRESULT CPlayer::Ready_GameObject(void * pArg/* = nullptr*/)
 
 
 	// HP 세팅
-<<<<<<< HEAD
-	
-	STAT_INFO tStat = *CDataBase::Get_Instance()->Get_StatInfo();
-=======
-	// -> 싱글톤으로 데이터 받아와서 세팅
-	STAT_INFO tStatus;
-	tStatus.iMaxHp = 300;
-	tStatus.iHp = tStatus.iMaxHp;
 
->>>>>>> main
+	STAT_INFO tStat = *CDataBase::Get_Instance()->Get_StatInfo();
 	if (FAILED(CGameObject::Add_Component(
 		EResourceType::Static,
 		L"Component_Status_Info",
