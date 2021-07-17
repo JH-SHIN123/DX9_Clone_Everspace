@@ -47,6 +47,10 @@ _uint CLogo::Update_Scene(_float fDeltaTime)
 	{
 		if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
 			CLoading::Create(m_pDevice, ESceneType::Lobby))))
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 		{
 			PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
 			return E_FAIL;
@@ -88,6 +92,6 @@ CLogo * CLogo::Create(LPDIRECT3DDEVICE9 pDevice)
 void CLogo::Free()
 {
 	m_pManagement->StopAll();
+	m_pManagement->Release_MCIVideoEx();
 	CScene::Free(); // 2.何葛 府家胶 沥府
-	
 }

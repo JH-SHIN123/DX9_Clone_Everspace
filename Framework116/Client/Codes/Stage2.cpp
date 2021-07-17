@@ -4,6 +4,8 @@
 #include"Player.h"
 #include"Pipeline.h"
 #include"Loading.h"
+#include "Ending.h"
+
 CStage2::CStage2(LPDIRECT3DDEVICE9 pDevice)
 	: CScene(pDevice)
 {
@@ -57,7 +59,21 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 
 	CScene::Update_Scene(fDeltaTime);
 
-	m_pManagement->PlaySound(L"Tutorial_Ambience.ogg", CSoundMgr::BGM);
+	if (m_bStartStage)
+	{
+		m_pManagement->PlaySound(L"Stage2_BGM.ogg", CSoundMgr::BGM);
+		m_bStartStage = false;
+	}
+	else if (m_bStartFlyAwaySound)
+	{
+		m_pManagement->PlaySound(L"Stone_IsComming.mp3", CSoundMgr::BGM);
+		m_bStartFlyAwaySound = false;
+	}
+	else if (m_bFinishFlyAwaySound)
+	{
+		m_pManagement->PlaySound(L"Stage2_Fight.mp3", CSoundMgr::BGM);
+		m_bFinishFlyAwaySound = false;
+	}
 
 	CQuestHandler::Get_Instance()->Update_Quest();
 	CPlayer* pPlayer = (CPlayer*)m_pManagement->Get_GameObject(L"Layer_Player");
@@ -73,7 +89,7 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 		AsteroidFlyingAway(fDeltaTime, 200.f, 200.f, 200.f, 200.f, pPlayerTransform, 30, 60.f, 30.f,15.f);
 		break;
 	case PLAYER_DEAD:
-		if (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI"))
+		if (m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")) 
 		{
 			if(!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
 				m_fDelaySceneChange += fDeltaTime;
@@ -90,6 +106,7 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 			if (!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
 			{
 				CQuestHandler::Get_Instance()->Set_ClearStage(EStageClear::Stage_3);
+				m_bStageClear = true;
 				m_bSceneChange = TRUE;
 			}
 		}
@@ -115,14 +132,26 @@ _uint CStage2::Update_Scene(_float fDeltaTime)
 		}
 		if (m_bLeaveScene)
 		{
-			m_bLeaveScene = false;
-			if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
-				CLoading::Create(m_pDevice, ESceneType::Lobby))))
+			// Ending Scene
+			if (m_bStageClear)
 			{
-				PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
-				return E_FAIL;
+				if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Ending,
+					CEnding::Create(m_pDevice, ESceneType::Stage2))))
+				{
+					PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
+				}
+			}
+			else
+			{
+				if (FAILED(CManagement::Get_Instance()->Setup_CurrentScene((_uint)ESceneType::Loading,
+					CLoading::Create(m_pDevice, ESceneType::Lobby))))
+
+				{
+					PRINT_LOG(L"Error", L"Failed To Setup Stage Scene");
+				}
 			}
 
+			m_bLeaveScene = false;
 			return CHANGE_SCENE;
 		}
 	}
@@ -616,6 +645,7 @@ _uint CStage2::Stage2_Flow(_float fDeltaTime)
 		}
 		if (((CMainCam*)(m_pManagement->Get_GameObject(L"Layer_Cam")))->Get_SoloMoveMode() == ESoloMoveMode::End)
 		{
+
 			if (!m_pManagement->Get_GameObjectList(L"Layer_ScriptUI")->size())
 			{
 				if (FAILED(Add_Layer_ScriptUI(L"Layer_ScriptUI", EScript::Stg2_SearchTarget)))
@@ -671,6 +701,8 @@ _bool CStage2::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fM
 	if (m_fFlyingAsteroidTime >= fFinishTime)
 	{
 		m_bFinishFlyAway = TRUE;
+		m_bFinishFlyAwaySound = true;
+		m_pManagement->StopSound(CSoundMgr::BGM);
 		return TRUE;
 	}
 
@@ -697,7 +729,11 @@ _bool CStage2::AsteroidFlyingAway(_float fDeltaTime, _float fMaxXDist, _float fM
 		}
 		for (auto& pDst : *m_pManagement->Get_GameObjectList(L"Layer_Asteroid"))
 			pDst->Update_GameObject(fDeltaTime);
+
 		m_bStartFlyAway = TRUE;
+		m_bStartFlyAwaySound = true;
+		m_pManagement->StopSound(CSoundMgr::BGM);
+
 		return FALSE;
 	}
 	_float fLongLange = fMaxZDist + fMinZDist + fDistFromTarget;

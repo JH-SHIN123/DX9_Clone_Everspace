@@ -31,7 +31,10 @@ STAT_INFO * CDataBase::Get_StatInfo()
 
 void CDataBase::Set_StatInfo(STAT_INFO _tUnitInfo)
 {
+<<<<<<< HEAD
 	
+=======
+>>>>>>> main
 	if (_tUnitInfo.iAtk >= 100)
 	{
 		_tUnitInfo.iAtk = 100;
@@ -59,7 +62,11 @@ void CDataBase::Set_StatInfo(STAT_INFO _tUnitInfo)
 		_tUnitInfo.iEnergy = 100;
 		_tUnitInfo.iMaxEnergy = 100;
 	}
+<<<<<<< HEAD
 	m_tStatInfo = _tUnitInfo;
+=======
+	m_tUnitInfo = _tUnitInfo;
+>>>>>>> main
 }
 
 void CDataBase::Set_Money(_uint _iMoney)

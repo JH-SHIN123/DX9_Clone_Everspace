@@ -17,7 +17,11 @@ private:
 public:
 	
 	_uint Get_Money()const;
+<<<<<<< HEAD
 	STAT_INFO* Get_StatInfo();
+=======
+	UNIT_INFO* Get_UnitInfo();
+>>>>>>> main
 
 	_uint GetAtkBuffItemCount() { return m_iAtkBuffItem; }
 	_uint GetDefBuffItemCount() { return m_iDefBuffItem; }
@@ -36,7 +40,11 @@ public:
 	void Set_Money(_uint _iMoney);
 private:
 	_uint m_iMoney = 300000;
+<<<<<<< HEAD
 	STAT_INFO m_tStatInfo;
+=======
+	UNIT_INFO m_tUnitInfo = { 20,30,50,30,40,70 };;
+>>>>>>> main
 
 	_uint m_iAtkBuffItem = 10;
 	_uint m_iDefBuffItem = 10;
