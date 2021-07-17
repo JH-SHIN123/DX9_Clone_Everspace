@@ -86,6 +86,8 @@ private:
 	_bool m_bStart = false;
 	_float3 m_vStartPos = {0,0,0};
 	_uint m_iItemClicked[9] = { 0,0,0,0,0,0,0,0,0 };
+	_float m_fShowUsingItemFrame = 120.f;
+
 	CGameObject* m_pFontAtkUpCount = nullptr;
 	CGameObject* m_pFontDefUpCount = nullptr;
 	CGameObject* m_pFontHpUpCount = nullptr;
