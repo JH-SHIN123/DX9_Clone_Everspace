@@ -1,4 +1,4 @@
-# SR_Everspace
+# Everspace Clone Project
 
-Software_Rendering
+DirectX 9 Rendering
 Everspace Client / MFC Tool
